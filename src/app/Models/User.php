@@ -4,13 +4,17 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
-class User extends Authenticatable
+class User extends \TCG\Voyager\Models\User
 {
     use HasApiTokens, HasFactory, Notifiable;
+    use SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -42,4 +46,34 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function score(): HasOne
+    {
+        return $this->hasOne(UserScore::class);
+    }
+
+    public function friends(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'friends', 'user_id', 'friend_id');
+    }
+
+    public function chats(): BelongsToMany
+    {
+        return $this->belongsToMany(Chat::class, 'chat_members');
+    }
+
+    public function achievements(): HasMany
+    {
+        return $this->hasMany(UserAchievementProgress::class);
+    }
+
+    public function activeRoute(): HasOne
+    {
+        return $this->hasOne(UserActiveRoute::class);
+    }
+
+    public function favoriteRoutes(): BelongsToMany
+    {
+        return $this->belongsToMany(Route::class, 'user_favorite_routes');
+    }
 }

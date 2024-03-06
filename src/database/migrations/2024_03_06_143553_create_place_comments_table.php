@@ -11,14 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('place_comments', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->rememberToken();
+            $table->text('text');
+            $table->unsignedBigInteger('author_id');
+            $table->unsignedBigInteger('place_id');
             $table->timestamps();
+
+            $table->foreign('author_id')->references('id')->on('users')->cascadeOnUpdate();
+            $table->foreign('place_id')->references('id')->on('places')->cascadeOnDelete()->cascadeOnUpdate();
 
             $table->softDeletes();
         });
@@ -29,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('place_comments');
     }
 };
