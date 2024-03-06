@@ -2,12 +2,34 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Carbon;
 
+/**
+ * @property int $id
+ * @property string $name
+ * @property string $description
+ * @property float $lat
+ * @property float $lon
+ * @property int $locality_id
+ * @property int $type_id
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property Carbon|null $deleted_at
+ * @property-read Collection<int, PlaceComment> $comments
+ * @property-read int|null $comments_count
+ * @property-read Collection<int, PlaceImage> $images
+ * @property-read int|null $images_count
+ * @property-read Locality $locality
+ * @property-read Collection<int, PlaceRating> $ratings
+ * @property-read int|null $ratings_count
+ * @property-read PlaceType $type
+ */
 class Place extends Model
 {
     use HasFactory;

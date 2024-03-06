@@ -2,12 +2,29 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Carbon;
 
+/**
+ * @property int $id
+ * @property string $name
+ * @property int $creator_id
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property Carbon|null $deleted_at
+ * @property-read Collection<int, RouteComment> $comments
+ * @property-read int|null $comments_count
+ * @property-read User $creator
+ * @property-read Collection<int, RouteRating> $ratings
+ * @property-read int|null $ratings_count
+ * @property-read Collection<int, RoutePoint> $routePoints
+ * @property-read int|null $route_points_count
+ */
 class Route extends Model
 {
     use HasFactory;

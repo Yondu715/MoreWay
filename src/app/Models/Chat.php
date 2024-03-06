@@ -2,13 +2,29 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Carbon;
 
+/**
+ * @property int $id
+ * @property string $name
+ * @property int $creator_id
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property Carbon|null $deleted_at
+ * @property-read ChatActiveRoute|null $activeRoute
+ * @property-read User $creator
+ * @property-read Collection<int, ChatMember> $members
+ * @property-read int|null $members_count
+ * @property-read Collection<int, ChatMessage> $messages
+ * @property-read int|null $messages_count
+ */
 class Chat extends Model
 {
     use HasFactory;
@@ -45,7 +61,7 @@ class Chat extends Model
         return $this->hasMany(ChatMember::class);
     }
 
-    public function messages()
+    public function messages(): HasMany
     {
         return $this->hasMany(ChatMessage::class);
     }
