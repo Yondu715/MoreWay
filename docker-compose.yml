@@ -1,0 +1,89 @@
+version: '3.7'
+
+services:
+  mysql:
+    build:
+      context: ./docker/mysql
+    environment:
+      MYSQL_DATABASE: database
+      MYSQL_ROOT_USER: root
+      MYSQL_ROOT_PASSWORD: 123
+    volumes:
+      - /home/web/www/more_way/local/mysql:/var/lib/mysql # сохранение файлов БД на хосте
+    expose:
+      - 3307
+    ports:
+      - 3307:3306
+
+  app:
+    build:
+      context: ./docker/app
+      target: base
+      args:
+        WEB_USER_ID: 1000
+        WEB_USER_NAME: web
+        WEB_GROUP_ID: 1000
+        WEB_GROUP_NAME: web
+    volumes:
+      - .:/var/www
+      - /home/web/www/more_way/local/composer:/composer
+    environment:
+      XDEBUG_CONFIG: "client_host=172.80.0.1 client_port=9001" # `$ ip addr` - IP докера, для windows (host.docker.internal)
+      XDEBUG_MODE: 'debug' # https://xdebug.org/docs/all_settings#mode
+      PHP_IDE_CONFIG: serverName=more_way.test
+    depends_on:
+      - mysql
+    tty: true
+
+  nginx:
+    build:
+      context: ./docker/nginx/
+      args:
+        WEB_USER_ID: 1000
+        WEB_USER_NAME: web
+        WEB_GROUP_ID: 1000
+        WEB_GROUP_NAME: web
+    environment:
+      NGINX_FASTCGI_PASS: app:9000
+      NGINX_WEB_DOMAIN: more_way.ru
+      # подключение этих файлов происходит через директиву nginx include
+      # например, 'include /etc/nginx/custom/iojs_more_way.conf;'
+      NGINX_SWAGGER_CONFIG: ''
+      NGINX_IOVATION_CONFIG: ''
+      NGINX_SOCKETS_CONFIG: ''
+    depends_on:
+      - app
+    volumes:
+      - .:/var/www
+      - ./docker/nginx/ssl/server.key:/etc/nginx/conf.d/server.key
+      - ./docker/nginx/ssl/server.crt:/etc/nginx/conf.d/server.crt
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.nginx.tls=true
+      - traefik.http.routers.nginx.tls.certresolver=internal-acme
+      - traefik.http.routers.nginx.rule=Host(`$NGINX_WEB_DOMAIN`)
+      - traefik.http.routers.nginx.entrypoints=https
+      - traefik.http.routers.nginx-http.rule=Host(`$NGINX_WEB_DOMAIN`)
+      - traefik.http.routers.nginx-http.entrypoints=http
+      - traefik.http.routers.nginx-http.middlewares=default-https-redirect@file
+    ports:
+      - 8876:80
+
+#  supervisor:
+#    build:
+#      context: docker/supervisor
+#      args:
+#        WEB_USER_ID: 1000
+#        WEB_USER_NAME: web
+#        WEB_GROUP_ID: 1000
+#        WEB_GROUP_NAME: web
+#    env_file:
+#      - docker/supervisor/supervisor.env
+#    volumes:
+#      - .:/var/www
+#    depends_on: [mysql,redis,rabbitMq]
+#    ports:
+#      - 9999:9999
+#    tty: true
+#    profiles:
+#      - supervisor

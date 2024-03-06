@@ -1,0 +1,79 @@
+version: '3.7'
+
+services:
+  mysql:
+    volumes:
+      - ~/SharedVolumes/mysql:/var/lib/mysql
+    ports:
+      - 3306:3306
+
+  app:
+    build:
+      target: dev
+      args:
+        WEB_USER_ID: 1000 # `$ id -u`
+        WEB_USER_NAME: developer # `$ whoami`
+        WEB_GROUP_ID: 1000
+        WEB_GROUP_NAME: developer
+    volumes:
+      - ~/SharedVolumes/composer:/composer
+      - ~/SharedVolumes/phpstorm-coverage:/opt/phpstorm-coverage # phpstorm использует этот путь по умолчанию для coverage файлов
+    environment:
+      FAKETIME_TIMESTAMP_FILE: /var/www/zaymer/faketime.rc
+      FAKETIME_NO_CACHE: 1
+      XDEBUG_CONFIG: "client_host=172.80.0.1 client_port=9001" # `$ ip addr` - IP докера, для windows (host.docker.internal)
+      XDEBUG_MODE: 'debug' # https://xdebug.org/docs/all_settings#mode
+      PHP_IDE_CONFIG: serverName=zaymer.test
+      WEBPACK_DEVSERVER_HOST: zaymer.test
+
+#  supervisor:
+#    build:
+#      context: docker/supervisor
+#      args:
+#        WEB_USER_ID: 1000 # `$ id -u`
+#        WEB_USER_NAME: developer # `$ whoami`
+#        WEB_GROUP_ID: 1000
+#        WEB_GROUP_NAME: developer
+#    env_file:
+#      - docker/supervisor/supervisor.env
+#    volumes:
+#      - .:/var/www/zaymer
+#    ports:
+#      - 9999:9999
+#    tty: true
+#    profiles:
+#      - supervisor
+
+  nginx:
+    logging:
+      options:
+        max-size: '50m'
+        max-file: '10'
+    build:
+      args:
+        WEB_USER_ID: 1000 # `$ id -u`
+        WEB_USER_NAME: developer # `$ whoami`
+        WEB_GROUP_ID: 1000
+        WEB_GROUP_NAME: developer
+    ports:
+      - 80:80
+
+  node:
+    build:
+      context: ./docker/node
+      target: base
+      args:
+        NODE_BUILD_DIR: /opt/node-workdir/app/webroot
+        NODE_WEBPACK_OUTPUT: ./../app/webroot
+        USER_ID: 1000 # `$ id -u`
+        USER_NAME: developer # `$ whoami`
+        GROUP_ID: 1000
+        GROUP_NAME: developer
+    volumes:
+      - ./src/cake/mockup:/opt/node-workdir/src
+      - ./src/cake/app/webroot:/opt/node-workdir/app/webroot
+      - ./docker/node/volumes:/home/node
+    tty: true
+    command: tail -f /dev/null
+    profiles:
+      - node
