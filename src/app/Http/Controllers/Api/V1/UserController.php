@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Api\V1;
 
-use App\Dto\ChangeUserAvatarDto;
-use App\Dto\ChangeUserPasswordDto;
+use App\Dto\User\ChangeUserAvatarDto;
+use App\Dto\User\ChangeUserPasswordDto;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\ChangeUserAvatarRequest;
-use App\Http\Requests\ChangeUserPasswordRequest;
+use App\Http\Requests\User\ChangeUserAvatarRequest;
+use App\Http\Requests\User\ChangeUserPasswordRequest;
 use App\Services\User\UserService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;

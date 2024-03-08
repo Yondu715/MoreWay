@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Dto;
+namespace App\Dto\User;
 
-use App\Http\Requests\ChangeUserPasswordRequest;
+use App\Http\Requests\User\ChangeUserPasswordRequest;
 
 class ChangeUserPasswordDto
 {

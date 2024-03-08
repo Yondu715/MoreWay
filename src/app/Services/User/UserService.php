@@ -2,8 +2,8 @@
 
 namespace App\Services\User;
 
-use App\Dto\ChangeUserAvatarDto;
-use App\Dto\ChangeUserPasswordDto;
+use App\Dto\User\ChangeUserAvatarDto;
+use App\Dto\User\ChangeUserPasswordDto;
 use App\Enums\Storage\Paths;
 use App\Exceptions\User\InvalidOldPassword;
 use App\Exceptions\User\UserNotFound;
