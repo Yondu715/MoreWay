@@ -63,9 +63,9 @@ class AuthController extends Controller
     }
 
     /**
-     * @return ?JsonResponse
+     * @return JsonResponse
      */
-    public function refresh(): ?JsonResponse
+    public function refresh(): JsonResponse
     {
         return request()->json(['accessToken' => $this->authService->refresh()]);
     }

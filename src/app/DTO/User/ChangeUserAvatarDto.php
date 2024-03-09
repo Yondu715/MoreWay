@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Dto\User;
+namespace App\DTO\User;
 
 use App\Http\Requests\User\ChangeUserAvatarRequest;
 use Illuminate\Http\UploadedFile;

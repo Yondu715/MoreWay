@@ -2,8 +2,8 @@
 
 namespace App\Services\User;
 
-use App\Dto\User\ChangeUserAvatarDto;
-use App\Dto\User\ChangeUserPasswordDto;
+use App\DTO\User\ChangeUserAvatarDto;
+use App\DTO\User\ChangeUserPasswordDto;
 use App\Enums\Storage\Paths;
 use App\Exceptions\User\InvalidOldPassword;
 use App\Exceptions\User\UserNotFound;
@@ -11,14 +11,18 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
-use Src\App\Dto\User\ChangeUserDataDto;
+use App\DTO\User\ChangeUserDataDto;
 
 class UserService
 {
-
+    /**
+     * @param int $userId
+     * @return User
+     * @throws UserNotFound
+     */
     public function getUserById(int $userId): User
     {
-        /**@var User */
+        /**@var User $user */
         $user = User::query()->find($userId);
         if (!$user) {
             throw new UserNotFound();
@@ -26,9 +30,14 @@ class UserService
         return $user;
     }
 
+    /**
+     * @param int $userId
+     * @return ?bool
+     * @throws UserNotFound
+     */
     public function deleteUserById(int $userId): ?bool
     {
-        /**@var User */
+        /**@var User $user */
         $user = User::query()->find($userId);
         if (!$user) {
             throw new UserNotFound();
@@ -36,9 +45,15 @@ class UserService
         return $user->delete();
     }
 
+    /**
+     * @param ChangeUserPasswordDto $changeUserPasswordDto
+     * @return User
+     * @throws InvalidOldPassword
+     * @throws UserNotFound
+     */
     public function changePassword(ChangeUserPasswordDto $changeUserPasswordDto): User
     {
-        /**@var User */
+        /**@var User $user */
         $user = User::query()->find($changeUserPasswordDto->userId);
         if (!$user) {
             throw new UserNotFound();
@@ -52,9 +67,14 @@ class UserService
         return $user->refresh();
     }
 
+    /**
+     * @param ChangeUserAvatarDto $changeUserAvatarDto
+     * @return User
+     * @throws UserNotFound
+     */
     public function changeAvatar(ChangeUserAvatarDto $changeUserAvatarDto): User
     {
-        /**@var User */
+        /**@var User $user */
         $user = User::query()->find($changeUserAvatarDto->userId);
         if (!$user) {
             throw new UserNotFound();
@@ -75,9 +95,14 @@ class UserService
         return User::query()->where('name', 'like', $name . '%')->get();
     }
 
+    /**
+     * @param ChangeUserDataDto $changeUserDataDto
+     * @return User
+     * @throws UserNotFound
+     */
     public function changeData(ChangeUserDataDto $changeUserDataDto): User
     {
-        /**@var User */
+        /**@var User $user */
         $user = User::query()->find($changeUserDataDto->userId);
         if (!$user) {
             throw new UserNotFound();
