@@ -8,7 +8,10 @@ use App\Enums\Storage\Paths;
 use App\Exceptions\User\InvalidOldPassword;
 use App\Exceptions\User\UserNotFound;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
+use Src\App\Dto\User\ChangeUserDataDto;
 
 class UserService
 {
@@ -57,10 +60,32 @@ class UserService
             throw new UserNotFound();
         }
         $path = Paths::UserAvatar->value . "/$user->id.jpg";
-        $changeUserAvatarDto->avatar->store($path);
+        if (Storage::exists($path)) {
+            Storage::delete($path);
+        }
+        Storage::put($path, $changeUserAvatarDto->avatar);
         $user->update([
             'avatar' => $path
         ]);
+        return $user->refresh();
+    }
+
+    public function findUsersByName(string $name): Collection
+    {
+        return User::query()->where('name', 'like', $name . '%')->get();
+    }
+
+    public function changeData(ChangeUserDataDto $changeUserDataDto): User
+    {
+        /**@var User */
+        $user = User::query()->find($changeUserDataDto->userId);
+        if (!$user) {
+            throw new UserNotFound();
+        }
+        $data = collect($changeUserDataDto)->filter(function ($value) {
+            return $value !== null;
+        })->toArray();
+        $user->update($data);
         return $user->refresh();
     }
 }
