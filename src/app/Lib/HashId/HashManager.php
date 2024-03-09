@@ -6,16 +6,14 @@ use Hashids\Hashids;
 
 class HashManager
 {
-
-    private static Hashids $hashids = new Hashids('ggIKLdf', 8);
-
     /**
      * @param int $id
      * @return string
      */
     static public function encrypt(int $id): string
     {
-        return self::$hashids->encode($id);
+        $hashids = new Hashids('ggIKLdf', 8);
+        return $hashids->encode($id);
     }
 
     /**
@@ -24,6 +22,7 @@ class HashManager
      */
     static public function decrypt(string $hash): int
     {
-        return self::$hashids->decode($hash)[0];
+        $hashids = new Hashids('ggIKLdf', 8);
+        return $hashids->decode($hash)[0];
     }
 }

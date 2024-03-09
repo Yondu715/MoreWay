@@ -2,6 +2,7 @@
 
 namespace App\Lib\Token;
 
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use PHPUnit\Logging\Exception;
 use Tymon\JWTAuth\JWTGuard;
@@ -9,17 +10,11 @@ use Tymon\JWTAuth\JWTGuard;
 class TokenManager
 {
     /**
-     * @param array{'email': string, 'password': string} $user
      * @return string
      */
-    static public function getNewToken(array $user): string
+    static public function getNewToken(User $user): string
     {
-        $token = (string)self::getAuth()->attempt($user);
-        if (!$token) {
-            throw new Exception();
-        }
-
-        return $token;
+        return self::getAuth()->login($user);
     }
 
     /**
@@ -37,16 +32,17 @@ class TokenManager
     }
 
     /**
-     * @return int
+     * @return User
      */
-    static public function getAuthUserId(): int
+    static public function getAuthUser(): User
     {
-        $id = self::getAuth()->id();
+        /**@var ?User */
+        $user = self::getAuth()->user();
 
-        if(!$id){
+        if(!$user){
             throw new Exception();
         }
-        return self::getAuth()->id();
+        return $user;
     }
 
     /**
@@ -54,7 +50,7 @@ class TokenManager
      */
     static private function getAuth(): JWTGuard
     {
-        /** @var JWTGuard $auth */
+        /** @var JWTGuard */
         return Auth::guard('api');
     }
 }

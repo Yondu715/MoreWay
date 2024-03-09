@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Services\Auth\DTO\OutAuthDto;
 use App\Services\Auth\DTO\UserDto;
 use Exception;
+use Illuminate\Support\Facades\Hash;
 
 class AuthService
 {
@@ -18,14 +19,17 @@ class AuthService
      */
     public function login(LoginDto $loginDto): OutAuthDto
     {
-        $user = [
-            'email' => $loginDto->email,
-            'password' => $loginDto->password,
-        ];
+        /**@var User */
+        $user = User::query()->where([
+            'email' => $loginDto->email
+        ])->get();
+        if (!$user || !Hash::check($loginDto->password, $user->password)) {
+            throw new Exception('Неправильный логин или пароль', 405);
+        }
 
         $token = TokenManager::getNewToken($user);
 
-        return OutAuthDto::fromArray($this->getAuthUser(),$token);
+        return OutAuthDto::fromArray(UserDto::fromUserModel($user), $token);
     }
 
     /**
@@ -34,24 +38,18 @@ class AuthService
      */
     public function register(RegisterDto $registerDto): OutAuthDto
     {
-        if(User::query()->where('email', $registerDto->email)->first()){
+        if (User::query()->where('email', $registerDto->email)->first()) {
             throw new Exception();
         }
 
-        $user = [
+        $user = User::query()->create([
             'name' => $registerDto->name,
             'email' => $registerDto->email,
             'password' => $registerDto->password,
-        ];
-
-        User::query()->create($user);
-
-        $token = TokenManager::getNewToken([
-            'email' => $registerDto->email,
-            'password' => $registerDto->password,
         ]);
+        $token = TokenManager::getNewToken($user);
 
-        return OutAuthDto::fromArray($this->getAuthUser(), $token);
+        return OutAuthDto::fromArray(UserDto::fromUserModel($user), $token);
     }
 
     /**
@@ -59,10 +57,7 @@ class AuthService
      */
     public function getAuthUser(): UserDto
     {
-        /**@var User $user*/
-        $user = User::query()->find(TokenManager::getAuthUserId());
-
-        return UserDto::fromUserModel($user);
+        return UserDto::fromUserModel(TokenManager::getAuthUser());
     }
 
     /**
