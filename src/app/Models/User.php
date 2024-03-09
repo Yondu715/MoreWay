@@ -16,6 +16,7 @@ use Illuminate\Support\Carbon;
 use Laravel\Sanctum\HasApiTokens;
 use Laravel\Sanctum\PersonalAccessToken;
 use TCG\Voyager\Models\Role;
+use Tymon\JWTAuth\Contracts\JWTSubject;
 
 /**
  * @property int $id
@@ -49,10 +50,30 @@ use TCG\Voyager\Models\Role;
  * @property-read Collection<int, PersonalAccessToken> $tokens
  * @property-read int|null $tokens_count
  */
-class User extends \TCG\Voyager\Models\User
+class User extends \TCG\Voyager\Models\User implements JWTSubject
 {
     use HasApiTokens, HasFactory, Notifiable;
     use SoftDeletes;
+
+    /**
+     * Get the identifier that will be stored in the subject claim of the JWT.
+     *
+     * @return mixed
+     */
+    public function getJWTIdentifier(): mixed
+    {
+        return $this->getKey();
+    }
+
+    /**
+     * Return a key value array, containing any custom claims to be added to the JWT.
+     *
+     * @return array<int, null>
+     */
+    public function getJWTCustomClaims(): array
+    {
+        return [];
+    }
 
     /**
      * The attributes that are mass assignable.
