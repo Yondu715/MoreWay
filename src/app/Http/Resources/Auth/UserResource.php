@@ -2,7 +2,6 @@
 
 namespace App\Http\Resources\Auth;
 
-use App\Lib\HashId\HashManager;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;

@@ -8,8 +8,7 @@ use App\Lib\Token\TokenManager;
 use App\Models\User;
 use App\Services\Auth\DTO\OutAuthDto;
 use App\Services\Auth\DTO\UserDto;
-use Illuminate\Support\Facades\Hash;
-use PHPUnit\Logging\Exception;
+use Exception;
 
 class AuthService
 {

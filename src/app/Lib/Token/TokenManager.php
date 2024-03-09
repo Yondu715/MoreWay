@@ -27,7 +27,8 @@ class TokenManager
      */
     static public function refreshToken(): string
     {
-        return auth('api')->refresh();
+        /** @var JWTGuard $auth */
+        return self::getAuth()->refresh();
     }
 
     static public function destroyToken(): void
@@ -54,8 +55,6 @@ class TokenManager
     static private function getAuth(): JWTGuard
     {
         /** @var JWTGuard $auth */
-        $auth = Auth::guard('api');
-
-        return $auth;
+        return Auth::guard('api');
     }
 }
