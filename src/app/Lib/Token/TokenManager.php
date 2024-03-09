@@ -3,8 +3,8 @@
 namespace App\Lib\Token;
 
 use App\Models\User;
+use Exception;
 use Illuminate\Support\Facades\Auth;
-use PHPUnit\Logging\Exception;
 use Tymon\JWTAuth\JWTGuard;
 
 class TokenManager
@@ -23,8 +23,7 @@ class TokenManager
      */
     static public function refreshToken(): string
     {
-        $auth = self::getAuth();
-        return $auth->refresh();
+        return self::getAuth()->refresh();
     }
 
     static public function destroyToken(): void
@@ -40,7 +39,7 @@ class TokenManager
         /**@var User $user */
         $user = self::getAuth()->user();
 
-        if(!$user){
+        if (!$user) {
             throw new Exception();
         }
         return $user;
