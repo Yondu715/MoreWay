@@ -23,9 +23,7 @@ class TokenManager
      */
     static public function refreshToken(): string
     {
-        $user = self::getAuthUser();
-        self::destroyToken();
-        return self::getAuth()->login($user);
+        return self::getAuth()->refresh();
     }
 
     static public function destroyToken(): void
