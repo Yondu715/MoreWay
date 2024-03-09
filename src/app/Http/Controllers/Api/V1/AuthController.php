@@ -10,6 +10,7 @@ use App\Http\Requests\Auth\RegisterRequest;
 use App\Http\Resources\Auth\AuthResource;
 use App\Http\Resources\Auth\UserResource;
 use App\Services\Auth\AuthService;
+use Exception;
 use Illuminate\Http\JsonResponse;
 
 class AuthController extends Controller
@@ -22,6 +23,7 @@ class AuthController extends Controller
     /**
      * @param LoginRequest $loginRequest
      * @return AuthResource
+     * @throws Exception
      */
     public function login(LoginRequest $loginRequest): AuthResource
     {
@@ -34,6 +36,7 @@ class AuthController extends Controller
     /**
      * @param RegisterRequest $registerRequest
      * @return AuthResource
+     * @throws Exception
      */
     public function register(RegisterRequest $registerRequest): AuthResource
     {
@@ -60,9 +63,9 @@ class AuthController extends Controller
     }
 
     /**
-     * @return JsonResponse
+     * @return ?JsonResponse
      */
-    public function refresh(): JsonResponse
+    public function refresh(): ?JsonResponse
     {
         return request()->json(['accessToken' => $this->authService->refresh()]);
     }

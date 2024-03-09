@@ -10,6 +10,7 @@ use Tymon\JWTAuth\JWTGuard;
 class TokenManager
 {
     /**
+     * @param User $user
      * @return string
      */
     static public function getNewToken(User $user): string
@@ -22,8 +23,8 @@ class TokenManager
      */
     static public function refreshToken(): string
     {
-        /** @var JWTGuard $auth */
-        return self::getAuth()->refresh();
+        $auth = self::getAuth();
+        return $auth->refresh();
     }
 
     static public function destroyToken(): void
@@ -36,7 +37,7 @@ class TokenManager
      */
     static public function getAuthUser(): User
     {
-        /**@var ?User */
+        /**@var ?User $user */
         $user = self::getAuth()->user();
 
         if(!$user){

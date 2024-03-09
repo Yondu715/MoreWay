@@ -16,13 +16,14 @@ class AuthService
     /**
      * @param LoginDto $loginDto
      * @return OutAuthDto
+     * @throws Exception
      */
     public function login(LoginDto $loginDto): OutAuthDto
     {
-        /**@var User */
+        /**@var User $user */
         $user = User::query()->where([
             'email' => $loginDto->email
-        ])->get();
+        ])->first();
         if (!$user || !Hash::check($loginDto->password, $user->password)) {
             throw new Exception('Неправильный логин или пароль', 405);
         }
@@ -35,6 +36,7 @@ class AuthService
     /**
      * @param RegisterDto $registerDto
      * @return OutAuthDto
+     * @throws Exception
      */
     public function register(RegisterDto $registerDto): OutAuthDto
     {
@@ -42,6 +44,7 @@ class AuthService
             throw new Exception();
         }
 
+        /** @var User $user */
         $user = User::query()->create([
             'name' => $registerDto->name,
             'email' => $registerDto->email,
@@ -61,8 +64,6 @@ class AuthService
     }
 
     /**
-     * Log the user out (Invalidate the token).
-     *
      * @return void
      */
     public function logout(): void
@@ -71,8 +72,6 @@ class AuthService
     }
 
     /**
-     * Refresh a token.
-     *
      * @return string
      */
     public function refresh(): string
