@@ -4,6 +4,9 @@ namespace App\Services\Auth;
 
 use App\DTO\Auth\LoginDto;
 use App\DTO\Auth\RegisterDto;
+use App\Exceptions\Auth\InvalidPassword;
+use App\Exceptions\Auth\RegistrationConflict;
+use App\Exceptions\User\UserNotFound;
 use App\Lib\Token\TokenManager;
 use App\Models\User;
 use App\Services\Auth\DTO\UserDto;
@@ -28,8 +31,12 @@ class AuthService
         $user = User::query()->where([
             'email' => $loginDto->email
         ])->first();
-        if (!$user || !Hash::check($loginDto->password, $user->password)) {
-            throw new Exception('Неправильный логин или пароль', 405);
+
+        if (!$user) {
+            throw new UserNotFound();
+        }
+        elseif (!Hash::check($loginDto->password, $user->password)){
+            throw new InvalidPassword();
         }
 
         return $this->tokenManager->getNewToken($user);
@@ -43,7 +50,7 @@ class AuthService
     public function register(RegisterDto $registerDto): void
     {
         if (User::query()->where('email', $registerDto->email)->first()) {
-            throw new Exception();
+            throw new RegistrationConflict();
         }
 
         User::query()->create([
