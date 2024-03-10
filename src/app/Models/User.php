@@ -25,7 +25,7 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
  * @property string $email
  * @property string|null $avatar
  * @property Carbon|null $email_verified_at
- * @property mixed $password
+ * @property string $password
  * @property string|null $remember_token
  * @property string|null $settings
  * @property Carbon|null $created_at

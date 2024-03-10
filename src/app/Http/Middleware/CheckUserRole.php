@@ -25,7 +25,6 @@ class CheckUserRole
     {
         $user = $this->tokenManager->getAuthUser();
         if (!$user->hasRole($role)) {
-            dd($user);
             abort(403);
         }
         return $next($request);

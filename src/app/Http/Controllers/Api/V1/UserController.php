@@ -16,7 +16,6 @@ use App\DTO\User\ChangeUserDataDto;
 use App\DTO\User\GetUsersDto;
 use App\Http\Requests\User\GetUsersRequest;
 use App\Http\Resources\Auth\UserResource;
-use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class UserController extends Controller
@@ -28,7 +27,7 @@ class UserController extends Controller
     }
 
     /**
-     * @param Request $request
+     * @param GetUsersRequest $getUsersRequest
      * @return AnonymousResourceCollection
      */
     public function getUsers(GetUsersRequest $getUsersRequest): AnonymousResourceCollection

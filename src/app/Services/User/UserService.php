@@ -11,7 +11,7 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Hash;
 use App\DTO\User\ChangeUserDataDto;
-use App\Dto\User\GetUsersDto;
+use App\DTO\User\GetUsersDto;
 use App\Lib\Storage\StorageManager;
 
 class UserService
@@ -42,7 +42,7 @@ class UserService
      */
     public function getUserById(int $userId): User
     {
-        /**@var User $user */
+        /**@var ?User $user */
         $user = User::query()->find($userId);
         if (!$user) {
             throw new UserNotFound();
@@ -57,7 +57,7 @@ class UserService
      */
     public function deleteUserById(int $userId): ?bool
     {
-        /**@var User $user */
+        /**@var ?User $user */
         $user = User::query()->find($userId);
         if (!$user) {
             throw new UserNotFound();
@@ -73,7 +73,7 @@ class UserService
      */
     public function changePassword(ChangeUserPasswordDto $changeUserPasswordDto): User
     {
-        /**@var User $user */
+        /**@var ?User $user */
         $user = User::query()->find($changeUserPasswordDto->userId);
         if (!$user) {
             throw new UserNotFound();
@@ -84,6 +84,7 @@ class UserService
         $user->update([
             'password' => $changeUserPasswordDto->newPassword
         ]);
+        /**@var User */
         return $user->refresh();
     }
 
@@ -104,6 +105,7 @@ class UserService
         $user->update([
             'avatar' => $path
         ]);
+        /**@var User */
         return $user->refresh();
     }
 
@@ -114,7 +116,7 @@ class UserService
      */
     public function changeData(ChangeUserDataDto $changeUserDataDto): User
     {
-        /**@var User $user */
+        /**@var ?User $user */
         $user = User::query()->find($changeUserDataDto->userId);
         if (!$user) {
             throw new UserNotFound();
@@ -123,6 +125,7 @@ class UserService
             return $value !== null;
         })->toArray();
         $user->update($data);
+        /**@var User */
         return $user->refresh();
     }
 }
