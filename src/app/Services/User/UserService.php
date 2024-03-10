@@ -10,8 +10,8 @@ use App\Exceptions\User\UserNotFound;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Storage;
 use App\DTO\User\ChangeUserDataDto;
+use App\Lib\Storage\StorageManager;
 
 class UserService
 {
@@ -80,10 +80,7 @@ class UserService
             throw new UserNotFound();
         }
         $path = Paths::UserAvatar->value . "/$user->id.jpg";
-        if (Storage::exists($path)) {
-            Storage::delete($path);
-        }
-        Storage::put($path, $changeUserAvatarDto->avatar);
+        StorageManager::store($path, $changeUserAvatarDto->avatar);
         $user->update([
             'avatar' => $path
         ]);

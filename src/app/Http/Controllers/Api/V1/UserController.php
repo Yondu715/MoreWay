@@ -12,10 +12,11 @@ use App\Http\Requests\User\ChangeUserAvatarRequest;
 use App\Http\Requests\User\ChangeUserDataRequest;
 use App\Http\Requests\User\ChangeUserPasswordRequest;
 use App\Http\Requests\User\FindUsersRequest;
-use App\Models\User;
 use App\Services\User\UserService;
 use Illuminate\Http\Response;
 use App\DTO\User\ChangeUserDataDto;
+use App\Http\Resources\Auth\UserResource;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class UserController extends Controller
 {
@@ -27,23 +28,24 @@ class UserController extends Controller
 
     /**
      * @param int $userId
-     * @return User
+     * @return UserResource
      * @throws UserNotFound
      */
-    public function getUser(int $userId): User
+    public function getUser(int $userId): UserResource
     {
-        return $this->userService->getUserById($userId);
+        return UserResource::make($this->userService->getUserById($userId));
     }
 
     /**
      * @param ChangeUserDataRequest $changeUserDataRequest
-     * @return void
+     * @return UserResource
      * @throws UserNotFound
      */
-    public function changeData(ChangeUserDataRequest $changeUserDataRequest): void
+    public function changeData(ChangeUserDataRequest $changeUserDataRequest): UserResource
     {
         $changeUserDataDto = ChangeUserDataDto::fromRequest($changeUserDataRequest);
         $this->userService->changeData($changeUserDataDto);
+        return UserResource::make($this->userService->changeData($changeUserDataDto));
     }
 
     /**
@@ -59,35 +61,34 @@ class UserController extends Controller
 
     /**
      * @param ChangeUserAvatarRequest $changeUserAvatarRequest
-     * @return void
+     * @return UserResource
      * @throws UserNotFound
      */
-    public function changeAvatar(ChangeUserAvatarRequest $changeUserAvatarRequest): void
+    public function changeAvatar(ChangeUserAvatarRequest $changeUserAvatarRequest): UserResource
     {
         $changeUserAvatarDto = ChangeUserAvatarDto::fromRequest($changeUserAvatarRequest);
-        $this->userService->changeAvatar($changeUserAvatarDto);
-
+        return UserResource::make($this->userService->changeAvatar($changeUserAvatarDto));
     }
 
     /**
      * @param ChangeUserPasswordRequest $changeUserPasswordRequest
-     * @return User
+     * @return UserResource
      * @throws UserNotFound
      * @throws InvalidOldPassword
      */
-    public function changePassword(ChangeUserPasswordRequest $changeUserPasswordRequest): User
+    public function changePassword(ChangeUserPasswordRequest $changeUserPasswordRequest): UserResource
     {
         $changeUserPasswordDto = ChangeUserPasswordDto::fromRequest($changeUserPasswordRequest);
-        return $this->userService->changePassword($changeUserPasswordDto);
+        return UserResource::make($this->userService->changePassword($changeUserPasswordDto));
     }
 
     /**
      * @param FindUsersRequest $findUsersRequest
-     * @return void
+     * @return AnonymousResourceCollection
      */
-    public function findUsers(FindUsersRequest $findUsersRequest): void
+    public function findUsers(FindUsersRequest $findUsersRequest): AnonymousResourceCollection
     {
         $findUsersDto = FindUsersDto::fromRequest($findUsersRequest);
-        $this->userService->findUsersByName($findUsersDto->name);
+        return UserResource::collection($this->userService->findUsersByName($findUsersDto->name));
     }
 }
