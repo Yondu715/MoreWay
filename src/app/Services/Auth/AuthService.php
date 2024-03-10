@@ -13,6 +13,11 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthService
 {
+
+    public function __construct(
+        private readonly TokenManager $tokenManager
+    ) {
+    }
     /**
      * @param LoginDto $loginDto
      * @return OutAuthDto
@@ -28,7 +33,7 @@ class AuthService
             throw new Exception('Неправильный логин или пароль', 405);
         }
 
-        $token = TokenManager::getNewToken($user);
+        $token = $this->tokenManager->getNewToken($user);
 
         return OutAuthDto::fromArray(UserDto::fromUserModel($user), $token);
     }
@@ -50,7 +55,8 @@ class AuthService
             'email' => $registerDto->email,
             'password' => $registerDto->password,
         ]);
-        $token = TokenManager::getNewToken($user);
+
+        $token = $this->tokenManager->getNewToken($user);
 
         return OutAuthDto::fromArray(UserDto::fromUserModel($user), $token);
     }
@@ -60,7 +66,7 @@ class AuthService
      */
     public function getAuthUser(): UserDto
     {
-        return UserDto::fromUserModel(TokenManager::getAuthUser());
+        return UserDto::fromUserModel($this->tokenManager->getAuthUser());
     }
 
     /**
@@ -68,7 +74,7 @@ class AuthService
      */
     public function logout(): void
     {
-        TokenManager::destroyToken();
+        $this->tokenManager->destroyToken();
     }
 
     /**
@@ -76,6 +82,6 @@ class AuthService
      */
     public function refresh(): string
     {
-        return TokenManager::refreshToken();
+        return $this->tokenManager->refreshToken();
     }
 }

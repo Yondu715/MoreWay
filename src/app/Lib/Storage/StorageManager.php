@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Storage;
 
 class StorageManager
 {
-    public static function store(string $path, UploadedFile $uploadedFile): void
+    public function store(string $path, UploadedFile $uploadedFile): void
     {
         if (Storage::exists($path)) {
             Storage::delete($path);

@@ -13,7 +13,7 @@ class TokenManager
      * @param User $user
      * @return string
      */
-    static public function getNewToken(User $user): string
+    public function getNewToken(User $user): string
     {
         return self::getAuth()->login($user);
     }
@@ -21,12 +21,12 @@ class TokenManager
     /**
      * @return string
      */
-    static public function refreshToken(): string
+    public function refreshToken(): string
     {
         return self::getAuth()->refresh();
     }
 
-    static public function destroyToken(): void
+    public function destroyToken(): void
     {
         self::getAuth()->logout();
     }
@@ -34,7 +34,7 @@ class TokenManager
     /**
      * @return User
      */
-    static public function getAuthUser(): User
+    public function getAuthUser(): User
     {
         /**@var User $user */
         $user = self::getAuth()->user();
@@ -48,7 +48,7 @@ class TokenManager
     /**
      * @return JWTGuard
      */
-    static private function getAuth(): JWTGuard
+    private function getAuth(): JWTGuard
     {
         /** @var JWTGuard */
         return Auth::guard('api');

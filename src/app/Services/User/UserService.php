@@ -15,6 +15,12 @@ use App\Lib\Storage\StorageManager;
 
 class UserService
 {
+
+    public function __construct(
+        private readonly StorageManager $storageManager
+    ) {
+    }
+
     /**
      * @param int $userId
      * @return User
@@ -80,7 +86,7 @@ class UserService
             throw new UserNotFound();
         }
         $path = Paths::UserAvatar->value . "/$user->id.jpg";
-        StorageManager::store($path, $changeUserAvatarDto->avatar);
+        $this->storageManager->store($path, $changeUserAvatarDto->avatar);
         $user->update([
             'avatar' => $path
         ]);
