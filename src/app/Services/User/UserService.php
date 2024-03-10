@@ -11,6 +11,7 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Hash;
 use App\DTO\User\ChangeUserDataDto;
+use App\Dto\User\GetUsersDto;
 use App\Lib\Storage\StorageManager;
 
 class UserService
@@ -19,6 +20,19 @@ class UserService
     public function __construct(
         private readonly StorageManager $storageManager
     ) {
+    }
+
+    /**
+     * @param GetUsersDto $getUsersDto
+     * @return Collection<int,User>
+     * 
+     */
+    public function getUsers(GetUsersDto $getUsersDto): Collection
+    {
+        $users = $getUsersDto->name ?
+            User::query()->where('name', 'like', $getUsersDto->name . '%')->get() :
+            User::all();
+        return $users;
     }
 
     /**
@@ -91,11 +105,6 @@ class UserService
             'avatar' => $path
         ]);
         return $user->refresh();
-    }
-
-    public function findUsersByName(string $name): Collection
-    {
-        return User::query()->where('name', 'like', $name . '%')->get();
     }
 
     /**
