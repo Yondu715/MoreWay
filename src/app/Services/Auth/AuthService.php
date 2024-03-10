@@ -6,7 +6,6 @@ use App\DTO\Auth\LoginDto;
 use App\DTO\Auth\RegisterDto;
 use App\Lib\Token\TokenManager;
 use App\Models\User;
-use App\Services\Auth\DTO\OutAuthDto;
 use App\Services\Auth\DTO\UserDto;
 use Exception;
 use Illuminate\Support\Facades\Hash;
@@ -20,10 +19,10 @@ class AuthService
     }
     /**
      * @param LoginDto $loginDto
-     * @return OutAuthDto
+     * @return string
      * @throws Exception
      */
-    public function login(LoginDto $loginDto): OutAuthDto
+    public function login(LoginDto $loginDto): string
     {
         /**@var User $user */
         $user = User::query()->where([
@@ -33,36 +32,30 @@ class AuthService
             throw new Exception('Неправильный логин или пароль', 405);
         }
 
-        $token = $this->tokenManager->getNewToken($user);
-
-        return OutAuthDto::fromArray(UserDto::fromUserModel($user), $token);
+        return $this->tokenManager->getNewToken($user);
     }
 
     /**
      * @param RegisterDto $registerDto
-     * @return OutAuthDto
+     * @return void
      * @throws Exception
      */
-    public function register(RegisterDto $registerDto): OutAuthDto
+    public function register(RegisterDto $registerDto): void
     {
         if (User::query()->where('email', $registerDto->email)->first()) {
             throw new Exception();
         }
 
-        /** @var User $user */
-        $user = User::query()->create([
+        User::query()->create([
             'name' => $registerDto->name,
             'email' => $registerDto->email,
             'password' => $registerDto->password,
         ]);
-
-        $token = $this->tokenManager->getNewToken($user);
-
-        return OutAuthDto::fromArray(UserDto::fromUserModel($user), $token);
     }
 
     /**
      * @return UserDto
+     * @throws Exception
      */
     public function getAuthUser(): UserDto
     {

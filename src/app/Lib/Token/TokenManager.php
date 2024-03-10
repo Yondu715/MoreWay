@@ -33,6 +33,7 @@ class TokenManager
 
     /**
      * @return User
+     * @throws Exception
      */
     public function getAuthUser(): User
     {

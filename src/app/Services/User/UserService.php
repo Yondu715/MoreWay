@@ -25,14 +25,13 @@ class UserService
     /**
      * @param GetUsersDto $getUsersDto
      * @return Collection<int,User>
-     * 
+     *
      */
     public function getUsers(GetUsersDto $getUsersDto): Collection
     {
-        $users = $getUsersDto->name ?
+        return $getUsersDto->name ?
             User::query()->where('name', 'like', $getUsersDto->name . '%')->get() :
             User::all();
-        return $users;
     }
 
     /**

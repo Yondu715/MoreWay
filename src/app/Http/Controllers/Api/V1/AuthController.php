@@ -7,7 +7,6 @@ use App\DTO\Auth\RegisterDto;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RegisterRequest;
-use App\Http\Resources\Auth\AuthResource;
 use App\Http\Resources\Auth\UserResource;
 use App\Services\Auth\AuthService;
 use Exception;
@@ -22,32 +21,34 @@ class AuthController extends Controller
 
     /**
      * @param LoginRequest $loginRequest
-     * @return AuthResource
+     * @return JsonResponse
      * @throws Exception
      */
-    public function login(LoginRequest $loginRequest): AuthResource
+    public function login(LoginRequest $loginRequest): JsonResponse
     {
         $inLoginDto = LoginDto::fromRequest($loginRequest);
-        $outAuthDto = $this->authService->login($inLoginDto);
 
-        return AuthResource::make($outAuthDto);
+        return response()->json(['data' => [
+            'accessToken' => $this->authService->login($inLoginDto)
+            ]
+        ]);
     }
 
     /**
      * @param RegisterRequest $registerRequest
-     * @return AuthResource
+     * @return void
      * @throws Exception
      */
-    public function register(RegisterRequest $registerRequest): AuthResource
+    public function register(RegisterRequest $registerRequest): void
     {
         $registerDto = RegisterDto::fromRequest($registerRequest);
-        $outAuthDto = $this->authService->register($registerDto);
 
-        return AuthResource::make($outAuthDto);
+        $this->authService->register($registerDto);
     }
 
     /**
      * @return UserResource
+     * @throws Exception
      */
     public function me(): UserResource
     {
