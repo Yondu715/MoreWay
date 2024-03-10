@@ -28,11 +28,12 @@ Route::prefix('auth')
     });
 
 Route::prefix('users')
+    ->middleware('auth:api', 'role:user')
     ->group(function () {
+        Route::get('/', [UserController::class, 'getUsers']);
         Route::get('/{userId}', [UserController::class, 'getUser']);
         Route::patch('/{userId}', [UserController::class, 'changeData']);
         Route::delete('/{userId}', [UserController::class, 'delete']);
         Route::patch('/{userId}/avatar', [UserController::class, 'changeAvatar']);
         Route::post('/{userId}/password', [UserController::class, 'changePassword']);
-        Route::post('/search', [UserController::class, 'findUsers']);
     });

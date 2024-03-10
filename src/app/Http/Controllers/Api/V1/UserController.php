@@ -13,7 +13,7 @@ use App\Http\Requests\User\ChangeUserPasswordRequest;
 use App\Services\User\UserService;
 use Illuminate\Http\Response;
 use App\DTO\User\ChangeUserDataDto;
-use App\Dto\User\GetUsersDto;
+use App\DTO\User\GetUsersDto;
 use App\Http\Requests\User\GetUsersRequest;
 use App\Http\Resources\Auth\UserResource;
 use Illuminate\Http\Request;
