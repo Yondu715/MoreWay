@@ -5,6 +5,9 @@ namespace App\Http\Requests\User;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
+/**
+ * @property string $name
+ */
 class ChangeUserDataRequest extends FormRequest
 {
     /**

@@ -12,19 +12,29 @@ class UserDto
     public readonly string $avatar;
     public readonly string $email;
 
+    public function __construct(
+        string $id,
+        string $name,
+        string $avatar,
+        string $email
+    ) {
+        $this->id = $id;
+        $this->name = $name;
+        $this->avatar = $avatar;
+        $this->email = $email;
+    }
+
     /**
      * @param User $user
      * @return self
      */
     public static function fromUserModel(User $user): self
     {
-        $dto = new self();
-
-        $dto->id = HashManager::encrypt($user->id);
-        $dto->name = $user->name;
-        $dto->avatar = $user->avatar;
-        $dto->email = $user->email;
-
-        return $dto;
+        return new self(
+            id: HashManager::encrypt($user->id),
+            name: $user->name,
+            avatar: $user->avatar,
+            email: $user->email
+        );
     }
 }

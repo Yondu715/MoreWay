@@ -9,12 +9,19 @@ class AddFriendDto
     public readonly int $userId;
     public readonly int $friendId;
 
+    public function __construct(
+        int $userId,
+        int $friendId
+    ) {
+        $this->userId = $userId;
+        $this->friendId = $friendId;
+    }
+
     public static function fromRequest(AddFriendRequest $addFriendRequest): self
     {
-        $dto = new self();
-
-        $dto->userId = $addFriendRequest->userId;
-        $dto->friendId = $addFriendRequest->friendId;
-        return $dto;
+        return new self(
+            userId: $addFriendRequest->userId,
+            friendId: $addFriendRequest->friendId
+        );
     }
 }

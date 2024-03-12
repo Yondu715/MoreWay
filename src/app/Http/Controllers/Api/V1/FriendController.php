@@ -15,27 +15,27 @@ class FriendController extends Controller
     ) {
     }
 
-    public function getFriends(int $userId)
+    public function getFriends(int $userId): void
     {
     }
 
-    public function getFriendRequests(int $userId)
+    public function getFriendRequests(int $userId): void
     {
     }
 
-    public function deleteFriend(int $userId, int $friendId)
+    public function deleteFriend(int $userId, int $friendId): void
     {
     }
 
-    public function addFriendRequest(AddFriendRequest $addFriendRequest)
+    public function addFriendRequest(AddFriendRequest $addFriendRequest): void
     {
     }
 
-    public function acceptFriendRequest(AcceptFriendRequest $acceptFriendRequest)
+    public function acceptFriendRequest(AcceptFriendRequest $acceptFriendRequest): void
     {
     }
 
-    public function rejectFriendRequest(int $requestId)
+    public function rejectFriendRequest(int $requestId): void
     {
     }
 }

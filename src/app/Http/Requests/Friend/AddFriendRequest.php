@@ -4,6 +4,10 @@ namespace App\Http\Requests\Friend;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+/**
+ * @property int $userId
+ * @property int $friendId
+ */
 class AddFriendRequest extends FormRequest
 {
     /**

@@ -10,13 +10,22 @@ class ChangeUserPasswordDto
     public readonly string $oldPassword;
     public readonly string $newPassword;
 
+    public function __construct(
+        string $oldPassword,
+        string $newPassword,
+        int $userId
+    ) {
+        $this->oldPassword = $oldPassword;
+        $this->newPassword = $newPassword;
+        $this->userId = $userId;
+    }
+
     public static function fromRequest(ChangeUserPasswordRequest $changeUserPasswordRequest): self
     {
-        $dto = new self();
-
-        $dto->userId = (int) $changeUserPasswordRequest->route('userId');
-        $dto->oldPassword = $changeUserPasswordRequest->oldPassword;
-        $dto->newPassword = $changeUserPasswordRequest->newPassword;
-        return $dto;
+        return new self(
+            oldPassword: $changeUserPasswordRequest->oldPassword,
+            newPassword: $changeUserPasswordRequest->newPassword,
+            userId: (int) $changeUserPasswordRequest->route('userId')
+        );
     }
 }

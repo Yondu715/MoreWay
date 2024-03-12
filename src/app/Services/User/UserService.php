@@ -41,7 +41,7 @@ class UserService
      */
     public function getUserById(int $userId): User
     {
-        /**@var ?User $user */
+        /** @var ?User */
         $user = User::query()->find($userId);
         if (!$user) {
             throw new UserNotFound();
@@ -56,7 +56,7 @@ class UserService
      */
     public function deleteUserById(int $userId): ?bool
     {
-        /**@var ?User $user */
+        /** @var ?User */
         $user = User::query()->find($userId);
         if (!$user) {
             throw new UserNotFound();
@@ -72,7 +72,7 @@ class UserService
      */
     public function changePassword(ChangeUserPasswordDto $changeUserPasswordDto): User
     {
-        /**@var ?User $user */
+        /** @var ?User */
         $user = User::query()->find($changeUserPasswordDto->userId);
         if (!$user) {
             throw new UserNotFound();
@@ -83,7 +83,7 @@ class UserService
         $user->update([
             'password' => $changeUserPasswordDto->newPassword
         ]);
-        /**@var User */
+        /** @var User */
         return $user->refresh();
     }
 
@@ -94,7 +94,7 @@ class UserService
      */
     public function changeAvatar(ChangeUserAvatarDto $changeUserAvatarDto): User
     {
-        /**@var User $user */
+        /** @var ?User */
         $user = User::query()->find($changeUserAvatarDto->userId);
         if (!$user) {
             throw new UserNotFound();
@@ -115,16 +115,16 @@ class UserService
      */
     public function changeData(ChangeUserDataDto $changeUserDataDto): User
     {
-        /**@var ?User $user */
+        /** @var ?User */
         $user = User::query()->find($changeUserDataDto->userId);
         if (!$user) {
             throw new UserNotFound();
         }
-        $data = collect($changeUserDataDto)->filter(function ($value) {
+        $data = collect($changeUserDataDto)->filter(function (string $value, string $key) {
             return $value !== null;
         })->toArray();
         $user->update($data);
-        /**@var User */
+        /** @var User */
         return $user->refresh();
     }
 }

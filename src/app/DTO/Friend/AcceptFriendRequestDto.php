@@ -8,11 +8,16 @@ class AcceptFriendRequestDto
 {
     public readonly int $requestId;
 
+    public function __construct(
+        int $requestId
+    ) {
+        $this->requestId = $requestId;
+    }
+
     public static function fromRequest(AcceptFriendRequest $acceptFriendRequest): self
     {
-        $dto = new self();
-
-        $dto->requestId = $acceptFriendRequest->requestId;
-        return $dto;
+        return new self(
+            requestId: $acceptFriendRequest->requestId
+        );
     }
 }

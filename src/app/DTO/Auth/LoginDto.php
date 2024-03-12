@@ -9,17 +9,23 @@ class LoginDto
     public readonly string $email;
     public readonly string $password;
 
+    public function __construct(
+        string $email,
+        string $password
+    ) {
+        $this->email = $email;
+        $this->password = $password;
+    }
+
     /**
      * @param LoginRequest $loginRequest
      * @return self
      */
     public static function fromRequest(LoginRequest $loginRequest): self
     {
-        $dto = new self();
-
-        $dto->email = $loginRequest->email;
-        $dto->password = $loginRequest->password;
-
-        return $dto;
+        return new self(
+            email: $loginRequest->email,
+            password: $loginRequest->password
+        );
     }
 }
