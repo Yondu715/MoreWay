@@ -12,6 +12,10 @@ use Illuminate\Database\Eloquent\Collection;
 
 class FriendService
 {
+    /**
+     * @param int $userId
+     * @return Collection<int, User>
+     */
     public function getUserFriends(int $userId): Collection
     {
         /** @var ?User */
@@ -22,11 +26,11 @@ class FriendService
         return $user->friends()->wherePivot('relationship_id', '=', RelationshipTypeId::FRIEND)->get();
     }
 
-    public function getFriendRequests()
+    public function getFriendRequests(): void
     {
     }
 
-    public function deleteFriend(int $userId, int $friendId)
+    public function deleteFriend(int $userId, int $friendId): void
     {
         Friend::query()->where([
             'user_id' => $userId,
@@ -37,11 +41,11 @@ class FriendService
         ])->delete();
     }
 
-    public function addFriendRequest(AddFriendDto $addFriendDto)
+    public function addFriendRequest(AddFriendDto $addFriendDto): void
     {
     }
 
-    public function acceptFriendRequest(AcceptFriendDto $acceptFriendDto)
+    public function acceptFriendRequest(AcceptFriendDto $acceptFriendDto): void
     {
     }
 
