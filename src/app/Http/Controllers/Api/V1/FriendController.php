@@ -2,10 +2,15 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\DTO\Friend\AcceptFriendDto;
+use App\DTO\Friend\AddFriendDto;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Friend\AcceptFriendRequest;
 use App\Http\Requests\Friend\AddFriendRequest;
+use App\Http\Resources\Auth\UserResource;
 use App\Services\Friend\FriendService;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Http\Response;
 
 class FriendController extends Controller
 {
@@ -15,9 +20,11 @@ class FriendController extends Controller
     ) {
     }
 
-    public function getFriends(int $userId): void
+    public function getFriends(int $userId): AnonymousResourceCollection
     {
-        $this->friendService->getUserFriends();
+        return UserResource::collection(
+            $this->friendService->getUserFriends($userId)
+        );
     }
 
     public function getFriendRequests(int $userId): void
@@ -25,23 +32,27 @@ class FriendController extends Controller
         $this->friendService->getFriendRequests();
     }
 
-    public function deleteFriend(int $userId, int $friendId): void
+    public function deleteFriend(int $userId, int $friendId): Response
     {
-        $this->friendService->deleteFriend();
+        $this->friendService->deleteFriend($userId, $friendId);
+        return response()->noContent();
     }
 
     public function addFriendRequest(AddFriendRequest $addFriendRequest): void
     {
-        $this->friendService->addFriendRequest();
+        $addFriendDto = AddFriendDto::fromRequest($addFriendRequest);
+        $this->friendService->addFriendRequest($addFriendDto);
     }
 
     public function acceptFriendRequest(AcceptFriendRequest $acceptFriendRequest): void
     {
-        $this->friendService->acceptFriendRequest();
+        $acceptFriendDto = AcceptFriendDto::fromRequest($acceptFriendRequest);
+        $this->friendService->acceptFriendRequest($acceptFriendDto);
     }
 
-    public function rejectFriendRequest(int $requestId): void
+    public function rejectFriendRequest(int $requestId): Response
     {
-        $this->friendService->rejectFriendRequest();
+        $this->friendService->rejectFriendRequest($requestId);
+        return response()->noContent();
     }
 }

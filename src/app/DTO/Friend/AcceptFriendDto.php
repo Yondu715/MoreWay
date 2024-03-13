@@ -4,7 +4,7 @@ namespace App\DTO\Friend;
 
 use App\Http\Requests\Friend\AcceptFriendRequest;
 
-class AcceptFriendRequestDto
+class AcceptFriendDto
 {
     public readonly int $requestId;
 
