@@ -26,8 +26,18 @@ class FriendService
         return $user->friends()->wherePivot('relationship_id', '=', RelationshipTypeId::FRIEND)->get();
     }
 
-    public function getFriendRequests(): void
+    /**
+     * @param int $userId
+     * @return Collection<int, User>
+     */
+    public function getFriendRequests(int $userId): Collection
     {
+        /** @var ?User */
+        $user = User::query()->find($userId);
+        if (!$user) {
+            throw new UserNotFound();
+        }
+        return $user->friends()->wherePivot('relationship_id', '=', RelationshipTypeId::REQUEST)->get();
     }
 
     public function deleteFriend(int $userId, int $friendId): void
@@ -43,10 +53,25 @@ class FriendService
 
     public function addFriendRequest(AddFriendDto $addFriendDto): void
     {
+        Friend::query()->create([
+            'user_id' => $addFriendDto->userId,
+            'friend_id' => $addFriendDto->friendId,
+            'relationship_id' => RelationshipTypeId::REQUEST
+        ])->with('friend');
     }
 
     public function acceptFriendRequest(AcceptFriendDto $acceptFriendDto): void
     {
+        /** @var Friend */
+        $request = Friend::query()->find($acceptFriendDto->requestId);
+        $request->update([
+            'relationship_id' => RelationshipTypeId::FRIEND
+        ]);
+        Friend::query()->create([
+            'user_id' => $request->friend_id,
+            'friend_id' => $request->user_id,
+            'relationship_id' => RelationshipTypeId::FRIEND
+        ]);
     }
 
     public function rejectFriendRequest(int $requestId): ?bool
