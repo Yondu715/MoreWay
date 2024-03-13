@@ -29,8 +29,8 @@ return [
     'connections' => [
 
         'main' => [
-            'salt' => '',
-            'length' => 0,
+            'salt' => 'ggIKLdf',
+            'length' => 8,
             // 'alphabet' => 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890'
         ],
 

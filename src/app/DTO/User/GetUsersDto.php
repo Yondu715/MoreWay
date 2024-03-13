@@ -8,6 +8,12 @@ class GetUsersDto
 {
     public readonly ?string $name;
 
+    public function __construct(
+        string $name
+    ) {
+        $this->name = $name;
+    }
+
     /**
      * @param GetUsersRequest $getUsersRequest
      * @return self
@@ -15,9 +21,8 @@ class GetUsersDto
      */
     public static function fromRequest(GetUsersRequest $getUsersRequest): self
     {
-        $dto = new self();
-
-        $dto->name = $getUsersRequest->name;
-        return $dto;
+        return new self(
+            name: $getUsersRequest->name
+        );
     }
 }

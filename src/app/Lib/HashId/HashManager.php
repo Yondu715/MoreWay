@@ -5,14 +5,17 @@ namespace App\Lib\HashId;
 use Hashids\Hashids;
 
 class HashManager
-{
+{    
     /**
      * @param int $id
      * @return string
      */
     static public function encrypt(int $id): string
     {
-        $hashids = new Hashids('ggIKLdf', 8);
+        $hashids = new Hashids(
+            config('hashids.connections.main.salt'),
+            config('hashids.connections.main.length')
+        );
         return $hashids->encode($id);
     }
 
@@ -22,7 +25,10 @@ class HashManager
      */
     static public function decrypt(string $hash): int
     {
-        $hashids = new Hashids('ggIKLdf', 8);
+        $hashids = new Hashids(
+            config('hashids.connections.main.salt'),
+            config('hashids.connections.main.length')
+        );
         return $hashids->decode($hash)[0];
     }
 }

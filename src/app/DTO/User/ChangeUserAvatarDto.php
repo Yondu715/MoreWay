@@ -10,13 +10,19 @@ class ChangeUserAvatarDto
     public readonly int $userId;
     public readonly UploadedFile $avatar;
 
+    public function __construct(
+        int $userId,
+        UploadedFile $avatar
+    ) {
+        $this->userId = $userId;
+        $this->avatar = $avatar;
+    }
+
     public static function fromRequest(ChangeUserAvatarRequest $changeUserAvatarRequest): self
     {
-        $dto = new self();
-
-        $dto->userId = (int) $changeUserAvatarRequest->route('userId');
-        $dto->avatar = $changeUserAvatarRequest->file('avatar');
-
-        return $dto;
+        return new self(
+            userId: (int) $changeUserAvatarRequest->route('userId'),
+            avatar: $changeUserAvatarRequest->file('avatar')
+        );
     }
 }

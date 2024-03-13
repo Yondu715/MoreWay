@@ -4,7 +4,11 @@ namespace App\Http\Requests\User;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\UploadedFile;
 
+/**
+ * @property UploadedFile $avatar
+ */
 class ChangeUserAvatarRequest extends FormRequest
 {
     /**

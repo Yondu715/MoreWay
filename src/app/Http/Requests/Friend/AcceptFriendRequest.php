@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Requests\User;
+namespace App\Http\Requests\Friend;
 
 use Illuminate\Foundation\Http\FormRequest;
 
 /**
- * @property string $name
+ * @property int $requestId
  */
-class GetUsersRequest extends FormRequest
+class AcceptFriendRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,7 +25,7 @@ class GetUsersRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'string|max:255'
+            'requestId' => 'required|numeric',
         ];
     }
 }

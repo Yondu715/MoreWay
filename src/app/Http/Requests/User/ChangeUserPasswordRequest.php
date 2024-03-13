@@ -5,6 +5,10 @@ namespace App\Http\Requests\User;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
+/**
+ * @property string $oldPassword
+ * @property string $newPassword
+ */
 class ChangeUserPasswordRequest extends FormRequest
 {
     /**
