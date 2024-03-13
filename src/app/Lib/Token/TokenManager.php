@@ -2,6 +2,7 @@
 
 namespace App\Lib\Token;
 
+use App\Exceptions\Auth\InvalidToken;
 use App\Models\User;
 use Exception;
 use Illuminate\Support\Facades\Auth;
@@ -41,7 +42,7 @@ class TokenManager
         $user = self::getAuth()->user();
 
         if (!$user) {
-            throw new Exception();
+            throw new InvalidToken();
         }
 
         return $user;
