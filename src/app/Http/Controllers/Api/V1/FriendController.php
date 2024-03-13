@@ -17,25 +17,31 @@ class FriendController extends Controller
 
     public function getFriends(int $userId): void
     {
+        $this->friendService->getUserFriends();
     }
 
     public function getFriendRequests(int $userId): void
     {
+        $this->friendService->getFriendRequests();
     }
 
     public function deleteFriend(int $userId, int $friendId): void
     {
+        $this->friendService->deleteFriend();
     }
 
     public function addFriendRequest(AddFriendRequest $addFriendRequest): void
     {
+        $this->friendService->addFriendRequest();
     }
 
     public function acceptFriendRequest(AcceptFriendRequest $acceptFriendRequest): void
     {
+        $this->friendService->acceptFriendRequest();
     }
 
     public function rejectFriendRequest(int $requestId): void
     {
+        $this->friendService->rejectFriendRequest();
     }
 }
