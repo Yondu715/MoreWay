@@ -13,13 +13,14 @@ use Illuminate\Support\Carbon;
  * @property string $text
  * @property int $author_id
  * @property int $place_id
+ * @property int $rating
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property Carbon|null $deleted_at
  * @property-read User $author
  * @property-read Place $place
  */
-class PlaceComment extends Model
+class PlaceReview extends Model
 {
     use HasFactory;
     use SoftDeletes;
@@ -32,7 +33,8 @@ class PlaceComment extends Model
     protected $fillable = [
         'text',
         'author_id',
-        'place_id'
+        'place_id',
+        'rating'
     ];
 
     /**

@@ -11,15 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('route_comments', function (Blueprint $table) {
+        Schema::create('place_reviews', function (Blueprint $table) {
             $table->id();
-            $table->string('text');
+            $table->text('text');
             $table->unsignedBigInteger('author_id');
-            $table->unsignedBigInteger('route_id');
+            $table->unsignedBigInteger('place_id');
+            $table->unsignedInteger('rating');
             $table->timestamps();
 
             $table->foreign('author_id')->references('id')->on('users')->cascadeOnUpdate();
-            $table->foreign('route_id')->references('id')->on('routes')->cascadeOnUpdate()->cascadeOnDelete();
+            $table->foreign('place_id')->references('id')->on('places')->cascadeOnDelete()->cascadeOnUpdate();
 
             $table->softDeletes();
         });
@@ -30,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('route_comments');
+        Schema::dropIfExists('place_comments');
     }
 };
