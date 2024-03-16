@@ -2,8 +2,8 @@
 
 namespace App\Services\Friend;
 
-use App\DTO\Friend\AcceptFriendDto;
-use App\DTO\Friend\AddFriendDto;
+use App\DTO\In\Friend\AcceptFriendDto;
+use App\DTO\In\Friend\AddFriendDto;
 use App\Enums\Friend\RelationshipTypeId;
 use App\Exceptions\Friend\FriendRequestConflict;
 use App\Exceptions\Friend\FriendRequestNotFound;

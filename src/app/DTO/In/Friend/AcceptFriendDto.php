@@ -1,6 +1,6 @@
 <?php
 
-namespace App\DTO\Friend;
+namespace App\DTO\In\Friend;
 
 use App\Http\Requests\Friend\AcceptFriendRequest;
 

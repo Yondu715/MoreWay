@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Auth\DTO;
+namespace App\DTO\Out\Auth;
 
 use App\Lib\HashId\HashManager;
 use App\Models\User;

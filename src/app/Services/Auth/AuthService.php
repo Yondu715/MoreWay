@@ -2,14 +2,14 @@
 
 namespace App\Services\Auth;
 
-use App\DTO\Auth\LoginDto;
-use App\DTO\Auth\RegisterDto;
+use App\DTO\In\Auth\LoginDto;
+use App\DTO\In\Auth\RegisterDto;
+use App\DTO\Out\Auth\UserDto;
 use App\Exceptions\Auth\InvalidPassword;
 use App\Exceptions\Auth\RegistrationConflict;
 use App\Exceptions\User\UserNotFound;
 use App\Lib\Token\TokenManager;
 use App\Models\User;
-use App\Services\Auth\DTO\UserDto;
 use Exception;
 use Illuminate\Support\Facades\Hash;
 

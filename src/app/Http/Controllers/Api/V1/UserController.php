@@ -2,21 +2,21 @@
 
 namespace App\Http\Controllers\Api\V1;
 
-use App\DTO\User\ChangeUserAvatarDto;
-use App\DTO\User\ChangeUserPasswordDto;
+use App\DTO\In\User\ChangeUserAvatarDto;
+use App\DTO\In\User\ChangeUserDataDto;
+use App\DTO\In\User\ChangeUserPasswordDto;
+use App\DTO\In\User\GetUsersDto;
 use App\Exceptions\User\InvalidOldPassword;
 use App\Exceptions\User\UserNotFound;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\ChangeUserAvatarRequest;
 use App\Http\Requests\User\ChangeUserDataRequest;
 use App\Http\Requests\User\ChangeUserPasswordRequest;
-use App\Services\User\UserService;
-use Illuminate\Http\Response;
-use App\DTO\User\ChangeUserDataDto;
-use App\DTO\User\GetUsersDto;
 use App\Http\Requests\User\GetUsersRequest;
 use App\Http\Resources\Auth\UserResource;
+use App\Services\User\UserService;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Http\Response;
 
 class UserController extends Controller
 {

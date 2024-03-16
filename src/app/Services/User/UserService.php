@@ -2,17 +2,17 @@
 
 namespace App\Services\User;
 
-use App\DTO\User\ChangeUserAvatarDto;
-use App\DTO\User\ChangeUserPasswordDto;
+use App\DTO\In\User\ChangeUserAvatarDto;
+use App\DTO\In\User\ChangeUserDataDto;
+use App\DTO\In\User\ChangeUserPasswordDto;
+use App\DTO\In\User\GetUsersDto;
 use App\Enums\Storage\Paths;
 use App\Exceptions\User\InvalidOldPassword;
 use App\Exceptions\User\UserNotFound;
+use App\Lib\Storage\StorageManager;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Hash;
-use App\DTO\User\ChangeUserDataDto;
-use App\DTO\User\GetUsersDto;
-use App\Lib\Storage\StorageManager;
 
 class UserService
 {

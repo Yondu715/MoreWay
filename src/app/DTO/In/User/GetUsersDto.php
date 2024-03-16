@@ -1,6 +1,6 @@
 <?php
 
-namespace App\DTO\User;
+namespace App\DTO\In\User;
 
 use App\Http\Requests\User\GetUsersRequest;
 
@@ -17,7 +17,7 @@ class GetUsersDto
     /**
      * @param GetUsersRequest $getUsersRequest
      * @return self
-     * 
+     *
      */
     public static function fromRequest(GetUsersRequest $getUsersRequest): self
     {

@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Api\V1;
 
-use App\DTO\Friend\AcceptFriendDto;
-use App\DTO\Friend\AddFriendDto;
+use App\DTO\In\Friend\AcceptFriendDto;
+use App\DTO\In\Friend\AddFriendDto;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Friend\AcceptFriendRequest;
 use App\Http\Requests\Friend\AddFriendRequest;
