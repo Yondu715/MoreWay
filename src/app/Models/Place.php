@@ -21,12 +21,10 @@ use Illuminate\Support\Carbon;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property Carbon|null $deleted_at
- * @property-read Collection<int, PlaceComment> $comments
  * @property-read int|null $comments_count
  * @property-read Collection<int, PlaceImage> $images
  * @property-read int|null $images_count
  * @property-read Locality $locality
- * @property-read Collection<int, PlaceRating> $ratings
  * @property-read int|null $ratings_count
  * @property-read PlaceType $type
  */
@@ -72,12 +70,7 @@ class Place extends Model
 
     public function comments(): HasMany
     {
-        return $this->hasMany(PlaceComment::class);
-    }
-
-    public function ratings(): HasMany
-    {
-        return $this->hasMany(PlaceRating::class);
+        return $this->hasMany(PlaceReview::class);
     }
 
     public function images(): HasMany
