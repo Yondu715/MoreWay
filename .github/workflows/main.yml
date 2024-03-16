@@ -15,6 +15,7 @@ jobs:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE }}
           SOURCE: "src/"
           REMOTE_HOST: ${{ secrets.HOST }}
+          REMOTE_PORT: ${{ secrets.PORT }}
           REMOTE_USER: ${{ secrets.USER }}
           TARGET: "www/more-way.ru"
           SCRIPT_BEFORE: |
