@@ -3,6 +3,7 @@
 namespace App\DTO\In\User;
 
 use App\Http\Requests\User\ChangeUserAvatarRequest;
+use App\Lib\HashId\HashManager;
 use Illuminate\Http\UploadedFile;
 
 class ChangeUserAvatarDto
@@ -21,7 +22,7 @@ class ChangeUserAvatarDto
     public static function fromRequest(ChangeUserAvatarRequest $changeUserAvatarRequest): self
     {
         return new self(
-            userId: (int) $changeUserAvatarRequest->route('userId'),
+            userId: HashManager::decrypt($changeUserAvatarRequest->route('userId')),
             avatar: $changeUserAvatarRequest->file('avatar')
         );
     }

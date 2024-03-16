@@ -3,6 +3,7 @@
 namespace App\DTO\In\Friend;
 
 use App\Http\Requests\Friend\AddFriendRequest;
+use App\Lib\HashId\HashManager;
 
 class AddFriendDto
 {
@@ -20,8 +21,8 @@ class AddFriendDto
     public static function fromRequest(AddFriendRequest $addFriendRequest): self
     {
         return new self(
-            userId: $addFriendRequest->userId,
-            friendId: $addFriendRequest->friendId
+            userId: HashManager::decrypt($addFriendRequest->userId),
+            friendId: HashManager::decrypt($addFriendRequest->friendId)
         );
     }
 }

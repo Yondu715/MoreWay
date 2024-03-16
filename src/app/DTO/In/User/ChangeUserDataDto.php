@@ -3,6 +3,7 @@
 namespace App\DTO\In\User;
 
 use App\Http\Requests\User\ChangeUserDataRequest;
+use App\Lib\HashId\HashManager;
 
 class ChangeUserDataDto
 {
@@ -20,7 +21,7 @@ class ChangeUserDataDto
     public static function fromRequest(ChangeUserDataRequest $changeUserDataRequest): self
     {
         return new self(
-            userId: (int) $changeUserDataRequest->route('userId'),
+            userId: HashManager::decrypt($changeUserDataRequest->route('userId')),
             name: $changeUserDataRequest->name
         );
     }

@@ -3,6 +3,7 @@
 namespace App\DTO\In\User;
 
 use App\Http\Requests\User\ChangeUserPasswordRequest;
+use App\Lib\HashId\HashManager;
 
 class ChangeUserPasswordDto
 {
@@ -25,7 +26,7 @@ class ChangeUserPasswordDto
         return new self(
             oldPassword: $changeUserPasswordRequest->oldPassword,
             newPassword: $changeUserPasswordRequest->newPassword,
-            userId: (int) $changeUserPasswordRequest->route('userId')
+            userId: HashManager::decrypt($changeUserPasswordRequest->route('userId'))
         );
     }
 }
