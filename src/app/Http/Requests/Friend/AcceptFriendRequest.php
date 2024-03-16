@@ -17,7 +17,7 @@ class AcceptFriendRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'requestId' => 'required|numeric',
+            'requestId' => 'required|string',
         ];
     }
 }

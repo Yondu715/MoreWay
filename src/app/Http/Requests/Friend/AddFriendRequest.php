@@ -18,8 +18,8 @@ class AddFriendRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'userId' => 'required|numerid',
-            'friendId' => 'required|numeric'
+            'userId' => 'required|string',
+            'friendId' => 'required|string'
         ];
     }
 }
