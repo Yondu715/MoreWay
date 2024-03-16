@@ -36,14 +36,15 @@ class AuthController extends Controller
 
     /**
      * @param RegisterRequest $registerRequest
-     * @return void
+     * @return JsonResponse
      * @throws Exception
      */
-    public function register(RegisterRequest $registerRequest): void
+    public function register(RegisterRequest $registerRequest): JsonResponse
     {
         $registerDto = RegisterDto::fromRequest($registerRequest);
 
         $this->authService->register($registerDto);
+        return response()->json()->setStatusCode(201);
     }
 
     /**

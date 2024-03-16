@@ -3,7 +3,6 @@
 use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\FriendController;
 use App\Http\Controllers\Api\V1\UserController;
-use App\Models\Friend;
 use Illuminate\Support\Facades\Route;
 
 /*
