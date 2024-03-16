@@ -6,13 +6,13 @@ use App\Models\User;
 
 class UserDto
 {
-    public readonly string $id;
+    public readonly int $id;
     public readonly string $name;
     public readonly string $avatar;
     public readonly string $email;
 
     public function __construct(
-        string $id,
+        int $id,
         string $name,
         string $avatar,
         string $email
