@@ -5,6 +5,8 @@ namespace App\Services\Friend;
 use App\DTO\Friend\AcceptFriendDto;
 use App\DTO\Friend\AddFriendDto;
 use App\Enums\Friend\RelationshipTypeId;
+use App\Exceptions\Friend\FriendRequestConflict;
+use App\Exceptions\Friend\FriendRequestNotFound;
 use App\Exceptions\User\UserNotFound;
 use App\Models\Friend;
 use App\Models\User;
@@ -28,16 +30,14 @@ class FriendService
 
     /**
      * @param int $userId
-     * @return Collection<int, User>
+     * @return Collection<int, Friend>
      */
     public function getFriendRequests(int $userId): Collection
     {
-        /** @var ?User */
-        $user = User::query()->find($userId);
-        if (!$user) {
-            throw new UserNotFound();
-        }
-        return $user->friends()->wherePivot('relationship_id', '=', RelationshipTypeId::REQUEST)->get();
+        return Friend::query()->where([
+            'friend_id' => $userId,
+            'relationship_id' => RelationshipTypeId::REQUEST
+        ])->with('user')->get();
     }
 
     public function deleteFriend(int $userId, int $friendId): void
@@ -51,19 +51,33 @@ class FriendService
         ])->delete();
     }
 
-    public function addFriendRequest(AddFriendDto $addFriendDto): void
+    public function addFriendRequest(AddFriendDto $addFriendDto): User
     {
-        Friend::query()->create([
+        /** @var ?Friend */
+        $request = Friend::query()->firstWhere([
+            'user_id' => $addFriendDto->userId,
+            'friend_id' => $addFriendDto->friendId
+        ]);
+        if ($request) {
+            throw new FriendRequestConflict();
+        }
+
+        /** @var Friend */
+        $request = Friend::query()->create([
             'user_id' => $addFriendDto->userId,
             'friend_id' => $addFriendDto->friendId,
             'relationship_id' => RelationshipTypeId::REQUEST
-        ])->with('friend');
+        ]);
+        return $request->friend;
     }
 
     public function acceptFriendRequest(AcceptFriendDto $acceptFriendDto): void
     {
-        /** @var Friend */
+        /** @var ?Friend */
         $request = Friend::query()->find($acceptFriendDto->requestId);
+        if (!$request) {
+            throw new FriendRequestNotFound();
+        }
         $request->update([
             'relationship_id' => RelationshipTypeId::FRIEND
         ]);

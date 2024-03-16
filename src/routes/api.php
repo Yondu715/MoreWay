@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\Api\V1\AuthController;
+use App\Http\Controllers\Api\V1\FriendController;
 use App\Http\Controllers\Api\V1\UserController;
+use App\Models\Friend;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -36,4 +38,16 @@ Route::prefix('users')
         Route::delete('/{userId}', [UserController::class, 'delete']);
         Route::patch('/{userId}/avatar', [UserController::class, 'changeAvatar']);
         Route::post('/{userId}/password', [UserController::class, 'changePassword']);
+
+        Route::get('/{userId}/friends', [FriendController::class, 'getFriends']);
+        Route::delete('/{userId}/friends/{friendId}', [FriendController::class, 'deleteFriend']);
+        Route::get('/{userId}/friends/requests', [FriendController::class, 'getFriendRequests']);
+    });
+
+Route::prefix('friends')
+    ->middleware('auth:api', 'role:user')
+    ->group(function () {
+        Route::post('/requests', [FriendController::class, 'addFriendRequest']);
+        Route::put('/requests', [FriendController::class, 'acceptFriendRequest']);
+        Route::delete('/requests/{requestId}', [FriendController::class, 'rejectFriendRequest']);
     });

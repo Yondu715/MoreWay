@@ -9,6 +9,7 @@ use App\Http\Requests\Friend\AcceptFriendRequest;
 use App\Http\Requests\Friend\AddFriendRequest;
 use App\Http\Resources\Auth\UserResource;
 use App\Services\Friend\FriendService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Response;
 
@@ -27,9 +28,11 @@ class FriendController extends Controller
         );
     }
 
-    public function getFriendRequests(int $userId): void
+    public function getFriendRequests(int $userId): JsonResponse
     {
-        $this->friendService->getFriendRequests();
+        return response()->json([
+            $this->friendService->getFriendRequests($userId)
+        ]);
     }
 
     public function deleteFriend(int $userId, int $friendId): Response
@@ -38,16 +41,19 @@ class FriendController extends Controller
         return response()->noContent();
     }
 
-    public function addFriendRequest(AddFriendRequest $addFriendRequest): void
+    public function addFriendRequest(AddFriendRequest $addFriendRequest): UserResource
     {
         $addFriendDto = AddFriendDto::fromRequest($addFriendRequest);
-        $this->friendService->addFriendRequest($addFriendDto);
+        return UserResource::make(
+            $this->friendService->addFriendRequest($addFriendDto)
+        );
     }
 
-    public function acceptFriendRequest(AcceptFriendRequest $acceptFriendRequest): void
+    public function acceptFriendRequest(AcceptFriendRequest $acceptFriendRequest): Response
     {
         $acceptFriendDto = AcceptFriendDto::fromRequest($acceptFriendRequest);
         $this->friendService->acceptFriendRequest($acceptFriendDto);
+        return response()->noContent();
     }
 
     public function rejectFriendRequest(int $requestId): Response
