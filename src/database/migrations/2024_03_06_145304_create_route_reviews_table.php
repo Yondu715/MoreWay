@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('route_comments', function (Blueprint $table) {
             $table->id();
-            $table->string('text');
+            $table->text('text')->nullable();
             $table->unsignedBigInteger('author_id');
             $table->unsignedBigInteger('route_id');
             $table->unsignedInteger('rating');
