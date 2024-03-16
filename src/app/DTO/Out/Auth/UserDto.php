@@ -2,7 +2,6 @@
 
 namespace App\DTO\Out\Auth;
 
-use App\Lib\HashId\HashManager;
 use App\Models\User;
 
 class UserDto
@@ -31,7 +30,7 @@ class UserDto
     public static function fromUserModel(User $user): self
     {
         return new self(
-            id: HashManager::encrypt($user->id),
+            id: $user->id,
             name: $user->name,
             avatar: $user->avatar,
             email: $user->email
