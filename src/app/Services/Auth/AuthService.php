@@ -27,7 +27,7 @@ class AuthService
      */
     public function login(LoginDto $loginDto): string
     {
-        /**@var User $user */
+        /**@var ?User $user */
         $user = User::query()->where([
             'email' => $loginDto->email
         ])->first();

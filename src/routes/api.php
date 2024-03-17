@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\FriendController;
+use App\Http\Controllers\Api\V1\PlaceController;
 use App\Http\Controllers\Api\V1\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -49,4 +50,10 @@ Route::prefix('friends')
         Route::post('/requests', [FriendController::class, 'addFriendRequest']);
         Route::put('/requests', [FriendController::class, 'acceptFriendRequest']);
         Route::delete('/requests/{requestId}', [FriendController::class, 'rejectFriendRequest']);
+    });
+
+Route::prefix('places')
+    ->middleware('auth:api', 'role:user')
+    ->group(function () {
+        Route::get('/{placeId}', [PlaceController::class, 'getPlace']);
     });

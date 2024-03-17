@@ -2,18 +2,19 @@
 
 namespace App\Http\Requests\Friend;
 
+use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 /**
- * @property int $userId
- * @property int $friendId
+ * @property string $userId
+ * @property string $friendId
  */
 class AddFriendRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * @return array<string, ValidationRule|array<mixed>|string>
      */
     public function rules(): array
     {

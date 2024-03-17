@@ -1,14 +1,11 @@
 <?php
 
-namespace App\Http\Requests\User;
+namespace App\Http\Requests\Place;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
-/**
- * @property string $name
- */
-class GetUsersRequest extends FormRequest
+class GetPlaceRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -18,7 +15,8 @@ class GetUsersRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'string|max:255'
+            'lat' => 'required|numeric',
+            'lon' => 'required|numeric'
         ];
     }
 }

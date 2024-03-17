@@ -15,12 +15,12 @@ use Illuminate\Database\Eloquent\Collection;
 class FriendService
 {
     /**
-     * @param int $userId
      * @return Collection<int, User>
+     * @throws UserNotFound
      */
     public function getUserFriends(int $userId): Collection
     {
-        /** @var ?User */
+        /** @var ?User $user */
         $user = User::query()->find($userId);
         if (!$user) {
             throw new UserNotFound();
@@ -51,9 +51,12 @@ class FriendService
         ])->delete();
     }
 
+    /**
+     * @throws FriendRequestConflict
+     */
     public function addFriendRequest(AddFriendDto $addFriendDto): User
     {
-        /** @var ?Friend */
+        /** @var ?Friend $request */
         $request = Friend::query()->firstWhere([
             'user_id' => $addFriendDto->userId,
             'friend_id' => $addFriendDto->friendId
@@ -62,7 +65,7 @@ class FriendService
             throw new FriendRequestConflict();
         }
 
-        /** @var Friend */
+        /** @var Friend $request */
         $request = Friend::query()->create([
             'user_id' => $addFriendDto->userId,
             'friend_id' => $addFriendDto->friendId,
@@ -71,9 +74,12 @@ class FriendService
         return $request->friend;
     }
 
+    /**
+     * @throws FriendRequestNotFound
+     */
     public function acceptFriendRequest(AcceptFriendDto $acceptFriendDto): void
     {
-        /** @var ?Friend */
+        /** @var ?Friend $request */
         $request = Friend::query()->find($acceptFriendDto->requestId);
         if (!$request) {
             throw new FriendRequestNotFound();
