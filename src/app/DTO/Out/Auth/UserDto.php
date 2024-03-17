@@ -2,6 +2,7 @@
 
 namespace App\DTO\Out\Auth;
 
+use App\Models\Friend;
 use App\Models\User;
 
 class UserDto
@@ -34,6 +35,15 @@ class UserDto
             name: $user->name,
             avatar: $user->avatar,
             email: $user->email
+        );
+    }
+
+    public static function fromFriendModel(Friend $friend) {
+        return new self(
+            id: $friend->friend->id,
+            name: $friend->friend->name,
+            avatar: $friend->friend->avatar,
+            email: $friend->friend->email
         );
     }
 }

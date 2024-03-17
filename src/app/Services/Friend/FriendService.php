@@ -4,13 +4,14 @@ namespace App\Services\Friend;
 
 use App\DTO\In\Friend\AcceptFriendDto;
 use App\DTO\In\Friend\AddFriendDto;
+use App\DTO\Out\Auth\UserDto;
 use App\Enums\Friend\RelationshipTypeId;
 use App\Exceptions\Friend\FriendRequestConflict;
 use App\Exceptions\Friend\FriendRequestNotFound;
 use App\Exceptions\User\UserNotFound;
 use App\Models\Friend;
 use App\Models\User;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Collection;
 
 class FriendService
 {
@@ -25,7 +26,10 @@ class FriendService
         if (!$user) {
             throw new UserNotFound();
         }
-        return $user->friends()->wherePivot('relationship_id', '=', RelationshipTypeId::FRIEND)->get();
+        $friends = $user->friends()->wherePivot('relationship_id', '=', RelationshipTypeId::FRIEND)->get();
+        return $friends->map(function (User $friend) {
+            return UserDto::fromUserModel($friend);
+        });
     }
 
     /**
@@ -34,10 +38,13 @@ class FriendService
      */
     public function getFriendRequests(int $userId): Collection
     {
-        return Friend::query()->where([
+        $requests = Friend::query()->where([
             'friend_id' => $userId,
             'relationship_id' => RelationshipTypeId::REQUEST
         ])->with('user')->get();
+        return $requests->map(function (Friend $friend) {
+            return UserDto::fromFriendModel($friend);
+        });
     }
 
     public function deleteFriend(int $userId, int $friendId): void
@@ -51,7 +58,7 @@ class FriendService
         ])->delete();
     }
 
-    public function addFriendRequest(AddFriendDto $addFriendDto): User
+    public function addFriendRequest(AddFriendDto $addFriendDto): UserDto
     {
         /** @var ?Friend */
         $request = Friend::query()->firstWhere([
@@ -68,7 +75,7 @@ class FriendService
             'friend_id' => $addFriendDto->friendId,
             'relationship_id' => RelationshipTypeId::REQUEST
         ]);
-        return $request->friend;
+        return UserDto::fromUserModel($request->friend);
     }
 
     public function acceptFriendRequest(AcceptFriendDto $acceptFriendDto): void
