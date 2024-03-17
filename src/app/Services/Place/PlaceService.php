@@ -25,8 +25,11 @@ class PlaceService
             throw new PlaceNotFound();
         }
 
-        $distance = DistanceManager::calc($getPlaceDto->lat, $getPlaceDto->lon, $place->lat, $place->lon);
+        foreach ($place->images->all() as $image) {
+            unset($image->place_id);
+        }
 
+        $distance = DistanceManager::calc($getPlaceDto->lat, $getPlaceDto->lon, $place->lat, $place->lon);
         $rating = RatingManager::calc($place);
 
         return PlaceDto::fromPlaceModel($place, $distance, $rating);

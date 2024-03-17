@@ -21,7 +21,7 @@ class ChangeUserDataDto
     public static function fromRequest(ChangeUserDataRequest $changeUserDataRequest): self
     {
         return new self(
-            userId: HashManager::decrypt($changeUserDataRequest->route('userId')),
+            userId: $changeUserDataRequest->route('userId'),
             name: $changeUserDataRequest->name
         );
     }

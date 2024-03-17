@@ -22,7 +22,7 @@ class ChangeUserAvatarDto
     public static function fromRequest(ChangeUserAvatarRequest $changeUserAvatarRequest): self
     {
         return new self(
-            userId: HashManager::decrypt($changeUserAvatarRequest->route('userId')),
+            userId: $changeUserAvatarRequest->route('userId'),
             avatar: $changeUserAvatarRequest->file('avatar')
         );
     }

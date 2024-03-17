@@ -8,7 +8,9 @@ class RatingManager
 {
     public static function calc(Place $place): ?float
     {
-        if($reviews = $place->comments()) {
+        $reviews = $place->comments();
+
+        if($reviews->exists()) {
             $sum = 0;
             foreach ( $reviews->get()->all() as $comment) {
                 $sum += $comment->rating;

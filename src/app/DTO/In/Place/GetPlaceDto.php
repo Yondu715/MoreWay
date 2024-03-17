@@ -29,8 +29,8 @@ class GetPlaceDto
     {
         return new self(
             id: $getPlaceRequest->route('placeId'),
-            lat: $getPlaceRequest->query('lat'),
-            lon: $getPlaceRequest->query('lon')
+            lat: $getPlaceRequest->lat,
+            lon: $getPlaceRequest->lon
         );
     }
 }

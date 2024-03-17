@@ -1,15 +1,16 @@
 <?php
 
-namespace App\Http\Requests\Friend;
+namespace App\Http\Requests\Place;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 /**
- * @property int $userId
- * @property int $friendId
+ * @property int author_id
+ * @property int rating
+ * @property ?string text
  */
-class AddFriendRequest extends FormRequest
+class CreateReviewRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -19,8 +20,9 @@ class AddFriendRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'userId' => 'required|numeric',
-            'friendId' => 'required|numeric'
+            'author_id' => 'required|numeric',
+            'rating' => 'required|numeric',
+            'text' => 'string'
         ];
     }
 }

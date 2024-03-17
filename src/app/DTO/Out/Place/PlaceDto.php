@@ -45,10 +45,10 @@ class PlaceDto
     /**
      * @param Place $place
      * @param float $distance
-     * @param float $rating
+     * @param ?float $rating
      * @return self
      */
-    public static function fromPlaceModel(Place $place, float $distance, float $rating): self
+    public static function fromPlaceModel(Place $place, float $distance, ?float $rating): self
     {
         return new self(
             distance: $distance,
@@ -58,7 +58,7 @@ class PlaceDto
             lon: $place->lon,
             rating: $rating,
             description: $place->description,
-            images: $place->images()->get()->all(),
+            images: $place->images->all(),
             locality: $place->locality
         );
     }

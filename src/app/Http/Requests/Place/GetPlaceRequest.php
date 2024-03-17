@@ -5,6 +5,10 @@ namespace App\Http\Requests\Place;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
+/**
+ * @property float lat
+ * @property float lon
+ */
 class GetPlaceRequest extends FormRequest
 {
     /**
