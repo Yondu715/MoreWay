@@ -56,7 +56,7 @@ Route::prefix('places')
     ->middleware('auth:api', 'role:user')
     ->group(function () {
         Route::get('/{placeId}', [PlaceController::class, 'getPlace']);
-        Route::prefix('/{placeId}/comments')
+        Route::prefix('/{placeId}/reviews')
             ->group(function (){
                 Route::middleware('id')
                 ->post('/', [PlaceController::class, 'createReview']);
