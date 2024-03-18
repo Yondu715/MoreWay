@@ -27,7 +27,7 @@ class ReviewResource extends JsonResource
                 'id' =>  $this->author->id,
                 'name' => $this->author->name,
                 'avatar' => $this->author->avatar
-            ]
+            ],
         ];
     }
 }

@@ -53,10 +53,16 @@ class PlaceController extends Controller
         );
     }
 
+    /**
+     * @param GetReviewsRequest $getReviewsRequest
+     * @return ReviewCollection
+     */
     public function getReviews(GetReviewsRequest $getReviewsRequest): ReviewCollection
     {
         $getReviewsDto = GetReviewsDto::fromRequest($getReviewsRequest);
 
-        return ReviewCollection::make(ReviewResource::collection($this->reviewService->index($getReviewsDto)));
+        return ReviewCollection::make(
+                $this->reviewService->index($getReviewsDto)
+        );
     }
 }

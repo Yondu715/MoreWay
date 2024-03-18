@@ -8,8 +8,6 @@ use App\Exceptions\Review\FailedToCreateReview;
 use App\Models\PlaceReview;
 use Exception;
 use Illuminate\Contracts\Pagination\CursorPaginator;
-use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Support\LazyCollection;
 
 class ReviewService
 {

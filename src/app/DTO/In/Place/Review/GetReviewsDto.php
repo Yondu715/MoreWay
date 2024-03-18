@@ -7,11 +7,11 @@ use App\Http\Requests\Place\Review\GetReviewsRequest;
 class GetReviewsDto
 {
     public readonly int $place_id;
-    public readonly int $cursor;
+    public readonly string $cursor;
 
     public function __construct(
         int $place_id,
-        int $cursor,
+        string $cursor,
     ) {
         $this->place_id = $place_id;
         $this->cursor = $cursor;

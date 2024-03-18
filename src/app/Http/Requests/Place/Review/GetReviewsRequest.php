@@ -6,7 +6,7 @@ use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 /**
- * @property int cursor
+ * @property string cursor
  */
 class GetReviewsRequest extends FormRequest
 {
@@ -18,7 +18,7 @@ class GetReviewsRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'cursor' => 'required|numeric'
+            'cursor' => 'required|string'
         ];
     }
 }

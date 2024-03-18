@@ -15,10 +15,20 @@ class ReviewCollection extends ResourceCollection
      */
     public function toArray(Request $request): array
     {
+        return parent::toArray($request);
+    }
+
+    /**
+     * @param Request $request
+     * @return array
+     */
+    public function paginationInformation(Request $request): array
+    {
+        $paginated = $this->resource->toArray();
+
         return [
-            'data' => $this->resource,
             'meta' => [
-                'next_cursor' => $this->collection,
+                'next_cursor' => $paginated['next_cursor']
             ]
         ];
     }
