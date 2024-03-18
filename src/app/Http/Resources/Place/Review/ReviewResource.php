@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Resources\Place;
+namespace App\Http\Resources\Place\Review;
 
 use App\Models\PlaceReview;
 use Illuminate\Http\Request;

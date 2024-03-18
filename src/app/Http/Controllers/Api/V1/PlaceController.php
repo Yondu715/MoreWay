@@ -2,14 +2,18 @@
 
 namespace App\Http\Controllers\Api\V1;
 
-use App\DTO\In\Place\CreateReviewDto;
 use App\DTO\In\Place\GetPlaceDto;
+use App\DTO\In\Place\Review\CreateReviewDto;
+use App\DTO\In\Place\Review\GetReviewsDto;
 use App\Exceptions\Place\PlaceNotFound;
+use App\Exceptions\Review\FailedToCreateReview;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Place\CreateReviewRequest;
 use App\Http\Requests\Place\GetPlaceRequest;
+use App\Http\Requests\Place\Review\CreateReviewRequest;
+use App\Http\Requests\Place\Review\GetReviewsRequest;
 use App\Http\Resources\Place\PlaceResource;
-use App\Http\Resources\Place\ReviewResource;
+use App\Http\Resources\Place\Review\ReviewCollection;
+use App\Http\Resources\Place\Review\ReviewResource;
 use App\Services\Place\PlaceService;
 use App\Services\Place\Review\ReviewService;
 
@@ -34,6 +38,12 @@ class PlaceController extends Controller
         );
     }
 
+
+    /**
+     * @param CreateReviewRequest $createReviewRequest
+     * @return ReviewResource
+     * @throws FailedToCreateReview
+     */
     public function createReview(CreateReviewRequest $createReviewRequest): ReviewResource
     {
         $createReviewDto = CreateReviewDto::fromRequest($createReviewRequest);
@@ -41,5 +51,12 @@ class PlaceController extends Controller
         return ReviewResource::make(
             $this->reviewService->create($createReviewDto)
         );
+    }
+
+    public function getReviews(GetReviewsRequest $getReviewsRequest): ReviewCollection
+    {
+        $getReviewsDto = GetReviewsDto::fromRequest($getReviewsRequest);
+
+        return ReviewCollection::make(ReviewResource::collection($this->reviewService->index($getReviewsDto)));
     }
 }

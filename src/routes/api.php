@@ -60,5 +60,6 @@ Route::prefix('places')
             ->group(function (){
                 Route::middleware('id')
                 ->post('/', [PlaceController::class, 'createReview']);
+                Route::get('/', [PlaceController::class, 'getReviews']);
             });
     });
