@@ -11,7 +11,7 @@ use App\Http\Requests\Place\GetPlaceRequest;
 use App\Http\Resources\Place\PlaceResource;
 use App\Http\Resources\Place\ReviewResource;
 use App\Services\Place\PlaceService;
-use App\Services\Review\ReviewService;
+use App\Services\Place\Review\ReviewService;
 
 class PlaceController extends Controller
 {

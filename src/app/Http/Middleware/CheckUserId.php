@@ -9,7 +9,7 @@ use Exception;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class CheckUserRole
+class CheckUserId
 {
     public function __construct(private readonly TokenManager $tokenManager){}
 
@@ -19,9 +19,9 @@ class CheckUserRole
      * @param Closure(Request): (Response) $next
      * @throws Exception
      */
-    public function handle(Request $request, Closure $next, string $role): Response
+    public function handle(Request $request, Closure $next): Response
     {
-        if (!$this->tokenManager->getAuthUser()->hasRole($role)) {
+        if ($this->tokenManager->getAuthUser()->id !== (int)$request->user_id) {
             throw new Forbidden();
         }
         return $next($request);

@@ -58,6 +58,7 @@ Route::prefix('places')
         Route::get('/{placeId}', [PlaceController::class, 'getPlace']);
         Route::prefix('/{placeId}/comments')
             ->group(function (){
-                Route::post('/', [PlaceController::class, 'createReview']);
+                Route::middleware('id')
+                ->post('/', [PlaceController::class, 'createReview']);
             });
     });
