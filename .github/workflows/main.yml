@@ -27,3 +27,9 @@ jobs:
             whoami
             ls -al
             echo $RSYNC_STDOUT
+    - name: Delete Removed Files
+      uses: easingthemes/ssh-run@main
+      with:
+        commands: |
+          cd www/more-way.ru
+          git fetch --prune
