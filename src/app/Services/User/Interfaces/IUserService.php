@@ -9,7 +9,7 @@ use App\DTO\In\User\GetUsersDto;
 use App\Models\User;
 use Illuminate\Support\Collection;
 
-interface IUserInterface
+interface IUserService
 {
     /**
      * @param GetUsersDto $getUsersDto

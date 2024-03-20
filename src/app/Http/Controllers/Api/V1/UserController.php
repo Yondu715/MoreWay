@@ -14,7 +14,7 @@ use App\Http\Requests\User\ChangeUserDataRequest;
 use App\Http\Requests\User\ChangeUserPasswordRequest;
 use App\Http\Requests\User\GetUsersRequest;
 use App\Http\Resources\Auth\UserResource;
-use App\Services\User\Interfaces\IUserInterface;
+use App\Services\User\Interfaces\IUserService;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Response;
 
@@ -22,7 +22,7 @@ class UserController extends Controller
 {
 
     public function __construct(
-        private readonly IUserInterface $userService
+        private readonly IUserService $userService
     ) {
     }
 
