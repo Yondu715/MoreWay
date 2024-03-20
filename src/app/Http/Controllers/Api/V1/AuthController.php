@@ -14,6 +14,7 @@ use Illuminate\Http\JsonResponse;
 
 class AuthController extends Controller
 {
+    
     /**
      * @param AuthService $authService
      */
