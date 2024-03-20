@@ -35,8 +35,8 @@ Route::prefix('users')
         Route::get('/{userId}', [UserController::class, 'getUser']);
         Route::patch('/{userId}', [UserController::class, 'changeData']);
         Route::delete('/{userId}', [UserController::class, 'delete']);
-        Route::patch('/{userId}/avatar', [UserController::class, 'changeAvatar']);
-        Route::post('/{userId}/password', [UserController::class, 'changePassword']);
+        Route::put('/{userId}/avatar', [UserController::class, 'changeAvatar']);
+        Route::put('/{userId}/password', [UserController::class, 'changePassword']);
 
         Route::get('/{userId}/friends', [FriendController::class, 'getFriends']);
         Route::delete('/{userId}/friends/{friendId}', [FriendController::class, 'deleteFriend']);
