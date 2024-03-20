@@ -11,10 +11,11 @@ use App\Exceptions\User\InvalidOldPassword;
 use App\Exceptions\User\UserNotFound;
 use App\Lib\Storage\StorageManager;
 use App\Models\User;
+use App\Services\User\Interfaces\IUserInterface;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Hash;
 
-class UserService
+class UserService implements IUserInterface
 {
 
     public function __construct(

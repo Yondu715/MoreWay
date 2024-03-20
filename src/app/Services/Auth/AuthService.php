@@ -10,10 +10,11 @@ use App\Exceptions\Auth\RegistrationConflict;
 use App\Exceptions\User\UserNotFound;
 use App\Lib\Token\TokenManager;
 use App\Models\User;
+use App\Services\Auth\Interfaces\IAuthService;
 use Exception;
 use Illuminate\Support\Facades\Hash;
 
-class AuthService
+class AuthService implements IAuthService
 {
 
     public function __construct(

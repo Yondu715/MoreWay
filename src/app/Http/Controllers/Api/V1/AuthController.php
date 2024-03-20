@@ -8,17 +8,16 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Http\Resources\Auth\UserResource;
-use App\Services\Auth\AuthService;
+use App\Services\Auth\Interfaces\IAuthService;
 use Exception;
 use Illuminate\Http\JsonResponse;
 
 class AuthController extends Controller
 {
     
-    /**
-     * @param AuthService $authService
-     */
-    public function __construct(private readonly AuthService $authService){}
+    public function __construct(
+        private readonly IAuthService $authService
+        ){}
 
     /**
      * @param LoginRequest $loginRequest

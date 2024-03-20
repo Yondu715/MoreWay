@@ -11,9 +11,10 @@ use App\Exceptions\Friend\FriendRequestNotFound;
 use App\Exceptions\User\UserNotFound;
 use App\Models\Friend;
 use App\Models\User;
+use App\Services\Friend\Interfaces\IFriendService;
 use Illuminate\Support\Collection;
 
-class FriendService
+class FriendService implements IFriendService
 {
     /**
      * @param int $userId
@@ -47,6 +48,11 @@ class FriendService
         });
     }
 
+    /**
+     * @param int $userId
+     * @param int $friendId
+     * @return void
+     */
     public function deleteFriend(int $userId, int $friendId): void
     {
         Friend::query()->where([
@@ -58,6 +64,10 @@ class FriendService
         ])->delete();
     }
 
+    /**
+     * @param AddFriendDto $addFriendDto
+     * @return UserDto
+     */
     public function addFriendRequest(AddFriendDto $addFriendDto): UserDto
     {
         /** @var ?Friend */
@@ -78,6 +88,10 @@ class FriendService
         return UserDto::fromUserModel($request->friend);
     }
 
+    /**
+     * @param AcceptFriendDto $acceptFriendDto
+     * @return void
+     */
     public function acceptFriendRequest(AcceptFriendDto $acceptFriendDto): void
     {
         /** @var ?Friend */
@@ -95,6 +109,10 @@ class FriendService
         ]);
     }
 
+    /**
+     * @param int $requestId
+     * @return bool|null
+     */
     public function rejectFriendRequest(int $requestId): ?bool
     {
         return Friend::query()->find($requestId)->delete();

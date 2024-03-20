@@ -8,7 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Friend\AcceptFriendRequest;
 use App\Http\Requests\Friend\AddFriendRequest;
 use App\Http\Resources\Auth\UserResource;
-use App\Services\Friend\FriendService;
+use App\Services\Friend\Interfaces\IFriendService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Response;
@@ -17,7 +17,7 @@ class FriendController extends Controller
 {
 
     public function __construct(
-        private readonly FriendService $friendService
+        private readonly IFriendService $friendService
     ) {
     }
 
