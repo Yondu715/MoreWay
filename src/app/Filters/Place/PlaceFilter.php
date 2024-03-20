@@ -7,17 +7,15 @@ use Illuminate\Database\Eloquent\Builder;
 
 class PlaceFilter extends AbstractFilter
 {
-    public const LOCALITY_ID = 'locality_id';
-
     protected function getCallbacks(): array
     {
         return [
-            self::LOCALITY_ID => [$this, 'locality_id'],
+            'locality_id' => [$this, 'locality_id'],
             'type' => [$this, 'type'],
         ];
     }
 
-    public function locality(Builder $builder, $value): void
+    public function locality_id(Builder $builder, $value): void
     {
         $builder->where('locality_id', $value);
     }
