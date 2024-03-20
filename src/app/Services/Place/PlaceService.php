@@ -44,7 +44,7 @@ class PlaceService
      */
     public function getPlaces(GetPlacesDto $getPlacesDto): CursorPaginator
     {
-        $filter = app()->make(PlaceFilter::class, ['queryParams' => array_filter(['locality_id' => 2])]);
+        $filter = app()->make(PlaceFilter::class, ['filters' => array_filter($getPlacesDto->filter)]);
 
         $places = Place::filter($filter)
             ->cursorPaginate(perPage: 2, cursor: $getPlacesDto->cursor);

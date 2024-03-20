@@ -14,9 +14,7 @@ class GetPlacesDto
     public readonly ?string $search;
     public readonly ?string $sort;
     public readonly ?int $sortType;
-    public readonly ?string $locality;
-    public readonly ?string $type;
-
+    public readonly array $filter;
 
     public function __construct(
         float $lat,
@@ -25,8 +23,7 @@ class GetPlacesDto
         ?string $search,
         ?string $sort,
         ?int $sortType,
-        ?string $locality,
-        ?string $type
+        array $filter
     ) {
         $this->lat = $lat;
         $this->lon = $lon;
@@ -34,8 +31,7 @@ class GetPlacesDto
         $this->search = $search;
         $this->sort = $sort;
         $this->sortType = $sortType;
-        $this->locality = $locality;
-        $this->type = $type;
+        $this->filter = $filter;
     }
 
     /**
@@ -51,8 +47,14 @@ class GetPlacesDto
             search: $getPlacesRequest->search,
             sort: $getPlacesRequest->sort,
             sortType: $getPlacesRequest->sortType,
-            locality: $getPlacesRequest->locality,
-            type: $getPlacesRequest->type
+            filter: [
+                'locality' => ($getPlacesRequest->locality === null)
+                    ? null : explode(",", $getPlacesRequest->locality),
+                'type' => ($getPlacesRequest->type === null)
+                    ? null : explode(",", $getPlacesRequest->type),
+                'sort' => ($getPlacesRequest->sort === null || $getPlacesRequest->sortType === null)
+                    ? null : [$getPlacesRequest->sort, ($getPlacesRequest->sortType === 1) ? 'desk' : 'ask']
+            ]
         );
     }
 }

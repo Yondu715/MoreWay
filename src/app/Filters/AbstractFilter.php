@@ -7,58 +7,21 @@ use Illuminate\Database\Eloquent\Builder;
 abstract class AbstractFilter implements FilterInterface
 {
     /** @var array */
-    private array $queryParams = [];
+    private array $filters = [];
 
-    /**
-     * AbstractFilter constructor.
-     *
-     * @param array $queryParams
-     */
-    public function __construct(array $queryParams)
+    public function __construct(array $filters)
     {
-        $this->queryParams = $queryParams;
+        $this->filters = $filters;
     }
 
     abstract protected function getCallbacks(): array;
 
     public function apply(Builder $builder): void
     {
-        $this->before($builder);
-
         foreach ($this->getCallbacks() as $name => $callback) {
-            if (isset($this->queryParams[$name])) {
-                call_user_func($callback, $builder, $this->queryParams[$name]);
+            if (isset($this->filters[$name])) {
+                call_user_func($callback, $builder, $this->filters[$name]);
             }
         }
-    }
-
-    /**
-     * @param Builder $builder
-     */
-    protected function before(Builder $builder){}
-
-    /**
-     * @param string $key
-     * @param mixed|null $default
-     *
-     * @return mixed|null
-     */
-    protected function getQueryParam(string $key, $default = null)
-    {
-        return $this->queryParams[$key] ?? $default;
-    }
-
-    /**
-     * @param string[] $keys
-     *
-     * @return AbstractFilter
-     */
-    protected function removeQueryParam(string ...$keys): static
-    {
-        foreach ($keys as $key) {
-            unset($this->queryParams[$key]);
-        }
-
-        return $this;
     }
 }

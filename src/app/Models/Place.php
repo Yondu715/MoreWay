@@ -28,6 +28,7 @@ use Illuminate\Support\Carbon;
  * @property-read Locality $locality
  * @property-read int|null $ratings_count
  * @property-read PlaceType $type
+ * @method static filter($filter)
  */
 class Place extends Model
 {
