@@ -16,7 +16,7 @@ class ReviewService
      * @return PlaceReview
      * @throws FailedToCreateReview
      */
-    public function create(CreateReviewDto $createReviewDto): PlaceReview
+    public function createReviews(CreateReviewDto $createReviewDto): PlaceReview
     {
         try {
             /** @var PlaceReview $placeReview */
@@ -38,11 +38,11 @@ class ReviewService
      * @param GetReviewsDto $getReviewsDto
      * @return CursorPaginator
      */
-    public function index(GetReviewsDto $getReviewsDto): CursorPaginator
+    public function getReviews(GetReviewsDto $getReviewsDto): CursorPaginator
     {
         return PlaceReview::query()
             ->where('place_id', $getReviewsDto->place_id)
             ->orderBy('created_at', 'desc')
-            ->cursorPaginate(perPage: 1, cursor: $getReviewsDto->place_id);
+            ->cursorPaginate(perPage: 1, cursor: $getReviewsDto->cursor);
     }
 }

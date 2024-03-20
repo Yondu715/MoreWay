@@ -18,7 +18,7 @@ class GetReviewsRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'cursor' => 'required|string'
+            'cursor' => 'string'
         ];
     }
 }
