@@ -13,6 +13,7 @@ use App\Models\Place;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Contracts\Pagination\CursorPaginator;
 
+
 class PlaceService
 {
     /**
@@ -46,18 +47,27 @@ class PlaceService
     {
         $filter = app()->make(PlaceFilter::class, ['filters' => array_filter($getPlacesDto->filter)]);
 
-        foreach ($places as $place){
+        $places = Place::query()
+            ->select('places.*')
+            ->selectRaw("ROUND(ST_Distance_Sphere(Point(places.lon, places.lat), Point(?, ?)) / 1000, 1) as distance", ($getPlacesDto->cursor === null) ? [
+                $getPlacesDto->lon,
+                $getPlacesDto->lat,
+            ] : [
+                $getPlacesDto->lon,
+                $getPlacesDto->lat,
+                $getPlacesDto->lon,
+                $getPlacesDto->lat,
+            ])
+            ->filter($filter)
+            ->cursorPaginate(perPage: 3, cursor: $getPlacesDto->cursor);
 
+        foreach ($places as $place){
             foreach ($place->images->all() as $image) {
                 unset($image->place_id);
             }
 
-            $place->distance = DistanceManager::calc($getPlacesDto->lat, $getPlacesDto->lon, $place->lat, $place->lon);
             $place->rating = RatingManager::calc($place);
         }
-
-        $places = Place::filter($filter)
-            ->cursorPaginate(perPage: 2, cursor: $getPlacesDto->cursor);
 
         return $places;
     }

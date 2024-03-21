@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Builder;
 abstract class AbstractFilter implements FilterInterface
 {
     /** @var array */
-    private array $filters = [];
+    private array $filters;
 
     public function __construct(array $filters)
     {

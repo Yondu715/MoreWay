@@ -14,6 +14,8 @@ use Illuminate\Foundation\Http\FormRequest;
  * @property ?int sortType
  * @property ?string locality
  * @property ?string type
+ * @property ?string rating
+ * @property ?string distance
  */
 class GetPlacesRequest extends FormRequest
 {
@@ -32,7 +34,8 @@ class GetPlacesRequest extends FormRequest
             'sort' => 'string',
             'sortType' => 'numeric',
             'locality' => 'string',
-            'type' => 'string'
+            'type' => 'string',
+            'rating' => 'string'
         ];
     }
 }
