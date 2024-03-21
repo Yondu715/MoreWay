@@ -19,6 +19,7 @@ use App\Http\Resources\Place\Review\ReviewCollection;
 use App\Http\Resources\Place\Review\ReviewResource;
 use App\Services\Place\PlaceService;
 use App\Services\Place\Review\ReviewService;
+use Illuminate\Contracts\Container\BindingResolutionException;
 
 class PlaceController extends Controller
 {
@@ -30,6 +31,7 @@ class PlaceController extends Controller
     /**
      * @param GetPlacesRequest $getPlacesRequest
      * @return PlaceCollection
+     * @throws BindingResolutionException
      */
     public function getPlaces(GetPlacesRequest $getPlacesRequest): PlaceCollection
     {

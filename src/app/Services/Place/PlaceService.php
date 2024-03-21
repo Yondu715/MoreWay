@@ -46,9 +46,6 @@ class PlaceService
     {
         $filter = app()->make(PlaceFilter::class, ['filters' => array_filter($getPlacesDto->filter)]);
 
-        $places = Place::filter($filter)
-            ->cursorPaginate(perPage: 2, cursor: $getPlacesDto->cursor);
-
         foreach ($places as $place){
 
             foreach ($place->images->all() as $image) {
@@ -58,6 +55,9 @@ class PlaceService
             $place->distance = DistanceManager::calc($getPlacesDto->lat, $getPlacesDto->lon, $place->lat, $place->lon);
             $place->rating = RatingManager::calc($place);
         }
+
+        $places = Place::filter($filter)
+            ->cursorPaginate(perPage: 2, cursor: $getPlacesDto->cursor);
 
         return $places;
     }

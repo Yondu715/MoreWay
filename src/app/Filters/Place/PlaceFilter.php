@@ -12,6 +12,8 @@ class PlaceFilter extends AbstractFilter
         return [
             'locality' => [$this, 'locality'],
             'type' => [$this, 'type'],
+            'search' => [$this, 'search'],
+            'sort' => [$this, 'sort'],
         ];
     }
 
@@ -27,5 +29,30 @@ class PlaceFilter extends AbstractFilter
         $builder->whereHas('type', function ($query) use ($value) {
             $query->where('name', $value);
         })->get();
+    }
+
+    public function sort(Builder $builder, $value): void
+    {
+        switch ($value['sort']){
+            case 'rating': {
+                $builder->withAvg('reviews', 'rating')
+                    ->orderBy('reviews_avg_rating', $value['sortType'])
+                    ->get();
+            }
+            case 'comments' : {
+               $builder->withCount('reviews')
+                    ->orderBy('reviews_count', $value['sortType'])
+                    ->get();
+            }
+            case 'time' : {
+                $builder->orderBy('created_at', $value['sortType'])
+                    ->get();
+            }
+        }
+    }
+
+    public function search(Builder $builder, $value): void
+    {
+        $builder->where('name', 'like', "%{$value}%");
     }
 }

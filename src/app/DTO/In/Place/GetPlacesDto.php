@@ -53,7 +53,9 @@ class GetPlacesDto
                 'type' => ($getPlacesRequest->type === null)
                     ? null : explode(",", $getPlacesRequest->type),
                 'sort' => ($getPlacesRequest->sort === null || $getPlacesRequest->sortType === null)
-                    ? null : [$getPlacesRequest->sort, ($getPlacesRequest->sortType === 1) ? 'desk' : 'ask']
+                    ? null : ['sort' => $getPlacesRequest->sort,
+                        'sortType' => ((int)$getPlacesRequest->sortType === 1) ? 'desc' : 'asc'],
+                'search' => $getPlacesRequest->search,
             ]
         );
     }
