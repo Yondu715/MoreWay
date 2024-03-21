@@ -21,8 +21,8 @@ class AddFriendDto
     public static function fromRequest(AddFriendRequest $addFriendRequest): self
     {
         return new self(
-            userId: HashManager::decrypt($addFriendRequest->userId),
-            friendId: HashManager::decrypt($addFriendRequest->friendId)
+            userId: $addFriendRequest->userId,
+            friendId: $addFriendRequest->friendId
         );
     }
 }

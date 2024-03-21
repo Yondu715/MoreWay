@@ -26,7 +26,7 @@ class ChangeUserPasswordDto
         return new self(
             oldPassword: $changeUserPasswordRequest->oldPassword,
             newPassword: $changeUserPasswordRequest->newPassword,
-            userId: HashManager::decrypt($changeUserPasswordRequest->route('userId'))
+            userId: $changeUserPasswordRequest->route('userId')
         );
     }
 }

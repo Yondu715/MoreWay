@@ -17,12 +17,12 @@ use Illuminate\Support\Collection;
 class FriendService implements IFriendService
 {
     /**
-     * @param int $userId
      * @return Collection<int, User>
+     * @throws UserNotFound
      */
     public function getUserFriends(int $userId): Collection
     {
-        /** @var ?User */
+        /** @var ?User $user */
         $user = User::query()->find($userId);
         if (!$user) {
             throw new UserNotFound();
@@ -67,10 +67,13 @@ class FriendService implements IFriendService
     /**
      * @param AddFriendDto $addFriendDto
      * @return UserDto
+     *
+     * @throws FriendRequestConflict
      */
     public function addFriendRequest(AddFriendDto $addFriendDto): UserDto
+
     {
-        /** @var ?Friend */
+        /** @var ?Friend $request */
         $request = Friend::query()->firstWhere([
             'user_id' => $addFriendDto->userId,
             'friend_id' => $addFriendDto->friendId
@@ -79,7 +82,7 @@ class FriendService implements IFriendService
             throw new FriendRequestConflict();
         }
 
-        /** @var Friend */
+        /** @var Friend $request */
         $request = Friend::query()->create([
             'user_id' => $addFriendDto->userId,
             'friend_id' => $addFriendDto->friendId,
@@ -91,10 +94,11 @@ class FriendService implements IFriendService
     /**
      * @param AcceptFriendDto $acceptFriendDto
      * @return void
+     * @throws FriendRequestNotFound
      */
     public function acceptFriendRequest(AcceptFriendDto $acceptFriendDto): void
     {
-        /** @var ?Friend */
+        /** @var ?Friend $request */
         $request = Friend::query()->find($acceptFriendDto->requestId);
         if (!$request) {
             throw new FriendRequestNotFound();

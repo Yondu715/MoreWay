@@ -42,7 +42,7 @@ class UserService implements IUserService
      */
     public function getUserById(int $userId): User
     {
-        /** @var ?User */
+        /** @var ?User $user */
         $user = User::query()->find($userId);
         if (!$user) {
             throw new UserNotFound();
@@ -57,7 +57,7 @@ class UserService implements IUserService
      */
     public function deleteUserById(int $userId): ?bool
     {
-        /** @var ?User */
+        /** @var ?User $user */
         $user = User::query()->find($userId);
         if (!$user) {
             throw new UserNotFound();
@@ -73,7 +73,7 @@ class UserService implements IUserService
      */
     public function changePassword(ChangeUserPasswordDto $changeUserPasswordDto): User
     {
-        /** @var ?User */
+        /** @var ?User $user */
         $user = User::query()->find($changeUserPasswordDto->userId);
         if (!$user) {
             throw new UserNotFound();
@@ -95,7 +95,7 @@ class UserService implements IUserService
      */
     public function changeAvatar(ChangeUserAvatarDto $changeUserAvatarDto): User
     {
-        /** @var ?User */
+        /** @var ?User $user */
         $user = User::query()->find($changeUserAvatarDto->userId);
         if (!$user) {
             throw new UserNotFound();
@@ -116,7 +116,7 @@ class UserService implements IUserService
      */
     public function changeData(ChangeUserDataDto $changeUserDataDto): User
     {
-        /** @var ?User */
+        /** @var ?User $user */
         $user = User::query()->find($changeUserDataDto->userId);
         if (!$user) {
             throw new UserNotFound();

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Traits\Filterable;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -21,17 +22,19 @@ use Illuminate\Support\Carbon;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property Carbon|null $deleted_at
- * @property-read int|null $comments_count
+ * @property-read int|null $reviews_count
+ * @property-read Collection<int, PlaceReview> $reviews
  * @property-read Collection<int, PlaceImage> $images
  * @property-read int|null $images_count
  * @property-read Locality $locality
- * @property-read int|null $ratings_count
  * @property-read PlaceType $type
+ * @method static filter($filter)
  */
 class Place extends Model
 {
     use HasFactory;
     use SoftDeletes;
+    use Filterable;
 
     /**
      * The attributes that are mass assignable.
@@ -68,7 +71,7 @@ class Place extends Model
         return $this->belongsTo(PlaceType::class, 'type_id', 'id');
     }
 
-    public function comments(): HasMany
+    public function reviews(): HasMany
     {
         return $this->hasMany(PlaceReview::class);
     }

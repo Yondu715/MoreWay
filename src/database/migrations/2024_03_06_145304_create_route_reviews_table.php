@@ -19,6 +19,8 @@ return new class extends Migration
             $table->unsignedInteger('rating');
             $table->timestamps();
 
+            $table->unique(['author_id', 'route_id']);
+
             $table->foreign('author_id')->references('id')->on('users')->cascadeOnUpdate();
             $table->foreign('route_id')->references('id')->on('routes')->cascadeOnUpdate()->cascadeOnDelete();
 

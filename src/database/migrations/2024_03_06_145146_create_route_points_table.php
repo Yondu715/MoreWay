@@ -18,6 +18,8 @@ return new class extends Migration
             $table->unsignedBigInteger('route_id');
             $table->timestamps();
 
+            $table->unique(['place_id', 'route_id']);
+
             $table->foreign('place_id')->references('id')->on('places')->cascadeOnUpdate();
             $table->foreign('route_id')->references('id')->on('routes')->cascadeOnUpdate()->cascadeOnDelete();
 

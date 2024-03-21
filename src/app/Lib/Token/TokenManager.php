@@ -38,7 +38,7 @@ class TokenManager
      */
     public function getAuthUser(): User
     {
-        /** @var ?User */
+        /** @var ?User $user */
         $user = self::getAuth()->user();
 
         if (!$user) {

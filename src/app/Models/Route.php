@@ -17,9 +17,9 @@ use Illuminate\Support\Carbon;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property Carbon|null $deleted_at
- * @property-read int|null $comments_count
+ * @property-read int|null $reviews_count
  * @property-read User $creator
- * @property-read int|null $ratings_count
+ * @property-read Collection<int, RouteReview> $reviews
  * @property-read Collection<int, RoutePoint> $routePoints
  * @property-read int|null $route_points_count
  */
@@ -59,7 +59,7 @@ class Route extends Model
         return $this->hasMany(RoutePoint::class);
     }
 
-    public function comments(): HasMany
+    public function reviews(): HasMany
     {
         return $this->hasMany(RouteReview::class);
     }
