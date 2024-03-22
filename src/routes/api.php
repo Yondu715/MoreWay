@@ -55,7 +55,7 @@ Route::prefix('friends')
 Route::prefix('places')
     ->middleware('auth:api', 'role:user')
     ->group(function () {
-        Route::post('/', [PlaceController::class, 'getPlaces']);
+        Route::get('/', [PlaceController::class, 'getPlaces']);
         Route::get('/{placeId}', [PlaceController::class, 'getPlace']);
         Route::prefix('/{placeId}/reviews')
             ->group(function (){
