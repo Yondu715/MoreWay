@@ -47,17 +47,27 @@ class PlaceService
     {
         $filter = app()->make(PlaceFilter::class, ['filters' => array_filter($getPlacesDto->filter)]);
 
+        if($getPlacesDto->cursor !== null and $getPlacesDto->filter['sort'] !== null){
+            if($getPlacesDto->filter['sort']['sort'] === 'distance'){
+                $paramsRequest = [
+                    $getPlacesDto->lon,
+                    $getPlacesDto->lat,
+                    $getPlacesDto->lon,
+                    $getPlacesDto->lat,
+                ];
+            }
+        }
+        else{
+            $paramsRequest = [
+                $getPlacesDto->lon,
+                $getPlacesDto->lat,
+            ];
+        }
+
         $places = Place::query()
             ->select('places.*')
-            ->selectRaw("ROUND(ST_Distance_Sphere(Point(places.lon, places.lat), Point(?, ?)) / 1000, 1) as distance", ($getPlacesDto->cursor === null) ? [
-                $getPlacesDto->lon,
-                $getPlacesDto->lat,
-            ] : [
-                $getPlacesDto->lon,
-                $getPlacesDto->lat,
-                $getPlacesDto->lon,
-                $getPlacesDto->lat,
-            ])
+            ->selectRaw("ROUND(ST_Distance_Sphere(Point(places.lon, places.lat), Point(?, ?)) / 1000, 1) as distance",
+                $paramsRequest)
             ->filter($filter)
             ->cursorPaginate(perPage: 3, cursor: $getPlacesDto->cursor);
 
