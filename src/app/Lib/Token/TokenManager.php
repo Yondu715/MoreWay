@@ -27,6 +27,9 @@ class TokenManager
         return self::getAuth()->refresh();
     }
 
+    /**
+     * @return void
+     */
     public function destroyToken(): void
     {
         self::getAuth()->logout();

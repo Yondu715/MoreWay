@@ -6,6 +6,8 @@ use App\DTO\In\User\ChangeUserAvatarDto;
 use App\DTO\In\User\ChangeUserDataDto;
 use App\DTO\In\User\ChangeUserPasswordDto;
 use App\DTO\In\User\GetUsersDto;
+use App\Exceptions\User\InvalidOldPassword;
+use App\Exceptions\User\UserNotFound;
 use App\Models\User;
 use Illuminate\Support\Collection;
 

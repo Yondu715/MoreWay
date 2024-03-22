@@ -28,7 +28,7 @@ use Illuminate\Support\Carbon;
  * @property-read int|null $images_count
  * @property-read Locality $locality
  * @property-read PlaceType $type
- * @method static filter($filter)
+ * @method filter($filter)
  */
 class Place extends Model
 {

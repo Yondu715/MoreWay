@@ -5,6 +5,7 @@ namespace App\Services\Auth\Interfaces;
 use App\DTO\In\Auth\LoginDto;
 use App\DTO\In\Auth\RegisterDto;
 use App\DTO\Out\Auth\UserDto;
+use Exception;
 
 interface IAuthService
 {

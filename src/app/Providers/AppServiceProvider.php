@@ -12,8 +12,7 @@ use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
-
-    public $bindings = [
+    public array $bindings = [
         IUserService::class => UserService::class,
         IAuthService::class => AuthService::class,
         IFriendService::class => FriendService::class

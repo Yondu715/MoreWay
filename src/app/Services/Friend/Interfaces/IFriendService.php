@@ -5,6 +5,8 @@ namespace App\Services\Friend\Interfaces;
 use App\DTO\In\Friend\AcceptFriendDto;
 use App\DTO\In\Friend\AddFriendDto;
 use App\DTO\Out\Auth\UserDto;
+use App\Models\Friend;
+use App\Models\User;
 use Illuminate\Support\Collection;
 
 interface IFriendService

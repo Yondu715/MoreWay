@@ -7,6 +7,11 @@ use Illuminate\Support\Facades\Storage;
 
 class StorageManager
 {
+    /**
+     * @param string $path
+     * @param UploadedFile $uploadedFile
+     * @return void
+     */
     public function store(string $path, UploadedFile $uploadedFile): void
     {
         if (Storage::exists($path)) {

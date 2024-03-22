@@ -41,11 +41,15 @@ class PlaceService
     }
 
     /**
+     * @param GetPlacesDto $getPlacesDto
+     * @return CursorPaginator
      * @throws BindingResolutionException
      */
     public function getPlaces(GetPlacesDto $getPlacesDto): CursorPaginator
     {
         $filter = app()->make(PlaceFilter::class, ['filters' => array_filter($getPlacesDto->filter)]);
+
+        $paramsRequest = [];
 
         if($getPlacesDto->cursor !== null and $getPlacesDto->filter['sort'] !== null){
             if($getPlacesDto->filter['sort']['sort'] === 'distance'){
@@ -75,10 +79,8 @@ class PlaceService
             foreach ($place->images->all() as $image) {
                 unset($image->place_id);
             }
-
             $place->rating = RatingManager::calc($place);
         }
-
         return $places;
     }
 }

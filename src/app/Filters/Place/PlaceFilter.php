@@ -7,6 +7,9 @@ use Illuminate\Database\Eloquent\Builder;
 
 class PlaceFilter extends AbstractFilter
 {
+    /**
+     * @return array[]
+     */
     protected function getCallbacks(): array
     {
         return [
@@ -19,21 +22,36 @@ class PlaceFilter extends AbstractFilter
         ];
     }
 
-    public function locality(Builder $builder, $value): void
+    /**
+     * @param Builder $builder
+     * @param string $value
+     * @return void
+     */
+    public function locality(Builder $builder, string $value): void
     {
         $builder->whereHas('locality', function ($query) use ($value) {
             $query->where('name', $value);
         });
     }
 
-    public function type(Builder $builder, $value): void
+    /**
+     * @param Builder $builder
+     * @param string $value
+     * @return void
+     */
+    public function type(Builder $builder, string $value): void
     {
         $builder->whereHas('type', function ($query) use ($value) {
             $query->where('name', $value);
         });
     }
 
-    public function rating(Builder $builder, $value): void
+    /**
+     * @param Builder $builder
+     * @param array $value
+     * @return void
+     */
+    public function rating(Builder $builder, array $value): void
     {
         $from = $value['from'];
         $to = $value['to'];
@@ -43,7 +61,12 @@ class PlaceFilter extends AbstractFilter
                 ->having('reviews_avg_rating', '<=', $to);
     }
 
-    public function distance(Builder $builder, $value): void
+    /**
+     * @param Builder $builder
+     * @param array $value
+     * @return void
+     */
+    public function distance(Builder $builder, array $value): void
     {
         $from = $value['from'];
         $to = $value['to'];
@@ -52,7 +75,12 @@ class PlaceFilter extends AbstractFilter
             ->having('distance', '<=', $to);
     }
 
-    public function sort(Builder $builder, $value): void
+    /**
+     * @param Builder $builder
+     * @param array $value
+     * @return void
+     */
+    public function sort(Builder $builder, array $value): void
     {
         switch ($value['sort']){
             case 'rating': {
@@ -77,7 +105,12 @@ class PlaceFilter extends AbstractFilter
         }
     }
 
-    public function search(Builder $builder, $value): void
+    /**
+     * @param Builder $builder
+     * @param string $value
+     * @return void
+     */
+    public function search(Builder $builder, string $value): void
     {
         $builder->where('name', 'like', "%{$value}%");
     }
