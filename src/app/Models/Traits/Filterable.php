@@ -2,7 +2,7 @@
 
 namespace App\Models\Traits;
 
-use App\Filters\FilterInterface;
+use App\Models\Filters\FilterInterface;
 use Illuminate\Database\Eloquent\Builder;
 
 trait Filterable

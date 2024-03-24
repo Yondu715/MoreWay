@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filters;
+namespace App\Models\Filters;
 
 use Illuminate\Database\Eloquent\Builder;
 

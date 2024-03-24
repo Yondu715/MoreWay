@@ -19,6 +19,7 @@ use Illuminate\Support\Carbon;
  * @property float $lon
  * @property int $locality_id
  * @property int $type_id
+ * @property float $distance
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property Carbon|null $deleted_at
@@ -28,7 +29,6 @@ use Illuminate\Support\Carbon;
  * @property-read int|null $images_count
  * @property-read Locality $locality
  * @property-read PlaceType $type
- * @method filter($filter)
  */
 class Place extends Model
 {

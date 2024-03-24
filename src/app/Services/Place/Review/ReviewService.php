@@ -21,8 +21,8 @@ class ReviewService
         try {
             /** @var PlaceReview $placeReview */
             $placeReview = PlaceReview::query()->create([
-                'author_id' => $createReviewDto->user_id,
-                'place_id' => $createReviewDto->place_id,
+                'author_id' => $createReviewDto->userId,
+                'place_id' => $createReviewDto->placeId,
                 'text' => $createReviewDto->text,
                 'rating' => $createReviewDto->rating
             ]);
@@ -41,7 +41,7 @@ class ReviewService
     public function getReviews(GetReviewsDto $getReviewsDto): CursorPaginator
     {
         return PlaceReview::query()
-            ->where('place_id', $getReviewsDto->place_id)
+            ->where('place_id', $getReviewsDto->placeId)
             ->orderBy('created_at', 'desc')
             ->cursorPaginate(perPage: 1, cursor: $getReviewsDto->cursor);
     }

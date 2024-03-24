@@ -18,10 +18,12 @@ use Illuminate\Support\Facades\Hash;
 class UserService implements IUserService
 {
 
+    /**
+     * @param StorageManager $storageManager
+     */
     public function __construct(
         private readonly StorageManager $storageManager
-    ) {
-    }
+    ) {}
 
     /**
      * @param GetUsersDto $getUsersDto

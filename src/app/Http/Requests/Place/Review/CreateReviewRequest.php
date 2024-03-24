@@ -6,7 +6,7 @@ use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 /**
- * @property int user_id
+ * @property int userId
  * @property int rating
  * @property ?string text
  */
@@ -20,7 +20,7 @@ class CreateReviewRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_id' => 'required|numeric',
+            'userId' => 'required|numeric',
             'rating' => 'required|numeric',
             'text' => 'string'
         ];

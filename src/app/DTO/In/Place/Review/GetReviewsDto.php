@@ -6,14 +6,14 @@ use App\Http\Requests\Place\Review\GetReviewsRequest;
 
 class GetReviewsDto
 {
-    public readonly int $place_id;
+    public readonly int $placeId;
     public readonly ?string $cursor;
 
     public function __construct(
-        int $place_id,
+        int $placeId,
         ?string $cursor,
     ) {
-        $this->place_id = $place_id;
+        $this->placeId = $placeId;
         $this->cursor = $cursor;
     }
 
@@ -24,7 +24,7 @@ class GetReviewsDto
     public static function fromRequest(GetReviewsRequest $getReviewsRequest): self
     {
         return new self(
-            place_id: $getReviewsRequest->route('placeId'),
+            placeId: $getReviewsRequest->route('placeId'),
             cursor: $getReviewsRequest->cursor,
         );
     }

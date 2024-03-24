@@ -2,7 +2,6 @@
 
 namespace App\DTO\Out\Place;
 
-use App\Lib\HashId\HashManager;
 use App\Models\Locality;
 use App\Models\Place;
 
@@ -44,14 +43,13 @@ class PlaceDto
 
     /**
      * @param Place $place
-     * @param float $distance
      * @param ?float $rating
      * @return self
      */
-    public static function fromPlaceModel(Place $place, float $distance, ?float $rating): self
+    public static function fromPlaceModel(Place $place, ?float $rating): self
     {
         return new self(
-            distance: $distance,
+            distance: $place->distance,
             id: $place->id,
             name: $place->name,
             lat: $place->lat,

@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Filters\Place;
+namespace App\Models\Filters\Place;
 
-use App\Filters\AbstractFilter;
+use App\Models\Filters\AbstractFilter;
 use Illuminate\Database\Eloquent\Builder;
 
 class PlaceFilter extends AbstractFilter
@@ -24,10 +24,10 @@ class PlaceFilter extends AbstractFilter
 
     /**
      * @param Builder $builder
-     * @param string $value
+     * @param array $value
      * @return void
      */
-    public function locality(Builder $builder, string $value): void
+    public function locality(Builder $builder, array $value): void
     {
         $builder->whereHas('locality', function ($query) use ($value) {
             $query->where('name', $value);
@@ -36,10 +36,10 @@ class PlaceFilter extends AbstractFilter
 
     /**
      * @param Builder $builder
-     * @param string $value
+     * @param array $value
      * @return void
      */
-    public function type(Builder $builder, string $value): void
+    public function type(Builder $builder, array $value): void
     {
         $builder->whereHas('type', function ($query) use ($value) {
             $query->where('name', $value);

@@ -6,19 +6,19 @@ use App\Http\Requests\Place\Review\CreateReviewRequest;
 
 class CreateReviewDto
 {
-    public readonly int $place_id;
-    public readonly int $user_id;
+    public readonly int $placeId;
+    public readonly int $userId;
     public readonly int $rating;
     public readonly ?string $text;
 
     public function __construct(
-        int $place_id,
-        int $user_id,
+        int $placeId,
+        int $userId,
         int $rating,
         ?string $text
     ) {
-        $this->place_id = $place_id;
-        $this->user_id = $user_id;
+        $this->placeId = $placeId;
+        $this->userId = $userId;
         $this->rating = $rating;
         $this->text = $text;
     }
@@ -30,8 +30,8 @@ class CreateReviewDto
     public static function fromRequest(CreateReviewRequest $createReviewRequest): self
     {
         return new self(
-            place_id: $createReviewRequest->route('placeId'),
-            user_id: $createReviewRequest->user_id,
+            placeId: $createReviewRequest->route('placeId'),
+            userId: $createReviewRequest->userId,
             rating: $createReviewRequest->rating,
             text: $createReviewRequest->text
         );
