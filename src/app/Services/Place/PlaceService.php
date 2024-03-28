@@ -54,24 +54,9 @@ class PlaceService
      */
     public function getPlaces(GetPlacesDto $getPlacesDto): CursorPaginator
     {
-        $paramsRequest = [];
-
-        if($getPlacesDto->cursor !== null and $getPlacesDto->filter['sort'] !== null){
-            if($getPlacesDto->filter['sort']['sort'] === 'distance'){
-                $paramsRequest = [
-                    $getPlacesDto->lon,
-                    $getPlacesDto->lat,
-                    $getPlacesDto->lon,
-                    $getPlacesDto->lat,
-                ];
-            }
-        }
-        else{
-            $paramsRequest = [
-                $getPlacesDto->lon,
-                $getPlacesDto->lat,
-            ];
-        }
+        $paramsRequest = ($getPlacesDto->cursor !== null && $getPlacesDto->filter['sort'] !== null && $getPlacesDto->filter['sort']['sort'] === 'distance')
+            ? [$getPlacesDto->lon, $getPlacesDto->lat, $getPlacesDto->lon, $getPlacesDto->lat]
+            : [$getPlacesDto->lon, $getPlacesDto->lat];
 
         $places = Place::query()
             ->select('places.*')
