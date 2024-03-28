@@ -2,12 +2,15 @@
 
 namespace App\Services\Auth;
 
+use App\DTO\In\Auth\ForgotPasswordDto;
 use App\DTO\In\Auth\LoginDto;
 use App\DTO\In\Auth\RegisterDto;
 use App\DTO\Out\Auth\UserDto;
 use App\Exceptions\Auth\InvalidPassword;
 use App\Exceptions\Auth\RegistrationConflict;
 use App\Exceptions\User\UserNotFound;
+use App\Lib\Cache\CacheManager;
+use App\Lib\Mail\MailManager;
 use App\Lib\Token\TokenManager;
 use App\Models\User;
 use App\Services\Auth\Interfaces\IAuthService;
@@ -18,7 +21,9 @@ class AuthService implements IAuthService
 {
 
     public function __construct(
-        private readonly TokenManager $tokenManager
+        private readonly TokenManager $tokenManager,
+        private readonly CacheManager $cacheManager,
+        private readonly MailManager $mailManager
     ) {
     }
     /**
@@ -84,5 +89,26 @@ class AuthService implements IAuthService
     public function refresh(): string
     {
         return $this->tokenManager->refreshToken();
+    }
+
+    /**
+     * @param ForgotPasswordDto $forgotPasswordDto
+     * @return void
+     * @throws UserNotFound
+     */
+    public function forgotPassword(ForgotPasswordDto $forgotPasswordDto): void
+    {
+        $user = User::query()->where('email', $forgotPasswordDto->email)->first();
+
+        if (!$user) {
+            throw new UserNotFound();
+        }
+
+        $resetCode = str_pad(mt_rand(0, 9999), 4, 0, STR_PAD_LEFT);
+
+        $this->cacheManager->put('password_reset_' . $forgotPasswordDto->email,
+            $resetCode);
+
+        $this->mailManager->send($forgotPasswordDto->email, $resetCode);
     }
 }

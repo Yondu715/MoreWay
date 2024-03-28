@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\DTO\In\Auth\ForgotPasswordDto;
 use App\DTO\In\Auth\LoginDto;
 use App\DTO\In\Auth\RegisterDto;
+use App\Exceptions\User\UserNotFound;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Auth\ForgotPasswordRequest;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Http\Resources\Auth\UserResource;
@@ -14,7 +17,7 @@ use Illuminate\Http\JsonResponse;
 
 class AuthController extends Controller
 {
-    
+
     public function __construct(
         private readonly IAuthService $authService
         ){}
@@ -29,8 +32,7 @@ class AuthController extends Controller
         $inLoginDto = LoginDto::fromRequest($loginRequest);
 
         return response()->json(['data' => [
-            'accessToken' => $this->authService->login($inLoginDto)
-            ]
+            'accessToken' => $this->authService->login($inLoginDto)]
         ]);
     }
 
@@ -70,8 +72,18 @@ class AuthController extends Controller
     public function refresh(): JsonResponse
     {
         return response()->json(['data' => [
-            'accessToken' => $this->authService->refresh()
-            ]
+            'accessToken' => $this->authService->refresh()]
         ]);
+    }
+
+    /**
+     * @param ForgotPasswordRequest $forgotPasswordRequest
+     * @return void
+     * @throws UserNotFound
+     */
+    public function forgotPassword(ForgotPasswordRequest $forgotPasswordRequest): void
+    {
+        $forgotPasswordDto = ForgotPasswordDto::fromRequest($forgotPasswordRequest);
+        $this->authService->forgotPassword($forgotPasswordDto);
     }
 }
