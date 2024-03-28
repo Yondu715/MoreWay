@@ -11,6 +11,7 @@ use App\Models\Filters\Place\PlaceFilterFactory;
 use App\Models\Place;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Contracts\Pagination\CursorPaginator;
+use Illuminate\Database\Query\Builder;
 
 
 class PlaceService
@@ -26,24 +27,25 @@ class PlaceService
      */
     public function getPlaceById(GetPlaceDto $getPlaceDto): PlaceDto
     {
-        /** @var ?Place $place */
+        /** @var ?Builder $place */
         $place = Place::query()
-            ->find($getPlaceDto->id)
-            ->select('places.*')
-            ->selectRaw("ROUND(ST_Distance_Sphere(Point(places.lon, places.lat), Point(?, ?)) / 1000, 1) as distance",
-                [$getPlaceDto->lon, $getPlaceDto->lat])
-            ->first();
+            ->where('id', $getPlaceDto->id);
 
         if (!$place) {
             throw new PlaceNotFound();
         }
+
+        /** @var ?Place $place */
+        $place = $place->select('places.*')
+            ->selectRaw("ROUND(ST_Distance_Sphere(Point(places.lon, places.lat), Point(?, ?)) / 1000, 1) as distance",
+                [$getPlaceDto->lon, $getPlaceDto->lat])
+            ->first();
 
         foreach ($place->images->all() as $image) {
             unset($image->place_id);
         }
 
         $rating = round($place->reviews()->avg('rating'), 2);
-
         return PlaceDto::fromPlaceModel($place, $rating);
     }
 

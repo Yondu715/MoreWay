@@ -2,6 +2,7 @@
 
 namespace App\Models\Filters\Place;
 
+use App\Exceptions\Filter\FilterOutOfRange;
 use App\Models\Filters\AbstractFilter;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -112,6 +113,6 @@ class PlaceFilter extends AbstractFilter
      */
     public function search(Builder $builder, string $value): void
     {
-        $builder->where('name', 'like', "%{$value}%");
+        $builder->where('name', 'like', "%$value%");
     }
 }

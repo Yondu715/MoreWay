@@ -27,8 +27,8 @@ class GetPlacesRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'lat' => 'required|numeric',
-            'lon' => 'required|numeric',
+            'lat' => 'required|numeric|min:-90|max:90',
+            'lon' => 'required|numeric|min:-180|max:180',
             'cursor' => 'string',
             'search' => 'string',
             'sort' => 'string',

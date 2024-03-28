@@ -10,5 +10,5 @@ class PlaceNotFound extends BaseException
     protected $code = 404;
 
     /** @var string */
-    protected $message = "Пользователь не был найден";
+    protected $message = "Достопримечательность не была найдена";
 }
