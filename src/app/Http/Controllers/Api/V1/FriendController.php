@@ -21,6 +21,10 @@ class FriendController extends Controller
     ) {
     }
 
+    /**
+     * @param int $userId
+     * @return AnonymousResourceCollection
+     */
     public function getFriends(int $userId): AnonymousResourceCollection
     {
         return UserResource::collection(
@@ -28,6 +32,10 @@ class FriendController extends Controller
         );
     }
 
+    /**
+     * @param int $userId
+     * @return JsonResponse
+     */
     public function getFriendRequests(int $userId): JsonResponse
     {
         return response()->json([
@@ -35,12 +43,21 @@ class FriendController extends Controller
         ]);
     }
 
+    /**
+     * @param int $userId
+     * @param int $friendId
+     * @return Response
+     */
     public function deleteFriend(int $userId, int $friendId): Response
     {
         $this->friendService->deleteFriend($userId, $friendId);
         return response()->noContent();
     }
 
+    /**
+     * @param AddFriendRequest $addFriendRequest
+     * @return UserResource
+     */
     public function addFriendRequest(AddFriendRequest $addFriendRequest): UserResource
     {
         $addFriendDto = AddFriendDto::fromRequest($addFriendRequest);
@@ -49,6 +66,10 @@ class FriendController extends Controller
         );
     }
 
+    /**
+     * @param AcceptFriendRequest $acceptFriendRequest
+     * @return Response
+     */
     public function acceptFriendRequest(AcceptFriendRequest $acceptFriendRequest): Response
     {
         $acceptFriendDto = AcceptFriendDto::fromRequest($acceptFriendRequest);
@@ -56,6 +77,10 @@ class FriendController extends Controller
         return response()->noContent();
     }
 
+    /**
+     * @param int $requestId
+     * @return Response
+     */
     public function rejectFriendRequest(int $requestId): Response
     {
         $this->friendService->rejectFriendRequest($requestId);

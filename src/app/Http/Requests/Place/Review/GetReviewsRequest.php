@@ -6,7 +6,7 @@ use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 /**
- * @property string cursor
+ * @property ?string cursor
  */
 class GetReviewsRequest extends FormRequest
 {

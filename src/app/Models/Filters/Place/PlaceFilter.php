@@ -2,7 +2,6 @@
 
 namespace App\Models\Filters\Place;
 
-use App\Exceptions\Filter\FilterOutOfRange;
 use App\Models\Filters\AbstractFilter;
 use Illuminate\Database\Eloquent\Builder;
 

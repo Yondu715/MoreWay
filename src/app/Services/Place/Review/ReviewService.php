@@ -6,10 +6,11 @@ use App\DTO\In\Place\Review\CreateReviewDto;
 use App\DTO\In\Place\Review\GetReviewsDto;
 use App\Exceptions\Review\FailedToCreateReview;
 use App\Models\PlaceReview;
+use App\Services\Place\Review\Interfaces\IReviewService;
 use Exception;
 use Illuminate\Contracts\Pagination\CursorPaginator;
 
-class ReviewService
+class ReviewService implements IReviewService
 {
     /**
      * @param CreateReviewDto $createReviewDto
