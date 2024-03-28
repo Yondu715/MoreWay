@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers\Api\V1;
 
-use App\DTO\In\Auth\ForgotPasswordDto;
 use App\DTO\In\Auth\LoginDto;
+use App\DTO\In\Auth\Password\ForgotPasswordDto;
+use App\DTO\In\Auth\Password\ResetPasswordDto;
+use App\DTO\In\Auth\Password\VerifyPasswordCodeDto;
 use App\DTO\In\Auth\RegisterDto;
-use App\Exceptions\User\UserNotFound;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Auth\ForgotPasswordRequest;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Http\Requests\Auth\Password\ForgotPasswordRequest;
+use App\Http\Requests\Auth\Password\ResetPasswordRequest;
+use App\Http\Requests\Auth\Password\VerifyPasswordCodeRequest;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Http\Resources\Auth\UserResource;
 use App\Services\Auth\Interfaces\IAuthService;
@@ -30,7 +33,6 @@ class AuthController extends Controller
     public function login(LoginRequest $loginRequest): JsonResponse
     {
         $inLoginDto = LoginDto::fromRequest($loginRequest);
-
         return response()->json(['data' => [
             'accessToken' => $this->authService->login($inLoginDto)]
         ]);
@@ -44,7 +46,6 @@ class AuthController extends Controller
     public function register(RegisterRequest $registerRequest): JsonResponse
     {
         $registerDto = RegisterDto::fromRequest($registerRequest);
-
         $this->authService->register($registerDto);
         return response()->json()->setStatusCode(201);
     }
@@ -79,11 +80,35 @@ class AuthController extends Controller
     /**
      * @param ForgotPasswordRequest $forgotPasswordRequest
      * @return void
-     * @throws UserNotFound
+     * @throws Exception
      */
     public function forgotPassword(ForgotPasswordRequest $forgotPasswordRequest): void
     {
         $forgotPasswordDto = ForgotPasswordDto::fromRequest($forgotPasswordRequest);
         $this->authService->forgotPassword($forgotPasswordDto);
+    }
+
+    /**
+     * @param VerifyPasswordCodeRequest $verifyPasswordCodeRequest
+     * @return JsonResponse
+     * @throws Exception
+     */
+    public function verifyPasswordCode(VerifyPasswordCodeRequest $verifyPasswordCodeRequest): JsonResponse
+    {
+        $verifyPasswordCodeDto = VerifyPasswordCodeDto::fromRequest($verifyPasswordCodeRequest);
+        return response()->json(['data' => [
+            'resetPasswordToken' => $this->authService->verifyPasswordCode($verifyPasswordCodeDto)]
+        ]);
+    }
+
+    /**
+     * @param ResetPasswordRequest $resetPasswordRequest
+     * @return void
+     * @throws Exception
+     */
+    public function resetPassword(ResetPasswordRequest $resetPasswordRequest): void
+    {
+        $resetPasswordDto = ResetPasswordDto::fromRequest($resetPasswordRequest);
+        $this->authService->resetPassword($resetPasswordDto);
     }
 }

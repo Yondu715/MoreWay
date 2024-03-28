@@ -1,8 +1,8 @@
 <?php
 
-namespace App\DTO\In\Auth;
+namespace App\DTO\In\Auth\Password;
 
-use App\Http\Requests\Auth\ForgotPasswordRequest;
+use App\Http\Requests\Auth\Password\ForgotPasswordRequest;
 
 class ForgotPasswordDto
 {

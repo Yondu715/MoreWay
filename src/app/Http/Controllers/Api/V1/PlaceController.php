@@ -36,7 +36,6 @@ class PlaceController extends Controller
     public function getPlaces(GetPlacesRequest $getPlacesRequest): PlaceCollection
     {
         $getPlacesRequest = GetPlacesDto::fromRequest($getPlacesRequest);
-
         return PlaceCollection::make(
             $this->placeService->getPlaces($getPlacesRequest)
         );
@@ -50,7 +49,6 @@ class PlaceController extends Controller
     public function getPlace(GetPlaceRequest $getPlaceRequest): PlaceResource
     {
         $getPlaceDto = GetPlaceDto::fromRequest($getPlaceRequest);
-
         return PlaceResource::make(
             $this->placeService->getPlaceById($getPlaceDto)
         );
@@ -64,7 +62,6 @@ class PlaceController extends Controller
     public function createReview(CreateReviewRequest $createReviewRequest): ReviewResource
     {
         $createReviewDto = CreateReviewDto::fromRequest($createReviewRequest);
-
         return ReviewResource::make(
             $this->reviewService->createReviews($createReviewDto)
         );
@@ -77,7 +74,6 @@ class PlaceController extends Controller
     public function getReviews(GetReviewsRequest $getReviewsRequest): ReviewCollection
     {
         $getReviewsDto = GetReviewsDto::fromRequest($getReviewsRequest);
-
         return ReviewCollection::make(
                 $this->reviewService->getReviews($getReviewsDto)
         );

@@ -31,8 +31,7 @@ Route::prefix('auth')
             ->group(function (){
                 Route::post('forgot', [AuthController::class, 'forgotPassword']);
                 Route::post('verify-code', [AuthController::class, 'verifyPasswordCode']);
-                Route::middleware('auth:api')
-                    ->put('reset', [AuthController::class, 'resetPassword']);
+                Route::put('reset', [AuthController::class, 'resetPassword']);
             });
     });
 

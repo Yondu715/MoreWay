@@ -18,9 +18,9 @@ class CacheManager
 
     /**
      * @param string $key
-     * @return string
+     * @return ?string
      */
-    public function get(string $key): string
+    public function get(string $key): ?string
     {
         return Cache::get($key);
     }
