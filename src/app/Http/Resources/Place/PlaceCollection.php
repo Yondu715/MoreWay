@@ -22,7 +22,10 @@ class PlaceCollection extends ResourceCollection
                     'lat' => $resource->lat,
                     'lon' => $resource->lon,
                     'rating' => $resource->rating,
-                    'image' => count($resource->images) ? $resource->images[0] : null,
+                    'image' => count($resource->images) ? [
+                        'id' => $resource->images[0]->id,
+                        'path' => $resource->images[0]->image
+                    ] : null,
                     'locality' => $resource->locality
                 ];
             })
