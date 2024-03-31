@@ -6,6 +6,7 @@ use App\DTO\In\User\ChangeUserAvatarDto;
 use App\DTO\In\User\ChangeUserDataDto;
 use App\DTO\In\User\ChangeUserPasswordDto;
 use App\DTO\In\User\GetUsersDto;
+use App\DTO\Out\Auth\UserDto;
 use App\Exceptions\User\InvalidOldPassword;
 use App\Exceptions\User\UserNotFound;
 use App\Models\User;
@@ -22,10 +23,10 @@ interface IUserService
 
     /**
      * @param int $userId
-     * @return User
+     * @return UserDto
      * @throws UserNotFound
      */
-    public function getUserById(int $userId): User;
+    public function getUserById(int $userId): UserDto;
 
     /**
      * @param int $userId
@@ -36,24 +37,24 @@ interface IUserService
 
     /**
      * @param ChangeUserPasswordDto $changeUserPasswordDto
-     * @return User
+     * @return UserDto
      * @throws InvalidOldPassword
      * @throws UserNotFound
      */
-    public function changePassword(ChangeUserPasswordDto $changeUserPasswordDto): User;
+    public function changePassword(ChangeUserPasswordDto $changeUserPasswordDto): UserDto;
 
     /**
      * @param ChangeUserAvatarDto $changeUserAvatarDto
-     * @return User
+     * @return UserDto
      * @throws UserNotFound
      */
-    public function changeAvatar(ChangeUserAvatarDto $changeUserAvatarDto): User;
+    public function changeAvatar(ChangeUserAvatarDto $changeUserAvatarDto): UserDto;
 
     /**
      * @param ChangeUserDataDto $changeUserDataDto
-     * @return User
+     * @return UserDto
      * @throws UserNotFound
      */
-    public function changeData(ChangeUserDataDto $changeUserDataDto): User;
+    public function changeData(ChangeUserDataDto $changeUserDataDto): UserDto;
 
 }

@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Repositories\BaseRepository\BaseRepository;
+use App\Repositories\BaseRepository\Interfaces\IBaseRepository;
 use App\Repositories\Friend\FriendRepository;
 use App\Repositories\Friend\Interfaces\IFriendRepository;
 use App\Repositories\Place\Interfaces\IPlaceRepository;
@@ -25,6 +27,7 @@ class AppServiceProvider extends ServiceProvider
         IFriendService::class => FriendService::class,
 
         /** REPOSITORIES */
+        IBaseRepository::class => BaseRepository::class,
         IUserRepository::class => UserRepository::class,
         IPlaceRepository::class => PlaceRepository::class,
         IFriendRepository::class => FriendRepository::class

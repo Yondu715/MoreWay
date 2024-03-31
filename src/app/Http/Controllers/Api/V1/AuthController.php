@@ -14,10 +14,11 @@ use Illuminate\Http\JsonResponse;
 
 class AuthController extends Controller
 {
-    
+
     public function __construct(
         private readonly IAuthService $authService
-        ){}
+    ) {
+    }
 
     /**
      * @param LoginRequest $loginRequest
@@ -28,8 +29,9 @@ class AuthController extends Controller
     {
         $inLoginDto = LoginDto::fromRequest($loginRequest);
 
-        return response()->json(['data' => [
-            'accessToken' => $this->authService->login($inLoginDto)
+        return response()->json([
+            'data' => [
+                'accessToken' => $this->authService->login($inLoginDto)
             ]
         ]);
     }
@@ -69,8 +71,9 @@ class AuthController extends Controller
      */
     public function refresh(): JsonResponse
     {
-        return response()->json(['data' => [
-            'accessToken' => $this->authService->refresh()
+        return response()->json([
+            'data' => [
+                'accessToken' => $this->authService->refresh()
             ]
         ]);
     }

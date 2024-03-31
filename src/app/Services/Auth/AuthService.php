@@ -7,9 +7,8 @@ use App\DTO\In\Auth\RegisterDto;
 use App\DTO\Out\Auth\UserDto;
 use App\Exceptions\Auth\InvalidPassword;
 use App\Exceptions\Auth\RegistrationConflict;
-use App\Exceptions\User\UserNotFound;
 use App\Lib\Token\TokenManager;
-use App\Models\User;
+use App\Repositories\User\Interfaces\IUserRepository;
 use App\Services\Auth\Interfaces\IAuthService;
 use Exception;
 use Illuminate\Support\Facades\Hash;
@@ -18,7 +17,8 @@ class AuthService implements IAuthService
 {
 
     public function __construct(
-        private readonly TokenManager $tokenManager
+        private readonly TokenManager $tokenManager,
+        private readonly IUserRepository $userRepository
     ) {
     }
     /**
@@ -28,15 +28,9 @@ class AuthService implements IAuthService
      */
     public function login(LoginDto $loginDto): string
     {
-        /**@var ?User $user */
-        $user = User::query()->where([
-            'email' => $loginDto->email
-        ])->first();
+        $user = $this->userRepository->findByEmail($loginDto->email);
 
-        if (!$user) {
-            throw new UserNotFound();
-        }
-        elseif (!Hash::check($loginDto->password, $user->password)){
+        if (!Hash::check($loginDto->password, $user->password)) {
             throw new InvalidPassword();
         }
 
@@ -50,14 +44,14 @@ class AuthService implements IAuthService
      */
     public function register(RegisterDto $registerDto): void
     {
-        if (User::query()->where('email', $registerDto->email)->first()) {
+        if ($this->userRepository->findByEmail($registerDto->email)) {
             throw new RegistrationConflict();
         }
 
-        User::query()->create([
+        $this->userRepository->create([
             'name' => $registerDto->name,
             'email' => $registerDto->email,
-            'password' => $registerDto->password,
+            'password' => $registerDto->password
         ]);
     }
 

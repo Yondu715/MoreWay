@@ -2,7 +2,9 @@
 
 namespace App\Repositories\Friend\Interfaces;
 
-interface IFriendRepository
+use App\Repositories\BaseRepository\Interfaces\IBaseRepository;
+
+interface IFriendRepository extends IBaseRepository
 {
-    // 
+
 }
