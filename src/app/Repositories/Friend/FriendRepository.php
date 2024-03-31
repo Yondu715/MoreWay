@@ -13,4 +13,15 @@ class FriendRepository extends BaseRepository implements IFriendRepository
     {
         parent::__construct($friend);
     }
+
+    public function deleteFriendship(int $userId, int $friendId): ?bool
+    {
+        return $this->model->query()->where([
+            'user_id' => $userId,
+            'friend_id' => $friendId
+        ])->orWhere([
+            'user_id' => $friendId,
+            'friend_id' => $userId
+        ])->delete();
+    }
 }

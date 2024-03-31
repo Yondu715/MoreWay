@@ -62,13 +62,7 @@ class FriendService implements IFriendService
      */
     public function deleteFriend(int $userId, int $friendId): void
     {
-        Friend::query()->where([
-            'user_id' => $userId,
-            'friend_id' => $friendId
-        ])->orWhere([
-            'user_id' => $friendId,
-            'friend_id' => $userId
-        ])->delete();
+        $this->friendRepository->deleteFriendship($userId, $friendId);
     }
 
     /**
@@ -104,9 +98,10 @@ class FriendService implements IFriendService
      */
     public function acceptFriendRequest(AcceptFriendDto $acceptFriendDto): void
     {
-        $request = $this->friendRepository->getById($acceptFriendDto->requestId);
+        /** @var Friend */
+        $request = $this->friendRepository->findById($acceptFriendDto->requestId);
 
-        $request->update([
+        $this->friendRepository->update($request->id, [
             'relationship_id' => RelationshipTypeId::FRIEND
         ]);
 
