@@ -28,7 +28,7 @@ class PlaceResource extends JsonResource
             'lon' => $this->lon,
             'rating' => $this->rating,
             'description' => $this->description,
-            'images' => $this->images,
+            'images' => 'https://more-way.ru/storage/'.$this->images,
             'locality' => $this->locality
         ];
     }
