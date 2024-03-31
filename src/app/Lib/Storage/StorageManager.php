@@ -5,7 +5,7 @@ namespace App\Lib\Storage;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 
-class StorageManager
+class StorageManager implements IStorageManager
 {
     /**
      * @param string $path

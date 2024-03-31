@@ -4,7 +4,7 @@ namespace App\Lib\Cache;
 
 use Illuminate\Support\Facades\Cache;
 
-class CacheManager
+class CacheManager implements ICacheManager
 {
     /**
      * @param string $key

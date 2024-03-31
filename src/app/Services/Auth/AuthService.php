@@ -15,9 +15,9 @@ use App\Exceptions\Auth\Password\InvalidResetPasswordToken;
 use App\Exceptions\Auth\Password\InvalidVerifyPasswordCode;
 use App\Exceptions\Auth\RegistrationConflict;
 use App\Exceptions\User\UserNotFound;
-use App\Lib\Cache\CacheManager;
-use App\Lib\Mail\MailManager;
-use App\Lib\Token\TokenManager;
+use App\Lib\Cache\ICacheManager;
+use App\Lib\Mail\IMailManager;
+use App\Lib\Token\ITokenManager;
 use App\Models\User;
 use App\Repositories\User\Interfaces\IUserRepository;
 use App\Services\Auth\Interfaces\IAuthService;
@@ -28,9 +28,9 @@ class AuthService implements IAuthService
 {
 
     public function __construct(
-        private readonly TokenManager $tokenManager,
-        private readonly CacheManager $cacheManager,
-        private readonly MailManager $mailManager,
+        private readonly ITokenManager $tokenManager,
+        private readonly ICacheManager $cacheManager,
+        private readonly IMailManager $mailManager,
         private readonly IUserRepository $userRepository
     ) {
     }
@@ -51,7 +51,7 @@ class AuthService implements IAuthService
             throw new InvalidPassword();
         }
 
-        return $this->tokenManager->getNewToken($user);
+        return $this->tokenManager->createToken($user);
     }
 
     /**
@@ -117,7 +117,7 @@ class AuthService implements IAuthService
             $resetCode
         );
 
-        $this->mailManager->send($forgotPasswordDto->email, $resetCode);
+        $this->mailManager->sendResetCode($forgotPasswordDto->email, $resetCode);
     }
 
     /**

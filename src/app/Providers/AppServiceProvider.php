@@ -2,6 +2,14 @@
 
 namespace App\Providers;
 
+use App\Lib\Cache\CacheManager;
+use App\Lib\Cache\ICacheManager;
+use App\Lib\Mail\IMailManager;
+use App\Lib\Mail\MailManager;
+use App\Lib\Storage\IStorageManager;
+use App\Lib\Storage\StorageManager;
+use App\Lib\Token\ITokenManager;
+use App\Lib\Token\TokenManager;
 use App\Repositories\BaseRepository\BaseRepository;
 use App\Repositories\BaseRepository\Interfaces\IBaseRepository;
 use App\Repositories\Friend\FriendRepository;
@@ -36,7 +44,13 @@ class AppServiceProvider extends ServiceProvider
         IBaseRepository::class => BaseRepository::class,
         IUserRepository::class => UserRepository::class,
         IPlaceRepository::class => PlaceRepository::class,
-        IFriendRepository::class => FriendRepository::class
+        IFriendRepository::class => FriendRepository::class,
+
+        /** LIBS */
+        ITokenManager::class => TokenManager::class,
+        IStorageManager::class => StorageManager::class,
+        ICacheManager::class => CacheManager::class,
+        IMailManager::class => MailManager::class
     ];
 
     /**

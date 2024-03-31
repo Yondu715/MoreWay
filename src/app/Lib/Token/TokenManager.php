@@ -8,13 +8,13 @@ use Exception;
 use Illuminate\Support\Facades\Auth;
 use Tymon\JWTAuth\JWTGuard;
 
-class TokenManager
+class TokenManager implements ITokenManager
 {
     /**
      * @param User $user
      * @return string
      */
-    public function getNewToken(User $user): string
+    public function createToken(User $user): string
     {
         return self::getAuth()->login($user);
     }

@@ -10,7 +10,7 @@ use App\DTO\Out\Auth\UserDto;
 use App\Enums\Storage\Paths;
 use App\Exceptions\User\InvalidOldPassword;
 use App\Exceptions\User\UserNotFound;
-use App\Lib\Storage\StorageManager;
+use App\Lib\Storage\IStorageManager;
 use App\Repositories\User\Interfaces\IUserRepository;
 use App\Services\User\Interfaces\IUserService;
 use Illuminate\Support\Facades\Hash;
@@ -19,11 +19,9 @@ use Illuminate\Support\Collection;
 
 class UserService implements IUserService
 {
-    /**
-     * @param StorageManager $storageManager
-     */
+
     public function __construct(
-        private readonly StorageManager $storageManager,
+        private readonly IStorageManager $storageManager,
         private readonly IUserRepository $userRepository
     ) {
     }

@@ -3,7 +3,7 @@
 namespace App\Http\Middleware;
 
 use App\Exceptions\Auth\Forbidden;
-use App\Lib\Token\TokenManager;
+use App\Lib\Token\ITokenManager;
 use Closure;
 use Exception;
 use Illuminate\Http\Request;
@@ -11,7 +11,10 @@ use Symfony\Component\HttpFoundation\Response;
 
 class CheckUserRole
 {
-    public function __construct(private readonly TokenManager $tokenManager){}
+    public function __construct(
+        private readonly ITokenManager $tokenManager
+    ) {
+    }
 
     /**
      * Handle an incoming request.
