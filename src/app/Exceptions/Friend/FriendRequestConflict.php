@@ -10,5 +10,5 @@ class FriendRequestConflict extends Exception
     protected $code = 409;
     
     /** @var string */
-    protected $message = "Запрос на дружбу уже был отправлен или пользователи уже являются друзьями";
+    protected $message = "Невозможно создать запрос на дружбу";
 }

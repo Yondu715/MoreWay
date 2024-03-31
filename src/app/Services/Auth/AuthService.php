@@ -19,6 +19,7 @@ use App\Lib\Cache\CacheManager;
 use App\Lib\Mail\MailManager;
 use App\Lib\Token\TokenManager;
 use App\Models\User;
+use App\Repositories\User\Interfaces\IUserRepository;
 use App\Services\Auth\Interfaces\IAuthService;
 use Exception;
 use Illuminate\Support\Facades\Hash;
@@ -30,6 +31,7 @@ class AuthService implements IAuthService
         private readonly TokenManager $tokenManager,
         private readonly CacheManager $cacheManager,
         private readonly MailManager $mailManager,
+        private readonly IUserRepository $userRepository
     ) {
     }
     /**
@@ -39,15 +41,13 @@ class AuthService implements IAuthService
      */
     public function login(LoginDto $loginDto): string
     {
-        /**@var ?User $user */
-        $user = User::query()->where([
-            'email' => $loginDto->email
-        ])->first();
+        $user = $this->userRepository->findByEmail($loginDto->email);
 
         if (!$user) {
             throw new UserNotFound();
         }
-        elseif (!Hash::check($loginDto->password, $user->password)){
+
+        if (!Hash::check($loginDto->password, $user->password)) {
             throw new InvalidPassword();
         }
 
@@ -61,14 +61,14 @@ class AuthService implements IAuthService
      */
     public function register(RegisterDto $registerDto): void
     {
-        if (User::query()->where('email', $registerDto->email)->first()) {
+        if ($this->userRepository->findByEmail($registerDto->email)) {
             throw new RegistrationConflict();
         }
 
-        User::query()->create([
+        $this->userRepository->create([
             'name' => $registerDto->name,
             'email' => $registerDto->email,
-            'password' => $registerDto->password,
+            'password' => $registerDto->password
         ]);
     }
 
@@ -104,9 +104,7 @@ class AuthService implements IAuthService
      */
     public function forgotPassword(ForgotPasswordDto $forgotPasswordDto): void
     {
-        $user = User::query()
-            ->where('email', $forgotPasswordDto->email)
-            ->first();
+        $user = $this->userRepository->findByEmail($forgotPasswordDto->email);
 
         if (!$user) {
             throw new UserNotFound();
@@ -114,8 +112,10 @@ class AuthService implements IAuthService
 
         $resetCode = str_pad(mt_rand(0, 9999), 4, 0, STR_PAD_LEFT);
 
-        $this->cacheManager->put('password_reset_'.$forgotPasswordDto->email,
-            $resetCode);
+        $this->cacheManager->put(
+            'password_reset_' . $forgotPasswordDto->email,
+            $resetCode
+        );
 
         $this->mailManager->send($forgotPasswordDto->email, $resetCode);
     }
@@ -128,26 +128,28 @@ class AuthService implements IAuthService
     public function verifyPasswordCode(VerifyPasswordCodeDto $verifyPasswordCodeDto): string
     {
         /**@var ?User $user */
-        $user = User::query()
-            ->where('email', $verifyPasswordCodeDto->email)
-            ->first();
+        $user = $this->userRepository->findByEmail($verifyPasswordCodeDto->email);
 
         if (!$user) {
             throw new UserNotFound();
         }
 
-        $resetCode = $this->cacheManager->get('password_reset_'.$verifyPasswordCodeDto->email);
+        $resetCode = $this->cacheManager->get('password_reset_' . $verifyPasswordCodeDto->email);
 
-        if($resetCode){
-            if($resetCode === $verifyPasswordCodeDto->code){
-                $resetToken = Hash::make($verifyPasswordCodeDto->code);
-                $this->cacheManager->put('password_reset_'.$verifyPasswordCodeDto->email,
-                    $resetToken);
-                return $resetToken;
-            }
+        if (!$resetCode) {
+            throw new ExpiredVerifyPasswordCode();
+        }
+
+        if ($resetCode !== $verifyPasswordCodeDto->code) {
             throw new InvalidVerifyPasswordCode();
         }
-        throw new ExpiredVerifyPasswordCode();
+
+        $resetToken = Hash::make($verifyPasswordCodeDto->code);
+        $this->cacheManager->put(
+            'password_reset_' . $verifyPasswordCodeDto->email,
+            $resetToken
+        );
+        return $resetToken;
     }
 
     /**
@@ -157,26 +159,24 @@ class AuthService implements IAuthService
      */
     public function resetPassword(ResetPasswordDto $resetPasswordDto): void
     {
-        /**@var ?User $user */
-        $user = User::query()
-            ->where('email', $resetPasswordDto->email)
-            ->first();
+        /** @var ?User */
+        $user = $this->userRepository->findByEmail($resetPasswordDto->email);
 
         if (!$user) {
             throw new UserNotFound();
         }
 
-        $resetToken = $this->cacheManager->get('password_reset_'.$resetPasswordDto->email);
+        $resetToken = $this->cacheManager->get('password_reset_' . $resetPasswordDto->email);
 
-        if($resetToken){
-            if($resetToken === $resetPasswordDto->token){
-                $user->update([
-                    'password' => $resetPasswordDto->password
-                ]);
-                return;
-            }
+        if (!$resetToken) {
+            throw new ExpiredResetPasswordToken();
+        }
+        if ($resetToken === $resetPasswordDto->token) {
             throw new InvalidResetPasswordToken();
         }
-        throw new ExpiredResetPasswordToken();
+
+        $this->userRepository->update($user->id, [
+            'password' => $resetPasswordDto->password
+        ]);
     }
 }

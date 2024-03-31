@@ -11,25 +11,27 @@ use App\Exceptions\Friend\FriendRequestNotFound;
 use App\Exceptions\User\UserNotFound;
 use App\Models\Friend;
 use App\Models\User;
+use App\Repositories\Friend\Interfaces\IFriendRepository;
 use App\Services\Friend\Interfaces\IFriendService;
 use Illuminate\Support\Collection;
 
 class FriendService implements IFriendService
 {
+
+    public function __construct(
+        private readonly IFriendRepository $friendRepository
+    ) {
+    }
+
     /**
      * @return Collection<int, User>
      * @throws UserNotFound
      */
     public function getUserFriends(int $userId): Collection
     {
-        /** @var ?User $user */
-        $user = User::query()->find($userId);
-        if (!$user) {
-            throw new UserNotFound();
-        }
-        $friends = $user->friends()->wherePivot('relationship_id', '=', RelationshipTypeId::FRIEND)->get();
-        return $friends->map(function (User $friend) {
-            return UserDto::fromUserModel($friend);
+        $friendships = $this->friendRepository->getUserFriendships($userId);
+        return $friendships->map(function (Friend $friendship) {
+            return UserDto::fromUserModel($friendship->friend);
         });
     }
 
@@ -39,12 +41,9 @@ class FriendService implements IFriendService
      */
     public function getFriendRequests(int $userId): Collection
     {
-        $requests = Friend::query()->where([
-            'friend_id' => $userId,
-            'relationship_id' => RelationshipTypeId::REQUEST
-        ])->with('user')->get();
-        return $requests->map(function (Friend $friend) {
-            return UserDto::fromFriendModel($friend);
+        $friendships = $this->friendRepository->getFriendRequests($userId);
+        return $friendships->map(function (Friend $friendship) {
+            return UserDto::fromUserModel($friendship->user);
         });
     }
 
@@ -55,13 +54,7 @@ class FriendService implements IFriendService
      */
     public function deleteFriend(int $userId, int $friendId): void
     {
-        Friend::query()->where([
-            'user_id' => $userId,
-            'friend_id' => $friendId
-        ])->orWhere([
-            'user_id' => $friendId,
-            'friend_id' => $userId
-        ])->delete();
+        $this->friendRepository->deleteFriendship($userId, $friendId);
     }
 
     /**
@@ -74,16 +67,13 @@ class FriendService implements IFriendService
 
     {
         /** @var ?Friend $request */
-        $request = Friend::query()->firstWhere([
-            'user_id' => $addFriendDto->userId,
-            'friend_id' => $addFriendDto->friendId
-        ]);
-        if ($request) {
+        $request = $this->friendRepository->findByUserIdAndFriendId($addFriendDto->userId, $addFriendDto->friendId);
+
+        if ($request || $addFriendDto->friendId === $addFriendDto->userId) {
             throw new FriendRequestConflict();
         }
 
-        /** @var Friend $request */
-        $request = Friend::query()->create([
+        $request = $this->friendRepository->create([
             'user_id' => $addFriendDto->userId,
             'friend_id' => $addFriendDto->friendId,
             'relationship_id' => RelationshipTypeId::REQUEST
@@ -98,17 +88,16 @@ class FriendService implements IFriendService
      */
     public function acceptFriendRequest(AcceptFriendDto $acceptFriendDto): void
     {
-        /** @var ?Friend $request */
-        $request = Friend::query()->find($acceptFriendDto->requestId);
-        if (!$request) {
-            throw new FriendRequestNotFound();
-        }
-        $request->update([
+        /** @var Friend */
+        $friendship = $this->friendRepository->findById($acceptFriendDto->requestId);
+
+        $this->friendRepository->update($friendship->id, [
             'relationship_id' => RelationshipTypeId::FRIEND
         ]);
-        Friend::query()->create([
-            'user_id' => $request->friend_id,
-            'friend_id' => $request->user_id,
+
+        $this->friendRepository->create([
+            'user_id' => $friendship->friend_id,
+            'friend_id' => $friendship->user_id,
             'relationship_id' => RelationshipTypeId::FRIEND
         ]);
     }
@@ -119,6 +108,6 @@ class FriendService implements IFriendService
      */
     public function rejectFriendRequest(int $requestId): ?bool
     {
-        return Friend::query()->find($requestId)->delete();
+        return $this->friendRepository->deleteById($requestId);
     }
 }

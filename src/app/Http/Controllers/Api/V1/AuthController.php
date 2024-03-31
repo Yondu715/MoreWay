@@ -23,7 +23,8 @@ class AuthController extends Controller
 
     public function __construct(
         private readonly IAuthService $authService
-        ){}
+    ) {
+    }
 
     /**
      * @param LoginRequest $loginRequest
@@ -33,8 +34,11 @@ class AuthController extends Controller
     public function login(LoginRequest $loginRequest): JsonResponse
     {
         $inLoginDto = LoginDto::fromRequest($loginRequest);
-        return response()->json(['data' => [
-            'accessToken' => $this->authService->login($inLoginDto)]
+
+        return response()->json([
+            'data' => [
+                'accessToken' => $this->authService->login($inLoginDto)
+            ]
         ]);
     }
 
@@ -72,8 +76,10 @@ class AuthController extends Controller
      */
     public function refresh(): JsonResponse
     {
-        return response()->json(['data' => [
-            'accessToken' => $this->authService->refresh()]
+        return response()->json([
+            'data' => [
+                'accessToken' => $this->authService->refresh()
+            ]
         ]);
     }
 
@@ -96,8 +102,10 @@ class AuthController extends Controller
     public function verifyPasswordCode(VerifyPasswordCodeRequest $verifyPasswordCodeRequest): JsonResponse
     {
         $verifyPasswordCodeDto = VerifyPasswordCodeDto::fromRequest($verifyPasswordCodeRequest);
-        return response()->json(['data' => [
-            'resetPasswordToken' => $this->authService->verifyPasswordCode($verifyPasswordCodeDto)]
+        return response()->json([
+            'data' => [
+                'resetPasswordToken' => $this->authService->verifyPasswordCode($verifyPasswordCodeDto)
+            ]
         ]);
     }
 
