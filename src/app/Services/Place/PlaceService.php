@@ -65,7 +65,7 @@ class PlaceService implements IPlaceService
             ->selectRaw("ROUND(ST_Distance_Sphere(Point(places.lon, places.lat), Point(?, ?)) / 1000, 1) as distance",
                 $paramsRequest)
             ->filter($this->placeFilterFactory->create($getPlacesDto->filter))
-            ->cursorPaginate(perPage: 3, cursor: $getPlacesDto->cursor);
+            ->cursorPaginate(perPage: $getPlacesDto->limit, cursor: $getPlacesDto->cursor);
 
         foreach ($places as $place){
             foreach ($place->images->all() as $image) {
