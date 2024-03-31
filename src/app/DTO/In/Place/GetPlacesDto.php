@@ -42,40 +42,40 @@ class GetPlacesDto
             lon: $getPlacesRequest->lon,
             cursor: $getPlacesRequest->cursor,
             filter: [
-                'locality' => ($getPlacesRequest->locality === null)
-                    ? null : explode(",", $getPlacesRequest->locality),
-                'type' => ($getPlacesRequest->type === null)
-                    ? null : explode(",", $getPlacesRequest->type),
-                'rating' => ($getPlacesRequest->rating === null)
-                    ? null : array_reduce(
-                        explode("-", $getPlacesRequest->rating),
-                        function ($range) use($getPlacesRequest) {
-                            $ratingRanges = explode("-", $getPlacesRequest->rating);
-                            if(count($ratingRanges) !== 2){
-                                throw new FilterOutOfRange();
-                            }
-                            $range['from'] = (float)$ratingRanges[0];
-                            $range['to'] = (float)$ratingRanges[1];
-                            return $range;
-                        }),
-                'distance' => ($getPlacesRequest->distance === null)
-                    ? null : array_reduce(
-                        explode("-", $getPlacesRequest->distance),
-                        function ($range) use($getPlacesRequest) {
-                            $distanceRanges = explode("-", $getPlacesRequest->distance);
-                            if(count($distanceRanges) !== 2){
-                                throw new FilterOutOfRange();
-                            }
-                            $range['from'] = (float)$distanceRanges[0];
-                            $range['to'] = (float)$distanceRanges[1];
-                            return $range;
-                        }),
-                'sort' => ($getPlacesRequest->sort === null || $getPlacesRequest->sortType === null)
-                    ? null : ['sort' => $getPlacesRequest->sort,
-                        'sortType' => ((int)$getPlacesRequest->sortType === 1) ? 'desc' : 'asc'],
+                'locality' => $getPlacesRequest->locality ? explode(",", $getPlacesRequest->locality) : null,
+                'type' => $getPlacesRequest->type ? explode(",", $getPlacesRequest->type) : null,
+                'rating' => $getPlacesRequest->rating ? array_reduce(
+                    explode("-", $getPlacesRequest->rating),
+                    function ($range) use ($getPlacesRequest) {
+                        $ratingRanges = explode("-", $getPlacesRequest->rating);
+                        if (count($ratingRanges) !== 2) {
+                            throw new FilterOutOfRange();
+                        }
+                        $range['from'] = (float)$ratingRanges[0];
+                        $range['to'] = (float)$ratingRanges[1];
+                        return $range;
+                    }
+                ) : null,
+                'distance' => $getPlacesRequest->distance ? array_reduce(
+                    explode("-", $getPlacesRequest->distance),
+                    function ($range) use ($getPlacesRequest) {
+                        $distanceRanges = explode("-", $getPlacesRequest->distance);
+                        if (count($distanceRanges) !== 2) {
+                            throw new FilterOutOfRange();
+                        }
+                        $range['from'] = (float)$distanceRanges[0];
+                        $range['to'] = (float)$distanceRanges[1];
+                        return $range;
+                    }
+                ) : null,
+                'sort' => $getPlacesRequest->sort && $getPlacesRequest->sortType ?
+                    [
+                        'sort' => $getPlacesRequest->sort,
+                        'sortType' => ((int)$getPlacesRequest->sortType === 1) ? 'desc' : 'asc'
+                    ] : null,
                 'search' => $getPlacesRequest->search,
             ],
-            limit: $getPlacesRequest->limit
+            limit: $getPlacesRequest->limit ?? 2
         );
     }
 }

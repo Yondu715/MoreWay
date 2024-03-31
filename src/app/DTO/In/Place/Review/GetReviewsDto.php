@@ -30,7 +30,7 @@ class GetReviewsDto
         return new self(
             placeId: $getReviewsRequest->route('placeId'),
             cursor: $getReviewsRequest->cursor,
-            limit: $getReviewsRequest->limit
+            limit: $getReviewsRequest->limit ?? 2
         );
     }
 }

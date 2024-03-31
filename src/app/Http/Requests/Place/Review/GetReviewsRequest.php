@@ -7,7 +7,7 @@ use Illuminate\Foundation\Http\FormRequest;
 
 /**
  * @property ?string cursor
- * @property int limit
+ * @property ?int limit
  */
 class GetReviewsRequest extends FormRequest
 {
@@ -20,7 +20,7 @@ class GetReviewsRequest extends FormRequest
     {
         return [
             'cursor' => 'string',
-            'limit' => 'required|numeric'
+            'limit' => 'numeric'
         ];
     }
 }
