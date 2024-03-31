@@ -8,14 +8,28 @@ use Illuminate\Http\Resources\Json\ResourceCollection;
 class PlaceCollection extends ResourceCollection
 {
     /**
-     * Transform the resource collection into an array.
-     *
      * @param Request $request
      * @return array
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        return [
+            'data' => $this->collection->map(function ($resource) {
+                return [
+                    'distance' => $resource->distance,
+                    'id' => $resource->id,
+                    'name' => $resource->name,
+                    'lat' => $resource->lat,
+                    'lon' => $resource->lon,
+                    'rating' => $resource->rating,
+                    'image' => count($resource->images) ? [
+                        'id' => $resource->images[0]->id,
+                        'path' => $resource->images[0]->image
+                    ] : null,
+                    'locality' => $resource->locality
+                ];
+            })
+        ];
     }
 
     /**

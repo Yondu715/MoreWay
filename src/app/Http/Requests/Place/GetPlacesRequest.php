@@ -16,6 +16,7 @@ use Illuminate\Foundation\Http\FormRequest;
  * @property ?string type
  * @property ?string rating
  * @property ?string distance
+ * @property int limit
  */
 class GetPlacesRequest extends FormRequest
 {
@@ -27,15 +28,16 @@ class GetPlacesRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'lat' => 'required|numeric',
-            'lon' => 'required|numeric',
+            'lat' => 'required|numeric|min:-90|max:90',
+            'lon' => 'required|numeric|min:-180|max:180',
             'cursor' => 'string',
             'search' => 'string',
             'sort' => 'string',
             'sortType' => 'numeric',
             'locality' => 'string',
             'type' => 'string',
-            'rating' => 'string'
+            'rating' => 'string',
+            'limit' => 'required|numeric'
         ];
     }
 }

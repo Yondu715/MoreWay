@@ -4,6 +4,7 @@ namespace App\DTO\In\Place;
 
 
 
+use App\Exceptions\Filter\FilterOutOfRange;
 use App\Http\Requests\Place\GetPlacesRequest;
 
 class GetPlacesDto
@@ -12,22 +13,27 @@ class GetPlacesDto
     public readonly float $lon;
     public readonly ?string $cursor;
     public readonly array $filter;
+    public readonly int $limit;
 
     public function __construct(
         float $lat,
         float $lon,
         ?string $cursor,
-        array $filter
+        array $filter,
+        int $limit
+
     ) {
         $this->lat = $lat;
         $this->lon = $lon;
         $this->cursor = $cursor;
         $this->filter = $filter;
+        $this->limit = $limit;
     }
 
     /**
      * @param GetPlacesRequest $getPlacesRequest
      * @return self
+     * @throws FilterOutOfRange
      */
     public static function fromRequest(GetPlacesRequest $getPlacesRequest): self
     {
@@ -44,23 +50,32 @@ class GetPlacesDto
                     ? null : array_reduce(
                         explode("-", $getPlacesRequest->rating),
                         function ($range) use($getPlacesRequest) {
-                            $range['from'] = (float)explode("-", $getPlacesRequest->rating)[0];
-                            $range['to'] = (float)explode("-", $getPlacesRequest->rating)[1];
+                            $ratingRanges = explode("-", $getPlacesRequest->rating);
+                            if(count($ratingRanges) !== 2){
+                                throw new FilterOutOfRange();
+                            }
+                            $range['from'] = (float)$ratingRanges[0];
+                            $range['to'] = (float)$ratingRanges[1];
                             return $range;
                         }),
                 'distance' => ($getPlacesRequest->distance === null)
                     ? null : array_reduce(
                         explode("-", $getPlacesRequest->distance),
                         function ($range) use($getPlacesRequest) {
-                            $range['from'] = (float)explode("-", $getPlacesRequest->distance)[0];
-                            $range['to'] = (float)explode("-", $getPlacesRequest->distance)[1];
+                            $distanceRanges = explode("-", $getPlacesRequest->distance);
+                            if(count($distanceRanges) !== 2){
+                                throw new FilterOutOfRange();
+                            }
+                            $range['from'] = (float)$distanceRanges[0];
+                            $range['to'] = (float)$distanceRanges[1];
                             return $range;
                         }),
                 'sort' => ($getPlacesRequest->sort === null || $getPlacesRequest->sortType === null)
                     ? null : ['sort' => $getPlacesRequest->sort,
                         'sortType' => ((int)$getPlacesRequest->sortType === 1) ? 'desc' : 'asc'],
                 'search' => $getPlacesRequest->search,
-            ]
+            ],
+            limit: $getPlacesRequest->limit
         );
     }
 }

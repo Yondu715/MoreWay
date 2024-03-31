@@ -6,8 +6,6 @@ use App\DTO\In\User\ChangeUserAvatarDto;
 use App\DTO\In\User\ChangeUserDataDto;
 use App\DTO\In\User\ChangeUserPasswordDto;
 use App\DTO\In\User\GetUsersDto;
-use App\Exceptions\User\InvalidOldPassword;
-use App\Exceptions\User\UserNotFound;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\ChangeUserAvatarRequest;
 use App\Http\Requests\User\ChangeUserDataRequest;
@@ -15,6 +13,7 @@ use App\Http\Requests\User\ChangeUserPasswordRequest;
 use App\Http\Requests\User\GetUsersRequest;
 use App\Http\Resources\Auth\UserResource;
 use App\Services\User\Interfaces\IUserService;
+use Exception;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Response;
 
@@ -41,7 +40,7 @@ class UserController extends Controller
     /**
      * @param int $userId
      * @return UserResource
-     * @throws UserNotFound
+     * @throws Exception
      */
     public function getUser(int $userId): UserResource
     {
@@ -53,7 +52,7 @@ class UserController extends Controller
     /**
      * @param ChangeUserDataRequest $changeUserDataRequest
      * @return UserResource
-     * @throws UserNotFound
+     * @throws Exception
      */
     public function changeData(ChangeUserDataRequest $changeUserDataRequest): UserResource
     {
@@ -67,7 +66,7 @@ class UserController extends Controller
     /**
      * @param int $userId
      * @return Response
-     * @throws UserNotFound
+     * @throws Exception
      */
     public function delete(int $userId): Response
     {
@@ -78,7 +77,7 @@ class UserController extends Controller
     /**
      * @param ChangeUserAvatarRequest $changeUserAvatarRequest
      * @return UserResource
-     * @throws UserNotFound
+     * @throws Exception
      */
     public function changeAvatar(ChangeUserAvatarRequest $changeUserAvatarRequest): UserResource
     {
@@ -91,8 +90,7 @@ class UserController extends Controller
     /**
      * @param ChangeUserPasswordRequest $changeUserPasswordRequest
      * @return UserResource
-     * @throws UserNotFound
-     * @throws InvalidOldPassword
+     * @throws Exception
      */
     public function changePassword(ChangeUserPasswordRequest $changeUserPasswordRequest): UserResource
     {

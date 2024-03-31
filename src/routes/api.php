@@ -27,6 +27,12 @@ Route::prefix('auth')
         Route::post('refresh-token', [AuthController::class, 'refresh']);
         Route::post('login', [AuthController::class, 'login']);
         Route::post('register', [AuthController::class, 'register']);
+        Route::prefix('/password')
+            ->group(function (){
+                Route::post('forgot', [AuthController::class, 'forgotPassword']);
+                Route::post('verify-code', [AuthController::class, 'verifyPasswordCode']);
+                Route::put('reset', [AuthController::class, 'resetPassword']);
+            });
     });
 
 Route::prefix('users')

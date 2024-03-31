@@ -30,7 +30,7 @@ class PlaceFilter extends AbstractFilter
     public function locality(Builder $builder, array $value): void
     {
         $builder->whereHas('locality', function ($query) use ($value) {
-            $query->where('name', $value);
+            $query->whereIn('name', $value);
         });
     }
 
@@ -42,7 +42,7 @@ class PlaceFilter extends AbstractFilter
     public function type(Builder $builder, array $value): void
     {
         $builder->whereHas('type', function ($query) use ($value) {
-            $query->where('name', $value);
+            $query->whereIn('name', $value);
         });
     }
 
@@ -112,6 +112,6 @@ class PlaceFilter extends AbstractFilter
      */
     public function search(Builder $builder, string $value): void
     {
-        $builder->where('name', 'like', "%{$value}%");
+        $builder->where('name', 'like', "%$value%");
     }
 }
