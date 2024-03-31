@@ -2,15 +2,15 @@
 
 namespace App\Models\Filters\Place;
 
-use Illuminate\Contracts\Container\BindingResolutionException;
-
 class PlaceFilterFactory
 {
+
     /**
-     * @throws BindingResolutionException
+     * @param array $filters
+     * @return PlaceFilter
      */
     public function create(array $filters): PlaceFilter
     {
-        return app()->make(PlaceFilter::class, ['filters' => array_filter($filters)]);
+        return new PlaceFilter($filters);
     }
 }
