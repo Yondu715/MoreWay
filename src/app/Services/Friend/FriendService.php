@@ -29,14 +29,9 @@ class FriendService implements IFriendService
      */
     public function getUserFriends(int $userId): Collection
     {
-        /** @var ?User $user */
-        $user = User::query()->find($userId);
-        if (!$user) {
-            throw new UserNotFound();
-        }
-        $friends = $user->friends()->wherePivot('relationship_id', '=', RelationshipTypeId::FRIEND)->get();
-        return $friends->map(function (User $friend) {
-            return UserDto::fromUserModel($friend);
+        $friendships = $this->friendRepository->getUserFriendships($userId);
+        return $friendships->map(function (Friend $friendship) {
+            return UserDto::fromUserModel($friendship->friend);
         });
     }
 
@@ -46,12 +41,9 @@ class FriendService implements IFriendService
      */
     public function getFriendRequests(int $userId): Collection
     {
-        $requests = Friend::query()->where([
-            'friend_id' => $userId,
-            'relationship_id' => RelationshipTypeId::REQUEST
-        ])->with('user')->get();
-        return $requests->map(function (Friend $friend) {
-            return UserDto::fromUserModel($friend->user);
+        $friendships = $this->friendRepository->getFriendRequests($userId);
+        return $friendships->map(function (Friend $friendship) {
+            return UserDto::fromUserModel($friendship->user);
         });
     }
 
@@ -75,11 +67,9 @@ class FriendService implements IFriendService
 
     {
         /** @var ?Friend $request */
-        $request = Friend::query()->firstWhere([
-            'user_id' => $addFriendDto->userId,
-            'friend_id' => $addFriendDto->friendId
-        ]);
-        if ($request) {
+        $request = $this->friendRepository->findByUserIdAndFriendId($addFriendDto->userId, $addFriendDto->friendId);
+
+        if ($request || $addFriendDto->friendId === $addFriendDto->userId) {
             throw new FriendRequestConflict();
         }
 
@@ -99,15 +89,15 @@ class FriendService implements IFriendService
     public function acceptFriendRequest(AcceptFriendDto $acceptFriendDto): void
     {
         /** @var Friend */
-        $request = $this->friendRepository->findById($acceptFriendDto->requestId);
+        $friendship = $this->friendRepository->findById($acceptFriendDto->requestId);
 
-        $this->friendRepository->update($request->id, [
+        $this->friendRepository->update($friendship->id, [
             'relationship_id' => RelationshipTypeId::FRIEND
         ]);
 
         $this->friendRepository->create([
-            'user_id' => $request->friend_id,
-            'friend_id' => $request->user_id,
+            'user_id' => $friendship->friend_id,
+            'friend_id' => $friendship->user_id,
             'relationship_id' => RelationshipTypeId::FRIEND
         ]);
     }
