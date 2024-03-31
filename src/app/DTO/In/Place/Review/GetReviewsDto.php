@@ -9,12 +9,16 @@ class GetReviewsDto
     public readonly int $placeId;
     public readonly ?string $cursor;
 
+    public readonly int $limit;
+
     public function __construct(
         int $placeId,
         ?string $cursor,
+        int $limit
     ) {
         $this->placeId = $placeId;
         $this->cursor = $cursor;
+        $this->limit = $limit;
     }
 
     /**
@@ -26,6 +30,7 @@ class GetReviewsDto
         return new self(
             placeId: $getReviewsRequest->route('placeId'),
             cursor: $getReviewsRequest->cursor,
+            limit: $getReviewsRequest->limit
         );
     }
 }

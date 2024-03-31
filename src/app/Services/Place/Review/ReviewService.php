@@ -44,6 +44,6 @@ class ReviewService implements IReviewService
         return PlaceReview::query()
             ->where('place_id', $getReviewsDto->placeId)
             ->orderBy('created_at', 'desc')
-            ->cursorPaginate(perPage: 1, cursor: $getReviewsDto->cursor);
+            ->cursorPaginate(perPage: $getReviewsDto->limit, cursor: $getReviewsDto->cursor);
     }
 }
