@@ -24,7 +24,7 @@ class PlaceCollection extends ResourceCollection
                     'rating' => $resource->rating,
                     'image' => count($resource->images) ? [
                         'id' => $resource->images[0]->id,
-                        'path' => $resource->images[0]->image
+                        'path' => 'https://more-way.ru/storage/' . $resource->images[0]->image
                     ] : null,
                     'locality' => $resource->locality
                 ];

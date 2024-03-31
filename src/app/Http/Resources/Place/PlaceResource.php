@@ -31,7 +31,7 @@ class PlaceResource extends JsonResource
             'images' => collect($this->images)->map(function ($resource) {
                 return [
                     'id' => $resource->id,
-                    'path' => 'https://more-way.ru/storage/'.$resource->image
+                    'path' => $resource->image
                 ];
             }),
             'locality' => $this->locality
