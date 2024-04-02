@@ -19,7 +19,7 @@ class UserRepository extends BaseRepository implements IUserRepository
     public function findById(int $id): User
     {
         try {
-            /** @var User */
+            /** @var User $user */
             $user = parent::findById($id);
             return $user;
         } catch (\Throwable $th) {
