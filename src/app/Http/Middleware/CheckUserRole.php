@@ -3,7 +3,7 @@
 namespace App\Http\Middleware;
 
 use App\Exceptions\Auth\Forbidden;
-use App\Lib\Token\ITokenManager;
+use App\Lib\Token\Interfaces\ITokenManager;
 use Closure;
 use Exception;
 use Illuminate\Http\Request;

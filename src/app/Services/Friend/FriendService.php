@@ -88,8 +88,9 @@ class FriendService implements IFriendService
      */
     public function acceptFriendRequest(AcceptFriendDto $acceptFriendDto): void
     {
-        /** @var Friend */
+        /** @var Friend $friendship */
         $friendship = $this->friendRepository->findById($acceptFriendDto->requestId);
+
 
         $this->friendRepository->update($friendship->id, [
             'relationship_id' => RelationshipTypeId::FRIEND

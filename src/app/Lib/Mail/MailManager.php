@@ -2,6 +2,7 @@
 
 namespace App\Lib\Mail;
 
+use App\Lib\Mail\Interfaces\IMailManager;
 use App\Mail\Auth\ForgotPasswordMail;
 use Illuminate\Support\Facades\Mail;
 

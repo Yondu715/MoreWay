@@ -8,6 +8,13 @@ use App\DTO\In\Auth\Password\ResetPasswordDto;
 use App\DTO\In\Auth\Password\VerifyPasswordCodeDto;
 use App\DTO\In\Auth\RegisterDto;
 use App\DTO\Out\Auth\UserDto;
+use App\Exceptions\Auth\InvalidPassword;
+use App\Exceptions\Auth\Password\ExpiredResetPasswordToken;
+use App\Exceptions\Auth\Password\ExpiredVerifyPasswordCode;
+use App\Exceptions\Auth\Password\InvalidResetPasswordToken;
+use App\Exceptions\Auth\Password\InvalidVerifyPasswordCode;
+use App\Exceptions\Auth\RegistrationConflict;
+use App\Exceptions\User\UserNotFound;
 use Exception;
 
 interface IAuthService
@@ -15,20 +22,20 @@ interface IAuthService
     /**
      * @param LoginDto $loginDto
      * @return string
-     * @throws Exception
+     * @throws UserNotFound
+     * @throws InvalidPassword
      */
     public function login(LoginDto $loginDto): string;
 
     /**
      * @param RegisterDto $registerDto
      * @return void
-     * @throws Exception
+     * @throws RegistrationConflict
      */
     public function register(RegisterDto $registerDto): void;
 
     /**
      * @return UserDto
-     * @throws Exception
      */
     public function getAuthUser(): UserDto;
 
@@ -45,22 +52,25 @@ interface IAuthService
     /**
      * @param ForgotPasswordDto $forgotPasswordDto
      * @return void
-     * @throws Exception
+     * @throws UserNotFound
      */
     public function forgotPassword(ForgotPasswordDto $forgotPasswordDto): void;
-
 
     /**
      * @param VerifyPasswordCodeDto $verifyPasswordCodeDto
      * @return string
-     * @throws Exception
+     * @throws UserNotFound
+     * @throws ExpiredVerifyPasswordCode
+     * @throws InvalidVerifyPasswordCode
      */
     public function verifyPasswordCode(VerifyPasswordCodeDto $verifyPasswordCodeDto): string;
 
     /**
      * @param ResetPasswordDto $resetPasswordDto
      * @return void
-     * @throws Exception
+     * @throws UserNotFound
+     * @throws InvalidResetPasswordToken
+     * @throws ExpiredResetPasswordToken
      */
     public function resetPassword(ResetPasswordDto $resetPasswordDto): void;
 }

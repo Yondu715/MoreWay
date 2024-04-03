@@ -17,7 +17,6 @@ interface IUserService
     /**
      * @param GetUsersDto $getUsersDto
      * @return Collection<int,User>
-     *
      */
     public function getUsers(GetUsersDto $getUsersDto): Collection;
 

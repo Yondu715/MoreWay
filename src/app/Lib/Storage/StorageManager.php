@@ -2,6 +2,7 @@
 
 namespace App\Lib\Storage;
 
+use App\Lib\Storage\Interfaces\IStorageManager;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 

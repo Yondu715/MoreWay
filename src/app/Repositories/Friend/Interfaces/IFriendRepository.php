@@ -25,7 +25,7 @@ interface IFriendRepository extends IBaseRepository
     /**
      * @param int $userId
      * @param int $friendId
-     * @return Friend
+     * @return ?Friend
      */
     public function findByUserIdAndFriendId(int $userId, int $friendId): ?Friend;
 

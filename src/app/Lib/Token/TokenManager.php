@@ -3,6 +3,7 @@
 namespace App\Lib\Token;
 
 use App\Exceptions\Auth\InvalidToken;
+use App\Lib\Token\Interfaces\ITokenManager;
 use App\Models\User;
 use Exception;
 use Illuminate\Support\Facades\Auth;

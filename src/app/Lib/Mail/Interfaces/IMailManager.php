@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Lib\Mail;
+namespace App\Lib\Mail\Interfaces;
 
 interface IMailManager
 {

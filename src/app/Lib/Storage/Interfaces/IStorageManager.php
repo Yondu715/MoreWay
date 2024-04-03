@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Lib\Storage;
+namespace App\Lib\Storage\Interfaces;
 
 use Illuminate\Http\UploadedFile;
 

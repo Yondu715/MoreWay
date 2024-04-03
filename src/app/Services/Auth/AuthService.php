@@ -15,13 +15,12 @@ use App\Exceptions\Auth\Password\InvalidResetPasswordToken;
 use App\Exceptions\Auth\Password\InvalidVerifyPasswordCode;
 use App\Exceptions\Auth\RegistrationConflict;
 use App\Exceptions\User\UserNotFound;
-use App\Lib\Cache\ICacheManager;
-use App\Lib\Mail\IMailManager;
-use App\Lib\Token\ITokenManager;
+use App\Lib\Cache\Interfaces\ICacheManager;
+use App\Lib\Mail\Interfaces\IMailManager;
+use App\Lib\Token\Interfaces\ITokenManager;
 use App\Models\User;
 use App\Repositories\User\Interfaces\IUserRepository;
 use App\Services\Auth\Interfaces\IAuthService;
-use Exception;
 use Illuminate\Support\Facades\Hash;
 
 class AuthService implements IAuthService
@@ -34,10 +33,12 @@ class AuthService implements IAuthService
         private readonly IUserRepository $userRepository
     ) {
     }
+
     /**
      * @param LoginDto $loginDto
      * @return string
-     * @throws Exception
+     * @throws UserNotFound
+     * @throws InvalidPassword
      */
     public function login(LoginDto $loginDto): string
     {
@@ -57,7 +58,7 @@ class AuthService implements IAuthService
     /**
      * @param RegisterDto $registerDto
      * @return void
-     * @throws Exception
+     * @throws RegistrationConflict
      */
     public function register(RegisterDto $registerDto): void
     {
@@ -74,7 +75,6 @@ class AuthService implements IAuthService
 
     /**
      * @return UserDto
-     * @throws Exception
      */
     public function getAuthUser(): UserDto
     {
@@ -100,7 +100,7 @@ class AuthService implements IAuthService
     /**
      * @param ForgotPasswordDto $forgotPasswordDto
      * @return void
-     * @throws Exception
+     * @throws UserNotFound
      */
     public function forgotPassword(ForgotPasswordDto $forgotPasswordDto): void
     {
@@ -123,7 +123,9 @@ class AuthService implements IAuthService
     /**
      * @param VerifyPasswordCodeDto $verifyPasswordCodeDto
      * @return string
-     * @throws Exception
+     * @throws UserNotFound
+     * @throws ExpiredVerifyPasswordCode
+     * @throws InvalidVerifyPasswordCode
      */
     public function verifyPasswordCode(VerifyPasswordCodeDto $verifyPasswordCodeDto): string
     {
@@ -155,11 +157,13 @@ class AuthService implements IAuthService
     /**
      * @param ResetPasswordDto $resetPasswordDto
      * @return void
-     * @throws Exception
+     * @throws UserNotFound
+     * @throws InvalidResetPasswordToken
+     * @throws ExpiredResetPasswordToken
      */
     public function resetPassword(ResetPasswordDto $resetPasswordDto): void
     {
-        /** @var ?User */
+        /** @var ?User $user */
         $user = $this->userRepository->findByEmail($resetPasswordDto->email);
 
         if (!$user) {

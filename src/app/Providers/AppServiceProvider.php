@@ -3,12 +3,12 @@
 namespace App\Providers;
 
 use App\Lib\Cache\CacheManager;
-use App\Lib\Cache\ICacheManager;
-use App\Lib\Mail\IMailManager;
+use App\Lib\Cache\Interfaces\ICacheManager;
+use App\Lib\Mail\Interfaces\IMailManager;
 use App\Lib\Mail\MailManager;
-use App\Lib\Storage\IStorageManager;
+use App\Lib\Storage\Interfaces\IStorageManager;
 use App\Lib\Storage\StorageManager;
-use App\Lib\Token\ITokenManager;
+use App\Lib\Token\Interfaces\ITokenManager;
 use App\Lib\Token\TokenManager;
 use App\Repositories\BaseRepository\BaseRepository;
 use App\Repositories\BaseRepository\Interfaces\IBaseRepository;
@@ -16,6 +16,8 @@ use App\Repositories\Friend\FriendRepository;
 use App\Repositories\Friend\Interfaces\IFriendRepository;
 use App\Repositories\Place\Interfaces\IPlaceRepository;
 use App\Repositories\Place\PlaceRepository;
+use App\Repositories\Place\Review\Interfaces\IReviewRepository;
+use App\Repositories\Place\Review\ReviewRepository;
 use App\Repositories\User\Interfaces\IUserRepository;
 use App\Repositories\User\UserRepository;
 use App\Services\Auth\AuthService;
@@ -44,6 +46,7 @@ class AppServiceProvider extends ServiceProvider
         IBaseRepository::class => BaseRepository::class,
         IUserRepository::class => UserRepository::class,
         IPlaceRepository::class => PlaceRepository::class,
+        IReviewRepository::class => ReviewRepository::class,
         IFriendRepository::class => FriendRepository::class,
 
         /** LIBS */

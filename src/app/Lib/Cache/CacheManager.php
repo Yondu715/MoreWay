@@ -2,6 +2,7 @@
 
 namespace App\Lib\Cache;
 
+use App\Lib\Cache\Interfaces\ICacheManager;
 use Illuminate\Support\Facades\Cache;
 
 class CacheManager implements ICacheManager

@@ -5,6 +5,7 @@ namespace App\Repositories\BaseRepository;
 use App\Repositories\BaseRepository\Interfaces\IBaseRepository;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Throwable;
 
 class BaseRepository implements IBaseRepository
 {
@@ -56,6 +57,7 @@ class BaseRepository implements IBaseRepository
      * @param int $id
      * @param array<int,mixed> $attributes
      * @return Model
+     * @throws Throwable
      */
     public function update(int $id, array $attributes): Model
     {

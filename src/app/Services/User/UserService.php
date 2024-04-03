@@ -10,7 +10,7 @@ use App\DTO\Out\Auth\UserDto;
 use App\Enums\Storage\Paths;
 use App\Exceptions\User\InvalidOldPassword;
 use App\Exceptions\User\UserNotFound;
-use App\Lib\Storage\IStorageManager;
+use App\Lib\Storage\Interfaces\IStorageManager;
 use App\Repositories\User\Interfaces\IUserRepository;
 use App\Services\User\Interfaces\IUserService;
 use Illuminate\Support\Facades\Hash;

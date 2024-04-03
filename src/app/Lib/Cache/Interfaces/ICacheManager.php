@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Lib\Cache;
+namespace App\Lib\Cache\Interfaces;
 
 interface ICacheManager
 {

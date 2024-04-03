@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Lib\Token;
+namespace App\Lib\Token\Interfaces;
 
+use App\Lib\Token\Exception;
 use App\Models\User;
 
 interface ITokenManager
