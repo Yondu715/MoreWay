@@ -3,9 +3,10 @@
 namespace App\Repositories\PlaceReview\Interfaces;
 
 use App\DTO\In\PlaceReview\GetPlaceReviewsDto;
+use App\Repositories\BaseRepository\Interfaces\IBaseRepository;
 use Illuminate\Contracts\Pagination\CursorPaginator;
 
-interface IPlaceReviewRepository
+interface IPlaceReviewRepository extends IBaseRepository
 {
     /**
      * @param GetPlaceReviewsDto $getReviewsDto

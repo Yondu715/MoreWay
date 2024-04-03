@@ -9,7 +9,6 @@ use App\DTO\In\User\GetUsersDto;
 use App\DTO\Out\Auth\UserDto;
 use App\Enums\Storage\Paths;
 use App\Exceptions\User\InvalidOldPassword;
-use App\Exceptions\User\UserNotFound;
 use App\Lib\Storage\Interfaces\IStorageManager;
 use App\Repositories\User\Interfaces\IUserRepository;
 use App\Services\User\Interfaces\IUserService;
@@ -28,7 +27,7 @@ class UserService implements IUserService
 
     /**
      * @param GetUsersDto $getUsersDto
-     * @return Collection<int,User>
+     * @return Collection<int,UserDto>
      */
     public function getUsers(GetUsersDto $getUsersDto): Collection
     {

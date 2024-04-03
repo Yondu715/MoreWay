@@ -6,16 +6,11 @@ use App\Http\Controllers\Api\V1\PlaceController;
 use App\Http\Controllers\Api\V1\UserController;
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "api" middleware group. Make something great!
-|
-*/
+Route::patterns([
+    'userId' => '[0-9]+',
+    'requestId' => '[0-9]+',
+    'placeId' => '[0-9]+'
+]);
 
 Route::prefix('auth')
     ->group(function () {
@@ -28,7 +23,7 @@ Route::prefix('auth')
         Route::post('login', [AuthController::class, 'login']);
         Route::post('register', [AuthController::class, 'register']);
         Route::prefix('/password')
-            ->group(function (){
+            ->group(function () {
                 Route::post('forgot', [AuthController::class, 'forgotPassword']);
                 Route::post('verify-code', [AuthController::class, 'verifyPasswordCode']);
                 Route::put('reset', [AuthController::class, 'resetPassword']);
@@ -39,15 +34,17 @@ Route::prefix('users')
     ->middleware('auth:api', 'role:user')
     ->group(function () {
         Route::get('/', [UserController::class, 'getUsers']);
-        Route::get('/{userId}', [UserController::class, 'getUser']);
-        Route::patch('/{userId}', [UserController::class, 'changeData']);
-        Route::delete('/{userId}', [UserController::class, 'delete']);
-        Route::put('/{userId}/avatar', [UserController::class, 'changeAvatar']);
-        Route::put('/{userId}/password', [UserController::class, 'changePassword']);
+        Route::middleware('owner')->group(function () {
+            Route::get('/{userId}', [UserController::class, 'getUser']);
+            Route::patch('/{userId}', [UserController::class, 'changeData']);
+            Route::delete('/{userId}', [UserController::class, 'delete']);
+            Route::put('/{userId}/avatar', [UserController::class, 'changeAvatar']);
+            Route::put('/{userId}/password', [UserController::class, 'changePassword']);
 
-        Route::get('/{userId}/friends', [FriendController::class, 'getFriends']);
-        Route::delete('/{userId}/friends/{friendId}', [FriendController::class, 'deleteFriend']);
-        Route::get('/{userId}/friends/requests', [FriendController::class, 'getFriendRequests']);
+            Route::get('/{userId}/friends', [FriendController::class, 'getFriends']);
+            Route::delete('/{userId}/friends/{friendId}', [FriendController::class, 'deleteFriend']);
+            Route::get('/{userId}/friends/requests', [FriendController::class, 'getFriendRequests']);
+        });
     });
 
 Route::prefix('friends')
@@ -64,9 +61,8 @@ Route::prefix('places')
         Route::get('/', [PlaceController::class, 'getPlaces']);
         Route::get('/{placeId}', [PlaceController::class, 'getPlace']);
         Route::prefix('/{placeId}/reviews')
-            ->group(function (){
-                Route::middleware('id')
-                ->post('/', [PlaceController::class, 'createReview']);
+            ->group(function () {
+                Route::middleware('owner')->post('/', [PlaceController::class, 'createReview']);
                 Route::get('/', [PlaceController::class, 'getReviews']);
             });
     });
