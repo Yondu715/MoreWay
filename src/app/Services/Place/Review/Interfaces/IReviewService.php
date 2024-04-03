@@ -4,16 +4,16 @@ namespace App\Services\Place\Review\Interfaces;
 
 use App\DTO\In\Place\Review\CreateReviewDto;
 use App\DTO\In\Place\Review\GetReviewsDto;
-use App\Models\PlaceReview;
+use App\DTO\Out\Place\ReviewDto;
 use Illuminate\Contracts\Pagination\CursorPaginator;
 
 interface IReviewService
 {
     /**
      * @param CreateReviewDto $createReviewDto
-     * @return PlaceReview
+     * @return ReviewDto
      */
-    public function createReviews(CreateReviewDto $createReviewDto): PlaceReview;
+    public function createReviews(CreateReviewDto $createReviewDto): ReviewDto;
 
     /**
      * @param GetReviewsDto $getReviewsDto

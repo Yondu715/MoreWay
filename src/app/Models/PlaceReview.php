@@ -34,7 +34,7 @@ class PlaceReview extends Model
         'text',
         'author_id',
         'place_id',
-        'rating'
+        'rating',
     ];
 
     /**

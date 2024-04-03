@@ -4,8 +4,8 @@ namespace App\Services\Place\Review;
 
 use App\DTO\In\Place\Review\CreateReviewDto;
 use App\DTO\In\Place\Review\GetReviewsDto;
+use App\DTO\Out\Place\ReviewDto;
 use App\Exceptions\Review\FailedToCreateReview;
-use App\Models\PlaceReview;
 use App\Repositories\Place\Review\Interfaces\IReviewRepository;
 use App\Services\Place\Review\Interfaces\IReviewService;
 use Illuminate\Contracts\Pagination\CursorPaginator;
@@ -18,12 +18,14 @@ class ReviewService implements IReviewService
 
     /**
      * @param CreateReviewDto $createReviewDto
-     * @return PlaceReview
+     * @return ReviewDto
      * @throws FailedToCreateReview
      */
-    public function createReviews(CreateReviewDto $createReviewDto): PlaceReview
+    public function createReviews(CreateReviewDto $createReviewDto): ReviewDto
     {
-        return $this->reviewRepository->createReviews($createReviewDto);
+        return ReviewDto::fromReviewModel(
+            $this->reviewRepository->createReviews($createReviewDto)
+        );
     }
 
     /**

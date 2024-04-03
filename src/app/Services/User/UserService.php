@@ -43,19 +43,17 @@ class UserService implements IUserService
     /**
      * @param int $userId
      * @return UserDto
-     * @throws UserNotFound
      */
     public function getUserById(int $userId): UserDto
     {
-        return UserDto::fromUserModel(
-            $this->userRepository->findById($userId)
-        );
+        /** @var User $user*/
+        $user = $this->userRepository->findById($userId);
+        return UserDto::fromUserModel($user);
     }
 
     /**
      * @param int $userId
      * @return ?bool
-     * @throws UserNotFound
      */
     public function deleteUserById(int $userId): ?bool
     {
@@ -65,7 +63,6 @@ class UserService implements IUserService
     /**
      * @param ChangeUserPasswordDto $changeUserPasswordDto
      * @throws InvalidOldPassword
-     * @throws UserNotFound
      * @return UserDto
      */
     public function changePassword(ChangeUserPasswordDto $changeUserPasswordDto): UserDto
@@ -75,34 +72,34 @@ class UserService implements IUserService
         if (!Hash::check($changeUserPasswordDto->oldPassword, $user->password)) {
             throw new InvalidOldPassword();
         }
-        return UserDto::fromUserModel(
-            $this->userRepository->update($user->id, [
-                'password' => $changeUserPasswordDto->newPassword
-            ])
-        );
+
+        /** @var User $updateUser*/
+        $updateUser = $this->userRepository->update($user->id, [
+            'password' => $changeUserPasswordDto->newPassword
+        ]);
+        return UserDto::fromUserModel($updateUser);
     }
 
     /**
      * @param ChangeUserAvatarDto $changeUserAvatarDto
      * @return UserDto
-     * @throws UserNotFound
      */
     public function changeAvatar(ChangeUserAvatarDto $changeUserAvatarDto): UserDto
     {
         $user = $this->userRepository->findById($changeUserAvatarDto->userId);
         $path = Paths::UserAvatar->value . "/$user->id.jpg";
         $this->storageManager->store($path, $changeUserAvatarDto->avatar);
-        return UserDto::fromUserModel(
-            $this->userRepository->update($user->id, [
-                'avatar' => $path
-            ])
-        );
+
+        /** @var User $updateUser*/
+        $updateUser = $this->userRepository->update($user->id, [
+            'avatar' => $path
+        ]);
+        return UserDto::fromUserModel($updateUser);
     }
 
     /**
      * @param ChangeUserDataDto $changeUserDataDto
      * @return UserDto
-     * @throws UserNotFound
      */
     public function changeData(ChangeUserDataDto $changeUserDataDto): UserDto
     {
@@ -110,8 +107,9 @@ class UserService implements IUserService
         $data = collect($changeUserDataDto)->filter(function (?string $value) {
             return !is_null($value);
         })->toArray();
-        return UserDto::fromUserModel(
-            $this->userRepository->update($user->id, $data)
-        );
+
+        /** @var User $updateUser*/
+        $updateUser = $this->userRepository->update($user->id, $data);
+        return UserDto::fromUserModel($updateUser);
     }
 }
