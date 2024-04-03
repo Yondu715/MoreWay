@@ -11,13 +11,6 @@ use Illuminate\Contracts\Pagination\CursorPaginator;
 interface IReviewRepository
 {
     /**
-     * @param CreateReviewDto $createReviewDto
-     * @return PlaceReview
-     * @throws FailedToCreateReview
-     */
-    public function createReviews(CreateReviewDto $createReviewDto): PlaceReview;
-
-    /**
      * @param GetReviewsDto $getReviewsDto
      * @return CursorPaginator
      */

@@ -20,28 +20,6 @@ class ReviewRepository extends BaseRepository implements IReviewRepository
     }
 
     /**
-     * @param CreateReviewDto $createReviewDto
-     * @return PlaceReview
-     * @throws FailedToCreateReview
-     */
-    public function createReviews(CreateReviewDto $createReviewDto): PlaceReview
-    {
-        try {
-            /** @var PlaceReview $placeReview */
-            $placeReview = $this->create([
-                'author_id' => $createReviewDto->userId,
-                'place_id' => $createReviewDto->placeId,
-                'text' => $createReviewDto->text,
-                'rating' => $createReviewDto->rating
-            ]);
-        }
-        catch (Exception){
-            throw new FailedToCreateReview();
-        }
-        return $placeReview;
-    }
-
-    /**
      * @param GetReviewsDto $getReviewsDto
      * @return CursorPaginator
      */

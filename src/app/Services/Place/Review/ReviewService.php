@@ -6,8 +6,10 @@ use App\DTO\In\Place\Review\CreateReviewDto;
 use App\DTO\In\Place\Review\GetReviewsDto;
 use App\DTO\Out\Place\ReviewDto;
 use App\Exceptions\Review\FailedToCreateReview;
+use App\Models\PlaceReview;
 use App\Repositories\Place\Review\Interfaces\IReviewRepository;
 use App\Services\Place\Review\Interfaces\IReviewService;
+use Exception;
 use Illuminate\Contracts\Pagination\CursorPaginator;
 
 class ReviewService implements IReviewService
@@ -23,9 +25,20 @@ class ReviewService implements IReviewService
      */
     public function createReviews(CreateReviewDto $createReviewDto): ReviewDto
     {
-        return ReviewDto::fromReviewModel(
-            $this->reviewRepository->createReviews($createReviewDto)
-        );
+        try {
+            /** @var PlaceReview $review */
+            $review = $this->reviewRepository->create([
+                'author_id' => $createReviewDto->userId,
+                'place_id' => $createReviewDto->placeId,
+                'text' => $createReviewDto->text,
+                'rating' => $createReviewDto->rating
+            ]);
+        }
+        catch (Exception){
+            throw new FailedToCreateReview();
+        }
+
+        return ReviewDto::fromReviewModel($review);
     }
 
     /**
