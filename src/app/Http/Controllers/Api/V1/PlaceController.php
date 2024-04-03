@@ -4,26 +4,26 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\DTO\In\Place\GetPlaceDto;
 use App\DTO\In\Place\GetPlacesDto;
-use App\DTO\In\Place\Review\CreateReviewDto;
-use App\DTO\In\Place\Review\GetReviewsDto;
+use App\DTO\In\PlaceReview\CreatePlaceReviewDto;
+use App\DTO\In\PlaceReview\GetPlaceReviewsDto;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Place\GetPlaceRequest;
 use App\Http\Requests\Place\GetPlacesRequest;
-use App\Http\Requests\Place\Review\CreateReviewRequest;
-use App\Http\Requests\Place\Review\GetReviewsRequest;
+use App\Http\Requests\PlaceReview\CreatePlaceReviewRequest;
+use App\Http\Requests\PlaceReview\GetPlaceReviewsRequest;
 use App\Http\Resources\Place\PlaceCollection;
 use App\Http\Resources\Place\PlaceResource;
-use App\Http\Resources\Place\Review\ReviewCollection;
-use App\Http\Resources\Place\Review\ReviewResource;
+use App\Http\Resources\PlaceReview\PlaceReviewCollection;
+use App\Http\Resources\PlaceReview\PlaceReviewResource;
 use App\Services\Place\Interfaces\IPlaceService;
-use App\Services\Place\Review\Interfaces\IReviewService;
+use App\Services\PlaceReview\Interfaces\IPlaceReviewService;
 use Exception;
 
 class PlaceController extends Controller
 {
     public function __construct(
         private readonly IPlaceService $placeService,
-        private readonly IReviewService $reviewService
+        private readonly IPlaceReviewService $reviewService
     ){}
 
     /**
@@ -53,26 +53,26 @@ class PlaceController extends Controller
     }
 
     /**
-     * @param CreateReviewRequest $createReviewRequest
-     * @return ReviewResource
+     * @param CreatePlaceReviewRequest $createReviewRequest
+     * @return PlaceReviewResource
      * @throws Exception
      */
-    public function createReview(CreateReviewRequest $createReviewRequest): ReviewResource
+    public function createReview(CreatePlaceReviewRequest $createReviewRequest): PlaceReviewResource
     {
-        $createReviewDto = CreateReviewDto::fromRequest($createReviewRequest);
-        return ReviewResource::make(
+        $createReviewDto = CreatePlaceReviewDto::fromRequest($createReviewRequest);
+        return PlaceReviewResource::make(
             $this->reviewService->createReviews($createReviewDto)
         );
     }
 
     /**
-     * @param GetReviewsRequest $getReviewsRequest
-     * @return ReviewCollection
+     * @param GetPlaceReviewsRequest $getReviewsRequest
+     * @return PlaceReviewCollection
      */
-    public function getReviews(GetReviewsRequest $getReviewsRequest): ReviewCollection
+    public function getReviews(GetPlaceReviewsRequest $getReviewsRequest): PlaceReviewCollection
     {
-        $getReviewsDto = GetReviewsDto::fromRequest($getReviewsRequest);
-        return ReviewCollection::make(
+        $getReviewsDto = GetPlaceReviewsDto::fromRequest($getReviewsRequest);
+        return PlaceReviewCollection::make(
                 $this->reviewService->getReviews($getReviewsDto)
         );
     }

@@ -1,12 +1,12 @@
 <?php
 
-namespace App\DTO\Out\Place;
+namespace App\DTO\Out\PlaceReview;
 
 use App\Models\PlaceReview;
 use App\Models\User;
 use Carbon\Carbon;
 
-class ReviewDto
+class PlaceReviewDto
 {
     public readonly string $id;
     public readonly string $text;

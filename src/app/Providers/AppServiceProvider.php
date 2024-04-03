@@ -16,8 +16,8 @@ use App\Repositories\Friend\FriendRepository;
 use App\Repositories\Friend\Interfaces\IFriendRepository;
 use App\Repositories\Place\Interfaces\IPlaceRepository;
 use App\Repositories\Place\PlaceRepository;
-use App\Repositories\Place\Review\Interfaces\IReviewRepository;
-use App\Repositories\Place\Review\ReviewRepository;
+use App\Repositories\PlaceReview\Interfaces\IPlaceReviewRepository;
+use App\Repositories\PlaceReview\PlaceReviewRepository;
 use App\Repositories\User\Interfaces\IUserRepository;
 use App\Repositories\User\UserRepository;
 use App\Services\Auth\AuthService;
@@ -26,8 +26,8 @@ use App\Services\Friend\FriendService;
 use App\Services\Friend\Interfaces\IFriendService;
 use App\Services\Place\Interfaces\IPlaceService;
 use App\Services\Place\PlaceService;
-use App\Services\Place\Review\Interfaces\IReviewService;
-use App\Services\Place\Review\ReviewService;
+use App\Services\PlaceReview\Interfaces\IPlaceReviewService;
+use App\Services\PlaceReview\PlaceReviewService;
 use App\Services\User\Interfaces\IUserService;
 use App\Services\User\UserService;
 use Illuminate\Support\ServiceProvider;
@@ -40,13 +40,13 @@ class AppServiceProvider extends ServiceProvider
         IAuthService::class => AuthService::class,
         IFriendService::class => FriendService::class,
         IPlaceService::class => PlaceService::class,
-        IReviewService::class => ReviewService::class,
+        IPlaceReviewService::class => PlaceReviewService::class,
 
         /** REPOSITORIES */
         IBaseRepository::class => BaseRepository::class,
         IUserRepository::class => UserRepository::class,
         IPlaceRepository::class => PlaceRepository::class,
-        IReviewRepository::class => ReviewRepository::class,
+        IPlaceReviewRepository::class => PlaceReviewRepository::class,
         IFriendRepository::class => FriendRepository::class,
 
         /** LIBS */

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Resources\Place\Review;
+namespace App\Http\Resources\PlaceReview;
 
 use App\Models\PlaceReview;
 use Illuminate\Http\Request;
@@ -9,7 +9,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 /**
  * @mixin PlaceReview
  */
-class ReviewResource extends JsonResource
+class PlaceReviewResource extends JsonResource
 {
     /**
      * Transform the resource into an array.

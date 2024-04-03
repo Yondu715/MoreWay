@@ -1,10 +1,10 @@
 <?php
 
-namespace App\DTO\In\Place\Review;
+namespace App\DTO\In\PlaceReview;
 
-use App\Http\Requests\Place\Review\GetReviewsRequest;
+use App\Http\Requests\PlaceReview\GetPlaceReviewsRequest;
 
-class GetReviewsDto
+class GetPlaceReviewsDto
 {
     public readonly int $placeId;
     public readonly ?string $cursor;
@@ -22,10 +22,10 @@ class GetReviewsDto
     }
 
     /**
-     * @param GetReviewsRequest $getReviewsRequest
+     * @param GetPlaceReviewsRequest $getReviewsRequest
      * @return self
      */
-    public static function fromRequest(GetReviewsRequest $getReviewsRequest): self
+    public static function fromRequest(GetPlaceReviewsRequest $getReviewsRequest): self
     {
         return new self(
             placeId: $getReviewsRequest->route('placeId'),

@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Exceptions\Review;
+namespace App\Exceptions\PlaceReview;
 
 use App\Exceptions\BaseException;
 
-class FailedToCreateReview extends BaseException
+class FailedToCreatePlaceReview extends BaseException
 {
     /** @var int */
     protected $code = 400;

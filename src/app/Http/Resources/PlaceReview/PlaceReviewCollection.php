@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Resources\Place\Review;
+namespace App\Http\Resources\PlaceReview;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class ReviewCollection extends ResourceCollection
+class PlaceReviewCollection extends ResourceCollection
 {
     /**
      * @param Request $request

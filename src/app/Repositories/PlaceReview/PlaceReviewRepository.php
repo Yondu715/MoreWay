@@ -1,17 +1,14 @@
 <?php
 
-namespace App\Repositories\Place\Review;
+namespace App\Repositories\PlaceReview;
 
-use App\DTO\In\Place\Review\CreateReviewDto;
-use App\DTO\In\Place\Review\GetReviewsDto;
-use App\Exceptions\Review\FailedToCreateReview;
+use App\DTO\In\PlaceReview\GetPlaceReviewsDto;
 use App\Models\PlaceReview;
 use App\Repositories\BaseRepository\BaseRepository;
-use App\Repositories\Place\Review\Interfaces\IReviewRepository;
-use Exception;
+use App\Repositories\PlaceReview\Interfaces\IPlaceReviewRepository;
 use Illuminate\Contracts\Pagination\CursorPaginator;
 
-class ReviewRepository extends BaseRepository implements IReviewRepository
+class PlaceReviewRepository extends BaseRepository implements IPlaceReviewRepository
 {
 
     public function __construct(PlaceReview $review)
@@ -20,10 +17,10 @@ class ReviewRepository extends BaseRepository implements IReviewRepository
     }
 
     /**
-     * @param GetReviewsDto $getReviewsDto
+     * @param GetPlaceReviewsDto $getReviewsDto
      * @return CursorPaginator
      */
-    public function getReviews(GetReviewsDto $getReviewsDto): CursorPaginator
+    public function getReviews(GetPlaceReviewsDto $getReviewsDto): CursorPaginator
     {
         return $this->model->query()
             ->where('place_id', $getReviewsDto->placeId)
