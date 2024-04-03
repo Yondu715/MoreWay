@@ -34,8 +34,8 @@ Route::prefix('users')
     ->middleware('auth:api', 'role:user')
     ->group(function () {
         Route::get('/', [UserController::class, 'getUsers']);
+        Route::get('/{userId}', [UserController::class, 'getUser']);
         Route::middleware('owner')->group(function () {
-            Route::get('/{userId}', [UserController::class, 'getUser']);
             Route::patch('/{userId}', [UserController::class, 'changeData']);
             Route::delete('/{userId}', [UserController::class, 'delete']);
             Route::put('/{userId}/avatar', [UserController::class, 'changeAvatar']);
