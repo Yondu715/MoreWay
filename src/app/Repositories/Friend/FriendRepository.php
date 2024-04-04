@@ -19,9 +19,9 @@ class FriendRepository extends BaseRepository implements IFriendRepository
     /**
      * @param int $userId
      * @param int $friendId
-     * @return bool|null
+     * @return bool
      */
-    public function deleteFriendship(int $userId, int $friendId): ?bool
+    public function deleteFriendship(int $userId, int $friendId): bool
     {
         return $this->model->query()->where([
             'user_id' => $userId,

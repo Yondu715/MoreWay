@@ -2,7 +2,7 @@
 
 namespace App\Enums\Storage;
 
-enum Paths: string
+enum StoragePaths: string
 {
     case UserAvatar = 'users/';
 }

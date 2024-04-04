@@ -3,10 +3,12 @@
 namespace App\Repositories\PlaceReview;
 
 use App\DTO\In\PlaceReview\GetPlaceReviewsDto;
+use App\Exceptions\PlaceReview\FailedToCreatePlaceReview;
 use App\Models\PlaceReview;
 use App\Repositories\BaseRepository\BaseRepository;
 use App\Repositories\PlaceReview\Interfaces\IPlaceReviewRepository;
 use Illuminate\Contracts\Pagination\CursorPaginator;
+use Illuminate\Database\Eloquent\Model;
 
 class PlaceReviewRepository extends BaseRepository implements IPlaceReviewRepository
 {
@@ -26,5 +28,15 @@ class PlaceReviewRepository extends BaseRepository implements IPlaceReviewReposi
             ->where('place_id', $getReviewsDto->placeId)
             ->orderBy('created_at', 'desc')
             ->cursorPaginate(perPage: $getReviewsDto->limit, cursor: $getReviewsDto->cursor);
+    }
+
+    public function create(array $attributes): PlaceReview
+    {
+        try {
+            /** @var PlaceReview */
+            return parent::create($attributes);
+        } catch (\Throwable $th) {
+            throw new FailedToCreatePlaceReview();
+        }
     }
 }

@@ -38,12 +38,4 @@ class UserDto
         );
     }
 
-    public static function fromFriendModel(Friend $friend) {
-        return new self(
-            id: $friend->friend->id,
-            name: $friend->friend->name,
-            avatar: $friend->friend->avatar,
-            email: $friend->friend->email
-        );
-    }
 }

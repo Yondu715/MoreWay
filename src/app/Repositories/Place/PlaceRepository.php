@@ -16,7 +16,8 @@ class PlaceRepository extends BaseRepository implements IPlaceRepository
 {
     public function __construct(
         private readonly PlaceFilterFactory $placeFilterFactory,
-        Place $place){
+        Place $place
+    ) {
         parent::__construct($place);
     }
 
@@ -27,18 +28,19 @@ class PlaceRepository extends BaseRepository implements IPlaceRepository
      */
     public function getPlaceById(GetPlaceDto $getPlaceDto): Place
     {
-        /** @var ?Builder $place */
-        $place = $this->model
-            ->where('id', $getPlaceDto->id);
+        /** @var Builder */
+        $place = $this->model->query()->where('id', $getPlaceDto->id);
 
         if (!$place) {
             throw new PlaceNotFound();
         }
 
-        /** @var Place $place */
+        /** @var Place */
         return $place->select('places.*')
-            ->selectRaw("ROUND(ST_Distance_Sphere(Point(places.lon, places.lat), Point(?, ?)) / 1000, 1) as distance",
-                [$getPlaceDto->lon, $getPlaceDto->lat])
+            ->selectRaw(
+                "ROUND(ST_Distance_Sphere(Point(places.lon, places.lat), Point(?, ?)) / 1000, 1) as distance",
+                [$getPlaceDto->lon, $getPlaceDto->lat]
+            )
             ->first();
     }
 
@@ -54,8 +56,10 @@ class PlaceRepository extends BaseRepository implements IPlaceRepository
 
         return $this->model->query()
             ->select('places.*')
-            ->selectRaw("ROUND(ST_Distance_Sphere(Point(places.lon, places.lat), Point(?, ?)) / 1000, 1) as distance",
-                $paramsRequest)
+            ->selectRaw(
+                "ROUND(ST_Distance_Sphere(Point(places.lon, places.lat), Point(?, ?)) / 1000, 1) as distance",
+                $paramsRequest
+            )
             ->filter($this->placeFilterFactory->create($getPlacesDto->filter))
             ->cursorPaginate(perPage: $getPlacesDto->limit, cursor: $getPlacesDto->cursor);
     }

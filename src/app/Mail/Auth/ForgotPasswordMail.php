@@ -3,11 +3,7 @@
 namespace App\Mail\Auth;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
-use Illuminate\Mail\Mailables\Attachment;
-use Illuminate\Mail\Mailables\Content;
-use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
 class ForgotPasswordMail extends Mailable
@@ -27,10 +23,8 @@ class ForgotPasswordMail extends Mailable
     /**
      * Get the message content definition.
      */
-    public function content(): Content
+    public function build()
     {
-        return new Content(
-            view: 'emails.password-reset',
-        );
+        return $this->subject('Сброс пароля')->view('emails.password-reset');
     }
 }

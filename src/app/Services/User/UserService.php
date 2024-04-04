@@ -7,7 +7,7 @@ use App\DTO\In\User\ChangeUserDataDto;
 use App\DTO\In\User\ChangeUserPasswordDto;
 use App\DTO\In\User\GetUsersDto;
 use App\DTO\Out\Auth\UserDto;
-use App\Enums\Storage\Paths;
+use App\Enums\Storage\StoragePaths;
 use App\Exceptions\User\InvalidOldPassword;
 use App\Lib\Storage\Interfaces\IStorageManager;
 use App\Repositories\User\Interfaces\IUserRepository;
@@ -45,16 +45,16 @@ class UserService implements IUserService
      */
     public function getUserById(int $userId): UserDto
     {
-        /** @var User $user*/
+        /** @var User */
         $user = $this->userRepository->findById($userId);
         return UserDto::fromUserModel($user);
     }
 
     /**
      * @param int $userId
-     * @return ?bool
+     * @return bool
      */
-    public function deleteUserById(int $userId): ?bool
+    public function deleteUserById(int $userId): bool
     {
         return $this->userRepository->deleteById($userId);
     }
@@ -66,17 +66,17 @@ class UserService implements IUserService
      */
     public function changePassword(ChangeUserPasswordDto $changeUserPasswordDto): UserDto
     {
-        /** @var ?User $user */
+        /** @var User */
         $user = $this->userRepository->findById($changeUserPasswordDto->userId);
         if (!Hash::check($changeUserPasswordDto->oldPassword, $user->password)) {
             throw new InvalidOldPassword();
         }
 
-        /** @var User $updateUser*/
-        $updateUser = $this->userRepository->update($user->id, [
+        /** @var User */
+        $updatedUser = $this->userRepository->update($user->id, [
             'password' => $changeUserPasswordDto->newPassword
         ]);
-        return UserDto::fromUserModel($updateUser);
+        return UserDto::fromUserModel($updatedUser);
     }
 
     /**
@@ -86,7 +86,7 @@ class UserService implements IUserService
     public function changeAvatar(ChangeUserAvatarDto $changeUserAvatarDto): UserDto
     {
         $user = $this->userRepository->findById($changeUserAvatarDto->userId);
-        $path = Paths::UserAvatar->value . "/$user->id.jpg";
+        $path = StoragePaths::UserAvatar->value . "/$user->id.jpg";
         $this->storageManager->store($path, $changeUserAvatarDto->avatar);
 
         /** @var User $updateUser*/

@@ -29,10 +29,10 @@ interface IUserService
 
     /**
      * @param int $userId
-     * @return ?bool
+     * @return bool
      * @throws UserNotFound
      */
-    public function deleteUserById(int $userId): ?bool;
+    public function deleteUserById(int $userId): bool;
 
     /**
      * @param ChangeUserPasswordDto $changeUserPasswordDto

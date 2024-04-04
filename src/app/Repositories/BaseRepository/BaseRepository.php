@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Throwable;
 
-class BaseRepository implements IBaseRepository
+abstract class BaseRepository implements IBaseRepository
 {
     protected Model $model;
 
@@ -35,9 +35,9 @@ class BaseRepository implements IBaseRepository
 
     /**
      * @param int $id
-     * @return bool|null
+     * @return bool
      */
-    public function deleteById(int $id): ?bool
+    public function deleteById(int $id): bool
     {
         return $this->model->query()->where([
             'id' => $id

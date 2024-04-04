@@ -24,7 +24,7 @@ class FriendService implements IFriendService
     }
 
     /**
-     * @return Collection<int, User>
+     * @return Collection<int, UserDto>
      * @throws UserNotFound
      */
     public function getUserFriends(int $userId): Collection
@@ -37,7 +37,7 @@ class FriendService implements IFriendService
 
     /**
      * @param int $userId
-     * @return Collection<int, Friend>
+     * @return Collection<int, UserDto>
      */
     public function getFriendRequests(int $userId): Collection
     {
@@ -50,17 +50,16 @@ class FriendService implements IFriendService
     /**
      * @param int $userId
      * @param int $friendId
-     * @return void
+     * @return bool
      */
-    public function deleteFriend(int $userId, int $friendId): void
+    public function deleteFriend(int $userId, int $friendId): bool
     {
-        $this->friendRepository->deleteFriendship($userId, $friendId);
+        return $this->friendRepository->deleteFriendship($userId, $friendId);
     }
 
     /**
      * @param AddFriendDto $addFriendDto
      * @return UserDto
-     *
      * @throws FriendRequestConflict
      */
     public function addFriendRequest(AddFriendDto $addFriendDto): UserDto
@@ -105,9 +104,9 @@ class FriendService implements IFriendService
 
     /**
      * @param int $requestId
-     * @return bool|null
+     * @return bool
      */
-    public function rejectFriendRequest(int $requestId): ?bool
+    public function rejectFriendRequest(int $requestId): bool
     {
         return $this->friendRepository->deleteById($requestId);
     }

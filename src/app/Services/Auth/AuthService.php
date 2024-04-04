@@ -129,7 +129,7 @@ class AuthService implements IAuthService
      */
     public function verifyPasswordCode(VerifyPasswordCodeDto $verifyPasswordCodeDto): string
     {
-        /**@var ?User $user */
+        /** @var ?User */
         $user = $this->userRepository->findByEmail($verifyPasswordCodeDto->email);
 
         if (!$user) {
@@ -175,7 +175,7 @@ class AuthService implements IAuthService
         if (!$resetToken) {
             throw new ExpiredResetPasswordToken();
         }
-        if ($resetToken === $resetPasswordDto->token) {
+        if ($resetToken !== $resetPasswordDto->token) {
             throw new InvalidResetPasswordToken();
         }
 

@@ -26,9 +26,9 @@ interface IFriendService
     /**
      * @param int $userId
      * @param int $friendId
-     * @return void
+     * @return bool
      */
-    public function deleteFriend(int $userId, int $friendId): void;
+    public function deleteFriend(int $userId, int $friendId): bool;
 
     /**
      * @param AddFriendDto $addFriendDto
@@ -44,8 +44,8 @@ interface IFriendService
 
     /**
      * @param int $requestId
-     * @return bool|null
+     * @return bool
      */
-    public function rejectFriendRequest(int $requestId): ?bool;
+    public function rejectFriendRequest(int $requestId): bool;
 
 }

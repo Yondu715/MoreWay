@@ -14,7 +14,8 @@ class PlaceService implements IPlaceService
 {
     public function __construct(
         private readonly IPlaceRepository $placeRepository
-    ){}
+    ) {
+    }
 
     /**
      * @param GetPlaceDto $getPlaceDto
@@ -33,13 +34,12 @@ class PlaceService implements IPlaceService
     /**
      * @param GetPlacesDto $getPlacesDto
      * @return CursorPaginator
-
      */
     public function getPlaces(GetPlacesDto $getPlacesDto): CursorPaginator
     {
         $places = $this->placeRepository->getPlaces($getPlacesDto);
 
-        foreach ($places as $place){
+        foreach ($places as $place) {
             $place->rating = round($place->reviews()->avg('rating'), 2);
         }
         return $places;

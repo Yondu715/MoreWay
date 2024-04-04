@@ -34,8 +34,8 @@ interface IBaseRepository
 
     /**
      * @param int $id
-     * @return bool|null
+     * @return bool
      */
-    public function deleteById(int $id): ?bool;
+    public function deleteById(int $id): bool;
 
 }

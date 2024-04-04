@@ -43,7 +43,6 @@ class AppServiceProvider extends ServiceProvider
         IPlaceReviewService::class => PlaceReviewService::class,
 
         /** REPOSITORIES */
-        IBaseRepository::class => BaseRepository::class,
         IUserRepository::class => UserRepository::class,
         IPlaceRepository::class => PlaceRepository::class,
         IPlaceReviewRepository::class => PlaceReviewRepository::class,
