@@ -89,7 +89,7 @@ class UserService implements IUserService
         $path = StoragePaths::UserAvatar->value . "/$user->id.jpg";
         $this->storageManager->store($path, $changeUserAvatarDto->avatar);
 
-        /** @var User $updateUser*/
+        /** @var User */
         $updateUser = $this->userRepository->update($user->id, [
             'avatar' => $path
         ]);
@@ -107,7 +107,7 @@ class UserService implements IUserService
             return !is_null($value);
         })->toArray();
 
-        /** @var User $updateUser*/
+        /** @var User */
         $updateUser = $this->userRepository->update($user->id, $data);
         return UserDto::fromUserModel($updateUser);
     }

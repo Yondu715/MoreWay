@@ -17,7 +17,7 @@ class TokenManager implements ITokenManager
      */
     public function createToken(User $user): string
     {
-        return self::getAuth()->login($user);
+        return $this->getAuth()->login($user);
     }
 
     /**
@@ -25,7 +25,7 @@ class TokenManager implements ITokenManager
      */
     public function refreshToken(): string
     {
-        return self::getAuth()->refresh();
+        return $this->getAuth()->refresh();
     }
 
     /**
@@ -33,7 +33,7 @@ class TokenManager implements ITokenManager
      */
     public function destroyToken(): void
     {
-        self::getAuth()->logout();
+        $this->getAuth()->logout();
     }
 
     /**
@@ -42,8 +42,8 @@ class TokenManager implements ITokenManager
      */
     public function getAuthUser(): User
     {
-        /** @var ?User $user */
-        $user = self::getAuth()->user();
+        /** @var ?User */
+        $user = $this->getAuth()->user();
 
         if (!$user) {
             throw new InvalidToken();
