@@ -28,7 +28,7 @@ class PlaceRepository extends BaseRepository implements IPlaceRepository
      */
     public function getPlaceById(GetPlaceDto $getPlaceDto): Place
     {
-        /** @var Builder */
+        /** @var Builder $place */
         $place = $this->model->query()->where('id', $getPlaceDto->id);
 
         if (!$place) {

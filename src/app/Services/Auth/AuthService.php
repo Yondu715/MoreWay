@@ -129,7 +129,7 @@ class AuthService implements IAuthService
      */
     public function verifyPasswordCode(VerifyPasswordCodeDto $verifyPasswordCodeDto): string
     {
-        /** @var ?User */
+        /** @var ?User $user */
         $user = $this->userRepository->findByEmail($verifyPasswordCodeDto->email);
 
         if (!$user) {

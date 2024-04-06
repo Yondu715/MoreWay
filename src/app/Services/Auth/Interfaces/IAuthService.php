@@ -15,7 +15,6 @@ use App\Exceptions\Auth\Password\InvalidResetPasswordToken;
 use App\Exceptions\Auth\Password\InvalidVerifyPasswordCode;
 use App\Exceptions\Auth\RegistrationConflict;
 use App\Exceptions\User\UserNotFound;
-use Exception;
 
 interface IAuthService
 {

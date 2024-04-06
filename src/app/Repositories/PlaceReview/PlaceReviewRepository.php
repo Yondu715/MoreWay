@@ -8,7 +8,7 @@ use App\Models\PlaceReview;
 use App\Repositories\BaseRepository\BaseRepository;
 use App\Repositories\PlaceReview\Interfaces\IPlaceReviewRepository;
 use Illuminate\Contracts\Pagination\CursorPaginator;
-use Illuminate\Database\Eloquent\Model;
+use Throwable;
 
 class PlaceReviewRepository extends BaseRepository implements IPlaceReviewRepository
 {
@@ -30,12 +30,18 @@ class PlaceReviewRepository extends BaseRepository implements IPlaceReviewReposi
             ->cursorPaginate(perPage: $getReviewsDto->limit, cursor: $getReviewsDto->cursor);
     }
 
+
+    /**
+     * @param array $attributes
+     * @return PlaceReview
+     * @throws FailedToCreatePlaceReview
+     */
     public function create(array $attributes): PlaceReview
     {
         try {
             /** @var PlaceReview */
             return parent::create($attributes);
-        } catch (\Throwable $th) {
+        } catch (Throwable) {
             throw new FailedToCreatePlaceReview();
         }
     }

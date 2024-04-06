@@ -45,7 +45,7 @@ class UserService implements IUserService
      */
     public function getUserById(int $userId): UserDto
     {
-        /** @var User */
+        /** @var User $user */
         $user = $this->userRepository->findById($userId);
         return UserDto::fromUserModel($user);
     }
@@ -66,13 +66,13 @@ class UserService implements IUserService
      */
     public function changePassword(ChangeUserPasswordDto $changeUserPasswordDto): UserDto
     {
-        /** @var User */
+        /** @var User $user */
         $user = $this->userRepository->findById($changeUserPasswordDto->userId);
         if (!Hash::check($changeUserPasswordDto->oldPassword, $user->password)) {
             throw new InvalidOldPassword();
         }
 
-        /** @var User */
+        /** @var User $updatedUser */
         $updatedUser = $this->userRepository->update($user->id, [
             'password' => $changeUserPasswordDto->newPassword
         ]);
@@ -85,11 +85,12 @@ class UserService implements IUserService
      */
     public function changeAvatar(ChangeUserAvatarDto $changeUserAvatarDto): UserDto
     {
+        /** @var User $user */
         $user = $this->userRepository->findById($changeUserAvatarDto->userId);
         $path = StoragePaths::UserAvatar->value . "/$user->id.jpg";
         $this->storageManager->store($path, $changeUserAvatarDto->avatar);
 
-        /** @var User */
+        /** @var User $updateUser */
         $updateUser = $this->userRepository->update($user->id, [
             'avatar' => $path
         ]);
@@ -102,12 +103,13 @@ class UserService implements IUserService
      */
     public function changeData(ChangeUserDataDto $changeUserDataDto): UserDto
     {
+        /** @var User $user */
         $user = $this->userRepository->findById($changeUserDataDto->userId);
         $data = collect($changeUserDataDto)->filter(function (?string $value) {
             return !is_null($value);
         })->toArray();
 
-        /** @var User */
+        /** @var User $updateUser */
         $updateUser = $this->userRepository->update($user->id, $data);
         return UserDto::fromUserModel($updateUser);
     }

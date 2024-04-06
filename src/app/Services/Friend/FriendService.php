@@ -7,10 +7,7 @@ use App\DTO\In\Friend\AddFriendDto;
 use App\DTO\Out\Auth\UserDto;
 use App\Enums\Friend\RelationshipTypeId;
 use App\Exceptions\Friend\FriendRequestConflict;
-use App\Exceptions\Friend\FriendRequestNotFound;
-use App\Exceptions\User\UserNotFound;
 use App\Models\Friend;
-use App\Models\User;
 use App\Repositories\Friend\Interfaces\IFriendRepository;
 use App\Services\Friend\Interfaces\IFriendService;
 use Illuminate\Support\Collection;
@@ -25,7 +22,6 @@ class FriendService implements IFriendService
 
     /**
      * @return Collection<int, UserDto>
-     * @throws UserNotFound
      */
     public function getUserFriends(int $userId): Collection
     {
@@ -72,6 +68,7 @@ class FriendService implements IFriendService
             throw new FriendRequestConflict();
         }
 
+        /** @var Friend $request */
         $request = $this->friendRepository->create([
             'user_id' => $addFriendDto->userId,
             'friend_id' => $addFriendDto->friendId,
@@ -83,7 +80,6 @@ class FriendService implements IFriendService
     /**
      * @param AcceptFriendDto $acceptFriendDto
      * @return void
-     * @throws FriendRequestNotFound
      */
     public function acceptFriendRequest(AcceptFriendDto $acceptFriendDto): void
     {

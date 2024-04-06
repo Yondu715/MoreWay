@@ -42,7 +42,7 @@ class TokenManager implements ITokenManager
      */
     public function getAuthUser(): User
     {
-        /** @var ?User */
+        /** @var ?User $user */
         $user = $this->getAuth()->user();
 
         if (!$user) {
