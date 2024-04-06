@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Application\DTO\Out\Place;
+namespace App\Application\DTO\Out\Place\Review;
 
 use App\Application\DTO\Out\Auth\UserDto;
 use App\Infrastructure\Database\Models\PlaceReview;

@@ -6,8 +6,8 @@ use App\Application\Contracts\In\Services\IPlaceReviewService;
 use App\Application\Contracts\In\Services\IPlaceService;
 use App\Application\DTO\In\Place\GetPlaceDto;
 use App\Application\DTO\In\Place\GetPlacesDto;
-use App\Application\DTO\In\PlaceReview\CreatePlaceReviewDto;
-use App\Application\DTO\In\PlaceReview\GetPlaceReviewsDto;
+use App\Application\DTO\In\Place\Review\CreatePlaceReviewDto;
+use App\Application\DTO\In\Place\Review\GetPlaceReviewsDto;
 use App\Infrastructure\Exceptions\ApiException;
 use App\Infrastructure\Http\Controllers\Controller;
 use App\Infrastructure\Http\Requests\Place\GetPlaceRequest;
@@ -16,8 +16,8 @@ use App\Infrastructure\Http\Requests\Place\PlaceReview\CreatePlaceReviewRequest;
 use App\Infrastructure\Http\Requests\Place\PlaceReview\GetPlaceReviewsRequest;
 use App\Infrastructure\Http\Resources\Place\PlaceCollection;
 use App\Infrastructure\Http\Resources\Place\PlaceResource;
-use App\Infrastructure\Http\Resources\Place\PlaceReview\PlaceReviewCollection;
-use App\Infrastructure\Http\Resources\Place\PlaceReview\PlaceReviewResource;
+use App\Infrastructure\Http\Resources\Place\Review\PlaceReviewCollection;
+use App\Infrastructure\Http\Resources\Place\Review\PlaceReviewResource;
 use Exception;
 
 class PlaceController extends Controller

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Application\Exceptions\Place;
+namespace App\Application\Exceptions\Place\Review;
 
 use Exception;
 

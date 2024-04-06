@@ -3,6 +3,7 @@
 namespace App\Infrastructure\Http\Resources\Place;
 
 use App\Infrastructure\Database\Models\Place;
+use App\Infrastructure\Http\Resources\Place\Locality\LocalityResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Infrastructure\Http\Resources\Place;
+namespace App\Infrastructure\Http\Resources\Place\Locality;
 
 use App\Application\DTO\Out\Place\LocalityDto;
 use Illuminate\Http\Request;

@@ -2,9 +2,9 @@
 
 namespace App\Application\Contracts\In\Services;
 
-use App\Application\DTO\In\PlaceReview\CreatePlaceReviewDto;
-use App\Application\DTO\In\PlaceReview\GetPlaceReviewsDto;
-use App\Application\DTO\Out\Place\PlaceReviewDto;
+use App\Application\DTO\In\Place\Review\CreatePlaceReviewDto;
+use App\Application\DTO\In\Place\Review\GetPlaceReviewsDto;
+use App\Application\DTO\Out\Place\Review\PlaceReviewDto;
 use Illuminate\Contracts\Pagination\CursorPaginator;
 
 interface IPlaceReviewService

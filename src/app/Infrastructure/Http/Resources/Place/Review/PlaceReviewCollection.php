@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Infrastructure\Http\Resources\Place\PlaceReview;
+namespace App\Infrastructure\Http\Resources\Place\Review;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\ResourceCollection;

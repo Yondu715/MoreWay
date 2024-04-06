@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Infrastructure\Http\Resources\Place\PlaceReview;
+namespace App\Infrastructure\Http\Resources\Place\Review;
 
 use App\Infrastructure\Database\Models\PlaceReview;
 use App\Infrastructure\Http\Resources\Auth\UserResource;

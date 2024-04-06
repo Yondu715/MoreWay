@@ -2,7 +2,7 @@
 
 namespace App\Application\Contracts\Out\Repositories;
 
-use App\Application\DTO\In\PlaceReview\GetPlaceReviewsDto;
+use App\Application\DTO\In\Place\Review\GetPlaceReviewsDto;
 use Illuminate\Contracts\Pagination\CursorPaginator;
 
 interface IPlaceReviewRepository extends IBaseRepository

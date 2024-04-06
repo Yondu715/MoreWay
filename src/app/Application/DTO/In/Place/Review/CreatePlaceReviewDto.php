@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Application\DTO\In\PlaceReview;
+namespace App\Application\DTO\In\Place\Review;
 
 use App\Infrastructure\Http\Requests\Place\PlaceReview\CreatePlaceReviewRequest;
 

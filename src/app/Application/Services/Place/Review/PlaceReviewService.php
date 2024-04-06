@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Application\Services\Place;
+namespace App\Application\Services\Place\Review;
 
 use App\Application\Contracts\In\Services\IPlaceReviewService;
 use App\Application\Contracts\Out\Repositories\IPlaceReviewRepository;
-use App\Application\DTO\In\PlaceReview\CreatePlaceReviewDto;
-use App\Application\DTO\In\PlaceReview\GetPlaceReviewsDto;
-use App\Application\DTO\Out\Place\PlaceReviewDto;
-use App\Application\Exceptions\Place\FailedToCreatePlaceReview;
+use App\Application\DTO\In\Place\Review\CreatePlaceReviewDto;
+use App\Application\DTO\In\Place\Review\GetPlaceReviewsDto;
+use App\Application\DTO\Out\Place\Review\PlaceReviewDto;
+use App\Application\Exceptions\Place\Review\FailedToCreatePlaceReview;
 use App\Infrastructure\Database\Models\PlaceReview;
 use Exception;
 use Illuminate\Contracts\Pagination\CursorPaginator;
