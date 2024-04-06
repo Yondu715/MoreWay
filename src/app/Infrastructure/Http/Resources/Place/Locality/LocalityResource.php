@@ -2,7 +2,7 @@
 
 namespace App\Infrastructure\Http\Resources\Place\Locality;
 
-use App\Application\DTO\Out\Place\LocalityDto;
+use App\Application\DTO\Out\Place\Locality\LocalityDto;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 

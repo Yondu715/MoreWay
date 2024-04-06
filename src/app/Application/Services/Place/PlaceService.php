@@ -6,6 +6,7 @@ use App\Application\Contracts\In\Services\IPlaceService;
 use App\Application\Contracts\Out\Repositories\IPlaceRepository;
 use App\Application\DTO\In\Place\GetPlaceDto;
 use App\Application\DTO\In\Place\GetPlacesDto;
+use App\Application\DTO\Out\Place\PlaceCursorDto;
 use App\Application\DTO\Out\Place\PlaceDto;
 use App\Application\Exceptions\Place\PlaceNotFound;
 use Illuminate\Contracts\Pagination\CursorPaginator;
@@ -25,23 +26,15 @@ class PlaceService implements IPlaceService
     public function getPlaceById(GetPlaceDto $getPlaceDto): PlaceDto
     {
         $place = $this->placeRepository->getPlaceById($getPlaceDto);
-
-        $rating = round($place->reviews()->avg('rating'), 2);
-
-        return PlaceDto::fromPlaceModel($place, $rating);
+        return PlaceDto::fromPlaceModel($place);
     }
 
     /**
      * @param GetPlacesDto $getPlacesDto
-     * @return CursorPaginator
+     * @return array{data:array<PlaceDto>, next_cursor:string}
      */
-    public function getPlaces(GetPlacesDto $getPlacesDto): CursorPaginator
+    public function getPlaces(GetPlacesDto $getPlacesDto): array
     {
-        $places = $this->placeRepository->getPlaces($getPlacesDto);
-
-        foreach ($places as $place) {
-            $place->rating = round($place->reviews()->avg('rating'), 2);
-        }
-        return $places;
+        return PlaceCursorDto::fromPaginator($this->placeRepository->getPlaces($getPlacesDto));
     }
 }

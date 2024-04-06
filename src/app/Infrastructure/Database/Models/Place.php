@@ -80,4 +80,9 @@ class Place extends Model
     {
         return $this->hasMany(PlaceImage::class);
     }
+
+    public function rating(): ?float
+    {
+        return round($this->reviews()->avg('rating'), 2);
+    }
 }

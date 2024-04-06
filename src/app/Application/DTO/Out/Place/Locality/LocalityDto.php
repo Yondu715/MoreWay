@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Application\DTO\Out\Place;
+namespace App\Application\DTO\Out\Place\Locality;
 
 use App\Infrastructure\Database\Models\Locality;
 

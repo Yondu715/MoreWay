@@ -6,6 +6,7 @@ use App\Application\Contracts\In\Services\IPlaceReviewService;
 use App\Application\Contracts\Out\Repositories\IPlaceReviewRepository;
 use App\Application\DTO\In\Place\Review\CreatePlaceReviewDto;
 use App\Application\DTO\In\Place\Review\GetPlaceReviewsDto;
+use App\Application\DTO\Out\Place\Review\PlaceReviewCursorDto;
 use App\Application\DTO\Out\Place\Review\PlaceReviewDto;
 use App\Application\Exceptions\Place\Review\FailedToCreatePlaceReview;
 use App\Infrastructure\Database\Models\PlaceReview;
@@ -42,10 +43,10 @@ class PlaceReviewService implements IPlaceReviewService
 
     /**
      * @param GetPlaceReviewsDto $getReviewsDto
-     * @return CursorPaginator
+     * @return array{data:array<PlaceReviewDto>, next_cursor:string}
      */
-    public function getReviews(GetPlaceReviewsDto $getReviewsDto): CursorPaginator
+    public function getReviews(GetPlaceReviewsDto $getReviewsDto): array
     {
-        return $this->reviewRepository->getReviews($getReviewsDto);
+        return PlaceReviewCursorDto::fromPaginator($this->reviewRepository->getReviews($getReviewsDto));
     }
 }

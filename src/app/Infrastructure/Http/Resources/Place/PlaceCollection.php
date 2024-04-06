@@ -14,7 +14,7 @@ class PlaceCollection extends ResourceCollection
     public function toArray(Request $request): array
     {
         return [
-            'data' => $this->collection->map(function ($resource) {
+            'data' => $this['data']->map(function ($resource) {
                 return [
                     'distance' => $resource->distance,
                     'id' => $resource->id,
@@ -28,21 +28,9 @@ class PlaceCollection extends ResourceCollection
                     ] : null,
                     'locality' => $resource->locality
                 ];
-            })
-        ];
-    }
-
-    /**
-     * @param Request $request
-     * @return array
-     */
-    public function paginationInformation(Request $request): array
-    {
-        $paginated = $this->resource->toArray();
-
-        return [
+            }),
             'meta' => [
-                'next_cursor' => $paginated['next_cursor']
+                'next_cursor' => $this['next_cursor']->resource
             ]
         ];
     }

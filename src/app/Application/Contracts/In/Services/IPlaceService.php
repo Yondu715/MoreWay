@@ -17,7 +17,7 @@ interface IPlaceService
 
     /**
      * @param GetPlacesDto $getPlacesDto
-     * @return CursorPaginator
+     * @return array{data:array<PlaceDto>, next_cursor:string}
      */
-    public function getPlaces(GetPlacesDto $getPlacesDto): CursorPaginator;
+    public function getPlaces(GetPlacesDto $getPlacesDto): array;
 }

@@ -5,18 +5,19 @@ namespace App\Application\DTO\Out\Place\Review;
 use App\Application\DTO\Out\Auth\UserDto;
 use App\Infrastructure\Database\Models\PlaceReview;
 use Carbon\Carbon;
+use Illuminate\Pagination\CursorPaginator;
 
 class PlaceReviewDto
 {
     public readonly string $id;
-    public readonly string $text;
+    public readonly ?string $text;
     public readonly float $rating;
     public readonly ?Carbon $created_at;
     public readonly UserDto $author;
 
     public function __construct(
         string $id,
-        string $text,
+        ?string $text,
         float $rating,
         ?Carbon $created_at,
         UserDto $author,
@@ -42,5 +43,4 @@ class PlaceReviewDto
             author: UserDto::fromUserModel($review->author),
         );
     }
-
 }

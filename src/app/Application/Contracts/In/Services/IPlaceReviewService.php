@@ -17,7 +17,7 @@ interface IPlaceReviewService
 
     /**
      * @param GetPlaceReviewsDto $getReviewsDto
-     * @return CursorPaginator
+     * @return array{data:array<PlaceReviewDto>, next_cursor:string}
      */
-    public function getReviews(GetPlaceReviewsDto $getReviewsDto): CursorPaginator;
+    public function getReviews(GetPlaceReviewsDto $getReviewsDto): array;
 }

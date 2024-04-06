@@ -2,7 +2,7 @@
 
 namespace App\Application\DTO\Out\Place;
 
-use App\Infrastructure\Database\Models\Locality;
+use App\Application\DTO\Out\Place\Locality\LocalityDto;
 use App\Infrastructure\Database\Models\Place;
 
 class PlaceDto
@@ -43,10 +43,9 @@ class PlaceDto
 
     /**
      * @param Place $place
-     * @param ?float $rating
      * @return self
      */
-    public static function fromPlaceModel(Place $place, ?float $rating): self
+    public static function fromPlaceModel(Place $place): self
     {
         return new self(
             distance: $place->distance,
@@ -54,7 +53,7 @@ class PlaceDto
             name: $place->name,
             lat: $place->lat,
             lon: $place->lon,
-            rating: $rating,
+            rating: $place->rating(),
             description: $place->description,
             images: $place->images->all(),
             locality: LocalityDto::fromLocalityModel($place->locality)
