@@ -1,9 +1,9 @@
 <?php
 
-use App\Http\Controllers\Api\V1\AuthController;
-use App\Http\Controllers\Api\V1\FriendController;
-use App\Http\Controllers\Api\V1\PlaceController;
-use App\Http\Controllers\Api\V1\UserController;
+use App\Infrastructure\Http\Controllers\Api\V1\AuthController;
+use App\Infrastructure\Http\Controllers\Api\V1\FriendController;
+use App\Infrastructure\Http\Controllers\Api\V1\PlaceController;
+use App\Infrastructure\Http\Controllers\Api\V1\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::patterns([
