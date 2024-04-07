@@ -4,6 +4,7 @@ namespace App\Application\Services\Auth;
 
 use App\Application\Contracts\In\Services\IAuthService;
 use App\Application\Contracts\Out\Managers\ICacheManager;
+use App\Application\Contracts\Out\Managers\IHashManager;
 use App\Application\Contracts\Out\Managers\IMailManager;
 use App\Application\Contracts\Out\Managers\ITokenManager;
 use App\Application\Contracts\Out\Repositories\IUserRepository;
@@ -28,10 +29,11 @@ class AuthService implements IAuthService
 {
 
     public function __construct(
+        private readonly IUserRepository $userRepository,
         private readonly ITokenManager $tokenManager,
         private readonly ICacheManager $cacheManager,
         private readonly IMailManager $mailManager,
-        private readonly IUserRepository $userRepository
+        private readonly IHashManager $hashManager
     ) {
     }
 
@@ -49,7 +51,7 @@ class AuthService implements IAuthService
             throw new UserNotFound();
         }
 
-        if (!Hash::check($loginDto->password, $user->password)) {
+        if (!$this->hashManager->check($loginDto->password, $user->password)) {
             throw new InvalidPassword();
         }
 
@@ -150,7 +152,7 @@ class AuthService implements IAuthService
             throw new InvalidVerifyPasswordCode();
         }
 
-        $resetToken = Hash::make($verifyPasswordCodeDto->code);
+        $resetToken = $this->hashManager->make($verifyPasswordCodeDto->code);
         $this->cacheManager->put(
             'password_reset_' . $verifyPasswordCodeDto->email,
             $resetToken

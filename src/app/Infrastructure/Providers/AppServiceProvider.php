@@ -8,6 +8,7 @@ use App\Application\Contracts\In\Services\IPlaceReviewService;
 use App\Application\Contracts\In\Services\IPlaceService;
 use App\Application\Contracts\In\Services\IUserService;
 use App\Application\Contracts\Out\Managers\ICacheManager;
+use App\Application\Contracts\Out\Managers\IHashManager;
 use App\Application\Contracts\Out\Managers\IMailManager;
 use App\Application\Contracts\Out\Managers\IStorageManager;
 use App\Application\Contracts\Out\Managers\ITokenManager;
@@ -25,6 +26,7 @@ use App\Infrastructure\Database\Repositories\Place\PlaceRepository;
 use App\Infrastructure\Database\Repositories\Place\Review\PlaceReviewRepository;
 use App\Infrastructure\Database\Repositories\User\UserRepository;
 use App\Infrastructure\Managers\Cache\CacheManager;
+use App\Infrastructure\Managers\Hash\HashManager;
 use App\Infrastructure\Managers\Mail\MailManager;
 use App\Infrastructure\Managers\Storage\StorageManager;
 use App\Infrastructure\Managers\Token\TokenManager;
@@ -46,11 +48,12 @@ class AppServiceProvider extends ServiceProvider
         IPlaceReviewRepository::class => PlaceReviewRepository::class,
         IFriendRepository::class => FriendRepository::class,
 
-        /** LIBS */
+        /** Managers */
         ITokenManager::class => TokenManager::class,
         IStorageManager::class => StorageManager::class,
         ICacheManager::class => CacheManager::class,
-        IMailManager::class => MailManager::class
+        IMailManager::class => MailManager::class,
+        IHashManager::class => HashManager::class
     ];
 
     /**

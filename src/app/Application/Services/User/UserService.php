@@ -3,6 +3,7 @@
 namespace App\Application\Services\User;
 
 use App\Application\Contracts\In\Services\IUserService;
+use App\Application\Contracts\Out\Managers\IHashManager;
 use App\Application\Contracts\Out\Managers\IStorageManager;
 use App\Application\Contracts\Out\Repositories\IUserRepository;
 use App\Application\DTO\In\User\ChangeUserAvatarDto;
@@ -14,14 +15,14 @@ use App\Application\Enums\Storage\StoragePaths;
 use App\Application\Exceptions\User\InvalidOldPassword;
 use App\Infrastructure\Database\Models\User;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Hash;
 
 class UserService implements IUserService
 {
 
     public function __construct(
         private readonly IStorageManager $storageManager,
-        private readonly IUserRepository $userRepository
+        private readonly IUserRepository $userRepository,
+        private readonly IHashManager $hashManager
     ) {
     }
 
@@ -68,7 +69,7 @@ class UserService implements IUserService
     {
         /** @var User $user */
         $user = $this->userRepository->findById($changeUserPasswordDto->userId);
-        if (!Hash::check($changeUserPasswordDto->oldPassword, $user->password)) {
+        if (!$this->hashManager->check($changeUserPasswordDto->oldPassword, $user->password)) {
             throw new InvalidOldPassword();
         }
 
