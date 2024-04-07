@@ -23,7 +23,6 @@ use App\Application\Exceptions\Auth\RegistrationConflict;
 use App\Application\Exceptions\User\UserNotFound;
 use App\Infrastructure\Database\Models\User;
 use Exception;
-use Illuminate\Support\Facades\Hash;
 
 class AuthService implements IAuthService
 {
