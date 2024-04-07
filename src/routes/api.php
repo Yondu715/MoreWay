@@ -6,11 +6,11 @@ use App\Infrastructure\Http\Controllers\Api\V1\PlaceController;
 use App\Infrastructure\Http\Controllers\Api\V1\UserController;
 use Illuminate\Support\Facades\Route;
 
-//Route::patterns([
-//    'userId' => '[0-9]+',
-//    'requestId' => '[0-9]+',
-//    'placeId' => '[0-9]+'
-//]);
+Route::patterns([
+    'userId' => '[0-9]+',
+    'requestId' => '[0-9]+',
+    'placeId' => '[0-9]+'
+]);
 
 Route::prefix('auth')
     ->group(function () {

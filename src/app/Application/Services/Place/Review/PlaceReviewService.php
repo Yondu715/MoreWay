@@ -4,6 +4,7 @@ namespace App\Application\Services\Place\Review;
 
 use App\Application\Contracts\In\Services\IPlaceReviewService;
 use App\Application\Contracts\Out\Repositories\IPlaceReviewRepository;
+use App\Application\DTO\Collection\CursorDto;
 use App\Application\DTO\In\Place\Review\CreatePlaceReviewDto;
 use App\Application\DTO\In\Place\Review\GetPlaceReviewsDto;
 use App\Application\DTO\Out\Place\Review\PlaceReviewCursorDto;
@@ -43,9 +44,9 @@ class PlaceReviewService implements IPlaceReviewService
 
     /**
      * @param GetPlaceReviewsDto $getReviewsDto
-     * @return array{data:array<PlaceReviewDto>, next_cursor:string}
+     * @return CursorDto
      */
-    public function getReviews(GetPlaceReviewsDto $getReviewsDto): array
+    public function getReviews(GetPlaceReviewsDto $getReviewsDto): CursorDto
     {
         return PlaceReviewCursorDto::fromPaginator($this->reviewRepository->getReviews($getReviewsDto));
     }

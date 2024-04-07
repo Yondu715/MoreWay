@@ -4,12 +4,12 @@ namespace App\Application\Services\Place;
 
 use App\Application\Contracts\In\Services\IPlaceService;
 use App\Application\Contracts\Out\Repositories\IPlaceRepository;
+use App\Application\DTO\Collection\CursorDto;
 use App\Application\DTO\In\Place\GetPlaceDto;
 use App\Application\DTO\In\Place\GetPlacesDto;
 use App\Application\DTO\Out\Place\PlaceCursorDto;
 use App\Application\DTO\Out\Place\PlaceDto;
 use App\Application\Exceptions\Place\PlaceNotFound;
-use Illuminate\Contracts\Pagination\CursorPaginator;
 
 class PlaceService implements IPlaceService
 {
@@ -31,9 +31,9 @@ class PlaceService implements IPlaceService
 
     /**
      * @param GetPlacesDto $getPlacesDto
-     * @return array{data:array<PlaceDto>, next_cursor:string}
+     * @return CursorDto
      */
-    public function getPlaces(GetPlacesDto $getPlacesDto): array
+    public function getPlaces(GetPlacesDto $getPlacesDto): CursorDto
     {
         return PlaceCursorDto::fromPaginator($this->placeRepository->getPlaces($getPlacesDto));
     }

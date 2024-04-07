@@ -17,8 +17,6 @@ class PlaceDto
     public readonly array $images;
     public readonly LocalityDto $locality;
 
-
-
     public function __construct(
         float $distance,
         string $id,

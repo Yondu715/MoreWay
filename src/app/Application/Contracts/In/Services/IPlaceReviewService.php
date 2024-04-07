@@ -2,10 +2,10 @@
 
 namespace App\Application\Contracts\In\Services;
 
+use App\Application\DTO\Collection\CursorDto;
 use App\Application\DTO\In\Place\Review\CreatePlaceReviewDto;
 use App\Application\DTO\In\Place\Review\GetPlaceReviewsDto;
 use App\Application\DTO\Out\Place\Review\PlaceReviewDto;
-use Illuminate\Contracts\Pagination\CursorPaginator;
 
 interface IPlaceReviewService
 {
@@ -17,7 +17,7 @@ interface IPlaceReviewService
 
     /**
      * @param GetPlaceReviewsDto $getReviewsDto
-     * @return array{data:array<PlaceReviewDto>, next_cursor:string}
+     * @return CursorDto
      */
-    public function getReviews(GetPlaceReviewsDto $getReviewsDto): array;
+    public function getReviews(GetPlaceReviewsDto $getReviewsDto): CursorDto;
 }

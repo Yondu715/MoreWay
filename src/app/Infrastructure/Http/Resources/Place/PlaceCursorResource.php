@@ -2,10 +2,14 @@
 
 namespace App\Infrastructure\Http\Resources\Place;
 
+use App\Application\DTO\Collection\CursorDto;
 use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\ResourceCollection;
+use Illuminate\Http\Resources\Json\JsonResource;
 
-class PlaceCollection extends ResourceCollection
+/**
+ * @mixin CursorDto
+ */
+class PlaceCursorResource extends JsonResource
 {
     /**
      * @param Request $request
@@ -14,7 +18,7 @@ class PlaceCollection extends ResourceCollection
     public function toArray(Request $request): array
     {
         return [
-            'data' => $this['data']->map(function ($resource) {
+            'data' => $this->data->map(function ($resource) {
                 return [
                     'distance' => $resource->distance,
                     'id' => $resource->id,
@@ -30,7 +34,7 @@ class PlaceCollection extends ResourceCollection
                 ];
             }),
             'meta' => [
-                'next_cursor' => $this['next_cursor']->resource
+                'next_cursor' => $this->next_cursor
             ]
         ];
     }

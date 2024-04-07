@@ -14,7 +14,7 @@ use App\Infrastructure\Http\Requests\Place\GetPlaceRequest;
 use App\Infrastructure\Http\Requests\Place\GetPlacesRequest;
 use App\Infrastructure\Http\Requests\Place\PlaceReview\CreatePlaceReviewRequest;
 use App\Infrastructure\Http\Requests\Place\PlaceReview\GetPlaceReviewsRequest;
-use App\Infrastructure\Http\Resources\Place\PlaceCollection;
+use App\Infrastructure\Http\Resources\Place\PlaceCursorResource;
 use App\Infrastructure\Http\Resources\Place\PlaceResource;
 use App\Infrastructure\Http\Resources\Place\Review\PlaceReviewCollection;
 use App\Infrastructure\Http\Resources\Place\Review\PlaceReviewResource;
@@ -29,14 +29,14 @@ class PlaceController extends Controller
 
     /**
      * @param GetPlacesRequest $getPlacesRequest
-     * @return PlaceCollection
+     * @return PlaceCursorResource
      * @throws Exception
      */
-    public function getPlaces(GetPlacesRequest $getPlacesRequest): PlaceCollection
+    public function getPlaces(GetPlacesRequest $getPlacesRequest): PlaceCursorResource
     {
         try {
             $getPlacesRequest = GetPlacesDto::fromRequest($getPlacesRequest);
-            return PlaceCollection::make(
+            return PlaceCursorResource::make(
                 $this->placeService->getPlaces($getPlacesRequest)
             );
         } catch (Exception $e) {
@@ -81,12 +81,17 @@ class PlaceController extends Controller
     /**
      * @param GetPlaceReviewsRequest $getReviewsRequest
      * @return PlaceReviewCollection
+     * @throws Exception
      */
     public function getReviews(GetPlaceReviewsRequest $getReviewsRequest): PlaceReviewCollection
     {
+        try {
         $getReviewsDto = GetPlaceReviewsDto::fromRequest($getReviewsRequest);
         return PlaceReviewCollection::make(
-                $this->reviewService->getReviews($getReviewsDto)
+            $this->reviewService->getReviews($getReviewsDto)
         );
+        } catch (Exception $e) {
+            throw new ApiException($e->getMessage(), $e->getCode());
+        }
     }
 }
