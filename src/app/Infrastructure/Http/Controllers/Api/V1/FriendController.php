@@ -10,10 +10,10 @@ use App\Infrastructure\Http\Controllers\Controller;
 use App\Infrastructure\Http\Requests\Friend\AcceptFriendRequest;
 use App\Infrastructure\Http\Requests\Friend\AddFriendRequest;
 use App\Infrastructure\Http\Resources\Auth\UserResource;
-use Exception;
-use Illuminate\Http\JsonResponse;
+use App\Infrastructure\Http\Resources\Friend\FriendshipRequestResource;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Response;
+use Exception;
 
 class FriendController extends Controller
 {
@@ -36,13 +36,13 @@ class FriendController extends Controller
 
     /**
      * @param int $userId
-     * @return JsonResponse
+     * @return AnonymousResourceCollection
      */
-    public function getFriendRequests(int $userId): JsonResponse
+    public function getFriendRequests(int $userId): AnonymousResourceCollection
     {
-        return response()->json([
+        return FriendshipRequestResource::collection(
             $this->friendService->getFriendRequests($userId)
-        ]);
+        );
     }
 
     /**
@@ -58,14 +58,14 @@ class FriendController extends Controller
 
     /**
      * @param AddFriendRequest $addFriendRequest
-     * @return UserResource
+     * @return FriendshipRequestResource
      * @throws ApiException
      */
-    public function addFriendRequest(AddFriendRequest $addFriendRequest): UserResource
+    public function addFriendRequest(AddFriendRequest $addFriendRequest): FriendshipRequestResource
     {
         try {
             $addFriendDto = AddFriendDto::fromRequest($addFriendRequest);
-            return UserResource::make(
+            return FriendshipRequestResource::make(
                 $this->friendService->addFriendRequest($addFriendDto)
             );
         } catch (Exception $e) {

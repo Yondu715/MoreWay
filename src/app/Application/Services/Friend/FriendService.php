@@ -7,6 +7,7 @@ use App\Application\Contracts\Out\Repositories\IFriendRepository;
 use App\Application\DTO\In\Friend\AcceptFriendDto;
 use App\Application\DTO\In\Friend\AddFriendDto;
 use App\Application\DTO\Out\Auth\UserDto;
+use App\Application\Dto\Out\Friend\FriendshipRequestDto;
 use App\Application\Enums\Friend\RelationshipTypeId;
 use App\Application\Exceptions\Friend\FriendRequestConflict;
 use App\Infrastructure\Database\Models\Friend;
@@ -39,7 +40,7 @@ class FriendService implements IFriendService
     {
         $friendships = $this->friendRepository->getFriendRequests($userId);
         return $friendships->map(function (Friend $friendship) {
-            return UserDto::fromUserModel($friendship->user);
+            return FriendshipRequestDto::fromFriendModule($friendship);
         });
     }
 
@@ -55,10 +56,10 @@ class FriendService implements IFriendService
 
     /**
      * @param AddFriendDto $addFriendDto
-     * @return UserDto
+     * @return FriendshipRequestDto
      * @throws FriendRequestConflict
      */
-    public function addFriendRequest(AddFriendDto $addFriendDto): UserDto
+    public function addFriendRequest(AddFriendDto $addFriendDto): FriendshipRequestDto
 
     {
         /** @var ?Friend $request */
@@ -74,7 +75,7 @@ class FriendService implements IFriendService
             'friend_id' => $addFriendDto->friendId,
             'relationship_id' => RelationshipTypeId::REQUEST
         ]);
-        return UserDto::fromUserModel($request->friend);
+        return FriendshipRequestDto::fromFriendModule($request);
     }
 
     /**

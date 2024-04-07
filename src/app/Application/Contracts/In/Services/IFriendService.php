@@ -4,22 +4,20 @@ namespace App\Application\Contracts\In\Services;
 
 use App\Application\DTO\In\Friend\AcceptFriendDto;
 use App\Application\DTO\In\Friend\AddFriendDto;
-use App\Application\DTO\Out\Auth\UserDto;
-use App\Infrastructure\Database\Models\Friend;
-use App\Infrastructure\Database\Models\User;
+use App\Application\Dto\Out\Friend\FriendshipRequestDto;
 use Illuminate\Support\Collection;
 
 interface IFriendService
 {
     /**
      * @param int $userId
-     * @return Collection<int, User>
+     * @return Collection<int, UserDto>
      */
     public function getUserFriends(int $userId): Collection;
 
     /**
      * @param int $userId
-     * @return Collection<int, Friend>
+     * @return Collection<int, FriendshipRequestDto>
      */
     public function getFriendRequests(int $userId): Collection;
 
@@ -32,9 +30,9 @@ interface IFriendService
 
     /**
      * @param AddFriendDto $addFriendDto
-     * @return UserDto
+     * @return FriendshipRequestDto
      */
-    public function addFriendRequest(AddFriendDto $addFriendDto): UserDto;
+    public function addFriendRequest(AddFriendDto $addFriendDto): FriendshipRequestDto;
 
     /**
      * @param AcceptFriendDto $acceptFriendDto
