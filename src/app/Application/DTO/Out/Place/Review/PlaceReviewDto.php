@@ -9,7 +9,7 @@ use Illuminate\Pagination\CursorPaginator;
 
 class PlaceReviewDto
 {
-    public readonly string $id;
+    public readonly int $id;
     public readonly ?string $text;
     public readonly float $rating;
     public readonly ?Carbon $created_at;

@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Infrastructure\Http\Resources\Auth;
+namespace App\Infrastructure\Http\Resources\Place\Image;
 
-use App\Application\DTO\Out\Auth\UserDto;
+use App\Application\DTO\Out\Place\Image\ImageDto;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /**
- * @mixin UserDto
+ * @mixin ImageDto
  */
-class UserResource extends JsonResource
+class ImageResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -20,9 +20,7 @@ class UserResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'name' => $this->name,
-            'avatar' => $this->avatar,
-            'email' => $this->email,
+            'path' => 'https://more-way.ru/storage/' . $this->path,
         ];
     }
 }

@@ -16,7 +16,7 @@ use App\Infrastructure\Http\Requests\Place\PlaceReview\CreatePlaceReviewRequest;
 use App\Infrastructure\Http\Requests\Place\PlaceReview\GetPlaceReviewsRequest;
 use App\Infrastructure\Http\Resources\Place\PlaceCursorResource;
 use App\Infrastructure\Http\Resources\Place\PlaceResource;
-use App\Infrastructure\Http\Resources\Place\Review\PlaceReviewCollection;
+use App\Infrastructure\Http\Resources\Place\Review\PlaceReviewCursorResource;
 use App\Infrastructure\Http\Resources\Place\Review\PlaceReviewResource;
 use Exception;
 
@@ -25,7 +25,7 @@ class PlaceController extends Controller
     public function __construct(
         private readonly IPlaceService $placeService,
         private readonly IPlaceReviewService $reviewService
-    ){}
+    ) {}
 
     /**
      * @param GetPlacesRequest $getPlacesRequest
@@ -80,14 +80,14 @@ class PlaceController extends Controller
 
     /**
      * @param GetPlaceReviewsRequest $getReviewsRequest
-     * @return PlaceReviewCollection
+     * @return PlaceReviewCursorResource
      * @throws Exception
      */
-    public function getReviews(GetPlaceReviewsRequest $getReviewsRequest): PlaceReviewCollection
+    public function getReviews(GetPlaceReviewsRequest $getReviewsRequest): PlaceReviewCursorResource
     {
         try {
         $getReviewsDto = GetPlaceReviewsDto::fromRequest($getReviewsRequest);
-        return PlaceReviewCollection::make(
+        return PlaceReviewCursorResource::make(
             $this->reviewService->getReviews($getReviewsDto)
         );
         } catch (Exception $e) {

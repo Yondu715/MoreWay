@@ -2,13 +2,13 @@
 
 namespace App\Infrastructure\Http\Resources\Place\Review;
 
-use App\Infrastructure\Database\Models\PlaceReview;
+use App\Application\DTO\Out\Place\Review\PlaceReviewDto;
 use App\Infrastructure\Http\Resources\Auth\UserResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /**
- * @mixin PlaceReview
+ * @mixin PlaceReviewDto
  */
 class PlaceReviewResource extends JsonResource
 {

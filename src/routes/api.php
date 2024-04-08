@@ -92,10 +92,11 @@ Route::prefix('routes')
     ->middleware('auth:api', 'role:user')
     ->group(function () {
         Route::get('/', [RouteController::class, 'getRoutes']);
+        Route::get('/{routeId}', [RouteController::class, 'getRoutes']);
         Route::middleware('owner')
             ->group(function () {
                 Route::post('/', [RouteController::class, 'createRoute']);
-                Route::patch('/route-point/status',[RouteController::class, 'changePointStatus']);
+                Route::patch('/route-point/status',[RouteController::class, 'completedRoutePoint']);
             });
         Route::prefix('/{placeId}/reviews')
             ->group(function () {

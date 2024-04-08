@@ -98,9 +98,7 @@ class PlaceFilter extends AbstractFilter
             }
 
             case 'distance': {
-                if ($value['sort'] === 'distance') {
-                    $builder->orderBy($value['sort'], $value['sortType']);
-                }
+                $builder->orderBy($value['sort'], $value['sortType']);
             }
         }
     }

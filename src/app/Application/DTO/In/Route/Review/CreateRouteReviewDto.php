@@ -1,18 +1,18 @@
 <?php
 
-namespace App\Application\DTO\In\Route;
+namespace App\Application\DTO\In\Route\Review;
 
 use App\Infrastructure\Http\Requests\Route\CreateRouteReviewRequest;
 
 class CreateRouteReviewDto
 {
     public readonly int $userId;
-    public readonly string $text;
+    public readonly ?string $text;
     public readonly int $rating;
 
     public function __construct(
         int $userId,
-        string $text,
+        ?string $text,
         int $rating
     ) {
         $this->userId = $userId;

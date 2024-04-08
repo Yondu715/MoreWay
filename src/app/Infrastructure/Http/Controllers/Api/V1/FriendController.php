@@ -20,8 +20,7 @@ class FriendController extends Controller
 
     public function __construct(
         private readonly IFriendService $friendService
-    ) {
-    }
+    ) {}
 
     /**
      * @param int $userId

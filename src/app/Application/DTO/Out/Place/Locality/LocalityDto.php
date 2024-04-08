@@ -6,7 +6,7 @@ use App\Infrastructure\Database\Models\Locality;
 
 class LocalityDto
 {
-    public readonly string $id;
+    public readonly int $id;
     public readonly string $name;
 
     public function __construct(

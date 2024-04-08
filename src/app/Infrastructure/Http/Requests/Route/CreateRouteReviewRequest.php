@@ -7,7 +7,7 @@ use Illuminate\Foundation\Http\FormRequest;
 
 /**
  * @property int $userId
- * @property string $text
+ * @property ?string $text
  * @property int $rating
  */
 class CreateRouteReviewRequest extends FormRequest

@@ -3,6 +3,8 @@
 namespace App\Infrastructure\Http\Resources\Place;
 
 use App\Application\DTO\Collection\CursorDto;
+use App\Infrastructure\Http\Resources\Place\Image\ImageResource;
+use App\Infrastructure\Http\Resources\Place\Locality\LocalityResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -26,11 +28,8 @@ class PlaceCursorResource extends JsonResource
                     'lat' => $resource->lat,
                     'lon' => $resource->lon,
                     'rating' => $resource->rating,
-                    'image' => count($resource->images) ? [
-                        'id' => $resource->images[0]->id,
-                        'path' => 'https://more-way.ru/storage/' . $resource->images[0]->image
-                    ] : null,
-                    'locality' => $resource->locality
+                    'image' => count($resource->images) ? ImageResource::make($resource->images[0]) : null,
+                    'locality' => LocalityResource::make($resource->locality)
                 ];
             }),
             'meta' => [

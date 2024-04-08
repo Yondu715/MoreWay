@@ -10,7 +10,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 /**
  * @mixin CursorDto
  */
-class PlaceReviewCollection extends JsonResource
+class PlaceReviewCursorResource extends JsonResource
 {
     /**
      * Transform the resource into an array.

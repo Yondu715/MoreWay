@@ -9,7 +9,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 /**
  * @mixin LocalityDto
  */
-class LocalityResource extends  JsonResource
+class LocalityResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
