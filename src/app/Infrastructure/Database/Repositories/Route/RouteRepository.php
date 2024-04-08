@@ -32,15 +32,13 @@ class RouteRepository implements IRouteRepository
                 'creator_id' => $createRouteDto->userId
             ]);
 
-            $routePoints = array_map(function ($routePoint) use ($route) {
-                return [
+            foreach ($createRouteDto->routePoints as $routePoint){
+                RoutePoint::query()->create([
                     'index' => $routePoint->index,
                     'place_id' => $routePoint->placeId,
                     'route_id' => $route->id,
-                ];
-            }, $createRouteDto->routePoints);
-
-            RoutePoint::query()->insert($routePoints);
+                ]);
+            }
 
             $this->transactionManager->commit();
 
