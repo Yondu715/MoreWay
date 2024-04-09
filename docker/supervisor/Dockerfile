@@ -1,8 +1,8 @@
 FROM php:8.2-fpm
 
-ARG REDIS_VERSION=6.0.2
+# ARG REDIS_VERSION=6.0.2
 # ARG MCRYPT_VERSION=1.0.1
-ARG RDKAFKA_VERSION=6.0.3
+# ARG RDKAFKA_VERSION=6.0.0
 
 RUN apt-get update &&\
     apt-get install -y openssl libssl-dev libcurl4-openssl-dev pkg-config libsasl2-dev libpcre3-dev &&\
@@ -10,10 +10,11 @@ RUN apt-get update &&\
     apt-get install -y libgpgme11-dev &&\
     apt-get install -y libfreetype6-dev libjpeg62-turbo-dev &&\
     apt-get install -y --no-install-recommends librdkafka-dev &&\
-    pecl install rdkafka-${RDKAFKA_VERSION} &&\
+    apt-get install -y libzip-dev
+    # pecl install rdkafka-${RDKAFKA_VERSION} &&\
     # pecl install mcrypt-${MCRYPT_VERSION} &&\
-    pecl install redis-${REDIS_VERSION} &&\
-    pecl install gnupg
+    # pecl install redis-${REDIS_VERSION} &&\
+    # pecl install gnupg
 
 RUN docker-php-ext-install zip \
     && docker-php-ext-install pcntl \
@@ -22,13 +23,13 @@ RUN docker-php-ext-install zip \
     && docker-php-ext-install exif \
     && docker-php-ext-configure bcmath \
     && docker-php-ext-install bcmath \
-    && docker-php-ext-enable redis \
+    # && docker-php-ext-enable redis \
     && docker-php-ext-install sockets \
-    && docker-php-ext-enable gnupg \
+    # && docker-php-ext-enable gnupg \
     && docker-php-ext-install pdo pdo_mysql \
-    && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
-    && docker-php-ext-install gd \
-    && docker-php-ext-enable rdkafka
+    && docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install gd
+    # && docker-php-ext-enable rdkafka
 
 # Install composer
 ARG COMPOSER_VERSION=2.5.8

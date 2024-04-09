@@ -69,37 +69,21 @@ services:
     ports:
       - 8876:80
 
-  websocket:
+  supervisor:
     build:
-      context: ./docker/app
-      target: base
+      context: docker/supervisor
       args:
         WEB_USER_ID: 1000
         WEB_USER_NAME: web
         WEB_GROUP_ID: 1000
         WEB_GROUP_NAME: web
+    env_file:
+      - docker/supervisor/supervisor.env
     volumes:
       - .:/var/www
-    command: php src/artisan websocket:init
-    ports:
-      - 8080:8080
     depends_on:
       - app
-
-  # supervisor:
-  #   build:
-  #     context: docker/supervisor
-  #     args:
-  #       WEB_USER_ID: 1000
-  #       WEB_USER_NAME: web
-  #       WEB_GROUP_ID: 1000
-  #       WEB_GROUP_NAME: web
-  #   env_file:
-  #     - docker/supervisor/supervisor.env
-  #   volumes:
-  #     - .:/var/www
-  #   depends_on:
-  #     - mysql
-  #   ports:
-  #     - 9999:9999
-  #   tty: true
+      - mysql
+    ports:
+      - 8080:8080
+    tty: true
