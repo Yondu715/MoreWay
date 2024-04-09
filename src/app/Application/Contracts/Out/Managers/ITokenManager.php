@@ -29,4 +29,10 @@ interface ITokenManager
      * @throws Exception
      */
     public function getAuthUser(): User;
+
+    /**
+     * @param string $token
+     * @return ?User
+     */
+    public function parseToken(string $token): ?User;
 }

@@ -57,6 +57,15 @@ class TokenManager implements ITokenManager
     }
 
     /**
+     * @param string $token
+     * @return ?User
+     */
+    public function parseToken(string $token): ?User
+    {
+        return $this->getAuth()->setToken($token)->user();
+    }
+
+    /**
      * @return JWTGuard
      */
     private function getAuth(): JWTGuard
