@@ -3,7 +3,9 @@
 namespace App\Application\Contracts\Out\Managers;
 
 use App\Application\DTO\In\Auth\LoginDto;
+use App\Application\DTO\Out\Auth\UserDto;
 use App\Infrastructure\Database\Models\User;
+use App\Infrastructure\Exceptions\InvalidToken;
 use Exception;
 
 interface ITokenManager
@@ -25,15 +27,22 @@ interface ITokenManager
     public function destroyToken(): void;
 
     /**
-     * @return User
-     * @throws Exception
+     * @return UserDto
+     * @throws InvalidToken
      */
-    public function getAuthUser(): User;
+    public function getAuthUser(): UserDto;
+
+    /**
+     * @param string $role
+     * @return bool
+     * @throws InvalidToken
+     */
+    public function hasRole(string $role): bool;
 
     /**
      * @param string $token
-     * @return ?User
-     * @throws Exception
+     * @return ?UserDto
+     * @throws InvalidToken
      */
-    public function parseToken(string $token): ?User;
+    public function parseToken(string $token): ?UserDto;
 }

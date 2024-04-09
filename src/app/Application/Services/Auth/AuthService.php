@@ -81,9 +81,7 @@ class AuthService implements IAuthService
      */
     public function getAuthUser(): UserDto
     {
-        return UserDto::fromUserModel(
-            $this->tokenManager->getAuthUser()
-        );
+        return $this->tokenManager->getAuthUser();
     }
 
     /**

@@ -24,7 +24,7 @@ class CheckUserRole
      */
     public function handle(Request $request, Closure $next, string $role): Response
     {
-        if (!$this->tokenManager->getAuthUser()->hasRole($role)) {
+        if (!$this->tokenManager->hasRole($role)) {
             throw new Forbidden();
         }
         return $next($request);
