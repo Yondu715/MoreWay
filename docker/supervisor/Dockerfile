@@ -1,6 +1,6 @@
 FROM php:8.2-fpm
 
-ARG REDIS_VERSION=7.0.11
+ARG REDIS_VERSION=6.0.2
 # ARG MCRYPT_VERSION=1.0.1
 ARG RDKAFKA_VERSION=6.0.3
 
@@ -51,7 +51,7 @@ RUN  apt-get update \
 
 # Add local web-user
 ARG WEB_USER_ID=1000
-ARG WEB_USER_NAME=yondu
+ARG WEB_USER_NAME=web
 
 COPY ./custom.ini /usr/local/etc/php/conf.d/custom.ini
 COPY ./supervisord.conf  /var/supervisor/supervisord.conf
