@@ -59,10 +59,15 @@ class TokenManager implements ITokenManager
     /**
      * @param string $token
      * @return ?User
+     * @throws InvalidToken
      */
     public function parseToken(string $token): ?User
     {
-        return $this->getAuth()->setToken($token)->user();
+        try {
+            return $this->getAuth()->setToken($token)->user();
+        } catch (Exception $e) {
+            throw new InvalidToken();
+        }
     }
 
     /**

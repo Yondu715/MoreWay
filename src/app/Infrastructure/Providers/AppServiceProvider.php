@@ -12,6 +12,7 @@ use App\Application\Contracts\Out\Managers\IHashManager;
 use App\Application\Contracts\Out\Managers\IMailManager;
 use App\Application\Contracts\Out\Managers\IStorageManager;
 use App\Application\Contracts\Out\Managers\ITokenManager;
+use App\Application\Contracts\Out\Notification\INotify;
 use App\Application\Contracts\Out\Repositories\IFriendRepository;
 use App\Application\Contracts\Out\Repositories\IPlaceRepository;
 use App\Application\Contracts\Out\Repositories\IPlaceReviewRepository;
@@ -30,6 +31,7 @@ use App\Infrastructure\Managers\Hash\HashManager;
 use App\Infrastructure\Managers\Mail\MailManager;
 use App\Infrastructure\Managers\Storage\StorageManager;
 use App\Infrastructure\Managers\Token\TokenManager;
+use App\Infrastructure\Websocket\Controllers\Friend\FriendNotifier;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -69,6 +71,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        $this->app->when(IFriendService::class)->needs(INotify::class)->give(FriendNotifier::class);
     }
 }

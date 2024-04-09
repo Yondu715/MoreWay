@@ -33,6 +33,7 @@ interface ITokenManager
     /**
      * @param string $token
      * @return ?User
+     * @throws Exception
      */
     public function parseToken(string $token): ?User;
 }

@@ -3,6 +3,7 @@
 namespace App\Application\Services\Friend;
 
 use App\Application\Contracts\In\Services\IFriendService;
+use App\Application\Contracts\Out\Notification\INotifier;
 use App\Application\Contracts\Out\Repositories\IFriendRepository;
 use App\Application\DTO\In\Friend\AcceptFriendDto;
 use App\Application\DTO\In\Friend\AddFriendDto;
@@ -17,7 +18,8 @@ class FriendService implements IFriendService
 {
 
     public function __construct(
-        private readonly IFriendRepository $friendRepository
+        private readonly IFriendRepository $friendRepository,
+        private readonly INotifier $notifier
     ) {
     }
 
@@ -75,6 +77,9 @@ class FriendService implements IFriendService
             'friend_id' => $addFriendDto->friendId,
             'relationship_id' => RelationshipTypeId::REQUEST
         ]);
+
+        $this->notifier->sendNotification($addFriendDto->friendId, FriendshipRequestDto::fromFriendModule($request));
+
         return FriendshipRequestDto::fromFriendModule($request);
     }
 

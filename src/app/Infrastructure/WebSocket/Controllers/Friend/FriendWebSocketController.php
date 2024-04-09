@@ -35,12 +35,6 @@ class FriendWebSocketController implements MessageComponentInterface
 
         $user = $this->tokenManager->parseToken($token);
 
-        if (!$user) {
-            $conn->send('Некорректный токен');
-            $conn->close();
-            return;
-        }
-
         self::$clients[$user->id] = $conn;
         echo "Новое соединение для пользователя с id={$user->id}\n";
         $conn->send('Вы успешно подключились');
@@ -64,10 +58,9 @@ class FriendWebSocketController implements MessageComponentInterface
 
     public function onError(ConnectionInterface $conn, Exception $e)
     {
-        $userId = array_search($conn, self::$clients, true);
-        unset(self::$clients[$userId]);
+        $conn->send($e->getMessage());
         $conn->close();
-        echo "Ошибка! " . $e->getMessage();
+        echo "Ошибка! " . $e->getMessage() . "\n";
     }
 
     private function parseQuery(RequestInterface $request)
