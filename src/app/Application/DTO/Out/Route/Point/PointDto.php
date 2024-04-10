@@ -24,7 +24,7 @@ class PointDto
 
     /**
      * @param Collection<int, RoutePoint> $routePoints
-     * @return Collection<int, RoutePoint>
+     * @return Collection<int, PointDto>
      */
     public static function fromPointCollection(Collection $routePoints): Collection
     {

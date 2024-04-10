@@ -110,6 +110,11 @@ class PlaceFilter extends AbstractFilter
      */
     public function search(Builder $builder, string $value): void
     {
-        $builder->where('name', 'like', "%$value%");
+        if(!in_array('%', str_split($value))) {
+            $builder->where('name', 'like', "%$value%");
+        }
+        else{
+            $builder->whereRaw('1 = 0');
+        }
     }
 }

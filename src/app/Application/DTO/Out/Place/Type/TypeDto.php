@@ -3,6 +3,7 @@
 namespace App\Application\DTO\Out\Place\Type;
 
 use App\Infrastructure\Database\Models\PlaceType;
+use Illuminate\Support\Collection;
 
 class TypeDto
 {
@@ -27,5 +28,16 @@ class TypeDto
             id: $placeType->id,
             name: $placeType->name,
         );
+    }
+
+    /**
+     * @param Collection<int, PlaceType> $types
+     * @return Collection<int, TypeDto>
+     */
+    public static function fromTypeCollection(Collection $types): Collection
+    {
+        return $types->map(function ($type) {
+            return self::fromTypeModel($type);
+        });
     }
 }

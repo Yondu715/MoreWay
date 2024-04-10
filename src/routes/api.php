@@ -80,6 +80,7 @@ Route::prefix('places')
     ->group(function () {
         Route::get('/', [PlaceController::class, 'getPlaces']);
         Route::get('/{placeId}', [PlaceController::class, 'getPlace']);
+        Route::get('/filters', [PlaceController::class, 'getFilters']);
         Route::prefix('/{placeId}/reviews')
             ->group(function () {
                 Route::middleware('owner')

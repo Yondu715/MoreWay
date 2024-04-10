@@ -20,7 +20,7 @@ class ImageDto
 
     /**
      * @param Collection<int, PlaceImage> $placeImages
-     * @return Collection<int, PlaceImage>
+     * @return Collection<int, ImageDto>
      */
     public static function fromImageCollection(Collection $placeImages): Collection
     {
