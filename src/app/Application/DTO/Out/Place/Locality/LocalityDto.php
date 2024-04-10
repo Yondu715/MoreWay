@@ -32,12 +32,12 @@ class LocalityDto
 
     /**
      * @param Collection<int, Locality> $localities
-     * @return Collection<int, LocalityDto>
+     * @return Collection
      */
     public static function fromLocalityCollection(Collection $localities): Collection
     {
         return $localities->map(function ($locality) {
-            return self::fromLocalityModel($locality);
+            return $locality->name;
         });
     }
 }

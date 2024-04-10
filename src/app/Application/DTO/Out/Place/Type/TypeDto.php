@@ -11,7 +11,7 @@ class TypeDto
     public readonly string $name;
 
     public function __construct(
-        string $id,
+        int $id,
         string $name,
     ) {
         $this->id = $id;
@@ -32,12 +32,12 @@ class TypeDto
 
     /**
      * @param Collection<int, PlaceType> $types
-     * @return Collection<int, TypeDto>
+     * @return Collection
      */
     public static function fromTypeCollection(Collection $types): Collection
     {
         return $types->map(function ($type) {
-            return self::fromTypeModel($type);
+            return $type->name;
         });
     }
 }

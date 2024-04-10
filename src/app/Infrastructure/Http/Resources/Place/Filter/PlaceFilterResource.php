@@ -3,10 +3,6 @@
 namespace App\Infrastructure\Http\Resources\Place\Filter;
 
 use App\Application\DTO\Out\Place\Filter\PlaceFilterDto;
-use App\Application\DTO\Out\Place\Locality\LocalityDto;
-use App\Infrastructure\Database\Repositories\Place\Type\TypeRepository;
-use App\Infrastructure\Http\Resources\Place\Locality\LocalityResource;
-use App\Infrastructure\Http\Resources\Place\Type\TypeResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -23,12 +19,8 @@ class PlaceFilterResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'localities' => $this->localities->map(function ($locality) {
-                return LocalityResource::make($locality);
-            }),
-            'types' => $this->types->map(function ($type) {
-                return TypeResource::make($type);
-            }),
+            'localities' => $this->localities,
+            'types' => $this->types,
             'minDistance' => $this->minDistance,
             'maxDistance' => $this->maxDistance
         ];
