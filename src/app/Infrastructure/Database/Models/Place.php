@@ -2,6 +2,7 @@
 
 namespace App\Infrastructure\Database\Models;
 
+use App\Infrastructure\Database\Models\Filters\Place\PlaceFilter;
 use App\Infrastructure\Database\Models\Traits\Filterable;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;

@@ -31,4 +31,12 @@ class CursorDto
             next_cursor: $paginator->nextCursor() ? $paginator->nextCursor()->encode() : null
         );
     }
+
+    public static function fromCollectionAndCursor(Collection $places, ?string $nextCursor):self
+    {
+        return new self(
+            data: $places,
+            next_cursor: $nextCursor
+        );
+    }
 }

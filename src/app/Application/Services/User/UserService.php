@@ -3,8 +3,8 @@
 namespace App\Application\Services\User;
 
 use App\Application\Contracts\In\Services\IUserService;
-use App\Application\Contracts\Out\Managers\IHashManager;
-use App\Application\Contracts\Out\Managers\IStorageManager;
+use App\Application\Contracts\Out\InfrastructureManagers\IHashManager;
+use App\Application\Contracts\Out\InfrastructureManagers\IStorageManager;
 use App\Application\Contracts\Out\Repositories\IUserRepository;
 use App\Application\DTO\In\User\ChangeUserAvatarDto;
 use App\Application\DTO\In\User\ChangeUserDataDto;

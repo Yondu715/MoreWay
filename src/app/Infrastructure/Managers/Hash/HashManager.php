@@ -2,7 +2,7 @@
 
 namespace App\Infrastructure\Managers\Hash;
 
-use App\Application\Contracts\Out\Managers\IHashManager;
+use App\Application\Contracts\Out\InfrastructureManagers\IHashManager;
 use Illuminate\Support\Facades\Hash;
 
 class HashManager implements IHashManager

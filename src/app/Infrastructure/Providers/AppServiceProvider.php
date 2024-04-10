@@ -2,6 +2,7 @@
 
 namespace App\Infrastructure\Providers;
 
+use App\Application\Contracts\In\DomainManagers\IDistanceManager;
 use App\Application\Contracts\In\Services\IAuthService;
 use App\Application\Contracts\In\Services\IFriendService;
 use App\Application\Contracts\In\Services\IPlaceFilterService;
@@ -9,11 +10,11 @@ use App\Application\Contracts\In\Services\IPlaceReviewService;
 use App\Application\Contracts\In\Services\IPlaceService;
 use App\Application\Contracts\In\Services\IRouteService;
 use App\Application\Contracts\In\Services\IUserService;
-use App\Application\Contracts\Out\Managers\ICacheManager;
-use App\Application\Contracts\Out\Managers\IHashManager;
-use App\Application\Contracts\Out\Managers\IMailManager;
-use App\Application\Contracts\Out\Managers\IStorageManager;
-use App\Application\Contracts\Out\Managers\ITokenManager;
+use App\Application\Contracts\Out\InfrastructureManagers\ICacheManager;
+use App\Application\Contracts\Out\InfrastructureManagers\IHashManager;
+use App\Application\Contracts\Out\InfrastructureManagers\IMailManager;
+use App\Application\Contracts\Out\InfrastructureManagers\IStorageManager;
+use App\Application\Contracts\Out\InfrastructureManagers\ITokenManager;
 use App\Application\Contracts\Out\Notification\INotify;
 use App\Application\Contracts\Out\Repositories\IFriendRepository;
 use App\Application\Contracts\Out\Repositories\ILocalityRepository;
@@ -29,6 +30,7 @@ use App\Application\Services\Place\PlaceService;
 use App\Application\Services\Place\Review\PlaceReviewService;
 use App\Application\Services\Route\RouteService;
 use App\Application\Services\User\UserService;
+use App\Domain\Managers\Distance\DistanceManager;
 use App\Infrastructure\Database\Repositories\Friend\FriendRepository;
 use App\Infrastructure\Database\Repositories\Place\Locality\LocalityRepository;
 use App\Infrastructure\Database\Repositories\Place\PlaceRepository;
@@ -67,13 +69,16 @@ class AppServiceProvider extends ServiceProvider
         ILocalityRepository::class => LocalityRepository::class,
         ITypeRepository::class => TypeRepository::class,
 
-        /** Managers */
+        /** InfrastructureManagers */
         ITokenManager::class => TokenManager::class,
         IStorageManager::class => StorageManager::class,
         ICacheManager::class => CacheManager::class,
         IMailManager::class => MailManager::class,
         IHashManager::class => HashManager::class,
-        ITransactionManager::class => TransactionManager::class
+        ITransactionManager::class => TransactionManager::class,
+
+        /** DomainManagers */
+        IDistanceManager::class => DistanceManager::class,
     ];
 
     /**

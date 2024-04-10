@@ -2,6 +2,7 @@
 
 namespace App\Application\Services\Place;
 
+use App\Application\Contracts\In\DomainManagers\IDistanceManager;
 use App\Application\Contracts\In\Services\IPlaceService;
 use App\Application\Contracts\Out\Repositories\IPlaceRepository;
 use App\Application\DTO\Collection\CursorDto;
@@ -14,7 +15,8 @@ use App\Application\Exceptions\Place\PlaceNotFound;
 class PlaceService implements IPlaceService
 {
     public function __construct(
-        private readonly IPlaceRepository $placeRepository
+        private readonly IPlaceRepository $placeRepository,
+        private readonly IDistanceManager $distanceManager
     ) {
     }
 
@@ -26,7 +28,13 @@ class PlaceService implements IPlaceService
     public function getPlaceById(GetPlaceDto $getPlaceDto): PlaceDto
     {
         $place = $this->placeRepository->getPlaceById($getPlaceDto);
-        return PlaceDto::fromPlaceModel($place);
+        return PlaceDto::fromPlaceModel($place, $this->distanceManager
+            ->calculate(
+            $place->lat,
+            $place->lon,
+            $getPlaceDto->lat,
+            $getPlaceDto->lon
+        ));
     }
 
     /**
@@ -35,6 +43,16 @@ class PlaceService implements IPlaceService
      */
     public function getPlaces(GetPlacesDto $getPlacesDto): CursorDto
     {
-        return PlaceCursorDto::fromPaginator($this->placeRepository->getPlaces($getPlacesDto));
+        $places = $this->placeRepository->getPlaces($getPlacesDto);
+
+        return PlaceCursorDto::fromPaginator(collect($places->items())->map(function ($place) use ($getPlacesDto){
+            return PlaceDto::fromPlaceModel($place, $this->distanceManager
+                ->calculate(
+                    $place->lat,
+                    $place->lon,
+                    $getPlacesDto->lat,
+                    $getPlacesDto->lon
+                ));
+        }), $places->nextCursor() ? $places->nextCursor()->encode() : null);
     }
 }

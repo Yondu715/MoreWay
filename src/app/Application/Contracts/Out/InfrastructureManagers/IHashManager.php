@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Application\Contracts\Out\Managers;
+namespace App\Application\Contracts\Out\InfrastructureManagers;
 
 interface IHashManager
 {

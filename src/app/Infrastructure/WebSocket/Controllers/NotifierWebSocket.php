@@ -2,7 +2,7 @@
 
 namespace App\Infrastructure\WebSocket\Controllers;
 
-use App\Application\Contracts\Out\Managers\ITokenManager;
+use App\Application\Contracts\Out\InfrastructureManagers\ITokenManager;
 use Exception;
 use Psr\Http\Message\RequestInterface;
 use Ratchet\ConnectionInterface;

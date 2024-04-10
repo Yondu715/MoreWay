@@ -2,7 +2,7 @@
 
 namespace App\Infrastructure\Http\Middleware;
 
-use App\Application\Contracts\Out\Managers\ITokenManager;
+use App\Application\Contracts\Out\InfrastructureManagers\ITokenManager;
 use App\Infrastructure\Exceptions\Forbidden;
 use Closure;
 use Exception;

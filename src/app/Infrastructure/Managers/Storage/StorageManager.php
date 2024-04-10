@@ -2,7 +2,7 @@
 
 namespace App\Infrastructure\Managers\Storage;
 
-use App\Application\Contracts\Out\Managers\IStorageManager;
+use App\Application\Contracts\Out\InfrastructureManagers\IStorageManager;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 

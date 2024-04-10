@@ -3,18 +3,17 @@
 namespace App\Application\DTO\Out\Place;
 
 use App\Application\DTO\Collection\CursorDto;
-use Illuminate\Contracts\Pagination\CursorPaginator;
+use Illuminate\Support\Collection;
 
 class PlaceCursorDto extends CursorDto
 {
     /**
-     * @param CursorPaginator $paginator
+     * @param Collection $places
+     * @param string|null $nextCursor
      * @return CursorDto
      */
-    public static function fromPaginator(CursorPaginator $paginator): CursorDto
+    public static function fromPaginator(Collection $places, ?string $nextCursor): CursorDto
     {
-        return CursorDto::fromPaginatorAndMapper($paginator, function ($place){
-            return PlaceDto::fromPlaceModel($place);
-        });
+        return CursorDto::fromCollectionAndCursor($places, $nextCursor);
     }
 }

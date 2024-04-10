@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Application\Contracts\Out\Managers;
+namespace App\Application\Contracts\Out\InfrastructureManagers;
 
 use App\Application\DTO\In\Auth\LoginDto;
 use App\Application\DTO\Out\Auth\UserDto;
