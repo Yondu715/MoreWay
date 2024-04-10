@@ -5,6 +5,7 @@ namespace App\Infrastructure\Database\Repositories\Route;
 use App\Application\Contracts\Out\Repositories\IRouteRepository;
 use App\Application\DTO\In\Route\CreateRouteDto;
 use App\Application\Exceptions\Route\FailedToCreateRoute;
+use App\Application\Exceptions\Route\RouteNotFound;
 use App\Infrastructure\Database\Models\Route;
 use App\Infrastructure\Database\Models\RoutePoint;
 use App\Infrastructure\Database\Transaction\Interface\ITransactionManager;
@@ -46,6 +47,22 @@ class RouteRepository implements IRouteRepository
         } catch (Throwable) {
             $this->transactionManager->rollback();
             throw new FailedToCreateRoute();
+        }
+    }
+
+    /**
+     * @param int $routeId
+     * @return Route
+     * @throws RouteNotFound
+     */
+    public function findById(int $routeId): Route
+    {
+        try {
+            /** @var Route $route */
+            $route = Route::query()->findOrFail($routeId);
+            return $route;
+        } catch (Throwable) {
+            throw new RouteNotFound();
         }
     }
 }

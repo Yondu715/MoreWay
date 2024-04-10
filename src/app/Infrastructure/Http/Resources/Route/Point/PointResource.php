@@ -29,9 +29,7 @@ class PointResource extends JsonResource
                 'lat' => $this->place->lat,
                 'lon' => $this->place->lon,
                 'rating' => $this->place->rating,
-                'images' => $this->place->images->map(function ($image) {
-                    return ImageResource::make($image);
-                }),
+                'image' => count($this->place->images) ? ImageResource::make($this->place->images[0]) : null,
                 'locality' => LocalityResource::make($this->place->locality)
             ]
         ];

@@ -32,4 +32,20 @@ class RouteController extends Controller
             throw new ApiException($e->getMessage(), $e->getCode());
         }
     }
+
+    /**
+     * @param int $routeId
+     * @return RouteResource
+     * @throws ApiException
+     */
+    public function getRoute(int $routeId): RouteResource
+    {
+        try {
+            return RouteResource::make(
+              $this->routeService->getRouteById($routeId)
+            );
+        } catch (Exception $e) {
+            throw new ApiException($e->getMessage(), $e->getCode());
+        }
+    }
 }

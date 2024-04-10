@@ -92,7 +92,7 @@ Route::prefix('routes')
     ->middleware('auth:api', 'role:user')
     ->group(function () {
         Route::get('/', [RouteController::class, 'getRoutes']);
-        Route::get('/{routeId}', [RouteController::class, 'getRoutes']);
+        Route::get('/{routeId}', [RouteController::class, 'getRoute']);
         Route::middleware('owner')
             ->group(function () {
                 Route::post('/', [RouteController::class, 'createRoute']);

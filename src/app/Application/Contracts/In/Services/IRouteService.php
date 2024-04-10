@@ -5,6 +5,7 @@ namespace App\Application\Contracts\In\Services;
 use App\Application\DTO\In\Route\CreateRouteDto;
 use App\Application\DTO\Out\Route\RouteDto;
 use App\Application\Exceptions\Route\FailedToCreateRoute;
+use App\Application\Exceptions\Route\RouteNotFound;
 
 interface IRouteService
 {
@@ -14,4 +15,11 @@ interface IRouteService
      * @throws FailedToCreateRoute
      */
     public function createRoute(CreateRouteDto $createRouteDto): RouteDto;
+
+    /**
+     * @param int $routeId
+     * @return RouteDto
+     * @throws RouteNotFound
+     */
+    public function getRouteById(int $routeId): RouteDto;
 }
