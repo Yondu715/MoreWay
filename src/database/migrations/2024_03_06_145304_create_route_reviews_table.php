@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('route_comments', function (Blueprint $table) {
+        Schema::create('route_reviews', function (Blueprint $table) {
             $table->id();
             $table->text('text')->nullable();
             $table->unsignedBigInteger('author_id');
