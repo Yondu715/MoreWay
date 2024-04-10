@@ -5,6 +5,7 @@ namespace App\Infrastructure\Http\Resources\Route\Point;
 use App\Application\DTO\Out\Route\Point\PointDto;
 use App\Infrastructure\Http\Resources\Place\Image\ImageResource;
 use App\Infrastructure\Http\Resources\Place\Locality\LocalityResource;
+use App\Infrastructure\Http\Resources\Place\Type\TypeResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -30,7 +31,8 @@ class PointResource extends JsonResource
                 'lon' => $this->place->lon,
                 'rating' => $this->place->rating,
                 'image' => count($this->place->images) ? ImageResource::make($this->place->images[0]) : null,
-                'locality' => LocalityResource::make($this->place->locality)
+                'locality' => LocalityResource::make($this->place->locality),
+                'type' => TypeResource::make($this->place->type)
             ]
         ];
     }

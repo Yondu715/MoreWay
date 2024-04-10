@@ -4,6 +4,7 @@ namespace App\Application\DTO\Out\Place;
 
 use App\Application\DTO\Out\Place\Image\ImageDto;
 use App\Application\DTO\Out\Place\Locality\LocalityDto;
+use App\Application\DTO\Out\Place\Type\TypeDto;
 use App\Infrastructure\Database\Models\Place;
 use Illuminate\Support\Collection;
 
@@ -18,6 +19,7 @@ class PlaceDto
     public readonly string $description;
     public readonly Collection $images;
     public readonly LocalityDto $locality;
+    public readonly TypeDto $type;
 
     public function __construct(
         ?float $distance,
@@ -29,6 +31,7 @@ class PlaceDto
         string $description,
         Collection $images,
         LocalityDto $locality,
+        TypeDto $type,
     ) {
         $this->distance = $distance;
         $this->id = $id;
@@ -39,6 +42,7 @@ class PlaceDto
         $this->description = $description;
         $this->images = $images;
         $this->locality = $locality;
+        $this->type = $type;
     }
 
     /**
@@ -57,7 +61,8 @@ class PlaceDto
             rating: $place->rating(),
             description: $place->description,
             images: ImageDto::fromImageCollection($place->images),
-            locality: LocalityDto::fromLocalityModel($place->locality)
+            locality: LocalityDto::fromLocalityModel($place->locality),
+            type: TypeDto::fromTypeModel($place->type)
         );
     }
 }
