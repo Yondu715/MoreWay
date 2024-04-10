@@ -2,11 +2,15 @@
 
 namespace App\Infrastructure\Http\Resources\Place\Review;
 
+use App\Application\DTO\Collection\CursorDto;
 use App\Infrastructure\Http\Resources\Auth\UserResource;
 use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\ResourceCollection;
+use Illuminate\Http\Resources\Json\JsonResource;
 
-class PlaceReviewCollection extends ResourceCollection
+/**
+ * @mixin CursorDto
+ */
+class PlaceReviewCursorResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,7 +20,7 @@ class PlaceReviewCollection extends ResourceCollection
     public function toArray(Request $request): array
     {
         return [
-            'data' => $this['data']->map(function ($resource) {
+            'data' => $this->data->map(function ($resource) {
                 return [
                     'id' => $resource->id,
                     'text' => $resource->text,
@@ -26,7 +30,7 @@ class PlaceReviewCollection extends ResourceCollection
                 ];
             }),
             'meta' => [
-                'next_cursor' => $this['next_cursor']->resource
+                'next_cursor' => $this->next_cursor
             ]
         ];
     }

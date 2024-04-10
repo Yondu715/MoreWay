@@ -2,10 +2,10 @@
 
 namespace App\Application\Contracts\In\Services;
 
+use App\Application\DTO\Collection\CursorDto;
 use App\Application\DTO\In\Place\GetPlaceDto;
 use App\Application\DTO\In\Place\GetPlacesDto;
 use App\Application\DTO\Out\Place\PlaceDto;
-use Illuminate\Contracts\Pagination\CursorPaginator;
 
 interface IPlaceService
 {
@@ -17,7 +17,7 @@ interface IPlaceService
 
     /**
      * @param GetPlacesDto $getPlacesDto
-     * @return array{data:array<PlaceDto>, next_cursor:string}
+     * @return CursorDto
      */
-    public function getPlaces(GetPlacesDto $getPlacesDto): array;
+    public function getPlaces(GetPlacesDto $getPlacesDto): CursorDto;
 }

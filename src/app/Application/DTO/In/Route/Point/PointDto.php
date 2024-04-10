@@ -1,26 +1,26 @@
 <?php
 
-namespace App\Application\DTO\In\Route;
+namespace App\Application\DTO\In\Route\Point;
 
-class RoutePointDto
+class PointDto
 {
     public readonly int $index;
-    public readonly int $routePointId;
+    public readonly int $placeId;
 
     public function __construct(
         int $index,
-        int $routePointId
+        int $placeId
     ) {
         $this->index = $index;
-        $this->routePointId = $routePointId;
+        $this->placeId = $placeId;
     }
 
     public static function fromArray(array $routePoints): array
     {
         return array_map(function ($routePoint) {
             return new self(
-                index: $routePoint->index,
-                routePointId: $routePoint->routePointId
+                index: $routePoint['index'],
+                placeId: $routePoint['placeId']
             );
         }, $routePoints);
     }

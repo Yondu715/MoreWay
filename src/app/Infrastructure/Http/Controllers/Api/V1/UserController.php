@@ -23,8 +23,7 @@ class UserController extends Controller
 
     public function __construct(
         private readonly IUserService $userService
-    ) {
-    }
+    ) {}
 
     /**
      * @param GetUsersRequest $getUsersRequest
