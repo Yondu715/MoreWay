@@ -36,11 +36,10 @@ class WebSocketServer extends Command
      */
     public function handle()
     {
-        $port = 8080;
-        $address = '0.0.0.0';
+        $url = config('app.websocket_url');
 
         $loop = Loop::get();
-        $socket = new SocketServer("{$address}:{$port}");
+        $socket = new SocketServer($url);
         $routes = new RouteCollection();
 
         $websocketServer = new WsServer(

@@ -57,6 +57,8 @@ return [
 
     'url' => env('APP_URL', 'http://localhost'),
 
+    'websocket_url' => env('WS_URL', '0.0.0.0:8080'),
+    
     'asset_url' => env('ASSET_URL'),
 
     /*
