@@ -2,10 +2,10 @@
 
 namespace App\Infrastructure\Websocket\Controllers\Friend;
 
-use App\Application\Contracts\Out\Notification\INotifier;
+use App\Application\Contracts\Out\Managers\INotifierManager;
 use App\Infrastructure\WebSocket\Controllers\Friend\FriendWebSocketController;
 
-class FriendNotifier implements INotifier
+class FriendNotifier implements INotifierManager
 {
     /**
      * @param int $userId

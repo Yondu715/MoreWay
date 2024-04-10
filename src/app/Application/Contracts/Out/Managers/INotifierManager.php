@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Application\Contracts\Out\Notification;
+namespace App\Application\Contracts\Out\Managers;
 
-interface INotifier
+interface INotifierManager
 {
     public function sendNotification(int $userId, mixed $notification);
 }
