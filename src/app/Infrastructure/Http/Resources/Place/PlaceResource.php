@@ -28,7 +28,7 @@ class PlaceResource extends JsonResource
             'lon' => $this->lon,
             'rating' => $this->rating,
             'description' => $this->description,
-            'images' => collect($this->images)->map(function ($image) {
+            'images' => $this->images->map(function ($image) {
                 return ImageResource::make($image);
             }),
             'locality' => LocalityResource::make($this->locality)

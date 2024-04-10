@@ -23,7 +23,7 @@ class RouteResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'routePoints' => collect($this->points)->map(function ($point) {
+            'routePoints' => $this->points->map(function ($point) {
                 return PointResource::make($point);
             }),
             'creator' => UserResource::make($this->creator)

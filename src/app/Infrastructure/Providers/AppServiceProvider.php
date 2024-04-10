@@ -12,7 +12,6 @@ use App\Application\Contracts\Out\Managers\ICacheManager;
 use App\Application\Contracts\Out\Managers\IMailManager;
 use App\Application\Contracts\Out\Managers\IStorageManager;
 use App\Application\Contracts\Out\Managers\ITokenManager;
-use App\Application\Contracts\Out\Managers\ITransactionManager;
 use App\Application\Contracts\Out\Repositories\IFriendRepository;
 use App\Application\Contracts\Out\Repositories\IPlaceRepository;
 use App\Application\Contracts\Out\Repositories\IPlaceReviewRepository;
@@ -29,11 +28,12 @@ use App\Infrastructure\Database\Repositories\Place\PlaceRepository;
 use App\Infrastructure\Database\Repositories\Place\Review\PlaceReviewRepository;
 use App\Infrastructure\Database\Repositories\Route\RouteRepository;
 use App\Infrastructure\Database\Repositories\User\UserRepository;
+use App\Infrastructure\Database\Transaction\Interface\ITransactionManager;
+use App\Infrastructure\Database\Transaction\TransactionManager;
 use App\Infrastructure\Managers\Cache\CacheManager;
 use App\Infrastructure\Managers\Mail\MailManager;
 use App\Infrastructure\Managers\Storage\StorageManager;
 use App\Infrastructure\Managers\Token\TokenManager;
-use App\Infrastructure\Managers\Transaction\TransactionManager;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider

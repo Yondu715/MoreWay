@@ -1,10 +1,9 @@
 <?php
 
-namespace App\Application\Contracts\Out\Managers;
+namespace App\Infrastructure\Database\Transaction\Interface;
 
 interface ITransactionManager
 {
-
     /**
      * @return void
      */

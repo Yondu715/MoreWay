@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Infrastructure\Managers\Transaction;
+namespace App\Infrastructure\Database\Transaction;
 
-use App\Application\Contracts\Out\Managers\ITransactionManager;
+use App\Infrastructure\Database\Transaction\Interface\ITransactionManager;
 use Illuminate\Support\Facades\DB;
 
 class TransactionManager implements ITransactionManager
