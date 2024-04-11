@@ -2,7 +2,6 @@
 
 namespace App\Application\Services\Place;
 
-use App\Application\Contracts\In\DomainManagers\IDistanceManager;
 use App\Application\Contracts\In\Services\IPlaceService;
 use App\Application\Contracts\Out\Repositories\IPlaceRepository;
 use App\Application\DTO\Collection\CursorDto;
@@ -11,6 +10,7 @@ use App\Application\DTO\In\Place\GetPlacesDto;
 use App\Application\DTO\Out\Place\PlaceCursorDto;
 use App\Application\DTO\Out\Place\PlaceDto;
 use App\Application\Exceptions\Place\PlaceNotFound;
+use App\Domain\Contracts\In\DomainManagers\IDistanceManager;
 
 class PlaceService implements IPlaceService
 {

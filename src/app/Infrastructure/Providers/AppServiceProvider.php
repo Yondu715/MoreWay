@@ -2,7 +2,6 @@
 
 namespace App\Infrastructure\Providers;
 
-use App\Application\Contracts\In\DomainManagers\IDistanceManager;
 use App\Application\Contracts\In\Services\IAuthService;
 use App\Application\Contracts\In\Services\IFriendService;
 use App\Application\Contracts\In\Services\IPlaceFilterService;
@@ -30,6 +29,7 @@ use App\Application\Services\Place\PlaceService;
 use App\Application\Services\Place\Review\PlaceReviewService;
 use App\Application\Services\Route\RouteService;
 use App\Application\Services\User\UserService;
+use App\Domain\Contracts\In\DomainManagers\IDistanceManager;
 use App\Domain\Managers\Distance\DistanceManager;
 use App\Infrastructure\Database\Repositories\Friend\FriendRepository;
 use App\Infrastructure\Database\Repositories\Place\Locality\LocalityRepository;

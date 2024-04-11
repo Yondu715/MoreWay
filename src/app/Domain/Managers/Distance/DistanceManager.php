@@ -2,7 +2,7 @@
 
 namespace App\Domain\Managers\Distance;
 
-use App\Application\Contracts\In\DomainManagers\IDistanceManager;
+use App\Domain\Contracts\In\DomainManagers\IDistanceManager;
 
 class DistanceManager implements IDistanceManager
 {

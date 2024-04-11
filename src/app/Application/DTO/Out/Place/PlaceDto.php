@@ -2,7 +2,6 @@
 
 namespace App\Application\DTO\Out\Place;
 
-use App\Application\Contracts\In\DomainManagers\IDistanceManager;
 use App\Application\DTO\Out\Place\Image\ImageDto;
 use App\Application\DTO\Out\Place\Locality\LocalityDto;
 use App\Application\DTO\Out\Place\Type\TypeDto;
