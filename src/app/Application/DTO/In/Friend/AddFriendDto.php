@@ -3,7 +3,6 @@
 namespace App\Application\DTO\In\Friend;
 
 use App\Infrastructure\Http\Requests\Friend\AddFriendRequest;
-use App\Lib\HashId\HashManager;
 
 class AddFriendDto
 {

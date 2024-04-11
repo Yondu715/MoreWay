@@ -2,16 +2,16 @@
 
 namespace App\Infrastructure\Database\Repositories\Friend;
 
-use App\Application\Contracts\Out\Repositories\IFriendRepository;
+use App\Application\Contracts\Out\Repositories\IFriendshipRepository;
 use App\Application\Enums\Friend\RelationshipTypeId;
-use App\Infrastructure\Database\Models\Friend;
+use App\Infrastructure\Database\Models\Friendship;
 use App\Infrastructure\Database\Repositories\BaseRepository\BaseRepository;
 use Illuminate\Database\Eloquent\Collection;
 
-class FriendRepository extends BaseRepository implements IFriendRepository
+class FriendshipRepository extends BaseRepository implements IFriendshipRepository
 {
 
-    public function __construct(Friend $friend)
+    public function __construct(Friendship $friend)
     {
         parent::__construct($friend);
     }
@@ -34,7 +34,7 @@ class FriendRepository extends BaseRepository implements IFriendRepository
 
     /**
      * @param int $userId
-     * @return Collection<int,Friend>
+     * @return Collection<int, Friendship>
      */
     public function getUserFriendships(int $userId): Collection
     {
@@ -47,11 +47,11 @@ class FriendRepository extends BaseRepository implements IFriendRepository
     /**
      * @param int $userId
      * @param int $friendId
-     * @return Friend|null
+     * @return Friendship|null
      */
-    public function findByUserIdAndFriendId(int $userId, int $friendId): ?Friend
+    public function findByUserIdAndFriendId(int $userId, int $friendId): ?Friendship
     {
-        /** @var ?Friend */
+        /** @var ?Friendship */
         return $this->model->query()->firstWhere([
             'user_id' => $userId,
             'friend_id' => $friendId

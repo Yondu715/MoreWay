@@ -2,10 +2,10 @@
 
 namespace App\Application\Contracts\Out\Repositories;
 
-use App\Infrastructure\Database\Models\Friend;
+use App\Infrastructure\Database\Models\Friendship;
 use Illuminate\Database\Eloquent\Collection;
 
-interface IFriendRepository extends IBaseRepository
+interface IFriendshipRepository extends IBaseRepository
 {
 
     /**
@@ -17,20 +17,20 @@ interface IFriendRepository extends IBaseRepository
 
     /**
      * @param int $userId
-     * @return Collection<int,Friend>
+     * @return Collection<int, Friendship>
      */
     public function getUserFriendships(int $userId): Collection;
 
     /**
      * @param int $userId
      * @param int $friendId
-     * @return ?Friend
+     * @return ?Friendship
      */
-    public function findByUserIdAndFriendId(int $userId, int $friendId): ?Friend;
+    public function findByUserIdAndFriendId(int $userId, int $friendId): ?Friendship;
 
     /**
      * @param int $userId
-     * @return Collection<int,Friend>
+     * @return Collection<int, Friendship>
      */
     public function getFriendRequests(int $userId): Collection;
 }

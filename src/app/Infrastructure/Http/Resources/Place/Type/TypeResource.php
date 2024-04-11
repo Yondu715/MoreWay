@@ -2,12 +2,12 @@
 
 namespace App\Infrastructure\Http\Resources\Place\Type;
 
-use App\Application\DTO\Out\Place\Type\TypeDto;
+use App\Application\DTO\Out\Place\Type\PlaceTypeDto;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /**
- * @mixin TypeDto
+ * @mixin PlaceTypeDto
  */
 class TypeResource extends JsonResource
 {

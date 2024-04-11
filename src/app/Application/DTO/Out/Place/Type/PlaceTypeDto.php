@@ -5,7 +5,7 @@ namespace App\Application\DTO\Out\Place\Type;
 use App\Infrastructure\Database\Models\PlaceType;
 use Illuminate\Support\Collection;
 
-class TypeDto
+class PlaceTypeDto
 {
     public readonly int $id;
     public readonly string $name;

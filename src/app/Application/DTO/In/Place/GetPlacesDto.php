@@ -2,8 +2,6 @@
 
 namespace App\Application\DTO\In\Place;
 
-
-
 use App\Application\Exceptions\Filter\FilterOutOfRange;
 use App\Infrastructure\Http\Requests\Place\GetPlacesRequest;
 

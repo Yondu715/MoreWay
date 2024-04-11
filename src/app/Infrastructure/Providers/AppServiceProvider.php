@@ -3,7 +3,7 @@
 namespace App\Infrastructure\Providers;
 
 use App\Application\Contracts\In\Services\IAuthService;
-use App\Application\Contracts\In\Services\IFriendService;
+use App\Application\Contracts\In\Services\IFriendshipService;
 use App\Application\Contracts\In\Services\IPlaceFilterService;
 use App\Application\Contracts\In\Services\IPlaceReviewService;
 use App\Application\Contracts\In\Services\IPlaceService;
@@ -15,15 +15,15 @@ use App\Application\Contracts\Out\InfrastructureManagers\IMailManager;
 use App\Application\Contracts\Out\InfrastructureManagers\IStorageManager;
 use App\Application\Contracts\Out\InfrastructureManagers\ITokenManager;
 use App\Application\Contracts\Out\Notification\INotify;
-use App\Application\Contracts\Out\Repositories\IFriendRepository;
+use App\Application\Contracts\Out\Repositories\IFriendshipRepository;
 use App\Application\Contracts\Out\Repositories\ILocalityRepository;
 use App\Application\Contracts\Out\Repositories\IPlaceRepository;
 use App\Application\Contracts\Out\Repositories\IPlaceReviewRepository;
 use App\Application\Contracts\Out\Repositories\IRouteRepository;
-use App\Application\Contracts\Out\Repositories\ITypeRepository;
+use App\Application\Contracts\Out\Repositories\IPlaceTypeRepository;
 use App\Application\Contracts\Out\Repositories\IUserRepository;
 use App\Application\Services\Auth\AuthService;
-use App\Application\Services\Friend\FriendService;
+use App\Application\Services\Friend\FriendshipService;
 use App\Application\Services\Place\Filter\PlaceFilterService;
 use App\Application\Services\Place\PlaceService;
 use App\Application\Services\Place\Review\PlaceReviewService;
@@ -31,11 +31,11 @@ use App\Application\Services\Route\RouteService;
 use App\Application\Services\User\UserService;
 use App\Domain\Contracts\In\DomainManagers\IDistanceManager;
 use App\Domain\Managers\Distance\DistanceManager;
-use App\Infrastructure\Database\Repositories\Friend\FriendRepository;
+use App\Infrastructure\Database\Repositories\Friend\FriendshipRepository;
 use App\Infrastructure\Database\Repositories\Place\Locality\LocalityRepository;
 use App\Infrastructure\Database\Repositories\Place\PlaceRepository;
 use App\Infrastructure\Database\Repositories\Place\Review\PlaceReviewRepository;
-use App\Infrastructure\Database\Repositories\Place\Type\TypeRepository;
+use App\Infrastructure\Database\Repositories\Place\Type\PlaceTypeRepository;
 use App\Infrastructure\Database\Repositories\Route\RouteRepository;
 use App\Infrastructure\Database\Repositories\User\UserRepository;
 use App\Infrastructure\Database\Transaction\Interface\ITransactionManager;
@@ -54,7 +54,7 @@ class AppServiceProvider extends ServiceProvider
         /** SERVICES */
         IUserService::class => UserService::class,
         IAuthService::class => AuthService::class,
-        IFriendService::class => FriendService::class,
+        IFriendshipService::class => FriendshipService::class,
         IPlaceService::class => PlaceService::class,
         IPlaceReviewService::class => PlaceReviewService::class,
         IRouteService::class => RouteService::class,
@@ -64,10 +64,10 @@ class AppServiceProvider extends ServiceProvider
         IUserRepository::class => UserRepository::class,
         IPlaceRepository::class => PlaceRepository::class,
         IPlaceReviewRepository::class => PlaceReviewRepository::class,
-        IFriendRepository::class => FriendRepository::class,
+        IFriendshipRepository::class => FriendshipRepository::class,
         IRouteRepository::class => RouteRepository::class,
         ILocalityRepository::class => LocalityRepository::class,
-        ITypeRepository::class => TypeRepository::class,
+        IPlaceTypeRepository::class => PlaceTypeRepository::class,
 
         /** InfrastructureManagers */
         ITokenManager::class => TokenManager::class,
@@ -94,6 +94,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        $this->app->when(IFriendService::class)->needs(INotify::class)->give(FriendNotifier::class);
+        $this->app->when(IFriendshipService::class)->needs(INotify::class)->give(FriendNotifier::class);
     }
 }

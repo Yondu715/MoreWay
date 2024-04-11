@@ -2,23 +2,23 @@
 
 namespace App\Application\Services\Friend;
 
-use App\Application\Contracts\In\Services\IFriendService;
+use App\Application\Contracts\In\Services\IFriendshipService;
 use App\Application\Contracts\Out\Notification\INotifier;
-use App\Application\Contracts\Out\Repositories\IFriendRepository;
+use App\Application\Contracts\Out\Repositories\IFriendshipRepository;
 use App\Application\DTO\In\Friend\AcceptFriendDto;
 use App\Application\DTO\In\Friend\AddFriendDto;
 use App\Application\DTO\Out\Auth\UserDto;
-use App\Application\Dto\Out\Friend\FriendshipRequestDto;
+use App\Application\DTO\Out\Friend\FriendshipRequestDto;
 use App\Application\Enums\Friend\RelationshipTypeId;
 use App\Application\Exceptions\Friend\FriendRequestConflict;
-use App\Infrastructure\Database\Models\Friend;
+use App\Infrastructure\Database\Models\Friendship;
 use Illuminate\Support\Collection;
 
-class FriendService implements IFriendService
+class FriendshipService implements IFriendshipService
 {
 
     public function __construct(
-        private readonly IFriendRepository $friendRepository,
+        private readonly IFriendshipRepository $friendRepository,
         private readonly INotifier $notifier
     ) {
     }
@@ -29,7 +29,7 @@ class FriendService implements IFriendService
     public function getUserFriends(int $userId): Collection
     {
         $friendships = $this->friendRepository->getUserFriendships($userId);
-        return $friendships->map(function (Friend $friendship) {
+        return $friendships->map(function (Friendship $friendship) {
             return UserDto::fromUserModel($friendship->friend);
         });
     }
@@ -41,7 +41,7 @@ class FriendService implements IFriendService
     public function getFriendRequests(int $userId): Collection
     {
         $friendships = $this->friendRepository->getFriendRequests($userId);
-        return $friendships->map(function (Friend $friendship) {
+        return $friendships->map(function (Friendship $friendship) {
             return FriendshipRequestDto::fromFriendModule($friendship);
         });
     }
@@ -64,14 +64,14 @@ class FriendService implements IFriendService
     public function addFriendRequest(AddFriendDto $addFriendDto): FriendshipRequestDto
 
     {
-        /** @var ?Friend $request */
+        /** @var ?Friendship $request */
         $request = $this->friendRepository->findByUserIdAndFriendId($addFriendDto->userId, $addFriendDto->friendId);
 
         if ($request || $addFriendDto->friendId === $addFriendDto->userId) {
             throw new FriendRequestConflict();
         }
 
-        /** @var Friend $request */
+        /** @var Friendship $request */
         $request = $this->friendRepository->create([
             'user_id' => $addFriendDto->userId,
             'friend_id' => $addFriendDto->friendId,
@@ -89,7 +89,7 @@ class FriendService implements IFriendService
      */
     public function acceptFriendRequest(AcceptFriendDto $acceptFriendDto): void
     {
-        /** @var Friend $friendship */
+        /** @var Friendship $friendship */
         $friendship = $this->friendRepository->findById($acceptFriendDto->requestId);
 
 

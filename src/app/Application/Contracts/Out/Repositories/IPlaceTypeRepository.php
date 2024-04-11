@@ -5,7 +5,7 @@ namespace App\Application\Contracts\Out\Repositories;
 use App\Infrastructure\Database\Models\PlaceType;
 use Illuminate\Support\Collection;
 
-interface ITypeRepository
+interface IPlaceTypeRepository
 {
     /**
      * @return Collection<int, PlaceType>

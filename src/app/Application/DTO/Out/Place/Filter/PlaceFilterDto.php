@@ -3,7 +3,7 @@
 namespace App\Application\DTO\Out\Place\Filter;
 
 use App\Application\DTO\Out\Place\Locality\LocalityDto;
-use App\Application\DTO\Out\Place\Type\TypeDto;
+use App\Application\DTO\Out\Place\Type\PlaceTypeDto;
 use Illuminate\Support\Collection;
 
 class PlaceFilterDto
@@ -34,7 +34,7 @@ class PlaceFilterDto
     {
         return new self(
             localities: LocalityDto::fromLocalityCollection($filters['localities']),
-            types: TypeDto::fromTypeCollection($filters['types']),
+            types: PlaceTypeDto::fromTypeCollection($filters['types']),
             minDistance: $filters['minDistance'],
             maxDistance: $filters['maxDistance']
         );

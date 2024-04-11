@@ -2,7 +2,7 @@
 
 namespace App\Infrastructure\Http\Controllers\Api\V1;
 
-use App\Application\Contracts\In\Services\IFriendService;
+use App\Application\Contracts\In\Services\IFriendshipService;
 use App\Application\DTO\In\Friend\AcceptFriendDto;
 use App\Application\DTO\In\Friend\AddFriendDto;
 use App\Infrastructure\Exceptions\ApiException;
@@ -19,7 +19,7 @@ class FriendController extends Controller
 {
 
     public function __construct(
-        private readonly IFriendService $friendService
+        private readonly IFriendshipService $friendService
     ) {}
 
     /**

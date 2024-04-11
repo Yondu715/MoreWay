@@ -20,7 +20,7 @@ use Illuminate\Support\Carbon;
  * @property-read FriendRelationshipType $relationship
  * @property-read User $user
  */
-class Friend extends Model
+class Friendship extends Model
 {
     use HasFactory;
     use SoftDeletes;

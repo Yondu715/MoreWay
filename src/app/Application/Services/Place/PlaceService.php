@@ -44,7 +44,6 @@ class PlaceService implements IPlaceService
     public function getPlaces(GetPlacesDto $getPlacesDto): CursorDto
     {
         $places = $this->placeRepository->getPlaces($getPlacesDto);
-
         return PlaceCursorDto::fromPaginator(collect($places->items())->map(function ($place) use ($getPlacesDto){
             return PlaceDto::fromPlaceModel($place, $this->distanceManager
                 ->calculate(

@@ -38,9 +38,9 @@ class PlaceController extends Controller
     public function getPlaces(GetPlacesRequest $getPlacesRequest): PlaceCursorResource
     {
         try {
-            $getPlacesRequest = GetPlacesDto::fromRequest($getPlacesRequest);
+            $getPlacesDto = GetPlacesDto::fromRequest($getPlacesRequest);
             return PlaceCursorResource::make(
-                $this->placeService->getPlaces($getPlacesRequest)
+                $this->placeService->getPlaces($getPlacesDto)
             );
         } catch (Exception $e) {
             throw new ApiException($e->getMessage(), $e->getCode());
