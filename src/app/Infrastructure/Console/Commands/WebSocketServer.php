@@ -2,7 +2,7 @@
 
 namespace App\Infrastructure\Console\Commands;
 
-use App\Infrastructure\WebSocket\Controllers\Friend\FriendWebSocketController;
+use App\Infrastructure\WebSocket\Routing\Route;
 use Illuminate\Console\Command;
 use Ratchet\App;
 use React\EventLoop\Loop;
@@ -36,9 +36,13 @@ class WebSocketServer extends Command
         $loop = Loop::get();
         $app = new App($host, $port, $address, $loop);
 
-        $app->route('/friends', new WsServer(
-            app(FriendWebSocketController::class)
-        ), ['*']);
+        $routes = Route::getRoutes();
+
+        foreach ($routes as $url => $controller) {
+            $app->route($url, new WsServer(
+                app($controller)
+            ), ['*']);
+        }
 
         $app->run();
     }
