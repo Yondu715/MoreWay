@@ -2,18 +2,11 @@
 
 namespace App\Infrastructure\Console\Commands;
 
-use App\Infrastructure\WebSocket\Controllers\Friend\FriendWebSocketController;
+use App\Infrastructure\WebSocket\Routing\Route;
 use Illuminate\Console\Command;
-use Ratchet\Http\HttpServer;
-use Ratchet\Http\Router;
+use Ratchet\App;
 use React\EventLoop\Loop;
-use Ratchet\Server\IoServer;
 use Ratchet\WebSocket\WsServer;
-use React\Socket\SocketServer;
-use Symfony\Component\Routing\Matcher\UrlMatcher;
-use Symfony\Component\Routing\RequestContext;
-use Symfony\Component\Routing\Route;
-use Symfony\Component\Routing\RouteCollection;
 
 class WebSocketServer extends Command
 {
@@ -36,28 +29,21 @@ class WebSocketServer extends Command
      */
     public function handle()
     {
-        $url = config('app.websocket_url');
+        $host = config('app.ws_host');
+        $port = config('app.ws_port');
+        $address = config('app.ws_address');
 
         $loop = Loop::get();
-        $socket = new SocketServer($url);
-        $routes = new RouteCollection();
+        $app = new App($host, $port, $address, $loop);
 
-        $websocketServer = new WsServer(
-            app(FriendWebSocketController::class)
-        );
-        $websocketServer->enableKeepAlive($loop);
+        $routes = Route::getRoutes();
 
-        $routes->add('friends', new Route('/friends', [
-            '_controller' => $websocketServer,
-        ]));
+        foreach ($routes as $url => $controller) {
+            $app->route($url, new WsServer(
+                app($controller)
+            ), ['*']);
+        }
 
-        $urlMatcher = new UrlMatcher($routes, new RequestContext());
-        $router = new Router($urlMatcher);
-        $server = new IoServer(
-            new HttpServer($router),
-            $socket,
-            $loop
-        );
-        $server->run();
+        $app->run();
     }
 }

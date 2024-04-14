@@ -57,7 +57,9 @@ return [
 
     'url' => env('APP_URL', 'http://localhost'),
 
-    'websocket_url' => env('WS_URL', '0.0.0.0:8080'),
+    'ws_host' => env('WS_HOST', 'localhost'),
+    'ws_port' => env('WS_PORT', '8080'),
+    'ws_address' => env('WS_ADDRESS', '127.0.0.1'),
     
     'asset_url' => env('ASSET_URL'),
 
@@ -170,6 +172,7 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         \App\Infrastructure\Providers\EventServiceProvider::class,
         \App\Infrastructure\Providers\RouteServiceProvider::class,
+        \App\Infrastructure\Providers\WebSocketRouteProvider::class,
     ])->toArray(),
 
     /*
