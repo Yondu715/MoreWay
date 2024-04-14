@@ -43,6 +43,7 @@ class PlaceController extends Controller
                 $this->placeService->getPlaces($getPlacesDto)
             );
         } catch (Exception $e) {
+            dd($e->getMessage());
             throw new ApiException($e->getMessage(), $e->getCode());
         }
     }

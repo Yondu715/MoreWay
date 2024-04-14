@@ -68,11 +68,19 @@ class PlaceFilter extends AbstractFilter
      */
     public function distance(Builder $builder, array $value): void
     {
-        $from = $value['from'];
-        $to = $value['to'];
+        $placesId = [];
 
-        $builder->having('distance', '>=', $from)
-            ->having('distance', '<=', $to);
+        $builder->get()->map(function ($place) use ($value) {
+            $place->distance = $value['calculate']($place->lat, $place->lon);
+            return $place;
+        })->filter(function ($place) use ($value, &$placesId) {
+            if ($place->distance >= $value['from'] && $place->distance <= $value['to']) {
+                $placesId[] = $place->id;
+            }
+            return $place->distance >= $value['from'] && $place->distance <= $value['to'];
+        });
+
+        $builder->whereIn('id', $placesId);
     }
 
     /**
@@ -98,7 +106,20 @@ class PlaceFilter extends AbstractFilter
             }
 
             case 'distance': {
-                $builder->orderBy($value['sort'], $value['sortType']);
+                $places = $builder->get()->map(function ($place) use ($value) {
+                    $place->distance = $value['calculate']($place->lat, $place->lon);
+                    return $place;
+                });
+
+                if ($value['sortType'] === 'asc') {
+                    $places = $places->sortBy('distance');
+                } else {
+                    $places = $places->sortByDesc('distance');
+                }
+
+                $placesId = $places->pluck('id');
+
+                $builder->orderByRaw('FIELD(id, ' . $placesId->implode(',') . ')');
             }
         }
     }

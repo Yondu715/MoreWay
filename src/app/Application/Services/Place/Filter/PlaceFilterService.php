@@ -22,7 +22,7 @@ class PlaceFilterService implements IPlaceFilterService
         return PlaceFilterDto::fromFilters([
             'localities' => $this->localityRepository->all(),
             'types' => $this->typeRepository->all(),
-            'minDistance' => 1,
+            'minDistance' => 0,
             'maxDistance' => 700
         ]);
     }

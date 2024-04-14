@@ -10,7 +10,7 @@ class GetPlacesDto
     public readonly float $lat;
     public readonly float $lon;
     public readonly ?string $cursor;
-    public readonly array $filter;
+    public array $filter;
     public readonly int $limit;
 
     public function __construct(

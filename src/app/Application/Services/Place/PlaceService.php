@@ -43,6 +43,18 @@ class PlaceService implements IPlaceService
      */
     public function getPlaces(GetPlacesDto $getPlacesDto): CursorDto
     {
+        if ($getPlacesDto->filter['distance']) {
+            $getPlacesDto->filter['distance']['calculate'] = function ($lat, $lon) use ($getPlacesDto) {
+                return $this->distanceManager->calculate($lat, $lon, $getPlacesDto->lat, $getPlacesDto->lon);
+            };
+        }
+        if ($getPlacesDto->filter['sort']) {
+            if ($getPlacesDto->filter['sort']['sort'] === 'distance')
+                $getPlacesDto->filter['sort']['calculate'] = function ($lat, $lon) use ($getPlacesDto) {
+                    return $this->distanceManager->calculate($lat, $lon, $getPlacesDto->lat, $getPlacesDto->lon);
+                };
+        }
+
         $places = $this->placeRepository->getPlaces($getPlacesDto);
         return PlaceCursorDto::fromPaginator(collect($places->items())->map(function ($place) use ($getPlacesDto){
             return PlaceDto::fromPlaceModel($place, $this->distanceManager
