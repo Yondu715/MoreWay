@@ -11,9 +11,10 @@ use App\Infrastructure\Http\Requests\Friend\AcceptFriendRequest;
 use App\Infrastructure\Http\Requests\Friend\AddFriendRequest;
 use App\Infrastructure\Http\Resources\Auth\UserResource;
 use App\Infrastructure\Http\Resources\Friend\FriendshipRequestResource;
-use Exception;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Response;
+use Throwable;
+
 
 class FriendController extends Controller
 {
@@ -67,10 +68,9 @@ class FriendController extends Controller
             return FriendshipRequestResource::make(
                 $this->friendService->addFriendRequest($addFriendDto)
             );
-        } catch (Exception $e) {
-            throw new ApiException($e->getMessage(), $e->getCode());
+        } catch (Throwable $th) {
+            throw new ApiException($th->getMessage(), $th->getCode());
         }
-
     }
 
     /**
@@ -84,8 +84,8 @@ class FriendController extends Controller
             $acceptFriendDto = AcceptFriendDto::fromRequest($acceptFriendRequest);
             $this->friendService->acceptFriendRequest($acceptFriendDto);
             return response()->noContent();
-        } catch (Exception $e) {
-            throw new ApiException($e->getMessage(), $e->getCode());
+        } catch (Throwable $th) {
+            throw new ApiException($th->getMessage(), $th->getCode());
         }
     }
 

@@ -18,9 +18,11 @@ use App\Infrastructure\Http\Requests\Review\GetReviewsRequest;
 use App\Infrastructure\Http\Resources\Place\Filter\PlaceFilterResource;
 use App\Infrastructure\Http\Resources\Place\PlaceCursorResource;
 use App\Infrastructure\Http\Resources\Place\PlaceResource;
+use Throwable;
 use App\Infrastructure\Http\Resources\Review\ReviewCursorResource;
 use App\Infrastructure\Http\Resources\Review\ReviewResource;
 use Exception;
+
 
 class PlaceController extends Controller
 {
@@ -33,7 +35,7 @@ class PlaceController extends Controller
     /**
      * @param GetPlacesRequest $getPlacesRequest
      * @return PlaceCursorResource
-     * @throws Exception
+     * @throws ApiException
      */
     public function getPlaces(GetPlacesRequest $getPlacesRequest): PlaceCursorResource
     {
@@ -42,7 +44,7 @@ class PlaceController extends Controller
             return PlaceCursorResource::make(
                 $this->placeService->getPlaces($getPlacesDto)
             );
-        } catch (Exception $e) {
+        } catch (Throwable $e) {
             throw new ApiException($e->getMessage(), $e->getCode());
         }
     }
@@ -50,7 +52,7 @@ class PlaceController extends Controller
     /**
      * @param GetPlaceRequest $getPlaceRequest
      * @return PlaceResource
-     * @throws Exception
+     * @throws ApiException
      */
     public function getPlace(GetPlaceRequest $getPlaceRequest): PlaceResource
     {
@@ -59,15 +61,15 @@ class PlaceController extends Controller
             return PlaceResource::make(
                 $this->placeService->getPlaceById($getPlaceDto)
             );
-        } catch (Exception $e) {
-            throw new ApiException($e->getMessage(), $e->getCode());
+        } catch (Throwable $th) {
+            throw new ApiException($th->getMessage(), $th->getCode());
         }
     }
 
     /**
      * @param CreateReviewRequest $createReviewRequest
      * @return ReviewResource
-     * @throws Exception
+     * @throws ApiException
      */
     public function createReview(CreateReviewRequest $createReviewRequest): ReviewResource
     {
@@ -76,15 +78,15 @@ class PlaceController extends Controller
             return ReviewResource::make(
                 $this->reviewService->createReviews($createReviewDto)
             );
-        } catch (Exception $e) {
-            throw new ApiException($e->getMessage(), $e->getCode());
+        } catch (Throwable $th) {
+            throw new ApiException($th->getMessage(), $th->getCode());
         }
     }
 
     /**
      * @param GetReviewsRequest $getReviewsRequest
      * @return ReviewCursorResource
-     * @throws Exception
+     * @throws ApiException
      */
     public function getReviews(GetReviewsRequest $getReviewsRequest): ReviewCursorResource
     {
@@ -93,8 +95,8 @@ class PlaceController extends Controller
             return ReviewCursorResource::make(
                 $this->reviewService->getReviews($getReviewsDto)
             );
-        } catch (Exception $e) {
-            throw new ApiException($e->getMessage(), $e->getCode());
+        } catch (Throwable $th) {
+            throw new ApiException($th->getMessage(), $th->getCode());
         }
     }
 
@@ -108,8 +110,8 @@ class PlaceController extends Controller
             return PlaceFilterResource::make(
                 $this->filterService->getFilters()
             );
-        } catch (Exception $e) {
-            throw new ApiException($e->getMessage(), $e->getCode());
+        } catch (Throwable $th) {
+            throw new ApiException($th->getMessage(), $th->getCode());
         }
     }
 }

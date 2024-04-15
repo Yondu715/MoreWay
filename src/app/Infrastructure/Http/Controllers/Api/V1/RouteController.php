@@ -15,7 +15,7 @@ use App\Infrastructure\Http\Requests\Route\CreateRouteRequest;
 use App\Infrastructure\Http\Resources\Review\ReviewCursorResource;
 use App\Infrastructure\Http\Resources\Review\ReviewResource;
 use App\Infrastructure\Http\Resources\Route\RouteResource;
-use Exception;
+use Throwable;
 
 class RouteController extends Controller
 {
@@ -27,7 +27,7 @@ class RouteController extends Controller
     /**
      * @param CreateRouteRequest $createRouteRequest
      * @return RouteResource
-     * @throws Exception
+     * @throws ApiException
      */
     public function createRoute(CreateRouteRequest $createRouteRequest): RouteResource
     {
@@ -36,8 +36,8 @@ class RouteController extends Controller
             return RouteResource::make(
               $this->routeService->createRoute($createRouteDto)
             );
-        } catch (Exception $e) {
-            throw new ApiException($e->getMessage(), $e->getCode());
+        } catch (Throwable $th) {
+            throw new ApiException($th->getMessage(), $th->getCode());
         }
     }
 
@@ -52,8 +52,8 @@ class RouteController extends Controller
             return RouteResource::make(
               $this->routeService->getRouteById($routeId)
             );
-        } catch (Exception $e) {
-            throw new ApiException($e->getMessage(), $e->getCode());
+        } catch (Throwable $th) {
+            throw new ApiException($th->getMessage(), $th->getCode());
         }
     }
 

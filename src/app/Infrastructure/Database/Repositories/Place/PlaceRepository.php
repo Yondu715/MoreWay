@@ -35,7 +35,7 @@ class PlaceRepository extends BaseRepository implements IPlaceRepository
                 ->query()
                 ->where('id', $getPlaceDto->id)
                 ->first();
-        } catch (Throwable) {
+        } catch (Throwable $th) {
             throw new PlaceNotFound();
         }
     }
