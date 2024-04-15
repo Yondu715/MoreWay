@@ -2,7 +2,7 @@
 
 namespace App\Infrastructure\Http\Controllers\Api\V1;
 
-use App\Application\Contracts\In\Services\IFriendshipService;
+use App\Application\Contracts\In\Services\Friend\IFriendshipService;
 use App\Application\DTO\In\Friend\AcceptFriendDto;
 use App\Application\DTO\In\Friend\AddFriendDto;
 use App\Infrastructure\Exceptions\ApiException;
@@ -11,9 +11,9 @@ use App\Infrastructure\Http\Requests\Friend\AcceptFriendRequest;
 use App\Infrastructure\Http\Requests\Friend\AddFriendRequest;
 use App\Infrastructure\Http\Resources\Auth\UserResource;
 use App\Infrastructure\Http\Resources\Friend\FriendshipRequestResource;
+use Exception;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Response;
-use Exception;
 
 class FriendController extends Controller
 {

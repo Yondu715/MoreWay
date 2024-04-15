@@ -2,10 +2,10 @@
 
 namespace App\Application\Services\User;
 
-use App\Application\Contracts\In\Services\IUserService;
-use App\Application\Contracts\Out\InfrastructureManagers\IHashManager;
-use App\Application\Contracts\Out\InfrastructureManagers\IStorageManager;
-use App\Application\Contracts\Out\Repositories\IUserRepository;
+use App\Application\Contracts\In\Services\User\IUserService;
+use App\Application\Contracts\Out\Managers\Hash\IHashManager;
+use App\Application\Contracts\Out\Managers\Storage\IStorageManager;
+use App\Application\Contracts\Out\Repositories\User\IUserRepository;
 use App\Application\DTO\In\User\ChangeUserAvatarDto;
 use App\Application\DTO\In\User\ChangeUserDataDto;
 use App\Application\DTO\In\User\ChangeUserPasswordDto;

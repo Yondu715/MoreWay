@@ -2,7 +2,7 @@
 
 namespace App\Infrastructure\Database\Repositories\User;
 
-use App\Application\Contracts\Out\Repositories\IUserRepository;
+use App\Application\Contracts\Out\Repositories\User\IUserRepository;
 use App\Application\Exceptions\User\UserNotFound;
 use App\Infrastructure\Database\Models\User;
 use App\Infrastructure\Database\Repositories\BaseRepository\BaseRepository;

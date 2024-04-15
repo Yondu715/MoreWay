@@ -2,18 +2,26 @@
 
 namespace App\Infrastructure\Http\Controllers\Api\V1;
 
-use App\Application\Contracts\In\Services\IRouteService;
+use App\Application\Contracts\In\Services\Route\IRouteService;
+use App\Application\Contracts\In\Services\Route\Review\IRouteReviewService;
 use App\Application\DTO\In\Route\CreateRouteDto;
+use App\Application\DTO\In\Route\Review\CreateRouteReviewDto;
+use App\Application\DTO\In\Route\Review\GetRouteReviewsDto;
 use App\Infrastructure\Exceptions\ApiException;
 use App\Infrastructure\Http\Controllers\Controller;
+use App\Infrastructure\Http\Requests\Review\CreateReviewRequest;
+use App\Infrastructure\Http\Requests\Review\GetReviewsRequest;
 use App\Infrastructure\Http\Requests\Route\CreateRouteRequest;
+use App\Infrastructure\Http\Resources\Review\ReviewCursorResource;
+use App\Infrastructure\Http\Resources\Review\ReviewResource;
 use App\Infrastructure\Http\Resources\Route\RouteResource;
 use Exception;
 
 class RouteController extends Controller
 {
     public function __construct(
-        private readonly IRouteService $routeService
+        private readonly IRouteService $routeService,
+        private readonly IRouteReviewService $reviewService,
     ) {}
 
     /**
@@ -43,6 +51,40 @@ class RouteController extends Controller
         try {
             return RouteResource::make(
               $this->routeService->getRouteById($routeId)
+            );
+        } catch (Exception $e) {
+            throw new ApiException($e->getMessage(), $e->getCode());
+        }
+    }
+
+    /**
+     * @param CreateReviewRequest $createReviewRequest
+     * @return ReviewResource
+     * @throws Exception
+     */
+    public function createReview(CreateReviewRequest $createReviewRequest): ReviewResource
+    {
+        try {
+            $createReviewDto = CreateRouteReviewDto::fromRequest($createReviewRequest);
+            return ReviewResource::make(
+                $this->reviewService->createReviews($createReviewDto)
+            );
+        } catch (Exception $e) {
+            throw new ApiException($e->getMessage(), $e->getCode());
+        }
+    }
+
+    /**
+     * @param GetReviewsRequest $getReviewsRequest
+     * @return ReviewCursorResource
+     * @throws Exception
+     */
+    public function getReviews(GetReviewsRequest $getReviewsRequest): ReviewCursorResource
+    {
+        try {
+            $getReviewsDto = GetRouteReviewsDto::fromRequest($getReviewsRequest);
+            return ReviewCursorResource::make(
+                $this->reviewService->getReviews($getReviewsDto)
             );
         } catch (Exception $e) {
             throw new ApiException($e->getMessage(), $e->getCode());

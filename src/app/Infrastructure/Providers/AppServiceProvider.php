@@ -2,31 +2,34 @@
 
 namespace App\Infrastructure\Providers;
 
-use App\Application\Contracts\In\Services\IAuthService;
-use App\Application\Contracts\In\Services\IFriendshipService;
-use App\Application\Contracts\In\Services\IPlaceFilterService;
-use App\Application\Contracts\In\Services\IPlaceReviewService;
-use App\Application\Contracts\In\Services\IPlaceService;
-use App\Application\Contracts\In\Services\IRouteService;
-use App\Application\Contracts\In\Services\IUserService;
-use App\Application\Contracts\Out\InfrastructureManagers\ICacheManager;
-use App\Application\Contracts\Out\InfrastructureManagers\IHashManager;
-use App\Application\Contracts\Out\InfrastructureManagers\IMailManager;
-use App\Application\Contracts\Out\InfrastructureManagers\IStorageManager;
-use App\Application\Contracts\Out\InfrastructureManagers\ITokenManager;
+use App\Application\Contracts\In\Services\Auth\IAuthService;
+use App\Application\Contracts\In\Services\Friend\IFriendshipService;
+use App\Application\Contracts\In\Services\Place\Filter\IPlaceFilterService;
+use App\Application\Contracts\In\Services\Place\IPlaceService;
+use App\Application\Contracts\In\Services\Place\Review\IPlaceReviewService;
+use App\Application\Contracts\In\Services\Route\IRouteService;
+use App\Application\Contracts\In\Services\Route\Review\IRouteReviewService;
+use App\Application\Contracts\In\Services\User\IUserService;
+use App\Application\Contracts\Out\Managers\Cache\ICacheManager;
+use App\Application\Contracts\Out\Managers\Hash\IHashManager;
+use App\Application\Contracts\Out\Managers\Mail\IMailManager;
+use App\Application\Contracts\Out\Managers\Storage\IStorageManager;
+use App\Application\Contracts\Out\Managers\Token\ITokenManager;
 use App\Application\Contracts\Out\Notification\INotify;
-use App\Application\Contracts\Out\Repositories\IFriendshipRepository;
-use App\Application\Contracts\Out\Repositories\ILocalityRepository;
-use App\Application\Contracts\Out\Repositories\IPlaceRepository;
-use App\Application\Contracts\Out\Repositories\IPlaceReviewRepository;
-use App\Application\Contracts\Out\Repositories\IRouteRepository;
-use App\Application\Contracts\Out\Repositories\IPlaceTypeRepository;
-use App\Application\Contracts\Out\Repositories\IUserRepository;
+use App\Application\Contracts\Out\Repositories\Friend\IFriendshipRepository;
+use App\Application\Contracts\Out\Repositories\Place\IPlaceRepository;
+use App\Application\Contracts\Out\Repositories\Place\Locality\ILocalityRepository;
+use App\Application\Contracts\Out\Repositories\Place\Review\IPlaceReviewRepository;
+use App\Application\Contracts\Out\Repositories\Place\Type\IPlaceTypeRepository;
+use App\Application\Contracts\Out\Repositories\Route\IRouteRepository;
+use App\Application\Contracts\Out\Repositories\Route\Review\IRouteReviewRepository;
+use App\Application\Contracts\Out\Repositories\User\IUserRepository;
 use App\Application\Services\Auth\AuthService;
 use App\Application\Services\Friend\FriendshipService;
 use App\Application\Services\Place\Filter\PlaceFilterService;
 use App\Application\Services\Place\PlaceService;
 use App\Application\Services\Place\Review\PlaceReviewService;
+use App\Application\Services\Route\Review\RouteReviewService;
 use App\Application\Services\Route\RouteService;
 use App\Application\Services\User\UserService;
 use App\Domain\Contracts\In\DomainManagers\IDistanceManager;
@@ -36,6 +39,7 @@ use App\Infrastructure\Database\Repositories\Place\Locality\LocalityRepository;
 use App\Infrastructure\Database\Repositories\Place\PlaceRepository;
 use App\Infrastructure\Database\Repositories\Place\Review\PlaceReviewRepository;
 use App\Infrastructure\Database\Repositories\Place\Type\PlaceTypeRepository;
+use App\Infrastructure\Database\Repositories\Route\Review\RouteReviewRepository;
 use App\Infrastructure\Database\Repositories\Route\RouteRepository;
 use App\Infrastructure\Database\Repositories\User\UserRepository;
 use App\Infrastructure\Database\Transaction\Interface\ITransactionManager;
@@ -58,6 +62,7 @@ class AppServiceProvider extends ServiceProvider
         IPlaceService::class => PlaceService::class,
         IPlaceReviewService::class => PlaceReviewService::class,
         IRouteService::class => RouteService::class,
+        IRouteReviewService::class => RouteReviewService::class,
         IPlaceFilterService::class => PlaceFilterService::class,
 
         /** REPOSITORIES */
@@ -66,6 +71,7 @@ class AppServiceProvider extends ServiceProvider
         IPlaceReviewRepository::class => PlaceReviewRepository::class,
         IFriendshipRepository::class => FriendshipRepository::class,
         IRouteRepository::class => RouteRepository::class,
+        IRouteReviewRepository::class => RouteReviewRepository::class,
         ILocalityRepository::class => LocalityRepository::class,
         IPlaceTypeRepository::class => PlaceTypeRepository::class,
 

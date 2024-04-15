@@ -2,9 +2,9 @@
 
 namespace App\Infrastructure\Http\Controllers\Api\V1;
 
-use App\Application\Contracts\In\Services\IPlaceFilterService;
-use App\Application\Contracts\In\Services\IPlaceReviewService;
-use App\Application\Contracts\In\Services\IPlaceService;
+use App\Application\Contracts\In\Services\Place\Filter\IPlaceFilterService;
+use App\Application\Contracts\In\Services\Place\IPlaceService;
+use App\Application\Contracts\In\Services\Place\Review\IPlaceReviewService;
 use App\Application\DTO\In\Place\GetPlaceDto;
 use App\Application\DTO\In\Place\GetPlacesDto;
 use App\Application\DTO\In\Place\Review\CreatePlaceReviewDto;
@@ -13,13 +13,13 @@ use App\Infrastructure\Exceptions\ApiException;
 use App\Infrastructure\Http\Controllers\Controller;
 use App\Infrastructure\Http\Requests\Place\GetPlaceRequest;
 use App\Infrastructure\Http\Requests\Place\GetPlacesRequest;
-use App\Infrastructure\Http\Requests\Place\PlaceReview\CreatePlaceReviewRequest;
-use App\Infrastructure\Http\Requests\Place\PlaceReview\GetPlaceReviewsRequest;
+use App\Infrastructure\Http\Requests\Review\CreateReviewRequest;
+use App\Infrastructure\Http\Requests\Review\GetReviewsRequest;
 use App\Infrastructure\Http\Resources\Place\Filter\PlaceFilterResource;
 use App\Infrastructure\Http\Resources\Place\PlaceCursorResource;
 use App\Infrastructure\Http\Resources\Place\PlaceResource;
-use App\Infrastructure\Http\Resources\Place\Review\PlaceReviewCursorResource;
-use App\Infrastructure\Http\Resources\Place\Review\PlaceReviewResource;
+use App\Infrastructure\Http\Resources\Review\ReviewCursorResource;
+use App\Infrastructure\Http\Resources\Review\ReviewResource;
 use Exception;
 
 class PlaceController extends Controller
@@ -65,15 +65,15 @@ class PlaceController extends Controller
     }
 
     /**
-     * @param CreatePlaceReviewRequest $createReviewRequest
-     * @return PlaceReviewResource
+     * @param CreateReviewRequest $createReviewRequest
+     * @return ReviewResource
      * @throws Exception
      */
-    public function createReview(CreatePlaceReviewRequest $createReviewRequest): PlaceReviewResource
+    public function createReview(CreateReviewRequest $createReviewRequest): ReviewResource
     {
         try {
             $createReviewDto = CreatePlaceReviewDto::fromRequest($createReviewRequest);
-            return PlaceReviewResource::make(
+            return ReviewResource::make(
                 $this->reviewService->createReviews($createReviewDto)
             );
         } catch (Exception $e) {
@@ -82,15 +82,15 @@ class PlaceController extends Controller
     }
 
     /**
-     * @param GetPlaceReviewsRequest $getReviewsRequest
-     * @return PlaceReviewCursorResource
+     * @param GetReviewsRequest $getReviewsRequest
+     * @return ReviewCursorResource
      * @throws Exception
      */
-    public function getReviews(GetPlaceReviewsRequest $getReviewsRequest): PlaceReviewCursorResource
+    public function getReviews(GetReviewsRequest $getReviewsRequest): ReviewCursorResource
     {
         try {
             $getReviewsDto = GetPlaceReviewsDto::fromRequest($getReviewsRequest);
-            return PlaceReviewCursorResource::make(
+            return ReviewCursorResource::make(
                 $this->reviewService->getReviews($getReviewsDto)
             );
         } catch (Exception $e) {

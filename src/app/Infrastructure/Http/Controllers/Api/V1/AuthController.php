@@ -2,7 +2,7 @@
 
 namespace App\Infrastructure\Http\Controllers\Api\V1;
 
-use App\Application\Contracts\In\Services\IAuthService;
+use App\Application\Contracts\In\Services\Auth\IAuthService;
 use App\Application\DTO\In\Auth\LoginDto;
 use App\Application\DTO\In\Auth\Password\ForgotPasswordDto;
 use App\Application\DTO\In\Auth\Password\ResetPasswordDto;

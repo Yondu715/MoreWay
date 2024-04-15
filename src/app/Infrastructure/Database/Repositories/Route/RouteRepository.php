@@ -2,7 +2,7 @@
 
 namespace App\Infrastructure\Database\Repositories\Route;
 
-use App\Application\Contracts\Out\Repositories\IRouteRepository;
+use App\Application\Contracts\Out\Repositories\Route\IRouteRepository;
 use App\Application\DTO\In\Route\CreateRouteDto;
 use App\Application\Exceptions\Route\FailedToCreateRoute;
 use App\Application\Exceptions\Route\RouteNotFound;
