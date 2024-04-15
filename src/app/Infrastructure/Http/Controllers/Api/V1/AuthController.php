@@ -16,8 +16,8 @@ use App\Infrastructure\Http\Requests\Auth\Password\ResetPasswordRequest;
 use App\Infrastructure\Http\Requests\Auth\Password\VerifyPasswordCodeRequest;
 use App\Infrastructure\Http\Requests\Auth\RegisterRequest;
 use App\Infrastructure\Http\Resources\Auth\UserResource;
-use Exception;
 use Illuminate\Http\JsonResponse;
+use Throwable;
 
 class AuthController extends Controller
 {
@@ -29,7 +29,7 @@ class AuthController extends Controller
     /**
      * @param LoginRequest $loginRequest
      * @return JsonResponse
-     * @throws Exception
+     * @throws ApiException
      */
     public function login(LoginRequest $loginRequest): JsonResponse
     {
@@ -41,15 +41,15 @@ class AuthController extends Controller
                     'accessToken' => $this->authService->login($inLoginDto)
                 ]
             ]);
-        } catch (Exception $e) {
-            throw new ApiException($e->getMessage(), $e->getCode());
+        } catch (Throwable $th) {
+            throw new ApiException($th->getMessage(), $th->getCode());
         }
     }
 
     /**
      * @param RegisterRequest $registerRequest
      * @return JsonResponse
-     * @throws Exception
+     * @throws ApiException
      */
     public function register(RegisterRequest $registerRequest): JsonResponse
     {
@@ -57,14 +57,14 @@ class AuthController extends Controller
             $registerDto = RegisterDto::fromRequest($registerRequest);
             $this->authService->register($registerDto);
             return response()->json()->setStatusCode(201);
-        } catch (Exception $e) {
-            throw new ApiException($e->getMessage(), $e->getCode());
+        } catch (Throwable $th) {
+            throw new ApiException($th->getMessage(), $th->getCode());
         }
     }
 
     /**
      * @return UserResource
-     * @throws Exception
+     * @throws ApiException
      */
     public function me(): UserResource
     {
@@ -72,8 +72,8 @@ class AuthController extends Controller
             return UserResource::make(
                 $this->authService->getAuthUser()
             );
-        } catch (Exception $e) {
-            throw new ApiException($e->getMessage(), $e->getCode());
+        } catch (Throwable $th) {
+            throw new ApiException($th->getMessage(), $th->getCode());
         }
     }
 
@@ -100,22 +100,22 @@ class AuthController extends Controller
     /**
      * @param ForgotPasswordRequest $forgotPasswordRequest
      * @return void
-     * @throws Exception
+     * @throws ApiException
      */
     public function forgotPassword(ForgotPasswordRequest $forgotPasswordRequest): void
     {
         try {
             $forgotPasswordDto = ForgotPasswordDto::fromRequest($forgotPasswordRequest);
             $this->authService->forgotPassword($forgotPasswordDto);
-        } catch (Exception $e) {
-            throw new ApiException($e->getMessage(), $e->getCode());
+        } catch (Throwable $th) {
+            throw new ApiException($th->getMessage(), $th->getCode());
         }
     }
 
     /**
      * @param VerifyPasswordCodeRequest $verifyPasswordCodeRequest
      * @return JsonResponse
-     * @throws Exception
+     * @throws ApiException
      */
     public function verifyPasswordCode(VerifyPasswordCodeRequest $verifyPasswordCodeRequest): JsonResponse
     {
@@ -126,23 +126,23 @@ class AuthController extends Controller
                     'resetPasswordToken' => $this->authService->verifyPasswordCode($verifyPasswordCodeDto)
                 ]
             ]);
-        } catch (Exception $e) {
-            throw new ApiException($e->getMessage(), $e->getCode());
+        } catch (Throwable $th) {
+            throw new ApiException($th->getMessage(), $th->getCode());
         }
     }
 
     /**
      * @param ResetPasswordRequest $resetPasswordRequest
      * @return void
-     * @throws Exception
+     * @throws ApiException
      */
     public function resetPassword(ResetPasswordRequest $resetPasswordRequest): void
     {
         try {
             $resetPasswordDto = ResetPasswordDto::fromRequest($resetPasswordRequest);
             $this->authService->resetPassword($resetPasswordDto);
-        } catch (Exception $e) {
-            throw new ApiException($e->getMessage(), $e->getCode());
+        } catch (Throwable $th) {
+            throw new ApiException($th->getMessage(), $th->getCode());
         }
     }
 }
