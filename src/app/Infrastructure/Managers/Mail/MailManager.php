@@ -2,7 +2,7 @@
 
 namespace App\Infrastructure\Managers\Mail;
 
-use App\Application\Contracts\Out\InfrastructureManagers\IMailManager;
+use App\Application\Contracts\Out\Managers\Mail\IMailManager;
 use App\Infrastructure\Managers\Mail\Auth\ForgotPasswordMail;
 use Illuminate\Support\Facades\Mail;
 

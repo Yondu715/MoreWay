@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Application\Contracts\Out\InfrastructureManagers\IHashManager;
+use App\Application\Contracts\Out\Managers\Hash\IHashManager;
 use App\Infrastructure\Database\Models\Locality;
 use App\Infrastructure\Database\Models\Place;
 use App\Infrastructure\Database\Models\PlaceImage;

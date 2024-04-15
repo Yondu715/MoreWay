@@ -2,12 +2,12 @@
 
 namespace App\Application\Services\Auth;
 
-use App\Application\Contracts\In\Services\IAuthService;
-use App\Application\Contracts\Out\InfrastructureManagers\ICacheManager;
-use App\Application\Contracts\Out\InfrastructureManagers\IHashManager;
-use App\Application\Contracts\Out\InfrastructureManagers\IMailManager;
-use App\Application\Contracts\Out\InfrastructureManagers\ITokenManager;
-use App\Application\Contracts\Out\Repositories\IUserRepository;
+use App\Application\Contracts\In\Services\Auth\IAuthService;
+use App\Application\Contracts\Out\Managers\Cache\ICacheManager;
+use App\Application\Contracts\Out\Managers\Hash\IHashManager;
+use App\Application\Contracts\Out\Managers\Mail\IMailManager;
+use App\Application\Contracts\Out\Managers\Token\ITokenManager;
+use App\Application\Contracts\Out\Repositories\User\IUserRepository;
 use App\Application\DTO\In\Auth\LoginDto;
 use App\Application\DTO\In\Auth\Password\ForgotPasswordDto;
 use App\Application\DTO\In\Auth\Password\ResetPasswordDto;

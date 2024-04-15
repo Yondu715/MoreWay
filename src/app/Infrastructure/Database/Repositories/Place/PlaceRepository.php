@@ -2,7 +2,7 @@
 
 namespace App\Infrastructure\Database\Repositories\Place;
 
-use App\Application\Contracts\Out\Repositories\IPlaceRepository;
+use App\Application\Contracts\Out\Repositories\Place\IPlaceRepository;
 use App\Application\DTO\In\Place\GetPlaceDto;
 use App\Application\DTO\In\Place\GetPlacesDto;
 use App\Application\Exceptions\Place\PlaceNotFound;

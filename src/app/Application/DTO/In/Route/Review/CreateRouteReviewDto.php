@@ -2,30 +2,38 @@
 
 namespace App\Application\DTO\In\Route\Review;
 
-use App\Infrastructure\Http\Requests\Route\CreateRouteReviewRequest;
+use App\Infrastructure\Http\Requests\Review\CreateReviewRequest;
 
 class CreateRouteReviewDto
 {
+    public readonly int $routeId;
     public readonly int $userId;
-    public readonly ?string $text;
     public readonly int $rating;
+    public readonly ?string $text;
 
     public function __construct(
+        int $routeId,
         int $userId,
-        ?string $text,
-        int $rating
+        int $rating,
+        ?string $text
     ) {
+        $this->routeId = $routeId;
         $this->userId = $userId;
-        $this->text = $text;
         $this->rating = $rating;
+        $this->text = $text;
     }
 
-    public static function fromRequest(CreateRouteReviewRequest $createRouteReviewRequest): self
+    /**
+     * @param CreateReviewRequest $createReviewRequest
+     * @return self
+     */
+    public static function fromRequest(CreateReviewRequest $createReviewRequest): self
     {
         return new self(
-            userId: $createRouteReviewRequest->userId,
-            text: $createRouteReviewRequest->text,
-            rating: $createRouteReviewRequest->rating
+            routeId: $createReviewRequest->route('routeId'),
+            userId: $createReviewRequest->userId,
+            rating: $createReviewRequest->rating,
+            text: $createReviewRequest->text
         );
     }
 }

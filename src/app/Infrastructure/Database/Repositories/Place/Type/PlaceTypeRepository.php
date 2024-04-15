@@ -2,7 +2,7 @@
 
 namespace App\Infrastructure\Database\Repositories\Place\Type;
 
-use App\Application\Contracts\Out\Repositories\IPlaceTypeRepository;
+use App\Application\Contracts\Out\Repositories\Place\Type\IPlaceTypeRepository;
 use App\Infrastructure\Database\Models\PlaceType;
 use Illuminate\Support\Collection;
 

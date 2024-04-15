@@ -2,7 +2,7 @@
 
 namespace App\Infrastructure\Managers\Token;
 
-use App\Application\Contracts\Out\InfrastructureManagers\ITokenManager;
+use App\Application\Contracts\Out\Managers\Token\ITokenManager;
 use App\Application\DTO\In\Auth\LoginDto;
 use App\Application\DTO\Out\Auth\UserDto;
 use App\Infrastructure\Database\Models\User;

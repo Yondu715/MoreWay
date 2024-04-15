@@ -2,7 +2,7 @@
 
 namespace App\Infrastructure\Database\Repositories\Friend;
 
-use App\Application\Contracts\Out\Repositories\IFriendshipRepository;
+use App\Application\Contracts\Out\Repositories\Friend\IFriendshipRepository;
 use App\Application\Enums\Friend\RelationshipTypeId;
 use App\Infrastructure\Database\Models\Friendship;
 use App\Infrastructure\Database\Repositories\BaseRepository\BaseRepository;

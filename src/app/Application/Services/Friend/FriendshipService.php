@@ -2,9 +2,9 @@
 
 namespace App\Application\Services\Friend;
 
-use App\Application\Contracts\In\Services\IFriendshipService;
+use App\Application\Contracts\In\Services\Friend\IFriendshipService;
 use App\Application\Contracts\Out\Notification\INotifier;
-use App\Application\Contracts\Out\Repositories\IFriendshipRepository;
+use App\Application\Contracts\Out\Repositories\Friend\IFriendshipRepository;
 use App\Application\DTO\In\Friend\AcceptFriendDto;
 use App\Application\DTO\In\Friend\AddFriendDto;
 use App\Application\DTO\Out\Auth\UserDto;

@@ -2,7 +2,7 @@
 
 namespace App\Infrastructure\Database\Repositories\Place\Locality;
 
-use App\Application\Contracts\Out\Repositories\ILocalityRepository;
+use App\Application\Contracts\Out\Repositories\Place\Locality\ILocalityRepository;
 use App\Infrastructure\Database\Models\Locality;
 use Illuminate\Support\Collection;
 

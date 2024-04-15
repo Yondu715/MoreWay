@@ -2,8 +2,7 @@
 
 namespace App\Infrastructure\Websocket\Controllers\Friend;
 
-use App\Application\Contracts\Out\InfrastructureManagers\INotifierManager;
-use App\Infrastructure\WebSocket\Controllers\Friend\FriendWebSocketController;
+use App\Application\Contracts\Out\Managers\Notifier\INotifierManager;
 
 class FriendNotifier implements INotifierManager
 {

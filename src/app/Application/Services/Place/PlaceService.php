@@ -2,8 +2,8 @@
 
 namespace App\Application\Services\Place;
 
-use App\Application\Contracts\In\Services\IPlaceService;
-use App\Application\Contracts\Out\Repositories\IPlaceRepository;
+use App\Application\Contracts\In\Services\Place\IPlaceService;
+use App\Application\Contracts\Out\Repositories\Place\IPlaceRepository;
 use App\Application\DTO\Collection\CursorDto;
 use App\Application\DTO\In\Place\GetPlaceDto;
 use App\Application\DTO\In\Place\GetPlacesDto;
