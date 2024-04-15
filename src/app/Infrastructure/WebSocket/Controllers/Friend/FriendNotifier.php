@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Infrastructure\Websocket\Controllers\Friend;
+namespace App\Infrastructure\WebSocket\Controllers\Friend;
 
 use App\Application\Contracts\Out\Managers\Notifier\INotifierManager;
 

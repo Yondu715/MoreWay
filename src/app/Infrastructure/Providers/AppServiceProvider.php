@@ -13,9 +13,9 @@ use App\Application\Contracts\In\Services\User\IUserService;
 use App\Application\Contracts\Out\Managers\Cache\ICacheManager;
 use App\Application\Contracts\Out\Managers\Hash\IHashManager;
 use App\Application\Contracts\Out\Managers\Mail\IMailManager;
+use App\Application\Contracts\Out\Managers\Notifier\INotifierManager;
 use App\Application\Contracts\Out\Managers\Storage\IStorageManager;
 use App\Application\Contracts\Out\Managers\Token\ITokenManager;
-use App\Application\Contracts\Out\Notification\INotify;
 use App\Application\Contracts\Out\Repositories\Friend\IFriendshipRepository;
 use App\Application\Contracts\Out\Repositories\Place\IPlaceRepository;
 use App\Application\Contracts\Out\Repositories\Place\Locality\ILocalityRepository;
@@ -49,7 +49,7 @@ use App\Infrastructure\Managers\Hash\HashManager;
 use App\Infrastructure\Managers\Mail\MailManager;
 use App\Infrastructure\Managers\Storage\StorageManager;
 use App\Infrastructure\Managers\Token\TokenManager;
-use App\Infrastructure\Websocket\Controllers\Friend\FriendNotifier;
+use App\Infrastructure\WebSocket\Controllers\Friend\FriendNotifier;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -82,6 +82,7 @@ class AppServiceProvider extends ServiceProvider
         IMailManager::class => MailManager::class,
         IHashManager::class => HashManager::class,
         ITransactionManager::class => TransactionManager::class,
+        INotifierManager::class => FriendNotifier::class,
 
         /** DomainManagers */
         IDistanceManager::class => DistanceManager::class,
@@ -100,6 +101,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        $this->app->when(IFriendshipService::class)->needs(INotify::class)->give(FriendNotifier::class);
+        // $this->app->when(IFriendshipService::class)->needs(INotifierManager::class)->give(FriendNotifier::class);
     }
 }
