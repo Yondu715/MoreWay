@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Application\Contracts\Out\Managers\Hash\IHashManager;
+use App\Application\Enums\Role\RoleTypeId;
 use App\Infrastructure\Database\Models\Locality;
 use App\Infrastructure\Database\Models\Place;
 use App\Infrastructure\Database\Models\PlaceImage;
@@ -37,12 +38,12 @@ class DatabaseSeeder extends Seeder
     private function seedUsers(): void
     {
         $users = [
-            ['name' => 'John', 'email' => 'john@example.com', 'password' => $this->hashManager->make('123123123')],
-            ['name' => 'Jane', 'email' => 'jane@example.com', 'password' => $this->hashManager->make('123123123')],
-            ['name' => 'Bob', 'email' => 'bob@example.com', 'password' => $this->hashManager->make('123123123')],
-            ['name' => 'Alice', 'email' => 'alice@example.com', 'password' => $this->hashManager->make('123123123')],
-            ['name' => 'Tom', 'email' => 'tom@example.com', 'password' => $this->hashManager->make('123123123')],
-            ['name' => 'Sarah', 'email' => 'sarah@example.com', 'password' => $this->hashManager->make('123123123')],
+            ['name' => 'John', 'email' => 'john@example.com', 'password' => $this->hashManager->make('123123123'), 'role_id' => RoleTypeId::USER],
+            ['name' => 'Jane', 'email' => 'jane@example.com', 'password' => $this->hashManager->make('123123123'), 'role_id' => RoleTypeId::USER],
+            ['name' => 'Bob', 'email' => 'bob@example.com', 'password' => $this->hashManager->make('123123123'), 'role_id' => RoleTypeId::USER],
+            ['name' => 'Alice', 'email' => 'alice@example.com', 'password' => $this->hashManager->make('123123123'), 'role_id' => RoleTypeId::USER],
+            ['name' => 'Tom', 'email' => 'tom@example.com', 'password' => $this->hashManager->make('123123123'), 'role_id' => RoleTypeId::USER],
+            ['name' => 'Sarah', 'email' => 'sarah@example.com', 'password' => $this->hashManager->make('123123123'), 'role_id' => RoleTypeId::USER],
         ];
 
         foreach ($users as $user){
