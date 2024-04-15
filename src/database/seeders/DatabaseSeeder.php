@@ -138,7 +138,7 @@ class DatabaseSeeder extends Seeder
             ['image' => 'place11.jpg', 'place_id' => 11],
             ['image' => 'place12.jpg', 'place_id' => 12],
             ['image' => 'place13.jpg', 'place_id' => 13],
-            ['image' => 'place14.jpg', 'place_id' => 0],
+            ['image' => 'place14.jpg', 'place_id' => 1],
             ['image' => 'place3_2.jpg', 'place_id' => 3],
             ['image' => 'place4_2.jpg', 'place_id' => 4],
             ['image' => 'place5_2.jpg', 'place_id' => 5],
@@ -183,7 +183,7 @@ class DatabaseSeeder extends Seeder
             ['index' => 1, 'place_id' => 3, 'route_id' => 3],
             ['index' => 2, 'place_id' => 9, 'route_id' => 3],
             ['index' => 3, 'place_id' => 10, 'route_id' => 3],
-            ['index' => 4, 'place_id' => 0, 'route_id' => 3],
+            ['index' => 4, 'place_id' => 1, 'route_id' => 3],
             ['index' => 5, 'place_id' => 8, 'route_id' => 3],
 
             ['index' => 1, 'place_id' => 4, 'route_id' => 4],
