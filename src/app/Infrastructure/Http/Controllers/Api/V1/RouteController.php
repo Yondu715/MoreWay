@@ -17,7 +17,6 @@ use App\Infrastructure\Http\Requests\Route\CreateRouteRequest;
 use App\Infrastructure\Http\Resources\Review\ReviewCursorResource;
 use App\Infrastructure\Http\Resources\Review\ReviewResource;
 use App\Infrastructure\Http\Resources\Route\RouteResource;
-use Throwable;
 
 class RouteController extends Controller
 {
@@ -63,7 +62,6 @@ class RouteController extends Controller
     /**
      * @param CreateReviewRequest $createReviewRequest
      * @return ReviewResource
-     * @throws Exception
      */
     public function createReview(CreateReviewRequest $createReviewRequest): ReviewResource
     {
@@ -76,7 +74,6 @@ class RouteController extends Controller
     /**
      * @param GetReviewsRequest $getReviewsRequest
      * @return ReviewCursorResource
-     * @throws Exception
      */
     public function getReviews(GetReviewsRequest $getReviewsRequest): ReviewCursorResource
     {

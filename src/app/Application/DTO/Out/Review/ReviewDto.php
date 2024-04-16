@@ -12,7 +12,7 @@ class ReviewDto
     public readonly int $id;
     public readonly ?string $text;
     public readonly float $rating;
-    public readonly string $created_at;
+    public readonly string $createdAt;
     public readonly UserDto $author;
 
     public function __construct(
