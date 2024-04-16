@@ -60,7 +60,7 @@ class RouteController extends Controller
     /**
      * @param CreateReviewRequest $createReviewRequest
      * @return ReviewResource
-     * @throws Exception
+     * @throws Throwable
      */
     public function createReview(CreateReviewRequest $createReviewRequest): ReviewResource
     {
@@ -69,7 +69,7 @@ class RouteController extends Controller
             return ReviewResource::make(
                 $this->reviewService->createReviews($createReviewDto)
             );
-        } catch (Exception $e) {
+        } catch (Throwable $e) {
             throw new ApiException($e->getMessage(), $e->getCode());
         }
     }
@@ -77,7 +77,7 @@ class RouteController extends Controller
     /**
      * @param GetReviewsRequest $getReviewsRequest
      * @return ReviewCursorResource
-     * @throws Exception
+     * @throws Throwable
      */
     public function getReviews(GetReviewsRequest $getReviewsRequest): ReviewCursorResource
     {
@@ -86,7 +86,7 @@ class RouteController extends Controller
             return ReviewCursorResource::make(
                 $this->reviewService->getReviews($getReviewsDto)
             );
-        } catch (Exception $e) {
+        } catch (Throwable $e) {
             throw new ApiException($e->getMessage(), $e->getCode());
         }
     }
