@@ -11,6 +11,8 @@ RUN apt-get update &&\
     apt-get install -y libfreetype6-dev libjpeg62-turbo-dev &&\
     apt-get install -y --no-install-recommends librdkafka-dev &&\
     apt-get install -y libzip-dev
+
+RUN apt-get update &&\
     # pecl install rdkafka-${RDKAFKA_VERSION} &&\
     # pecl install mcrypt-${MCRYPT_VERSION} &&\
     # pecl install redis-${REDIS_VERSION} &&\
