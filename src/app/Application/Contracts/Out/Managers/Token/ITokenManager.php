@@ -4,7 +4,7 @@ namespace App\Infrastructure\Database\Models\Infrastructure\Database\Models\Appl
 
 use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\In\Auth\LoginDto;
 use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\Out\Auth\UserDto;
-use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Exceptions\InvalidToken;
+use App\Infrastructure\Exceptions\InvalidToken;
 
 interface ITokenManager
 {

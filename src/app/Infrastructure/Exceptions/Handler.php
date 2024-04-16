@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Exceptions;
+namespace App\Infrastructure\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;

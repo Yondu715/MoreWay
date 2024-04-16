@@ -3,7 +3,7 @@
 namespace App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Http\Middleware;
 
 use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\Contracts\Out\Managers\Token\ITokenManager;
-use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Exceptions\Forbidden;
+use App\Infrastructure\Exceptions\Forbidden;
 use Closure;
 use Exception;
 use Illuminate\Http\Request;

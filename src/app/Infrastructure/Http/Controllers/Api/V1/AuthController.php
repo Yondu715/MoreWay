@@ -8,7 +8,7 @@ use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Applicatio
 use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\In\Auth\Password\ResetPasswordDto;
 use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\In\Auth\Password\VerifyPasswordCodeDto;
 use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\In\Auth\RegisterDto;
-use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Exceptions\ApiException;
+use App\Infrastructure\Exceptions\ApiException;
 use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Http\Controllers\Controller;
 use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Http\Requests\Auth\LoginRequest;
 use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Http\Requests\Auth\Password\ForgotPasswordRequest;

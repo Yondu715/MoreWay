@@ -1,19 +1,19 @@
 <?php
 
-namespace App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Http\Controllers\Api\V1;
+namespace App\Infrastructure\Http\Controllers\Api\V1;
 
-use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\Contracts\In\Services\Friend\IFriendshipService;
-use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\In\Friend\AcceptFriendDto;
-use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\In\Friend\AddFriendDto;
-use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Exceptions\ApiException;
-use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Http\Controllers\Controller;
-use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Http\Requests\Friend\AcceptFriendRequest;
-use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Http\Requests\Friend\AddFriendRequest;
-use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Http\Resources\Auth\UserResource;
-use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Http\Resources\Friend\FriendshipRequestResource;
+use App\Application\Contracts\In\Services\Friend\IFriendshipService;
+use App\Application\DTO\In\Friend\AcceptFriendDto;
+use App\Application\DTO\In\Friend\AddFriendDto;
+use App\Application\Exceptions\Friend\FriendRequestConflict;
+use App\Infrastructure\Exceptions\ApiException;
+use App\Infrastructure\Http\Controllers\Controller;
+use App\Infrastructure\Http\Requests\Friend\AcceptFriendRequest;
+use App\Infrastructure\Http\Requests\Friend\AddFriendRequest;
+use App\Infrastructure\Http\Resources\Auth\UserResource;
+use App\Infrastructure\Http\Resources\Friend\FriendshipRequestResource;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Response;
-use Throwable;
 
 
 class FriendController extends Controller
@@ -21,7 +21,8 @@ class FriendController extends Controller
 
     public function __construct(
         private readonly IFriendshipService $friendService
-    ) {}
+    ) {
+    }
 
     /**
      * @param int $userId
@@ -68,25 +69,20 @@ class FriendController extends Controller
             return FriendshipRequestResource::make(
                 $this->friendService->addFriendRequest($addFriendDto)
             );
-        } catch (Throwable $th) {
-            throw new ApiException($th->getMessage(), $th->getCode());
+        } catch (FriendRequestConflict $e) {
+            throw new ApiException($e->getMessage(), $e->getCode());
         }
     }
 
     /**
      * @param AcceptFriendRequest $acceptFriendRequest
      * @return Response
-     * @throws ApiException
      */
     public function acceptFriendRequest(AcceptFriendRequest $acceptFriendRequest): Response
     {
-        try {
-            $acceptFriendDto = AcceptFriendDto::fromRequest($acceptFriendRequest);
-            $this->friendService->acceptFriendRequest($acceptFriendDto);
-            return response()->noContent();
-        } catch (Throwable $th) {
-            throw new ApiException($th->getMessage(), $th->getCode());
-        }
+        $acceptFriendDto = AcceptFriendDto::fromRequest($acceptFriendRequest);
+        $this->friendService->acceptFriendRequest($acceptFriendDto);
+        return response()->noContent();
     }
 
     /**

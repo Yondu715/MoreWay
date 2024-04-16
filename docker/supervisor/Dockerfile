@@ -10,11 +10,13 @@ RUN apt-get update &&\
     apt-get install -y libgpgme11-dev &&\
     apt-get install -y libfreetype6-dev libjpeg62-turbo-dev &&\
     apt-get install -y --no-install-recommends librdkafka-dev &&\
-    apt-get install -y libzip-dev &&\
+    apt-get install -y libzip-dev
+
+RUN apt-get update &&\
     # pecl install rdkafka-${RDKAFKA_VERSION} &&\
     # pecl install mcrypt-${MCRYPT_VERSION} &&\
-    pecl install redis-${REDIS_VERSION} &&\
-    apt-get install -y redis-server
+    # pecl install redis-${REDIS_VERSION} &&\
+    # pecl install -y redis-server
     # pecl install gnupg
 
 RUN docker-php-ext-install zip \
@@ -24,7 +26,7 @@ RUN docker-php-ext-install zip \
     && docker-php-ext-install exif \
     && docker-php-ext-configure bcmath \
     && docker-php-ext-install bcmath \
-    && docker-php-ext-enable redis \
+    # && docker-php-ext-enable redis \
     && docker-php-ext-install sockets \
     # && docker-php-ext-enable gnupg \
     && docker-php-ext-install pdo pdo_mysql \

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Exceptions;
+namespace App\Infrastructure\Exceptions;
 
 class InvalidToken extends ApiException
 {
