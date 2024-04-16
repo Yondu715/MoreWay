@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domain\Enams\Earth;
+namespace App\Domain\Enums\Earth;
 
 enum EarthInformation: int
 {

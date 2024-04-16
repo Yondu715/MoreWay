@@ -3,7 +3,7 @@
 namespace App\Domain\Managers\Distance;
 
 use App\Domain\Contracts\In\DomainManagers\IDistanceManager;
-use App\Domain\Enams\Earth\EarthInformation;
+use App\Domain\Enums\Earth\EarthInformation;
 
 class DistanceManager implements IDistanceManager
 {
