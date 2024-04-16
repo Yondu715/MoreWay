@@ -9,9 +9,7 @@ services:
       MYSQL_ROOT_USER: root
       MYSQL_ROOT_PASSWORD: 123
     volumes:
-      - /home/web/www/more_way/local/mysql:/var/lib/mysql # сохранение файлов БД на хосте
-    expose:
-      - 3307
+      - /home/web/www/more_way/local/mysql:/var/lib/mysql
     ports:
       - 3307:3306
 
@@ -69,21 +67,22 @@ services:
     ports:
       - 8876:80
 
-#  supervisor:
-#    build:
-#      context: docker/supervisor
-#      args:
-#        WEB_USER_ID: 1000
-#        WEB_USER_NAME: web
-#        WEB_GROUP_ID: 1000
-#        WEB_GROUP_NAME: web
-#    env_file:
-#      - docker/supervisor/supervisor.env
-#    volumes:
-#      - .:/var/www
-#    depends_on: [mysql,redis,rabbitMq]
-#    ports:
-#      - 9999:9999
-#    tty: true
-#    profiles:
-#      - supervisor
+  supervisor:
+    build:
+      context: docker/supervisor
+      args:
+        WEB_USER_ID: 1000
+        WEB_USER_NAME: web
+        WEB_GROUP_ID: 1000
+        WEB_GROUP_NAME: web
+    env_file:
+      - docker/supervisor/supervisor.env
+    volumes:
+      - .:/var/www
+    depends_on:
+      - app
+    ports:
+      - 9999:9999
+      - 8877:8877
+      # - 6379:6379
+    tty: true

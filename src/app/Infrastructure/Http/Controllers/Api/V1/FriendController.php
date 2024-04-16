@@ -2,9 +2,10 @@
 
 namespace App\Infrastructure\Http\Controllers\Api\V1;
 
-use App\Application\Contracts\In\Services\IFriendService;
+use App\Application\Contracts\In\Services\Friend\IFriendshipService;
 use App\Application\DTO\In\Friend\AcceptFriendDto;
 use App\Application\DTO\In\Friend\AddFriendDto;
+use App\Application\Exceptions\Friend\FriendRequestConflict;
 use App\Infrastructure\Exceptions\ApiException;
 use App\Infrastructure\Http\Controllers\Controller;
 use App\Infrastructure\Http\Requests\Friend\AcceptFriendRequest;
@@ -13,13 +14,13 @@ use App\Infrastructure\Http\Resources\Auth\UserResource;
 use App\Infrastructure\Http\Resources\Friend\FriendshipRequestResource;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Response;
-use Exception;
+
 
 class FriendController extends Controller
 {
 
     public function __construct(
-        private readonly IFriendService $friendService
+        private readonly IFriendshipService $friendService
     ) {
     }
 
@@ -68,26 +69,20 @@ class FriendController extends Controller
             return FriendshipRequestResource::make(
                 $this->friendService->addFriendRequest($addFriendDto)
             );
-        } catch (Exception $e) {
+        } catch (FriendRequestConflict $e) {
             throw new ApiException($e->getMessage(), $e->getCode());
         }
-
     }
 
     /**
      * @param AcceptFriendRequest $acceptFriendRequest
      * @return Response
-     * @throws ApiException
      */
     public function acceptFriendRequest(AcceptFriendRequest $acceptFriendRequest): Response
     {
-        try {
-            $acceptFriendDto = AcceptFriendDto::fromRequest($acceptFriendRequest);
-            $this->friendService->acceptFriendRequest($acceptFriendDto);
-            return response()->noContent();
-        } catch (Exception $e) {
-            throw new ApiException($e->getMessage(), $e->getCode());
-        }
+        $acceptFriendDto = AcceptFriendDto::fromRequest($acceptFriendRequest);
+        $this->friendService->acceptFriendRequest($acceptFriendDto);
+        return response()->noContent();
     }
 
     /**

@@ -2,7 +2,7 @@
 
 namespace App\Infrastructure\Managers\Cache;
 
-use App\Application\Contracts\Out\Managers\ICacheManager;
+use App\Application\Contracts\Out\Managers\Cache\ICacheManager;
 use Illuminate\Support\Facades\Cache;
 
 class CacheManager implements ICacheManager

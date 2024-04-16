@@ -2,51 +2,48 @@
 
 namespace App\Application\Services\Place\Review;
 
-use App\Application\Contracts\In\Services\IPlaceReviewService;
-use App\Application\Contracts\Out\Repositories\IPlaceReviewRepository;
+use App\Application\Contracts\In\Services\Place\Review\IPlaceReviewService;
+use App\Application\Contracts\Out\Repositories\Place\Review\IPlaceReviewRepository;
+use App\Application\DTO\Collection\CursorDto;
 use App\Application\DTO\In\Place\Review\CreatePlaceReviewDto;
 use App\Application\DTO\In\Place\Review\GetPlaceReviewsDto;
-use App\Application\DTO\Out\Place\Review\PlaceReviewCursorDto;
-use App\Application\DTO\Out\Place\Review\PlaceReviewDto;
-use App\Application\Exceptions\Place\Review\FailedToCreatePlaceReview;
-use App\Infrastructure\Database\Models\PlaceReview;
-use Exception;
-use Illuminate\Contracts\Pagination\CursorPaginator;
+use App\Application\DTO\Out\Review\ReviewCursorDto;
+use App\Application\DTO\Out\Review\ReviewDto;
+use App\Application\Exceptions\Review\FailedToCreateReview;
+use Throwable;
 
 class PlaceReviewService implements IPlaceReviewService
 {
     public function __construct(
         private readonly IPlaceReviewRepository $reviewRepository
-    ) {
-    }
+    ) {}
 
     /**
      * @param CreatePlaceReviewDto $createReviewDto
-     * @return PlaceReviewDto
-     * @throws FailedToCreatePlaceReview
+     * @return ReviewDto
+     * @throws FailedToCreateReview
      */
-    public function createReviews(CreatePlaceReviewDto $createReviewDto): PlaceReviewDto
+    public function createReviews(CreatePlaceReviewDto $createReviewDto): ReviewDto
     {
         try {
-            /** @var PlaceReview $review */
             $review = $this->reviewRepository->create([
                 'author_id' => $createReviewDto->userId,
                 'place_id' => $createReviewDto->placeId,
                 'text' => $createReviewDto->text,
                 'rating' => $createReviewDto->rating
             ]);
-            return PlaceReviewDto::fromReviewModel($review);
-        } catch (Exception) {
-            throw new FailedToCreatePlaceReview();
+            return ReviewDto::fromReviewModel($review);
+        } catch (Throwable) {
+            throw new FailedToCreateReview();
         }
     }
 
     /**
      * @param GetPlaceReviewsDto $getReviewsDto
-     * @return array{data:array<PlaceReviewDto>, next_cursor:string}
+     * @return CursorDto
      */
-    public function getReviews(GetPlaceReviewsDto $getReviewsDto): array
+    public function getReviews(GetPlaceReviewsDto $getReviewsDto): CursorDto
     {
-        return PlaceReviewCursorDto::fromPaginator($this->reviewRepository->getReviews($getReviewsDto));
+        return ReviewCursorDto::fromPaginator($this->reviewRepository->getReviews($getReviewsDto));
     }
 }

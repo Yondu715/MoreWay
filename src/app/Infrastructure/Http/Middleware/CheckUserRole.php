@@ -2,7 +2,7 @@
 
 namespace App\Infrastructure\Http\Middleware;
 
-use App\Application\Contracts\Out\Managers\ITokenManager;
+use App\Application\Contracts\Out\Managers\Token\ITokenManager;
 use App\Infrastructure\Exceptions\Forbidden;
 use Closure;
 use Exception;
@@ -24,7 +24,7 @@ class CheckUserRole
      */
     public function handle(Request $request, Closure $next, string $role): Response
     {
-        if (!$this->tokenManager->getAuthUser()->hasRole($role)) {
+        if (!$this->tokenManager->hasRole($role)) {
             throw new Forbidden();
         }
         return $next($request);

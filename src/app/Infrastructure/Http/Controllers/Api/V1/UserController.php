@@ -2,11 +2,13 @@
 
 namespace App\Infrastructure\Http\Controllers\Api\V1;
 
-use App\Application\Contracts\In\Services\IUserService;
+use App\Application\Contracts\In\Services\User\IUserService;
 use App\Application\DTO\In\User\ChangeUserAvatarDto;
 use App\Application\DTO\In\User\ChangeUserDataDto;
 use App\Application\DTO\In\User\ChangeUserPasswordDto;
 use App\Application\DTO\In\User\GetUsersDto;
+use App\Application\Exceptions\User\InvalidOldPassword;
+use App\Application\Exceptions\User\UserNotFound;
 use App\Infrastructure\Exceptions\ApiException;
 use App\Infrastructure\Http\Controllers\Controller;
 use App\Infrastructure\Http\Requests\User\ChangeUserAvatarRequest;
@@ -14,7 +16,6 @@ use App\Infrastructure\Http\Requests\User\ChangeUserDataRequest;
 use App\Infrastructure\Http\Requests\User\ChangeUserPasswordRequest;
 use App\Infrastructure\Http\Requests\User\GetUsersRequest;
 use App\Infrastructure\Http\Resources\Auth\UserResource;
-use Exception;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Response;
 
@@ -23,8 +24,7 @@ class UserController extends Controller
 
     public function __construct(
         private readonly IUserService $userService
-    ) {
-    }
+    ) {}
 
     /**
      * @param GetUsersRequest $getUsersRequest
@@ -41,7 +41,7 @@ class UserController extends Controller
     /**
      * @param int $userId
      * @return UserResource
-     * @throws Exception
+     * @throws ApiException
      */
     public function getUser(int $userId): UserResource
     {
@@ -49,16 +49,15 @@ class UserController extends Controller
             return UserResource::make(
                 $this->userService->getUserById($userId)
             );
-        } catch (Exception $e) {
+        } catch (UserNotFound $e) {
             throw new ApiException($e->getMessage(), $e->getCode());
         }
-
     }
 
     /**
      * @param ChangeUserDataRequest $changeUserDataRequest
      * @return UserResource
-     * @throws Exception
+     * @throws ApiException
      */
     public function changeData(ChangeUserDataRequest $changeUserDataRequest): UserResource
     {
@@ -68,7 +67,7 @@ class UserController extends Controller
             return UserResource::make(
                 $this->userService->changeData($changeUserDataDto)
             );
-        } catch (Exception $e) {
+        } catch (UserNotFound $e) {
             throw new ApiException($e->getMessage(), $e->getCode());
         }
     }
@@ -86,7 +85,7 @@ class UserController extends Controller
     /**
      * @param ChangeUserAvatarRequest $changeUserAvatarRequest
      * @return UserResource
-     * @throws Exception
+     * @throws ApiException
      */
     public function changeAvatar(ChangeUserAvatarRequest $changeUserAvatarRequest): UserResource
     {
@@ -95,7 +94,7 @@ class UserController extends Controller
             return UserResource::make(
                 $this->userService->changeAvatar($changeUserAvatarDto)
             );
-        } catch (Exception $e) {
+        } catch (UserNotFound $e) {
             throw new ApiException($e->getMessage(), $e->getCode());
         }
     }
@@ -103,7 +102,7 @@ class UserController extends Controller
     /**
      * @param ChangeUserPasswordRequest $changeUserPasswordRequest
      * @return UserResource
-     * @throws Exception
+     * @throws ApiException
      */
     public function changePassword(ChangeUserPasswordRequest $changeUserPasswordRequest): UserResource
     {
@@ -112,7 +111,7 @@ class UserController extends Controller
             return UserResource::make(
                 $this->userService->changePassword($changeUserPasswordDto)
             );
-        } catch (Exception $e) {
+        } catch (UserNotFound | InvalidOldPassword $e) {
             throw new ApiException($e->getMessage(), $e->getCode());
         }
     }

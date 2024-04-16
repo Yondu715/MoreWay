@@ -2,9 +2,9 @@
 
 namespace App\Infrastructure\Database\Repositories\Place\Review;
 
-use App\Application\Contracts\Out\Repositories\IPlaceReviewRepository;
+use App\Application\Contracts\Out\Repositories\Place\Review\IPlaceReviewRepository;
 use App\Application\DTO\In\Place\Review\GetPlaceReviewsDto;
-use App\Application\Exceptions\Place\Review\FailedToCreatePlaceReview;
+use App\Application\Exceptions\Review\FailedToCreateReview;
 use App\Infrastructure\Database\Models\PlaceReview;
 use App\Infrastructure\Database\Repositories\BaseRepository\BaseRepository;
 use Illuminate\Contracts\Pagination\CursorPaginator;
@@ -34,7 +34,7 @@ class PlaceReviewRepository extends BaseRepository implements IPlaceReviewReposi
     /**
      * @param array $attributes
      * @return PlaceReview
-     * @throws FailedToCreatePlaceReview
+     * @throws FailedToCreateReview
      */
     public function create(array $attributes): PlaceReview
     {
@@ -42,7 +42,7 @@ class PlaceReviewRepository extends BaseRepository implements IPlaceReviewReposi
             /** @var PlaceReview */
             return parent::create($attributes);
         } catch (Throwable) {
-            throw new FailedToCreatePlaceReview();
+            throw new FailedToCreateReview();
         }
     }
 }

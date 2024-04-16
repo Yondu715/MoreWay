@@ -3,7 +3,6 @@
 namespace App\Application\DTO\In\Place;
 
 use App\Infrastructure\Http\Requests\Place\GetPlaceRequest;
-use App\Lib\HashId\HashManager;
 
 class GetPlaceDto
 {

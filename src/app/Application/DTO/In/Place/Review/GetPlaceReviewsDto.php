@@ -2,7 +2,7 @@
 
 namespace App\Application\DTO\In\Place\Review;
 
-use App\Infrastructure\Http\Requests\Place\PlaceReview\GetPlaceReviewsRequest;
+use App\Infrastructure\Http\Requests\Review\GetReviewsRequest;
 
 class GetPlaceReviewsDto
 {
@@ -22,10 +22,10 @@ class GetPlaceReviewsDto
     }
 
     /**
-     * @param GetPlaceReviewsRequest $getReviewsRequest
+     * @param GetReviewsRequest $getReviewsRequest
      * @return self
      */
-    public static function fromRequest(GetPlaceReviewsRequest $getReviewsRequest): self
+    public static function fromRequest(GetReviewsRequest $getReviewsRequest): self
     {
         return new self(
             placeId: $getReviewsRequest->route('placeId'),

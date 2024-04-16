@@ -2,8 +2,9 @@
 
 namespace App\Infrastructure\Managers\Token;
 
-use App\Application\Contracts\Out\Managers\ITokenManager;
+use App\Application\Contracts\Out\Managers\Token\ITokenManager;
 use App\Application\DTO\In\Auth\LoginDto;
+use App\Application\DTO\Out\Auth\UserDto;
 use App\Infrastructure\Database\Models\User;
 use App\Infrastructure\Exceptions\InvalidToken;
 use Exception;
@@ -41,10 +42,10 @@ class TokenManager implements ITokenManager
     }
 
     /**
-     * @return User
+     * @return UserDto
      * @throws Exception
      */
-    public function getAuthUser(): User
+    public function getAuthUser(): UserDto
     {
         /** @var ?User $user */
         $user = $this->getAuth()->user();
@@ -53,7 +54,37 @@ class TokenManager implements ITokenManager
             throw new InvalidToken();
         }
 
-        return $user;
+        return UserDto::fromUserModel($user);
+    }
+
+    /**
+     * @param string $token
+     * @return ?UserDto
+     * @throws InvalidToken
+     */
+    public function parseToken(string $token): ?UserDto
+    {
+        try {
+            return UserDto::fromUserModel(
+                $this->getAuth()->setToken($token)->user()
+            );
+        } catch (Exception $e) {
+            throw new InvalidToken();
+        }
+    }
+
+    /**
+     * @param string $role
+     * @return bool
+     */
+    public function hasRole(string $role): bool
+    {
+        /** @var ?User $user */
+        $user = $this->getAuth()->user();
+        if (!$user) {
+            throw new InvalidToken();
+        }
+        return $user->hasRole($role);
     }
 
     /**

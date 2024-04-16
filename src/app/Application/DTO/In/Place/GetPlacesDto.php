@@ -2,8 +2,6 @@
 
 namespace App\Application\DTO\In\Place;
 
-
-
 use App\Application\Exceptions\Filter\FilterOutOfRange;
 use App\Infrastructure\Http\Requests\Place\GetPlacesRequest;
 
@@ -12,7 +10,7 @@ class GetPlacesDto
     public readonly float $lat;
     public readonly float $lon;
     public readonly ?string $cursor;
-    public readonly array $filter;
+    public array $filter;
     public readonly int $limit;
 
     public function __construct(

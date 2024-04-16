@@ -6,10 +6,12 @@
     "license": "MIT",
     "require": {
         "php": "^8.1",
+        "cboden/ratchet": "^0.4.4",
         "guzzlehttp/guzzle": "^7.2",
         "laravel/framework": "^10.10",
         "laravel/sanctum": "^3.3",
         "laravel/tinker": "^2.8",
+        "predis/predis": "^2.2",
         "tcg/voyager": "^1.7",
         "tymon/jwt-auth": "^2.0",
         "vinkla/hashids": "^11.0"

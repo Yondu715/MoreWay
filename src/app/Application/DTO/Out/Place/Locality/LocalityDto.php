@@ -3,14 +3,15 @@
 namespace App\Application\DTO\Out\Place\Locality;
 
 use App\Infrastructure\Database\Models\Locality;
+use Illuminate\Support\Collection;
 
 class LocalityDto
 {
-    public readonly string $id;
+    public readonly int $id;
     public readonly string $name;
 
     public function __construct(
-        string $id,
+        int $id,
         string $name,
     ) {
         $this->id = $id;
@@ -27,5 +28,16 @@ class LocalityDto
             id: $locality->id,
             name: $locality->name,
         );
+    }
+
+    /**
+     * @param Collection<int, Locality> $localities
+     * @return Collection
+     */
+    public static function fromLocalityCollection(Collection $localities): Collection
+    {
+        return $localities->map(function ($locality) {
+            return $locality->name;
+        });
     }
 }

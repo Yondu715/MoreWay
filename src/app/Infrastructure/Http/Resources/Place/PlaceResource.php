@@ -2,15 +2,15 @@
 
 namespace App\Infrastructure\Http\Resources\Place;
 
-use App\Infrastructure\Database\Models\Place;
+use App\Application\DTO\Out\Place\PlaceDto;
+use App\Infrastructure\Http\Resources\Place\Image\ImageResource;
 use App\Infrastructure\Http\Resources\Place\Locality\LocalityResource;
+use App\Infrastructure\Http\Resources\Place\Type\TypeResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /**
- * @mixin Place
- * @property float $rating
- * @property float $distance
+ * @mixin PlaceDto
  */
 class PlaceResource extends JsonResource
 {
@@ -29,13 +29,11 @@ class PlaceResource extends JsonResource
             'lon' => $this->lon,
             'rating' => $this->rating,
             'description' => $this->description,
-            'images' => collect($this->images)->map(function ($resource) {
-                return [
-                    'id' => $resource->id,
-                    'path' => $resource->image
-                ];
+            'images' => $this->images->map(function ($image) {
+                return ImageResource::make($image);
             }),
-            'locality' => LocalityResource::make($this->locality)
+            'locality' => LocalityResource::make($this->locality),
+            'type' => TypeResource::make($this->type)
         ];
     }
 }
