@@ -9,6 +9,7 @@ use App\Application\DTO\In\Place\GetPlaceDto;
 use App\Application\DTO\In\Place\GetPlacesDto;
 use App\Application\DTO\In\Place\Review\CreatePlaceReviewDto;
 use App\Application\DTO\In\Place\Review\GetPlaceReviewsDto;
+use App\Application\Exceptions\Place\PlaceNotFound;
 use App\Infrastructure\Exceptions\ApiException;
 use App\Infrastructure\Http\Controllers\Controller;
 use App\Infrastructure\Http\Requests\Place\GetPlaceRequest;
@@ -18,10 +19,8 @@ use App\Infrastructure\Http\Requests\Review\GetReviewsRequest;
 use App\Infrastructure\Http\Resources\Place\Filter\PlaceFilterResource;
 use App\Infrastructure\Http\Resources\Place\PlaceCursorResource;
 use App\Infrastructure\Http\Resources\Place\PlaceResource;
-use Throwable;
 use App\Infrastructure\Http\Resources\Review\ReviewCursorResource;
 use App\Infrastructure\Http\Resources\Review\ReviewResource;
-use Exception;
 
 
 class PlaceController extends Controller
@@ -30,7 +29,8 @@ class PlaceController extends Controller
         private readonly IPlaceService $placeService,
         private readonly IPlaceReviewService $reviewService,
         private readonly IPlaceFilterService $filterService
-    ) {}
+    ) {
+    }
 
     /**
      * @param GetPlacesRequest $getPlacesRequest
@@ -39,14 +39,10 @@ class PlaceController extends Controller
      */
     public function getPlaces(GetPlacesRequest $getPlacesRequest): PlaceCursorResource
     {
-        try {
-            $getPlacesDto = GetPlacesDto::fromRequest($getPlacesRequest);
-            return PlaceCursorResource::make(
-                $this->placeService->getPlaces($getPlacesDto)
-            );
-        } catch (Throwable $e) {
-            throw new ApiException($e->getMessage(), $e->getCode());
-        }
+        $getPlacesDto = GetPlacesDto::fromRequest($getPlacesRequest);
+        return PlaceCursorResource::make(
+            $this->placeService->getPlaces($getPlacesDto)
+        );
     }
 
     /**
@@ -61,43 +57,33 @@ class PlaceController extends Controller
             return PlaceResource::make(
                 $this->placeService->getPlaceById($getPlaceDto)
             );
-        } catch (Throwable $th) {
-            throw new ApiException($th->getMessage(), $th->getCode());
+        } catch (PlaceNotFound $e) {
+            throw new ApiException($e->getMessage(), $e->getCode());
         }
     }
 
     /**
      * @param CreateReviewRequest $createReviewRequest
      * @return ReviewResource
-     * @throws ApiException
      */
     public function createReview(CreateReviewRequest $createReviewRequest): ReviewResource
     {
-        try {
-            $createReviewDto = CreatePlaceReviewDto::fromRequest($createReviewRequest);
-            return ReviewResource::make(
-                $this->reviewService->createReviews($createReviewDto)
-            );
-        } catch (Throwable $th) {
-            throw new ApiException($th->getMessage(), $th->getCode());
-        }
+        $createReviewDto = CreatePlaceReviewDto::fromRequest($createReviewRequest);
+        return ReviewResource::make(
+            $this->reviewService->createReviews($createReviewDto)
+        );
     }
 
     /**
      * @param GetReviewsRequest $getReviewsRequest
      * @return ReviewCursorResource
-     * @throws ApiException
      */
     public function getReviews(GetReviewsRequest $getReviewsRequest): ReviewCursorResource
     {
-        try {
-            $getReviewsDto = GetPlaceReviewsDto::fromRequest($getReviewsRequest);
-            return ReviewCursorResource::make(
-                $this->reviewService->getReviews($getReviewsDto)
-            );
-        } catch (Throwable $th) {
-            throw new ApiException($th->getMessage(), $th->getCode());
-        }
+        $getReviewsDto = GetPlaceReviewsDto::fromRequest($getReviewsRequest);
+        return ReviewCursorResource::make(
+            $this->reviewService->getReviews($getReviewsDto)
+        );
     }
 
     /**
@@ -106,12 +92,8 @@ class PlaceController extends Controller
      */
     public function getFilters(): PlaceFilterResource
     {
-        try {
-            return PlaceFilterResource::make(
-                $this->filterService->getFilters()
-            );
-        } catch (Throwable $th) {
-            throw new ApiException($th->getMessage(), $th->getCode());
-        }
+        return PlaceFilterResource::make(
+            $this->filterService->getFilters()
+        );
     }
 }

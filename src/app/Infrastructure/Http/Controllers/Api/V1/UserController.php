@@ -7,6 +7,8 @@ use App\Application\DTO\In\User\ChangeUserAvatarDto;
 use App\Application\DTO\In\User\ChangeUserDataDto;
 use App\Application\DTO\In\User\ChangeUserPasswordDto;
 use App\Application\DTO\In\User\GetUsersDto;
+use App\Application\Exceptions\User\InvalidOldPassword;
+use App\Application\Exceptions\User\UserNotFound;
 use App\Infrastructure\Exceptions\ApiException;
 use App\Infrastructure\Http\Controllers\Controller;
 use App\Infrastructure\Http\Requests\User\ChangeUserAvatarRequest;
@@ -16,7 +18,6 @@ use App\Infrastructure\Http\Requests\User\GetUsersRequest;
 use App\Infrastructure\Http\Resources\Auth\UserResource;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Response;
-use Throwable;
 
 class UserController extends Controller
 {
@@ -48,8 +49,8 @@ class UserController extends Controller
             return UserResource::make(
                 $this->userService->getUserById($userId)
             );
-        } catch (Throwable $th) {
-            throw new ApiException($th->getMessage(), $th->getCode());
+        } catch (UserNotFound $e) {
+            throw new ApiException($e->getMessage(), $e->getCode());
         }
     }
 
@@ -66,8 +67,8 @@ class UserController extends Controller
             return UserResource::make(
                 $this->userService->changeData($changeUserDataDto)
             );
-        } catch (Throwable $th) {
-            throw new ApiException($th->getMessage(), $th->getCode());
+        } catch (UserNotFound $e) {
+            throw new ApiException($e->getMessage(), $e->getCode());
         }
     }
 
@@ -93,8 +94,8 @@ class UserController extends Controller
             return UserResource::make(
                 $this->userService->changeAvatar($changeUserAvatarDto)
             );
-        } catch (Throwable $th) {
-            throw new ApiException($th->getMessage(), $th->getCode());
+        } catch (UserNotFound $e) {
+            throw new ApiException($e->getMessage(), $e->getCode());
         }
     }
 
@@ -110,8 +111,8 @@ class UserController extends Controller
             return UserResource::make(
                 $this->userService->changePassword($changeUserPasswordDto)
             );
-        } catch (Throwable $th) {
-            throw new ApiException($th->getMessage(), $th->getCode());
+        } catch (UserNotFound | InvalidOldPassword $e) {
+            throw new ApiException($e->getMessage(), $e->getCode());
         }
     }
 }

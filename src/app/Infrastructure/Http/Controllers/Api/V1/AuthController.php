@@ -8,7 +8,13 @@ use App\Application\DTO\In\Auth\Password\ForgotPasswordDto;
 use App\Application\DTO\In\Auth\Password\ResetPasswordDto;
 use App\Application\DTO\In\Auth\Password\VerifyPasswordCodeDto;
 use App\Application\DTO\In\Auth\RegisterDto;
+use App\Application\Exceptions\Auth\InvalidPassword;
+use App\Application\Exceptions\Auth\Password\ExpiredResetPasswordToken;
+use App\Application\Exceptions\Auth\Password\ExpiredVerifyPasswordCode;
+use App\Application\Exceptions\Auth\RegistrationConflict;
+use App\Application\Exceptions\User\UserNotFound;
 use App\Infrastructure\Exceptions\ApiException;
+use App\Infrastructure\Exceptions\InvalidToken;
 use App\Infrastructure\Http\Controllers\Controller;
 use App\Infrastructure\Http\Requests\Auth\LoginRequest;
 use App\Infrastructure\Http\Requests\Auth\Password\ForgotPasswordRequest;
@@ -41,8 +47,8 @@ class AuthController extends Controller
                     'accessToken' => $this->authService->login($inLoginDto)
                 ]
             ]);
-        } catch (Throwable $th) {
-            throw new ApiException($th->getMessage(), $th->getCode());
+        } catch (InvalidPassword | UserNotFound $e) {
+            throw new ApiException($e->getMessage(), $e->getCode());
         }
     }
 
@@ -57,8 +63,8 @@ class AuthController extends Controller
             $registerDto = RegisterDto::fromRequest($registerRequest);
             $this->authService->register($registerDto);
             return response()->json()->setStatusCode(201);
-        } catch (Throwable $th) {
-            throw new ApiException($th->getMessage(), $th->getCode());
+        } catch (RegistrationConflict $e) {
+            throw new ApiException($e->getMessage(), $e->getCode());
         }
     }
 
@@ -72,8 +78,8 @@ class AuthController extends Controller
             return UserResource::make(
                 $this->authService->getAuthUser()
             );
-        } catch (Throwable $th) {
-            throw new ApiException($th->getMessage(), $th->getCode());
+        } catch (InvalidToken $e) {
+            throw new ApiException($e->getMessage(), $e->getCode());
         }
     }
 
@@ -107,7 +113,7 @@ class AuthController extends Controller
         try {
             $forgotPasswordDto = ForgotPasswordDto::fromRequest($forgotPasswordRequest);
             $this->authService->forgotPassword($forgotPasswordDto);
-        } catch (Throwable $th) {
+        } catch (UserNotFound $th) {
             throw new ApiException($th->getMessage(), $th->getCode());
         }
     }
@@ -126,8 +132,8 @@ class AuthController extends Controller
                     'resetPasswordToken' => $this->authService->verifyPasswordCode($verifyPasswordCodeDto)
                 ]
             ]);
-        } catch (Throwable $th) {
-            throw new ApiException($th->getMessage(), $th->getCode());
+        } catch (UserNotFound | ExpiredResetPasswordToken | ExpiredVerifyPasswordCode $e) {
+            throw new ApiException($e->getMessage(), $e->getCode());
         }
     }
 
@@ -141,8 +147,8 @@ class AuthController extends Controller
         try {
             $resetPasswordDto = ResetPasswordDto::fromRequest($resetPasswordRequest);
             $this->authService->resetPassword($resetPasswordDto);
-        } catch (Throwable $th) {
-            throw new ApiException($th->getMessage(), $th->getCode());
+        } catch (UserNotFound | ExpiredResetPasswordToken | ExpiredVerifyPasswordCode $e) {
+            throw new ApiException($e->getMessage(), $e->getCode());
         }
     }
 }

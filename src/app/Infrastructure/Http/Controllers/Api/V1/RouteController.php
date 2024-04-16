@@ -7,6 +7,8 @@ use App\Application\Contracts\In\Services\Route\Review\IRouteReviewService;
 use App\Application\DTO\In\Route\CreateRouteDto;
 use App\Application\DTO\In\Route\Review\CreateRouteReviewDto;
 use App\Application\DTO\In\Route\Review\GetRouteReviewsDto;
+use App\Application\Exceptions\Route\FailedToCreateRoute;
+use App\Application\Exceptions\Route\RouteNotFound;
 use App\Infrastructure\Exceptions\ApiException;
 use App\Infrastructure\Http\Controllers\Controller;
 use App\Infrastructure\Http\Requests\Review\CreateReviewRequest;
@@ -22,7 +24,8 @@ class RouteController extends Controller
     public function __construct(
         private readonly IRouteService $routeService,
         private readonly IRouteReviewService $reviewService,
-    ) {}
+    ) {
+    }
 
     /**
      * @param CreateRouteRequest $createRouteRequest
@@ -34,10 +37,10 @@ class RouteController extends Controller
         try {
             $createRouteDto = CreateRouteDto::fromRequest($createRouteRequest);
             return RouteResource::make(
-              $this->routeService->createRoute($createRouteDto)
+                $this->routeService->createRoute($createRouteDto)
             );
-        } catch (Throwable $th) {
-            throw new ApiException($th->getMessage(), $th->getCode());
+        } catch (FailedToCreateRoute $e) {
+            throw new ApiException($e->getMessage(), $e->getCode());
         }
     }
 
@@ -50,10 +53,10 @@ class RouteController extends Controller
     {
         try {
             return RouteResource::make(
-              $this->routeService->getRouteById($routeId)
+                $this->routeService->getRouteById($routeId)
             );
-        } catch (Throwable $th) {
-            throw new ApiException($th->getMessage(), $th->getCode());
+        } catch (RouteNotFound $e) {
+            throw new ApiException($e->getMessage(), $e->getCode());
         }
     }
 
@@ -64,14 +67,10 @@ class RouteController extends Controller
      */
     public function createReview(CreateReviewRequest $createReviewRequest): ReviewResource
     {
-        try {
-            $createReviewDto = CreateRouteReviewDto::fromRequest($createReviewRequest);
-            return ReviewResource::make(
-                $this->reviewService->createReviews($createReviewDto)
-            );
-        } catch (Exception $e) {
-            throw new ApiException($e->getMessage(), $e->getCode());
-        }
+        $createReviewDto = CreateRouteReviewDto::fromRequest($createReviewRequest);
+        return ReviewResource::make(
+            $this->reviewService->createReviews($createReviewDto)
+        );
     }
 
     /**
@@ -81,13 +80,9 @@ class RouteController extends Controller
      */
     public function getReviews(GetReviewsRequest $getReviewsRequest): ReviewCursorResource
     {
-        try {
-            $getReviewsDto = GetRouteReviewsDto::fromRequest($getReviewsRequest);
-            return ReviewCursorResource::make(
-                $this->reviewService->getReviews($getReviewsDto)
-            );
-        } catch (Exception $e) {
-            throw new ApiException($e->getMessage(), $e->getCode());
-        }
+        $getReviewsDto = GetRouteReviewsDto::fromRequest($getReviewsRequest);
+        return ReviewCursorResource::make(
+            $this->reviewService->getReviews($getReviewsDto)
+        );
     }
 }
