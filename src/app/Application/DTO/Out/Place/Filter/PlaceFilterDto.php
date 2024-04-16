@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\Out\Place\Filter;
+namespace App\Application\DTO\Out\Place\Filter;
 
-use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\Out\Place\Locality\LocalityDto;
-use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\Out\Place\Type\PlaceTypeDto;
+use App\Application\DTO\Out\Place\Locality\LocalityDto;
+use App\Application\DTO\Out\Place\Type\PlaceTypeDto;
 use Illuminate\Support\Collection;
 
 class PlaceFilterDto

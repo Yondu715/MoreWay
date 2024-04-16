@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\Exceptions\Place;
+namespace App\Application\Exceptions\Place;
 
 use Exception;
 

@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\Services\Place\Review;
+namespace App\Application\Services\Place\Review;
 
-use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\Contracts\In\Services\Place\Review\IPlaceReviewService;
-use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\Contracts\Out\Repositories\Place\Review\IPlaceReviewRepository;
-use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\Collection\CursorDto;
-use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\In\Place\Review\CreatePlaceReviewDto;
-use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\In\Place\Review\GetPlaceReviewsDto;
-use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\Out\Review\ReviewCursorDto;
-use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\Out\Review\ReviewDto;
-use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\Exceptions\Review\FailedToCreateReview;
+use App\Application\Contracts\In\Services\Place\Review\IPlaceReviewService;
+use App\Application\Contracts\Out\Repositories\Place\Review\IPlaceReviewRepository;
+use App\Application\DTO\Collection\CursorDto;
+use App\Application\DTO\In\Place\Review\CreatePlaceReviewDto;
+use App\Application\DTO\In\Place\Review\GetPlaceReviewsDto;
+use App\Application\DTO\Out\Review\ReviewCursorDto;
+use App\Application\DTO\Out\Review\ReviewDto;
+use App\Application\Exceptions\Review\FailedToCreateReview;
 use Throwable;
 
 class PlaceReviewService implements IPlaceReviewService

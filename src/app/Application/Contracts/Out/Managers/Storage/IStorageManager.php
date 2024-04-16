@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\Contracts\Out\Managers\Storage;
+namespace App\Application\Contracts\Out\Managers\Storage;
 
 use Illuminate\Http\UploadedFile;
 

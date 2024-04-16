@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\In\Place;
+namespace App\Application\DTO\In\Place;
 
-use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Http\Requests\Place\GetPlaceRequest;
+use App\Infrastructure\Http\Requests\Place\GetPlaceRequest;
 
 class GetPlaceDto
 {

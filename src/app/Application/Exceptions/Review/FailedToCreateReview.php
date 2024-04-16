@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\Exceptions\Review;
+namespace App\Application\Exceptions\Review;
 
 use Exception;
 

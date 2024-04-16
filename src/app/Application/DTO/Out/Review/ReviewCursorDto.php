@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\Out\Review;
+namespace App\Application\DTO\Out\Review;
 
 
-use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\Collection\CursorDto;
+use App\Application\DTO\Collection\CursorDto;
 use Illuminate\Contracts\Pagination\CursorPaginator;
 
 class ReviewCursorDto extends CursorDto

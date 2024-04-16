@@ -167,12 +167,12 @@ return [
         /*
          * Application Service Providers...
          */
-        \App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Providers\AppServiceProvider::class,
-        \App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Providers\AuthServiceProvider::class,
+        \App\Infrastructure\Providers\AppServiceProvider::class,
+        \App\Infrastructure\Providers\AuthServiceProvider::class,
         // App\Providers\BroadcastServiceProvider::class,
-        \App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Providers\EventServiceProvider::class,
-        \App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Providers\RouteServiceProvider::class,
-        \App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Providers\WebSocketRouteProvider::class,
+        \App\Infrastructure\Providers\EventServiceProvider::class,
+        \App\Infrastructure\Providers\RouteServiceProvider::class,
+        \App\Infrastructure\Providers\WebSocketRouteProvider::class,
     ])->toArray(),
 
     /*

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\Enums\Storage;
+namespace App\Application\Enums\Storage;
 
 enum StoragePaths: string
 {

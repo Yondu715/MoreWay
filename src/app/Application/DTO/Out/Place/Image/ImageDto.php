@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\Out\Place\Image;
+namespace App\Application\DTO\Out\Place\Image;
 
-use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Database\Models\PlaceImage;
+use App\Infrastructure\Database\Models\PlaceImage;
 use Illuminate\Support\Collection;
 
 class ImageDto

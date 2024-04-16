@@ -1,10 +1,10 @@
 <?php
 
-use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Http\Controllers\Api\V1\AuthController;
-use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Http\Controllers\Api\V1\FriendController;
-use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Http\Controllers\Api\V1\PlaceController;
-use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Http\Controllers\Api\V1\RouteController;
-use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Http\Controllers\Api\V1\UserController;
+use App\Infrastructure\Http\Controllers\Api\V1\AuthController;
+use App\Infrastructure\Http\Controllers\Api\V1\FriendController;
+use App\Infrastructure\Http\Controllers\Api\V1\PlaceController;
+use App\Infrastructure\Http\Controllers\Api\V1\RouteController;
+use App\Infrastructure\Http\Controllers\Api\V1\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::patterns([
@@ -76,7 +76,7 @@ Route::prefix('friends')
     });
 
 Route::prefix('places')
-    ->middleware('auth:api', 'role:user')
+    ->middleware('auth:api', 'role:user', 'content.type')
     ->group(function () {
         Route::get('/', [PlaceController::class, 'getPlaces']);
         Route::get('/{placeId}', [PlaceController::class, 'getPlace']);

@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\In\User;
+namespace App\Application\DTO\In\User;
 
-use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Http\Requests\User\ChangeUserPasswordRequest;
+use App\Infrastructure\Http\Requests\User\ChangeUserPasswordRequest;
 use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Lib\HashId\HashManager;
 
 class ChangeUserPasswordDto

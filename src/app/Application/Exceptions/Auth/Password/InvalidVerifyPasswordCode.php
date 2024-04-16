@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\Exceptions\Auth\Password;
+namespace App\Application\Exceptions\Auth\Password;
 
 use Exception;
 

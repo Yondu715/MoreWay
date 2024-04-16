@@ -2,19 +2,13 @@
 
 namespace App\Infrastructure\Http\Middleware;
 
-use App\Application\Contracts\Out\Managers\Token\ITokenManager;
-use App\Infrastructure\Exceptions\Forbidden;
 use Closure;
 use Exception;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class CheckUserId
+class SetAcceptType
 {
-    public function __construct(
-        private readonly ITokenManager $tokenManager
-    ) {
-    }
 
     /**
      * Handle an incoming request.
@@ -24,10 +18,7 @@ class CheckUserId
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $userId = $request->userId ?? $request->route('userId');
-        if ($this->tokenManager->getAuthUser()->id !== (int)$userId) {
-            throw new Forbidden();
-        }
+        $request->headers->set('Accept', 'application/json');
         return $next($request);
     }
 }

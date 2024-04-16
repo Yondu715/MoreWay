@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Providers;
+namespace App\Infrastructure\Providers;
 
 use Illuminate\Support\ServiceProvider;
 

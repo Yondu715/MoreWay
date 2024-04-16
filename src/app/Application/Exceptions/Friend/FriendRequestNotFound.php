@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\Exceptions\Friend;
+namespace App\Application\Exceptions\Friend;
 
 use Exception;
 

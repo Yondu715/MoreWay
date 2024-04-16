@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\In\Auth\Password;
+namespace App\Application\DTO\In\Auth\Password;
 
-use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Http\Requests\Auth\Password\VerifyPasswordCodeRequest;
+use App\Infrastructure\Http\Requests\Auth\Password\VerifyPasswordCodeRequest;
 
 class VerifyPasswordCodeDto
 {

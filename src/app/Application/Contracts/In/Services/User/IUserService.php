@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\Contracts\In\Services\User;
+namespace App\Application\Contracts\In\Services\User;
 
-use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\In\User\ChangeUserAvatarDto;
-use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\In\User\ChangeUserDataDto;
-use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\In\User\ChangeUserPasswordDto;
-use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\In\User\GetUsersDto;
-use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\Out\Auth\UserDto;
-use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\Exceptions\User\InvalidOldPassword;
-use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\Exceptions\User\UserNotFound;
-use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Database\Models\User;
+use App\Application\DTO\In\User\ChangeUserAvatarDto;
+use App\Application\DTO\In\User\ChangeUserDataDto;
+use App\Application\DTO\In\User\ChangeUserPasswordDto;
+use App\Application\DTO\In\User\GetUsersDto;
+use App\Application\DTO\Out\Auth\UserDto;
+use App\Application\Exceptions\User\InvalidOldPassword;
+use App\Application\Exceptions\User\UserNotFound;
+use App\Infrastructure\Database\Models\User;
 use Illuminate\Support\Collection;
 
 interface IUserService

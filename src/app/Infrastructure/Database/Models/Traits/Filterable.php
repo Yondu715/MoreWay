@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Database\Models\Traits;
+namespace App\Infrastructure\Database\Models\Traits;
 
-use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Database\Models\Filters\FilterInterface;
+use App\Infrastructure\Database\Models\Filters\FilterInterface;
 use Illuminate\Database\Eloquent\Builder;
 
 trait Filterable

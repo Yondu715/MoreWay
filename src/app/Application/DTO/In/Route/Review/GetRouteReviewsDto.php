@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\In\Route\Review;
+namespace App\Application\DTO\In\Route\Review;
 
-use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Http\Requests\Review\GetReviewsRequest;
+use App\Infrastructure\Http\Requests\Review\GetReviewsRequest;
 
 class GetRouteReviewsDto
 {

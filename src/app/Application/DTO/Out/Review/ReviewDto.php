@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\Out\Review;
+namespace App\Application\DTO\Out\Review;
 
-use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\Out\Auth\UserDto;
-use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Database\Models\PlaceReview;
+use App\Application\DTO\Out\Auth\UserDto;
+use App\Infrastructure\Database\Models\PlaceReview;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 

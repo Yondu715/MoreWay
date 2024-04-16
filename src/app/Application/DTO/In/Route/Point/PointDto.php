@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\In\Route\Point;
+namespace App\Application\DTO\In\Route\Point;
 
 class PointDto
 {

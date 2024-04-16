@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Infrastructure\Database\Models\Infrastructure\Database\Models\Domain\Contracts\In\DomainManagers;
+namespace App\Domain\Contracts\In\DomainManagers;
 
 interface IDistanceManager
 {

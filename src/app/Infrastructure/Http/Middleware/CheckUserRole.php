@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Http\Middleware;
+namespace App\Infrastructure\Http\Middleware;
 
-use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\Contracts\Out\Managers\Token\ITokenManager;
+use App\Application\Contracts\Out\Managers\Token\ITokenManager;
 use App\Infrastructure\Exceptions\Forbidden;
 use Closure;
 use Exception;

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Http;
+namespace App\Infrastructure\Http;
 
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
@@ -15,11 +15,11 @@ class Kernel extends HttpKernel
      */
     protected $middleware = [
         // \App\Http\Middleware\TrustHosts::class,
-        \App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Http\Middleware\TrustProxies::class,
+        \App\Infrastructure\Http\Middleware\TrustProxies::class,
         \Illuminate\Http\Middleware\HandleCors::class,
-        \App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Http\Middleware\PreventRequestsDuringMaintenance::class,
+        \App\Infrastructure\Http\Middleware\PreventRequestsDuringMaintenance::class,
         \Illuminate\Foundation\Http\Middleware\ValidatePostSize::class,
-        \App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Http\Middleware\TrimStrings::class,
+        \App\Infrastructure\Http\Middleware\TrimStrings::class,
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
     ];
 
@@ -30,11 +30,11 @@ class Kernel extends HttpKernel
      */
     protected $middlewareGroups = [
         'web' => [
-            \App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Http\Middleware\EncryptCookies::class,
+            \App\Infrastructure\Http\Middleware\EncryptCookies::class,
             \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
             \Illuminate\Session\Middleware\StartSession::class,
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
-            \App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Http\Middleware\VerifyCsrfToken::class,
+            \App\Infrastructure\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ],
 
@@ -53,18 +53,19 @@ class Kernel extends HttpKernel
      * @var array<string, class-string|string>
      */
     protected $middlewareAliases = [
-        'auth' => \App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Http\Middleware\Authenticate::class,
+        'auth' => \App\Infrastructure\Http\Middleware\Authenticate::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
         'auth.session' => \Illuminate\Session\Middleware\AuthenticateSession::class,
         'cache.headers' => \Illuminate\Http\Middleware\SetCacheHeaders::class,
         'can' => \Illuminate\Auth\Middleware\Authorize::class,
-        'guest' => \App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Http\Middleware\RedirectIfAuthenticated::class,
+        'guest' => \App\Infrastructure\Http\Middleware\RedirectIfAuthenticated::class,
         'password.confirm' => \Illuminate\Auth\Middleware\RequirePassword::class,
         'precognitive' => \Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests::class,
-        'signed' => \App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Http\Middleware\ValidateSignature::class,
+        'signed' => \App\Infrastructure\Http\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
-        'role' => \App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Http\Middleware\CheckUserRole::class,
-        'owner' => \App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Http\Middleware\CheckUserId::class
+        'role' => \App\Infrastructure\Http\Middleware\CheckUserRole::class,
+        'owner' => \App\Infrastructure\Http\Middleware\CheckUserId::class,
+        'content.type' => \App\Infrastructure\Http\Middleware\SetAcceptType::class
     ];
 }

@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Managers\Cache;
+namespace App\Infrastructure\Managers\Cache;
 
-use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\Contracts\Out\Managers\Cache\ICacheManager;
+use App\Application\Contracts\Out\Managers\Cache\ICacheManager;
 use Illuminate\Support\Facades\Cache;
 
 class CacheManager implements ICacheManager

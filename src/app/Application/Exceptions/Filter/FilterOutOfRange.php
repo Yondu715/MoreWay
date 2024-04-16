@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\Exceptions\Filter;
+namespace App\Application\Exceptions\Filter;
 
 use Exception;
 

@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\Out\Friend;
+namespace App\Application\DTO\Out\Friend;
 
-use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\Out\Auth\UserDto;
-use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Database\Models\Friendship;
+use App\Application\DTO\Out\Auth\UserDto;
+use App\Infrastructure\Database\Models\Friendship;
 
 class FriendshipRequestDto
 {

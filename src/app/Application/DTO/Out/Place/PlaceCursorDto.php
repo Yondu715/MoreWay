@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\Out\Place;
+namespace App\Application\DTO\Out\Place;
 
-use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\Collection\CursorDto;
+use App\Application\DTO\Collection\CursorDto;
 use Illuminate\Support\Collection;
 
 class PlaceCursorDto extends CursorDto

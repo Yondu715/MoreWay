@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Http\Resources\Place\Type;
+namespace App\Infrastructure\Http\Resources\Place\Type;
 
-use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\Out\Place\Type\PlaceTypeDto;
+use App\Application\DTO\Out\Place\Type\PlaceTypeDto;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 

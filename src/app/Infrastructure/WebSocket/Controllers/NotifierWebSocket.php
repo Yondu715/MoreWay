@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\WebSocket\Controllers;
+namespace App\Infrastructure\WebSocket\Controllers;
 
-use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\Contracts\Out\Managers\Token\ITokenManager;
+use App\Application\Contracts\Out\Managers\Token\ITokenManager;
 use Exception;
 use Psr\Http\Message\RequestInterface;
 use Ratchet\ConnectionInterface;

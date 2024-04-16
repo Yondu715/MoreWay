@@ -1,19 +1,19 @@
 <?php
 
-namespace App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\Services\User;
+namespace App\Application\Services\User;
 
-use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\Contracts\In\Services\User\IUserService;
-use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\Contracts\Out\Managers\Hash\IHashManager;
-use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\Contracts\Out\Managers\Storage\IStorageManager;
-use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\Contracts\Out\Repositories\User\IUserRepository;
-use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\In\User\ChangeUserAvatarDto;
-use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\In\User\ChangeUserDataDto;
-use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\In\User\ChangeUserPasswordDto;
-use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\In\User\GetUsersDto;
-use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\Out\Auth\UserDto;
-use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\Enums\Storage\StoragePaths;
-use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\Exceptions\User\InvalidOldPassword;
-use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Database\Models\User;
+use App\Application\Contracts\In\Services\User\IUserService;
+use App\Application\Contracts\Out\Managers\Hash\IHashManager;
+use App\Application\Contracts\Out\Managers\Storage\IStorageManager;
+use App\Application\Contracts\Out\Repositories\User\IUserRepository;
+use App\Application\DTO\In\User\ChangeUserAvatarDto;
+use App\Application\DTO\In\User\ChangeUserDataDto;
+use App\Application\DTO\In\User\ChangeUserPasswordDto;
+use App\Application\DTO\In\User\GetUsersDto;
+use App\Application\DTO\Out\Auth\UserDto;
+use App\Application\Enums\Storage\StoragePaths;
+use App\Application\Exceptions\User\InvalidOldPassword;
+use App\Infrastructure\Database\Models\User;
 use Illuminate\Support\Collection;
 
 class UserService implements IUserService

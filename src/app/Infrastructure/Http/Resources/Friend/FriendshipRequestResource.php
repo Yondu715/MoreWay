@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Http\Resources\Friend;
+namespace App\Infrastructure\Http\Resources\Friend;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;

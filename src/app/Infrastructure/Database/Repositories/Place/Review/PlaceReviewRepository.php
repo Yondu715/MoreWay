@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Database\Repositories\Place\Review;
+namespace App\Infrastructure\Database\Repositories\Place\Review;
 
-use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\Contracts\Out\Repositories\Place\Review\IPlaceReviewRepository;
-use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\In\Place\Review\GetPlaceReviewsDto;
-use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\Exceptions\Review\FailedToCreateReview;
-use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Database\Models\PlaceReview;
-use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Database\Repositories\BaseRepository\BaseRepository;
+use App\Application\Contracts\Out\Repositories\Place\Review\IPlaceReviewRepository;
+use App\Application\DTO\In\Place\Review\GetPlaceReviewsDto;
+use App\Application\Exceptions\Review\FailedToCreateReview;
+use App\Infrastructure\Database\Models\PlaceReview;
+use App\Infrastructure\Database\Repositories\BaseRepository\BaseRepository;
 use Illuminate\Contracts\Pagination\CursorPaginator;
 use Throwable;
 

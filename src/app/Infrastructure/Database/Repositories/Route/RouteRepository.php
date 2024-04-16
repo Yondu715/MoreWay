@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Database\Repositories\Route;
+namespace App\Infrastructure\Database\Repositories\Route;
 
-use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\Contracts\Out\Repositories\Route\IRouteRepository;
-use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\In\Route\CreateRouteDto;
-use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\Exceptions\Route\FailedToCreateRoute;
-use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\Exceptions\Route\RouteNotFound;
-use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Database\Models\Route;
-use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Database\Models\RoutePoint;
-use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Database\Transaction\Interface\ITransactionManager;
+use App\Application\Contracts\Out\Repositories\Route\IRouteRepository;
+use App\Application\DTO\In\Route\CreateRouteDto;
+use App\Application\Exceptions\Route\FailedToCreateRoute;
+use App\Application\Exceptions\Route\RouteNotFound;
+use App\Infrastructure\Database\Models\Route;
+use App\Infrastructure\Database\Models\RoutePoint;
+use App\Infrastructure\Database\Transaction\Interface\ITransactionManager;
 use Throwable;
 
 class RouteRepository implements IRouteRepository

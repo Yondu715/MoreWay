@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Database\Repositories\Friend;
+namespace App\Infrastructure\Database\Repositories\Friend;
 
-use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\Contracts\Out\Repositories\Friend\IFriendshipRepository;
-use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\Enums\Friend\RelationshipTypeId;
-use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Database\Models\Friendship;
-use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Database\Repositories\BaseRepository\BaseRepository;
+use App\Application\Contracts\Out\Repositories\Friend\IFriendshipRepository;
+use App\Application\Enums\Friend\RelationshipTypeId;
+use App\Infrastructure\Database\Models\Friendship;
+use App\Infrastructure\Database\Repositories\BaseRepository\BaseRepository;
 use Illuminate\Database\Eloquent\Collection;
 
 class FriendshipRepository extends BaseRepository implements IFriendshipRepository

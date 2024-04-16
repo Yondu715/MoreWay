@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Console\Commands;
+namespace App\Infrastructure\Console\Commands;
 
-use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\WebSocket\Routing\Route;
+use App\Infrastructure\WebSocket\Routing\Route;
 use Illuminate\Console\Command;
 use Ratchet\App;
 use React\EventLoop\Loop;
