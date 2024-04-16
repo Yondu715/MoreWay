@@ -12,7 +12,7 @@ RUN apt-get update &&\
     apt-get install -y --no-install-recommends librdkafka-dev &&\
     apt-get install -y libzip-dev
 
-RUN apt-get update &&\
+# RUN apt-get update &&\
     # pecl install rdkafka-${RDKAFKA_VERSION} &&\
     # pecl install mcrypt-${MCRYPT_VERSION} &&\
     # pecl install redis-${REDIS_VERSION} &&\
@@ -61,7 +61,6 @@ COPY ./custom.ini /usr/local/etc/php/conf.d/custom.ini
 COPY ./supervisord.conf  /var/supervisor/supervisord.conf
 COPY ./crontab.cfg /var/spool/cron/crontabs/${WEB_USER_NAME}
 COPY ./supervisorctl /var/supervisor/supervisorctl
-COPY ./redis.conf /var/redis/redis.conf
 
 RUN useradd -m -u ${WEB_USER_ID} ${WEB_USER_NAME} || echo "User exists" \
     && ln -sf /proc/1/fd/1 /var/supervisor/supervisor.log \
