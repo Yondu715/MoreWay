@@ -59,13 +59,13 @@ ARG WEB_USER_NAME=${WEB_USER_NAME}
 
 COPY ./custom.ini /usr/local/etc/php/conf.d/custom.ini
 COPY ./supervisord.conf  /var/supervisor/supervisord.conf
-COPY ./crontab.cfg /var/spool/cron/crontabs/${WEB_USER_NAME}
+# COPY ./crontab.cfg /var/spool/cron/crontabs/${WEB_USER_NAME}
 COPY ./supervisorctl /var/supervisor/supervisorctl
 
 RUN useradd -m -u ${WEB_USER_ID} ${WEB_USER_NAME} || echo "User exists" \
     && ln -sf /proc/1/fd/1 /var/supervisor/supervisor.log \
-    && chown -R ${WEB_USER_ID}:${WEB_USER_ID} /var/supervisor \
-    && crontab -u ${WEB_USER_NAME} /var/spool/cron/crontabs/${WEB_USER_NAME}
+    && chown -R ${WEB_USER_ID}:${WEB_USER_ID} /var/supervisor
+    # && crontab -u ${WEB_USER_NAME} /var/spool/cron/crontabs/${WEB_USER_NAME}
 
 WORKDIR '/var/supervisor'
 ENV SUPERVISOR_USER ${WEB_USER_NAME}
