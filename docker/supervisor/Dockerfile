@@ -1,6 +1,5 @@
 FROM php:8.2-fpm
 
-ARG REDIS_VERSION=6.0.2
 # ARG MCRYPT_VERSION=1.0.1
 # ARG RDKAFKA_VERSION=6.0.0
 
@@ -15,8 +14,6 @@ RUN apt-get update &&\
 # RUN apt-get update &&\
     # pecl install rdkafka-${RDKAFKA_VERSION} &&\
     # pecl install mcrypt-${MCRYPT_VERSION} &&\
-    # pecl install redis-${REDIS_VERSION} &&\
-    # pecl install -y redis-server
     # pecl install gnupg
 
 RUN docker-php-ext-install zip \
@@ -26,7 +23,6 @@ RUN docker-php-ext-install zip \
     && docker-php-ext-install exif \
     && docker-php-ext-configure bcmath \
     && docker-php-ext-install bcmath \
-    # && docker-php-ext-enable redis \
     && docker-php-ext-install sockets \
     # && docker-php-ext-enable gnupg \
     && docker-php-ext-install pdo pdo_mysql \
