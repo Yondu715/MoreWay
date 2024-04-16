@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Infrastructure\Database\Transaction\Interface;
+namespace App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Database\Transaction\Interface;
 
 interface ITransactionManager
 {

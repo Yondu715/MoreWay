@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Application\Contracts\Out\Repositories\Route\Review;
+namespace App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\Contracts\Out\Repositories\Route\Review;
 
-use App\Application\DTO\In\Route\Review\GetRouteReviewsDto;
-use App\Application\Exceptions\Review\FailedToCreateReview;
-use App\Infrastructure\Database\Models\RouteReview;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\In\Route\Review\GetRouteReviewsDto;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\Exceptions\Review\FailedToCreateReview;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Database\Models\RouteReview;
 use Illuminate\Contracts\Pagination\CursorPaginator;
 
 interface IRouteReviewRepository

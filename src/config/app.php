@@ -60,7 +60,7 @@ return [
     'ws_host' => env('WS_HOST', 'localhost'),
     'ws_port' => env('WS_PORT', '8080'),
     'ws_address' => env('WS_ADDRESS', '127.0.0.1'),
-    
+
     'asset_url' => env('ASSET_URL'),
 
     /*
@@ -167,12 +167,12 @@ return [
         /*
          * Application Service Providers...
          */
-        \App\Infrastructure\Providers\AppServiceProvider::class,
-        \App\Infrastructure\Providers\AuthServiceProvider::class,
+        \App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Providers\AppServiceProvider::class,
+        \App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Providers\AuthServiceProvider::class,
         // App\Providers\BroadcastServiceProvider::class,
-        \App\Infrastructure\Providers\EventServiceProvider::class,
-        \App\Infrastructure\Providers\RouteServiceProvider::class,
-        \App\Infrastructure\Providers\WebSocketRouteProvider::class,
+        \App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Providers\EventServiceProvider::class,
+        \App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Providers\RouteServiceProvider::class,
+        \App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Providers\WebSocketRouteProvider::class,
     ])->toArray(),
 
     /*

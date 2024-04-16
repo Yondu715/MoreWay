@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Infrastructure\Managers\Token;
+namespace App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Managers\Token;
 
-use App\Application\Contracts\Out\Managers\Token\ITokenManager;
-use App\Application\DTO\In\Auth\LoginDto;
-use App\Application\DTO\Out\Auth\UserDto;
-use App\Infrastructure\Database\Models\User;
-use App\Infrastructure\Exceptions\InvalidToken;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\Contracts\Out\Managers\Token\ITokenManager;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\In\Auth\LoginDto;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\Out\Auth\UserDto;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Database\Models\User;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Exceptions\InvalidToken;
 use Exception;
 use Illuminate\Support\Facades\Auth;
 use Tymon\JWTAuth\JWTGuard;

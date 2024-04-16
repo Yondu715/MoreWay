@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Application\DTO\Out\Route\Point;
+namespace App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\Out\Route\Point;
 
-use App\Application\DTO\Out\Place\PlaceDto;
-use App\Infrastructure\Database\Models\RoutePoint;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\Out\Place\PlaceDto;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Database\Models\RoutePoint;
 use Illuminate\Support\Collection;
 
 class PointDto

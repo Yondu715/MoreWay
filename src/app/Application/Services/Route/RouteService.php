@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Application\Services\Route;
+namespace App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\Services\Route;
 
-use App\Application\Contracts\In\Services\Route\IRouteService;
-use App\Application\Contracts\Out\Repositories\Route\IRouteRepository;
-use App\Application\DTO\In\Route\CreateRouteDto;
-use App\Application\DTO\Out\Route\RouteDto;
-use App\Application\Exceptions\Route\FailedToCreateRoute;
-use App\Application\Exceptions\Route\RouteNotFound;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\Contracts\In\Services\Route\IRouteService;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\Contracts\Out\Repositories\Route\IRouteRepository;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\In\Route\CreateRouteDto;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\Out\Route\RouteDto;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\Exceptions\Route\FailedToCreateRoute;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\Exceptions\Route\RouteNotFound;
 
 class RouteService implements IRouteService
 {

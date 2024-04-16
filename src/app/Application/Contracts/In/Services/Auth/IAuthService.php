@@ -1,20 +1,20 @@
 <?php
 
-namespace App\Application\Contracts\In\Services\Auth;
+namespace App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\Contracts\In\Services\Auth;
 
-use App\Application\DTO\In\Auth\LoginDto;
-use App\Application\DTO\In\Auth\Password\ForgotPasswordDto;
-use App\Application\DTO\In\Auth\Password\ResetPasswordDto;
-use App\Application\DTO\In\Auth\Password\VerifyPasswordCodeDto;
-use App\Application\DTO\In\Auth\RegisterDto;
-use App\Application\DTO\Out\Auth\UserDto;
-use App\Application\Exceptions\Auth\InvalidPassword;
-use App\Application\Exceptions\Auth\Password\ExpiredResetPasswordToken;
-use App\Application\Exceptions\Auth\Password\ExpiredVerifyPasswordCode;
-use App\Application\Exceptions\Auth\Password\InvalidResetPasswordToken;
-use App\Application\Exceptions\Auth\Password\InvalidVerifyPasswordCode;
-use App\Application\Exceptions\Auth\RegistrationConflict;
-use App\Application\Exceptions\User\UserNotFound;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\In\Auth\LoginDto;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\In\Auth\Password\ForgotPasswordDto;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\In\Auth\Password\ResetPasswordDto;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\In\Auth\Password\VerifyPasswordCodeDto;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\In\Auth\RegisterDto;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\Out\Auth\UserDto;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\Exceptions\Auth\InvalidPassword;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\Exceptions\Auth\Password\ExpiredResetPasswordToken;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\Exceptions\Auth\Password\ExpiredVerifyPasswordCode;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\Exceptions\Auth\Password\InvalidResetPasswordToken;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\Exceptions\Auth\Password\InvalidVerifyPasswordCode;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\Exceptions\Auth\RegistrationConflict;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\Exceptions\User\UserNotFound;
 
 interface IAuthService
 {

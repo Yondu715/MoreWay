@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Infrastructure\Database\Models\Filters\Place;
+namespace App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Database\Models\Filters\Place;
 
 class PlaceFilterFactory
 {

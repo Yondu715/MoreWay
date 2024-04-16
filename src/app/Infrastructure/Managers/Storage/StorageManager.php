@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Infrastructure\Managers\Storage;
+namespace App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Managers\Storage;
 
-use App\Application\Contracts\Out\Managers\Storage\IStorageManager;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\Contracts\Out\Managers\Storage\IStorageManager;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 

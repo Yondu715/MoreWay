@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Infrastructure\Managers\Mail;
+namespace App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Managers\Mail;
 
-use App\Application\Contracts\Out\Managers\Mail\IMailManager;
-use App\Infrastructure\Managers\Mail\Auth\ForgotPasswordMail;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\Contracts\Out\Managers\Mail\IMailManager;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Managers\Mail\Auth\ForgotPasswordMail;
 use Illuminate\Support\Facades\Mail;
 
 class MailManager implements IMailManager

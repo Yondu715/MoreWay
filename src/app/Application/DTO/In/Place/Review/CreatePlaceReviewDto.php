@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Application\DTO\In\Place\Review;
+namespace App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\In\Place\Review;
 
-use App\Infrastructure\Http\Requests\Review\CreateReviewRequest;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Http\Requests\Review\CreateReviewRequest;
 
 class CreatePlaceReviewDto
 {

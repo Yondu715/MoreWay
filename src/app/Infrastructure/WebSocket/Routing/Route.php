@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Infrastructure\WebSocket\Routing;
+namespace App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\WebSocket\Routing;
 
 class Route
 {

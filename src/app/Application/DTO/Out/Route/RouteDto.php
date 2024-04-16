@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Application\DTO\Out\Route;
+namespace App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\Out\Route;
 
-use App\Application\DTO\Out\Auth\UserDto;
-use App\Application\DTO\Out\Route\Point\PointDto;
-use App\Infrastructure\Database\Models\Route;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\Out\Auth\UserDto;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\Out\Route\Point\PointDto;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Database\Models\Route;
 use Illuminate\Support\Collection;
 
 class RouteDto

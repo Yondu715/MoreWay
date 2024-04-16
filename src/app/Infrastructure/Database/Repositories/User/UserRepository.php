@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Infrastructure\Database\Repositories\User;
+namespace App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Database\Repositories\User;
 
-use App\Application\Contracts\Out\Repositories\User\IUserRepository;
-use App\Application\Exceptions\User\UserNotFound;
-use App\Infrastructure\Database\Models\User;
-use App\Infrastructure\Database\Repositories\BaseRepository\BaseRepository;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\Contracts\Out\Repositories\User\IUserRepository;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\Exceptions\User\UserNotFound;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Database\Models\User;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Database\Repositories\BaseRepository\BaseRepository;
 use Illuminate\Database\Eloquent\Collection;
 use Throwable;
 

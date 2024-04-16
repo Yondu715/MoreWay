@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Infrastructure\Database\Repositories\Place;
+namespace App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Database\Repositories\Place;
 
-use App\Application\Contracts\Out\Repositories\Place\IPlaceRepository;
-use App\Application\DTO\In\Place\GetPlaceDto;
-use App\Application\DTO\In\Place\GetPlacesDto;
-use App\Application\Exceptions\Place\PlaceNotFound;
-use App\Infrastructure\Database\Models\Filters\Place\PlaceFilterFactory;
-use App\Infrastructure\Database\Models\Place;
-use App\Infrastructure\Database\Repositories\BaseRepository\BaseRepository;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\Contracts\Out\Repositories\Place\IPlaceRepository;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\In\Place\GetPlaceDto;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\In\Place\GetPlacesDto;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\Exceptions\Place\PlaceNotFound;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Database\Models\Filters\Place\PlaceFilterFactory;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Database\Models\Place;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Database\Repositories\BaseRepository\BaseRepository;
 use Illuminate\Contracts\Pagination\CursorPaginator;
 use Throwable;
 

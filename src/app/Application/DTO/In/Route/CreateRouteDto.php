@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Application\DTO\In\Route;
+namespace App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\In\Route;
 
-use App\Application\DTO\In\Route\Point\PointDto;
-use App\Infrastructure\Http\Requests\Route\CreateRouteRequest;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\In\Route\Point\PointDto;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Http\Requests\Route\CreateRouteRequest;
 
 class CreateRouteDto
 {

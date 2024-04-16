@@ -2,16 +2,16 @@
 
 namespace Database\Seeders;
 
-use App\Application\Contracts\Out\Managers\Hash\IHashManager;
-use App\Application\Enums\Role\RoleTypeId;
-use App\Infrastructure\Database\Models\Locality;
-use App\Infrastructure\Database\Models\Place;
-use App\Infrastructure\Database\Models\PlaceImage;
-use App\Infrastructure\Database\Models\PlaceReview;
-use App\Infrastructure\Database\Models\PlaceType;
-use App\Infrastructure\Database\Models\Route;
-use App\Infrastructure\Database\Models\RoutePoint;
-use App\Infrastructure\Database\Models\User;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\Contracts\Out\Managers\Hash\IHashManager;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\Enums\Role\RoleTypeId;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Database\Models\Locality;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Database\Models\Place;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Database\Models\PlaceImage;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Database\Models\PlaceReview;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Database\Models\PlaceType;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Database\Models\Route;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Database\Models\RoutePoint;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Database\Models\User;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder

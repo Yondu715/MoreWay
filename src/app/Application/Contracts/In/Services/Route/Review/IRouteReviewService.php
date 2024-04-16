@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Application\Contracts\In\Services\Route\Review;
+namespace App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\Contracts\In\Services\Route\Review;
 
-use App\Application\DTO\Collection\CursorDto;
-use App\Application\DTO\In\Route\Review\CreateRouteReviewDto;
-use App\Application\DTO\In\Route\Review\GetRouteReviewsDto;
-use App\Application\DTO\Out\Review\ReviewDto;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\Collection\CursorDto;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\In\Route\Review\CreateRouteReviewDto;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\In\Route\Review\GetRouteReviewsDto;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\Out\Review\ReviewDto;
 
 interface IRouteReviewService
 {

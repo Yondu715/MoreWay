@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Application\Contracts\In\Services\Route;
+namespace App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\Contracts\In\Services\Route;
 
-use App\Application\DTO\In\Route\CreateRouteDto;
-use App\Application\DTO\Out\Route\RouteDto;
-use App\Application\Exceptions\Route\FailedToCreateRoute;
-use App\Application\Exceptions\Route\RouteNotFound;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\In\Route\CreateRouteDto;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\Out\Route\RouteDto;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\Exceptions\Route\FailedToCreateRoute;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\Exceptions\Route\RouteNotFound;
 
 interface IRouteService
 {

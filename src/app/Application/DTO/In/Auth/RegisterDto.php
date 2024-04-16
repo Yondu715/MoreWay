@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Application\DTO\In\Auth;
+namespace App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\In\Auth;
 
-use App\Infrastructure\Http\Requests\Auth\RegisterRequest;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Http\Requests\Auth\RegisterRequest;
 
 class RegisterDto
 {

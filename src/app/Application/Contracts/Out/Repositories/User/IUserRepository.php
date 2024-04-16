@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Application\Contracts\Out\Repositories\User;
+namespace App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\Contracts\Out\Repositories\User;
 
-use App\Application\Contracts\Out\Repositories\Base\IBaseRepository;
-use App\Infrastructure\Database\Models\User;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\Contracts\Out\Repositories\Base\IBaseRepository;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Database\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 
 interface IUserRepository extends IBaseRepository

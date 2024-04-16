@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Application\Services\Route\Review;
+namespace App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\Services\Route\Review;
 
-use App\Application\Contracts\In\Services\Route\Review\IRouteReviewService;
-use App\Application\Contracts\Out\Repositories\Route\Review\IRouteReviewRepository;
-use App\Application\DTO\Collection\CursorDto;
-use App\Application\DTO\In\Route\Review\CreateRouteReviewDto;
-use App\Application\DTO\In\Route\Review\GetRouteReviewsDto;
-use App\Application\DTO\Out\Review\ReviewCursorDto;
-use App\Application\DTO\Out\Review\ReviewDto;
-use App\Application\Exceptions\Review\FailedToCreateReview;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\Contracts\In\Services\Route\Review\IRouteReviewService;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\Contracts\Out\Repositories\Route\Review\IRouteReviewRepository;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\Collection\CursorDto;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\In\Route\Review\CreateRouteReviewDto;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\In\Route\Review\GetRouteReviewsDto;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\Out\Review\ReviewCursorDto;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\Out\Review\ReviewDto;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\Exceptions\Review\FailedToCreateReview;
 use Throwable;
 
 class RouteReviewService implements IRouteReviewService

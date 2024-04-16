@@ -1,17 +1,17 @@
 <?php
 
-namespace App\Application\Services\Friend;
+namespace App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\Services\Friend;
 
-use App\Application\Contracts\In\Services\Friend\IFriendshipService;
-use App\Application\Contracts\Out\Managers\Notifier\INotifierManager;
-use App\Application\Contracts\Out\Repositories\Friend\IFriendshipRepository;
-use App\Application\DTO\In\Friend\AcceptFriendDto;
-use App\Application\DTO\In\Friend\AddFriendDto;
-use App\Application\DTO\Out\Auth\UserDto;
-use App\Application\DTO\Out\Friend\FriendshipRequestDto;
-use App\Application\Enums\Friend\RelationshipTypeId;
-use App\Application\Exceptions\Friend\FriendRequestConflict;
-use App\Infrastructure\Database\Models\Friendship;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\Contracts\In\Services\Friend\IFriendshipService;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\Contracts\Out\Managers\Notifier\INotifierManager;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\Contracts\Out\Repositories\Friend\IFriendshipRepository;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\In\Friend\AcceptFriendDto;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\In\Friend\AddFriendDto;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\Out\Auth\UserDto;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\Out\Friend\FriendshipRequestDto;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\Enums\Friend\RelationshipTypeId;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\Exceptions\Friend\FriendRequestConflict;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Database\Models\Friendship;
 use Illuminate\Support\Collection;
 
 class FriendshipService implements IFriendshipService

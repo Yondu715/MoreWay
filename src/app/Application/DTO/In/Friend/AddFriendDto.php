@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Application\DTO\In\Friend;
+namespace App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\In\Friend;
 
-use App\Infrastructure\Http\Requests\Friend\AddFriendRequest;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Http\Requests\Friend\AddFriendRequest;
 
 class AddFriendDto
 {

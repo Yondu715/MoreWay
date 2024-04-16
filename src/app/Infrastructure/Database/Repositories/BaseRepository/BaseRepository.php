@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Infrastructure\Database\Repositories\BaseRepository;
+namespace App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Database\Repositories\BaseRepository;
 
-use App\Application\Contracts\Out\Repositories\Base\IBaseRepository;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\Contracts\Out\Repositories\Base\IBaseRepository;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Throwable;

@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Infrastructure\Managers\Hash;
+namespace App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Managers\Hash;
 
-use App\Application\Contracts\Out\Managers\Hash\IHashManager;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\Contracts\Out\Managers\Hash\IHashManager;
 use Illuminate\Support\Facades\Hash;
 
 class HashManager implements IHashManager

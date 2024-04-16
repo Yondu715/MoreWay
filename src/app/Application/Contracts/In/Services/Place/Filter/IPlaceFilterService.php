@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Application\Contracts\In\Services\Place\Filter;
+namespace App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\Contracts\In\Services\Place\Filter;
 
-use App\Application\DTO\Out\Place\Filter\PlaceFilterDto;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\Out\Place\Filter\PlaceFilterDto;
 
 interface IPlaceFilterService
 {

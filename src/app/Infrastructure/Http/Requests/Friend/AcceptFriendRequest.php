@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Infrastructure\Http\Requests\Friend;
+namespace App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Http\Requests\Friend;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;

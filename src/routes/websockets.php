@@ -1,6 +1,6 @@
 <?php
 
-use App\Infrastructure\WebSocket\Controllers\Friend\FriendWebSocketController;
-use App\Infrastructure\WebSocket\Routing\Route;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\WebSocket\Controllers\Friend\FriendWebSocketController;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\WebSocket\Routing\Route;
 
 Route::ws('/friends', FriendWebSocketController::class);

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Application\Exceptions\Auth;
+namespace App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\Exceptions\Auth;
 
 use Exception;
 

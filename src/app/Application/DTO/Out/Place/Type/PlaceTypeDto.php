@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Application\DTO\Out\Place\Type;
+namespace App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\Out\Place\Type;
 
-use App\Infrastructure\Database\Models\PlaceType;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Database\Models\PlaceType;
 use Illuminate\Support\Collection;
 
 class PlaceTypeDto

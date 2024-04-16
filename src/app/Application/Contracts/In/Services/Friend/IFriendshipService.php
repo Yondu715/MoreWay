@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Application\Contracts\In\Services\Friend;
+namespace App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\Contracts\In\Services\Friend;
 
-use App\Application\DTO\In\Friend\AcceptFriendDto;
-use App\Application\DTO\In\Friend\AddFriendDto;
-use App\Application\DTO\Out\Auth\UserDto;
-use App\Application\DTO\Out\Friend\FriendshipRequestDto;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\In\Friend\AcceptFriendDto;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\In\Friend\AddFriendDto;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\Out\Auth\UserDto;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\Out\Friend\FriendshipRequestDto;
 use Illuminate\Support\Collection;
 
 interface IFriendshipService

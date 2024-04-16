@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Infrastructure\Http\Resources\Place\Locality;
+namespace App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Http\Resources\Place\Locality;
 
-use App\Application\DTO\Out\Place\Locality\LocalityDto;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\Out\Place\Locality\LocalityDto;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 

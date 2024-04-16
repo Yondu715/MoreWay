@@ -1,16 +1,16 @@
 <?php
 
-namespace App\Application\Services\Place;
+namespace App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\Services\Place;
 
-use App\Application\Contracts\In\Services\Place\IPlaceService;
-use App\Application\Contracts\Out\Repositories\Place\IPlaceRepository;
-use App\Application\DTO\Collection\CursorDto;
-use App\Application\DTO\In\Place\GetPlaceDto;
-use App\Application\DTO\In\Place\GetPlacesDto;
-use App\Application\DTO\Out\Place\PlaceCursorDto;
-use App\Application\DTO\Out\Place\PlaceDto;
-use App\Application\Exceptions\Place\PlaceNotFound;
-use App\Domain\Contracts\In\DomainManagers\IDistanceManager;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\Contracts\In\Services\Place\IPlaceService;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\Contracts\Out\Repositories\Place\IPlaceRepository;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\Collection\CursorDto;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\In\Place\GetPlaceDto;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\In\Place\GetPlacesDto;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\Out\Place\PlaceCursorDto;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\Out\Place\PlaceDto;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\Exceptions\Place\PlaceNotFound;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Domain\Contracts\In\DomainManagers\IDistanceManager;
 
 class PlaceService implements IPlaceService
 {

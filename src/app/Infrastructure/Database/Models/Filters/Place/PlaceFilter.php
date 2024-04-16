@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Infrastructure\Database\Models\Filters\Place;
+namespace App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Database\Models\Filters\Place;
 
-use App\Infrastructure\Database\Models\Filters\AbstractFilter;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Database\Models\Filters\AbstractFilter;
 use Illuminate\Database\Eloquent\Builder;
 
 class PlaceFilter extends AbstractFilter

@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Application\DTO\In\User;
+namespace App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\In\User;
 
-use App\Infrastructure\Http\Requests\User\GetUsersRequest;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Http\Requests\User\GetUsersRequest;
 
 class GetUsersDto
 {

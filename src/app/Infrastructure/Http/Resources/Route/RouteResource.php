@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Infrastructure\Http\Resources\Route;
+namespace App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Http\Resources\Route;
 
-use App\Infrastructure\Http\Resources\Auth\UserResource;
-use App\Infrastructure\Http\Resources\Route\Point\PointResource;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Http\Resources\Auth\UserResource;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Http\Resources\Route\Point\PointResource;
 use Illuminate\Http\Request;
-use App\Application\DTO\Out\Route\RouteDto;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\Out\Route\RouteDto;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /**

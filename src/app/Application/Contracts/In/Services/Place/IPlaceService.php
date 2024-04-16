@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Application\Contracts\In\Services\Place;
+namespace App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\Contracts\In\Services\Place;
 
-use App\Application\DTO\Collection\CursorDto;
-use App\Application\DTO\In\Place\GetPlaceDto;
-use App\Application\DTO\In\Place\GetPlacesDto;
-use App\Application\DTO\Out\Place\PlaceDto;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\Collection\CursorDto;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\In\Place\GetPlaceDto;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\In\Place\GetPlacesDto;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\Out\Place\PlaceDto;
 
 interface IPlaceService
 {

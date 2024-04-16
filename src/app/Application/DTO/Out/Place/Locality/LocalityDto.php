@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Application\DTO\Out\Place\Locality;
+namespace App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\Out\Place\Locality;
 
-use App\Infrastructure\Database\Models\Locality;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Database\Models\Locality;
 use Illuminate\Support\Collection;
 
 class LocalityDto

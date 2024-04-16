@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Domain\Managers\Distance;
+namespace App\Infrastructure\Database\Models\Infrastructure\Database\Models\Domain\Managers\Distance;
 
-use App\Domain\Contracts\In\DomainManagers\IDistanceManager;
-use App\Domain\Enams\Earth\EarthInformation;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Domain\Contracts\In\DomainManagers\IDistanceManager;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Domain\Enams\Earth\EarthInformation;
 
 class DistanceManager implements IDistanceManager
 {

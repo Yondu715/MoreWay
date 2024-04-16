@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Application\Contracts\Out\Repositories\Friend;
+namespace App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\Contracts\Out\Repositories\Friend;
 
-use App\Application\Contracts\Out\Repositories\Base\IBaseRepository;
-use App\Infrastructure\Database\Models\Friendship;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\Contracts\Out\Repositories\Base\IBaseRepository;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Database\Models\Friendship;
 use Illuminate\Database\Eloquent\Collection;
 
 interface IFriendshipRepository extends IBaseRepository

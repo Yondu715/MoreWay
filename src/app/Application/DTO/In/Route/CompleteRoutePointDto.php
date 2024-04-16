@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Application\DTO\In\Route;
+namespace App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\In\Route;
 
-use App\Infrastructure\Http\Requests\Route\CompletedRoutePointRequest;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Http\Requests\Route\CompletedRoutePointRequest;
 
 class CompleteRoutePointDto
 {

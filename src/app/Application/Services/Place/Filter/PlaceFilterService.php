@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Application\Services\Place\Filter;
+namespace App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\Services\Place\Filter;
 
-use App\Application\Contracts\In\Services\Place\Filter\IPlaceFilterService;
-use App\Application\Contracts\Out\Repositories\Place\Locality\ILocalityRepository;
-use App\Application\Contracts\Out\Repositories\Place\Type\IPlaceTypeRepository;
-use App\Application\DTO\Out\Place\Filter\PlaceFilterDto;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\Contracts\In\Services\Place\Filter\IPlaceFilterService;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\Contracts\Out\Repositories\Place\Locality\ILocalityRepository;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\Contracts\Out\Repositories\Place\Type\IPlaceTypeRepository;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\Out\Place\Filter\PlaceFilterDto;
 
 class PlaceFilterService implements IPlaceFilterService
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Infrastructure\Providers;
+namespace App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Providers;
 
 // use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;

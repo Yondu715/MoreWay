@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Application\Contracts\In\Services\Place\Review;
+namespace App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\Contracts\In\Services\Place\Review;
 
-use App\Application\DTO\Collection\CursorDto;
-use App\Application\DTO\In\Place\Review\CreatePlaceReviewDto;
-use App\Application\DTO\In\Place\Review\GetPlaceReviewsDto;
-use App\Application\DTO\Out\Review\ReviewDto;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\Collection\CursorDto;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\In\Place\Review\CreatePlaceReviewDto;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\In\Place\Review\GetPlaceReviewsDto;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\Out\Review\ReviewDto;
 
 interface IPlaceReviewService
 {

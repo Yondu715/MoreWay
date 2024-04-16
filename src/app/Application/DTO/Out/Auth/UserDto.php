@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Application\DTO\Out\Auth;
+namespace App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\Out\Auth;
 
-use App\Infrastructure\Database\Models\User;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Database\Models\User;
 
 class UserDto
 {

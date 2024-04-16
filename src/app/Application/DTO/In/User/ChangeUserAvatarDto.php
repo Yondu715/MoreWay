@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Application\DTO\In\User;
+namespace App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\In\User;
 
-use App\Infrastructure\Http\Requests\User\ChangeUserAvatarRequest;
-use App\Lib\HashId\HashManager;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Http\Requests\User\ChangeUserAvatarRequest;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Lib\HashId\HashManager;
 use Illuminate\Http\UploadedFile;
 
 class ChangeUserAvatarDto

@@ -1,19 +1,19 @@
 <?php
 
-namespace App\Infrastructure\Http\Controllers\Api\V1;
+namespace App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Http\Controllers\Api\V1;
 
-use App\Application\Contracts\In\Services\User\IUserService;
-use App\Application\DTO\In\User\ChangeUserAvatarDto;
-use App\Application\DTO\In\User\ChangeUserDataDto;
-use App\Application\DTO\In\User\ChangeUserPasswordDto;
-use App\Application\DTO\In\User\GetUsersDto;
-use App\Infrastructure\Exceptions\ApiException;
-use App\Infrastructure\Http\Controllers\Controller;
-use App\Infrastructure\Http\Requests\User\ChangeUserAvatarRequest;
-use App\Infrastructure\Http\Requests\User\ChangeUserDataRequest;
-use App\Infrastructure\Http\Requests\User\ChangeUserPasswordRequest;
-use App\Infrastructure\Http\Requests\User\GetUsersRequest;
-use App\Infrastructure\Http\Resources\Auth\UserResource;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\Contracts\In\Services\User\IUserService;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\In\User\ChangeUserAvatarDto;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\In\User\ChangeUserDataDto;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\In\User\ChangeUserPasswordDto;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\In\User\GetUsersDto;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Exceptions\ApiException;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Http\Controllers\Controller;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Http\Requests\User\ChangeUserAvatarRequest;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Http\Requests\User\ChangeUserDataRequest;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Http\Requests\User\ChangeUserPasswordRequest;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Http\Requests\User\GetUsersRequest;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Http\Resources\Auth\UserResource;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Response;
 use Throwable;

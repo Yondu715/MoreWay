@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Application\DTO\Collection;
+namespace App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\Collection;
 
 
 use Illuminate\Contracts\Pagination\CursorPaginator;

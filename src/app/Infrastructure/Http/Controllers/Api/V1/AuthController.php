@@ -1,21 +1,21 @@
 <?php
 
-namespace App\Infrastructure\Http\Controllers\Api\V1;
+namespace App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Http\Controllers\Api\V1;
 
-use App\Application\Contracts\In\Services\Auth\IAuthService;
-use App\Application\DTO\In\Auth\LoginDto;
-use App\Application\DTO\In\Auth\Password\ForgotPasswordDto;
-use App\Application\DTO\In\Auth\Password\ResetPasswordDto;
-use App\Application\DTO\In\Auth\Password\VerifyPasswordCodeDto;
-use App\Application\DTO\In\Auth\RegisterDto;
-use App\Infrastructure\Exceptions\ApiException;
-use App\Infrastructure\Http\Controllers\Controller;
-use App\Infrastructure\Http\Requests\Auth\LoginRequest;
-use App\Infrastructure\Http\Requests\Auth\Password\ForgotPasswordRequest;
-use App\Infrastructure\Http\Requests\Auth\Password\ResetPasswordRequest;
-use App\Infrastructure\Http\Requests\Auth\Password\VerifyPasswordCodeRequest;
-use App\Infrastructure\Http\Requests\Auth\RegisterRequest;
-use App\Infrastructure\Http\Resources\Auth\UserResource;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\Contracts\In\Services\Auth\IAuthService;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\In\Auth\LoginDto;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\In\Auth\Password\ForgotPasswordDto;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\In\Auth\Password\ResetPasswordDto;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\In\Auth\Password\VerifyPasswordCodeDto;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\In\Auth\RegisterDto;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Exceptions\ApiException;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Http\Controllers\Controller;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Http\Requests\Auth\LoginRequest;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Http\Requests\Auth\Password\ForgotPasswordRequest;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Http\Requests\Auth\Password\ResetPasswordRequest;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Http\Requests\Auth\Password\VerifyPasswordCodeRequest;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Http\Requests\Auth\RegisterRequest;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Http\Resources\Auth\UserResource;
 use Illuminate\Http\JsonResponse;
 use Throwable;
 

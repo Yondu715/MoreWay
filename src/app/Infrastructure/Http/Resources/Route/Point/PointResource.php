@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Infrastructure\Http\Resources\Route\Point;
+namespace App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Http\Resources\Route\Point;
 
-use App\Application\DTO\Out\Route\Point\PointDto;
-use App\Infrastructure\Http\Resources\Place\Image\ImageResource;
-use App\Infrastructure\Http\Resources\Place\Locality\LocalityResource;
-use App\Infrastructure\Http\Resources\Place\Type\TypeResource;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\Out\Route\Point\PointDto;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Http\Resources\Place\Image\ImageResource;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Http\Resources\Place\Locality\LocalityResource;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Http\Resources\Place\Type\TypeResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 

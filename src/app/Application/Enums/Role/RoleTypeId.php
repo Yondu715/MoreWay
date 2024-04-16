@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Application\Enums\Role;
+namespace App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\Enums\Role;
 
 enum RoleTypeId: int
 {

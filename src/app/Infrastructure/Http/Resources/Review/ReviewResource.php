@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Infrastructure\Http\Resources\Review;
+namespace App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Http\Resources\Review;
 
-use App\Application\DTO\Out\Review\ReviewDto;
-use App\Infrastructure\Http\Resources\Auth\UserResource;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\Out\Review\ReviewDto;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Http\Resources\Auth\UserResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 

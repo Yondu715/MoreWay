@@ -1,26 +1,26 @@
 <?php
 
-namespace App\Infrastructure\Http\Controllers\Api\V1;
+namespace App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Http\Controllers\Api\V1;
 
-use App\Application\Contracts\In\Services\Place\Filter\IPlaceFilterService;
-use App\Application\Contracts\In\Services\Place\IPlaceService;
-use App\Application\Contracts\In\Services\Place\Review\IPlaceReviewService;
-use App\Application\DTO\In\Place\GetPlaceDto;
-use App\Application\DTO\In\Place\GetPlacesDto;
-use App\Application\DTO\In\Place\Review\CreatePlaceReviewDto;
-use App\Application\DTO\In\Place\Review\GetPlaceReviewsDto;
-use App\Infrastructure\Exceptions\ApiException;
-use App\Infrastructure\Http\Controllers\Controller;
-use App\Infrastructure\Http\Requests\Place\GetPlaceRequest;
-use App\Infrastructure\Http\Requests\Place\GetPlacesRequest;
-use App\Infrastructure\Http\Requests\Review\CreateReviewRequest;
-use App\Infrastructure\Http\Requests\Review\GetReviewsRequest;
-use App\Infrastructure\Http\Resources\Place\Filter\PlaceFilterResource;
-use App\Infrastructure\Http\Resources\Place\PlaceCursorResource;
-use App\Infrastructure\Http\Resources\Place\PlaceResource;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\Contracts\In\Services\Place\Filter\IPlaceFilterService;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\Contracts\In\Services\Place\IPlaceService;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\Contracts\In\Services\Place\Review\IPlaceReviewService;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\In\Place\GetPlaceDto;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\In\Place\GetPlacesDto;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\In\Place\Review\CreatePlaceReviewDto;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\In\Place\Review\GetPlaceReviewsDto;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Exceptions\ApiException;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Http\Controllers\Controller;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Http\Requests\Place\GetPlaceRequest;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Http\Requests\Place\GetPlacesRequest;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Http\Requests\Review\CreateReviewRequest;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Http\Requests\Review\GetReviewsRequest;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Http\Resources\Place\Filter\PlaceFilterResource;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Http\Resources\Place\PlaceCursorResource;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Http\Resources\Place\PlaceResource;
 use Throwable;
-use App\Infrastructure\Http\Resources\Review\ReviewCursorResource;
-use App\Infrastructure\Http\Resources\Review\ReviewResource;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Http\Resources\Review\ReviewCursorResource;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Http\Resources\Review\ReviewResource;
 use Exception;
 
 

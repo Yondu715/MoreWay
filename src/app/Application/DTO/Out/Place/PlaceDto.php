@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Application\DTO\Out\Place;
+namespace App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\Out\Place;
 
-use App\Application\DTO\Out\Place\Image\ImageDto;
-use App\Application\DTO\Out\Place\Locality\LocalityDto;
-use App\Application\DTO\Out\Place\Type\PlaceTypeDto;
-use App\Infrastructure\Database\Models\Place;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\Out\Place\Image\ImageDto;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\Out\Place\Locality\LocalityDto;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\Out\Place\Type\PlaceTypeDto;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Database\Models\Place;
 use Illuminate\Support\Collection;
 
 class PlaceDto

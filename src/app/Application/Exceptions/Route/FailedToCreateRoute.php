@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Application\Exceptions\Route;
+namespace App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\Exceptions\Route;
 
 use Exception;
 

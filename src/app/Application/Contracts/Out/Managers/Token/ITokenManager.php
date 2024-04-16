@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Application\Contracts\Out\Managers\Token;
+namespace App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\Contracts\Out\Managers\Token;
 
-use App\Application\DTO\In\Auth\LoginDto;
-use App\Application\DTO\Out\Auth\UserDto;
-use App\Infrastructure\Exceptions\InvalidToken;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\In\Auth\LoginDto;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Application\DTO\Out\Auth\UserDto;
+use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Exceptions\InvalidToken;
 
 interface ITokenManager
 {

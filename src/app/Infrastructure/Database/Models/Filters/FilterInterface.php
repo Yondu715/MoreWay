@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Infrastructure\Database\Models\Filters;
+namespace App\Infrastructure\Database\Models\Infrastructure\Database\Models\Infrastructure\Database\Models\Filters;
 
 use Illuminate\Database\Eloquent\Builder;
 
