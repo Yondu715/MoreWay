@@ -2,8 +2,12 @@
 
 namespace App\Infrastructure\Database\Models\Infrastructure\Database\Models;
 
+use App\Infrastructure\Database\Models\RouteConstructorPoint;
+use App\Infrastructure\Database\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class RouteConstructor extends Model
@@ -17,7 +21,6 @@ class RouteConstructor extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
         'creator_id'
     ];
 
@@ -39,11 +42,6 @@ class RouteConstructor extends Model
 
     public function routePoints(): HasMany
     {
-        return $this->hasMany(RoutePoint::class);
-    }
-
-    public function reviews(): HasMany
-    {
-        return $this->hasMany(RouteReview::class);
+        return $this->hasMany(RouteConstructorPoint::class);
     }
 }
