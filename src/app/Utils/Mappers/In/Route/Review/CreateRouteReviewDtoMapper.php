@@ -14,7 +14,7 @@ class CreateRouteReviewDtoMapper
     public static function fromRequest(CreateReviewRequest $createReviewRequest): CreateRouteReviewDto
     {
         return new CreateRouteReviewDto(
-            routeId: $createReviewRequest->route('routeId'),
+            routeId: (int)$createReviewRequest->route('routeId'),
             userId: $createReviewRequest->userId,
             rating: $createReviewRequest->rating,
             text: $createReviewRequest->text

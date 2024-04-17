@@ -52,6 +52,7 @@ use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
+    /** @var array<class-string, class-string> $bindings */
     public array $bindings = [
         /** SERVICES */
         IUserService::class => UserService::class,

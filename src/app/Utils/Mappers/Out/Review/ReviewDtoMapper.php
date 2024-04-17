@@ -4,9 +4,9 @@ namespace App\Utils\Mappers\Out\Review;
 
 use App\Application\DTO\Out\Review\ReviewDto;
 use App\Infrastructure\Database\Models\PlaceReview;
+use App\Infrastructure\Database\Models\RouteReview;
 use App\Utils\Mappers\Out\Auth\UserDtoMapper;
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Model;
 
 class ReviewDtoMapper
 {
@@ -14,7 +14,7 @@ class ReviewDtoMapper
      * @param PlaceReview|RouteReview $review
      * @return ReviewDto
      */
-    public static function fromReviewModel(Model $review): ReviewDto
+    public static function fromReviewModel(PlaceReview|RouteReview $review): ReviewDto
     {
         $createdAt = new Carbon($review->created_at);
         return new ReviewDto(

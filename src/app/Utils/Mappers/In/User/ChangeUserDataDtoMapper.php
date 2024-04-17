@@ -14,7 +14,7 @@ class ChangeUserDataDtoMapper
     public static function fromRequest(ChangeUserDataRequest $changeUserDataRequest): ChangeUserDataDto
     {
         return new ChangeUserDataDto(
-            userId: $changeUserDataRequest->route('userId'),
+            userId: (int)$changeUserDataRequest->route('userId'),
             name: $changeUserDataRequest->name
         );
     }

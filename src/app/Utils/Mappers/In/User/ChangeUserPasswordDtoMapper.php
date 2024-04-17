@@ -16,7 +16,7 @@ class ChangeUserPasswordDtoMapper
         return new ChangeUserPasswordDto(
             oldPassword: $changeUserPasswordRequest->oldPassword,
             newPassword: $changeUserPasswordRequest->newPassword,
-            userId: $changeUserPasswordRequest->route('userId')
+            userId: (int)$changeUserPasswordRequest->route('userId')
         );
     }
 }

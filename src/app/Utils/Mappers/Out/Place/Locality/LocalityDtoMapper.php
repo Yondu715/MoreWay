@@ -22,7 +22,7 @@ class LocalityDtoMapper
 
     /**
      * @param Collection<int, Locality> $localities
-     * @return Collection
+     * @return Collection<int, string>
      */
     public static function fromLocalityCollection(Collection $localities): Collection
     {

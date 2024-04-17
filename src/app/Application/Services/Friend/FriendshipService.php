@@ -38,7 +38,7 @@ class FriendshipService implements IFriendshipService
 
     /**
      * @param int $userId
-     * @return Collection<int, UserDto>
+     * @return Collection<int, FriendshipRequestDto>
      */
     public function getFriendRequests(int $userId): Collection
     {

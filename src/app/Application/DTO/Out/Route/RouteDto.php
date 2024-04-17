@@ -13,7 +13,7 @@ class RouteDto
     public readonly UserDto $creator;
 
     public function __construct(
-        string $id,
+        int $id,
         string $name,
         Collection $points,
         UserDto $creator,

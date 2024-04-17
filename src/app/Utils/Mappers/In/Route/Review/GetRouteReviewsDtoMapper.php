@@ -14,7 +14,7 @@ class GetRouteReviewsDtoMapper
     public static function fromRequest(GetReviewsRequest $getReviewsRequest): GetRouteReviewsDto
     {
         return new GetRouteReviewsDto(
-            routeId: $getReviewsRequest->route('routeId'),
+            routeId: (int)$getReviewsRequest->route('routeId'),
             cursor: $getReviewsRequest->cursor,
             limit: $getReviewsRequest->limit ?? 2
         );

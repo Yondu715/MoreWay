@@ -22,7 +22,7 @@ class PlaceTypeDtoMapper
 
     /**
      * @param Collection<int, PlaceType> $types
-     * @return Collection
+     * @return Collection<int, string>
      */
     public static function fromTypeCollection(Collection $types): Collection
     {

@@ -9,7 +9,7 @@ use App\Utils\Mappers\Out\Place\Type\PlaceTypeDtoMapper;
 class PlaceFilterDtoMapper
 {
     /**
-     * @param array $filters
+     * @param array<int, mixed> $filters
      * @return PlaceFilterDto
      */
     public static function fromFilters(array $filters): PlaceFilterDto

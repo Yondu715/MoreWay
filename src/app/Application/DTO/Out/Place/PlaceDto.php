@@ -21,7 +21,7 @@ class PlaceDto
 
     public function __construct(
         ?float       $distance,
-        string       $id,
+        int          $id,
         string       $name,
         float        $lat,
         float        $lon,

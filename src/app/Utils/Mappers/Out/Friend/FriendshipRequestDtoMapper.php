@@ -9,7 +9,7 @@ use App\Utils\Mappers\Out\Auth\UserDtoMapper;
 class FriendshipRequestDtoMapper
 {
     /**
-     * @param Friendship $friend
+     * @param Friendship $friendship
      * @return FriendshipRequestDto
      */
     public static function fromFriendshipModel(Friendship $friendship): FriendshipRequestDto

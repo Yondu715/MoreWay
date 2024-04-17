@@ -22,8 +22,9 @@ class ForgotPasswordMail extends Mailable
 
     /**
      * Get the message content definition.
+     * @return ForgotPasswordMail
      */
-    public function build()
+    public function build(): ForgotPasswordMail
     {
         return $this->subject('Сброс пароля')->view('emails.password-reset');
     }

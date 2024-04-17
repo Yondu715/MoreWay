@@ -22,7 +22,11 @@ class FriendWebSocketController implements MessageComponentInterface
     ) {
     }
 
-    public function onOpen(ConnectionInterface $conn)
+    /**
+     * @param ConnectionInterface $conn
+     * @return void
+     */
+    public function onOpen(ConnectionInterface $conn): void
     {
         $params = $this->parseQuery($conn->httpRequest);
         $token = $params['token'] ?? null;
@@ -40,11 +44,20 @@ class FriendWebSocketController implements MessageComponentInterface
         $conn->send('Вы успешно подключились');
     }
 
-    public function onMessage(ConnectionInterface $conn, MessageInterface $msg)
+    /**
+     * @param ConnectionInterface $conn
+     * @param MessageInterface $msg
+     * @return void
+     */
+    public function onMessage(ConnectionInterface $conn, MessageInterface $msg): void
     {
     }
 
-    public function onClose(ConnectionInterface $conn)
+    /**
+     * @param ConnectionInterface $conn
+     * @return void
+     */
+    public function onClose(ConnectionInterface $conn): void
     {
         $userId = array_search($conn, self::$clients, true);
         if (!$userId) {
@@ -56,14 +69,23 @@ class FriendWebSocketController implements MessageComponentInterface
         echo "Соединение закрыто! {$userId}\n";
     }
 
-    public function onError(ConnectionInterface $conn, Exception $e)
+    /**
+     * @param ConnectionInterface $conn
+     * @param Exception $e
+     * @return void
+     */
+    public function onError(ConnectionInterface $conn, Exception $e): void
     {
         $conn->send($e->getMessage());
         $conn->close();
         echo "Ошибка! " . $e->getMessage() . "\n";
     }
 
-    private function parseQuery(RequestInterface $request)
+    /**
+     * @param RequestInterface $request
+     * @return array<string, mixed>
+     */
+    private function parseQuery(RequestInterface $request): array
     {
         $params = [];
         $queryParams = $request->getUri()->getQuery();
@@ -71,7 +93,12 @@ class FriendWebSocketController implements MessageComponentInterface
         return $params;
     }
 
-    public static function sendNotification(int $userId, mixed $notification)
+    /**
+     * @param int $userId
+     * @param mixed $notification
+     * @return void
+     */
+    public static function sendNotification(int $userId, mixed $notification): void
     {
         $isUserExist = isset(self::$clients[$userId]);
         if (!$isUserExist) {

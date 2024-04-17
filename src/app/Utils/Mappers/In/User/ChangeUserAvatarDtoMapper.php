@@ -15,7 +15,7 @@ class ChangeUserAvatarDtoMapper
     public static function fromRequest(ChangeUserAvatarRequest $changeUserAvatarRequest): ChangeUserAvatarDto
     {
         return new ChangeUserAvatarDto(
-            userId: $changeUserAvatarRequest->route('userId'),
+            userId: (int)$changeUserAvatarRequest->route('userId'),
             avatar: $changeUserAvatarRequest->file('avatar')
         );
     }
