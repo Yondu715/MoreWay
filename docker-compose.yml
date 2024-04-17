@@ -67,6 +67,18 @@ services:
     ports:
       - 8876:80
 
+  redis:
+    build:
+      context: docker/redis
+    volumes:
+      - /home/web/www/more_way/local/redis:/var/lib/redis
+    ports:
+      - 6379:6379
+    restart: always
+    depends_on:
+      - app
+    tty: true
+
   supervisor:
     build:
       context: docker/supervisor
@@ -84,5 +96,4 @@ services:
     ports:
       - 9999:9999
       - 8877:8877
-      # - 6379:6379
     tty: true
