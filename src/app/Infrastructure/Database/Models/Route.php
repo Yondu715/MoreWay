@@ -2,6 +2,7 @@
 
 namespace App\Infrastructure\Database\Models;
 
+use App\Infrastructure\Database\Models\Traits\Filterable;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -27,6 +28,7 @@ class Route extends Model
 {
     use HasFactory;
     use SoftDeletes;
+    use Filterable;
 
     /**
      * The attributes that are mass assignable.
@@ -62,5 +64,10 @@ class Route extends Model
     public function reviews(): HasMany
     {
         return $this->hasMany(RouteReview::class);
+    }
+
+    public function rating(): ?float
+    {
+        return round($this->reviews()->avg('rating'), 2);
     }
 }

@@ -13,18 +13,21 @@ class RouteDto
     public readonly string $name;
     public readonly Collection $points;
     public readonly UserDto $creator;
+    public readonly ?float $rating;
 
     public function __construct(
         string $id,
         string $name,
         Collection $points,
         UserDto $creator,
+        float $rating
     ) {
 
         $this->id = $id;
         $this->name = $name;
         $this->points = $points;
         $this->creator = $creator;
+        $this->rating = $rating;
     }
 
     /**
@@ -37,7 +40,8 @@ class RouteDto
             id: $route->id,
             name: $route->name,
             points: PointDto::fromPointCollection($route->routePoints),
-            creator: UserDto::fromUserModel($route->creator)
+            creator: UserDto::fromUserModel($route->creator),
+            rating: $route->rating()
         );
     }
 }

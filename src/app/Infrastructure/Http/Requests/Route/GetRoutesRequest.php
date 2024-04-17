@@ -1,24 +1,21 @@
 <?php
 
-namespace App\Infrastructure\Http\Requests\Place;
+namespace App\Infrastructure\Http\Requests\Route;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 /**
- * @property float $lat
- * @property float $lon
  * @property ?string cursor
  * @property ?string search
  * @property ?string sort
  * @property ?int sortType
- * @property ?string locality
- * @property ?string type
  * @property ?string rating
- * @property ?string distance
+ * @property ?string passing
  * @property ?int limit
+ * @property ?string point
  */
-class GetPlacesRequest extends FormRequest
+class GetRoutesRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -28,16 +25,15 @@ class GetPlacesRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'lat' => 'required|numeric|min:-90|max:90',
-            'lon' => 'required|numeric|min:-180|max:180',
             'cursor' => 'string',
             'search' => 'string',
             'sort' => 'string',
             'sortType' => 'numeric',
-            'locality' => 'string',
-            'type' => 'string',
             'rating' => 'string',
-            'limit' => 'numeric'
+            'limit' => 'numeric',
+            'passing' => 'string',
+            'point' => 'string'
         ];
     }
 }
+

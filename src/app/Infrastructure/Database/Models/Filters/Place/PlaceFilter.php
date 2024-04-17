@@ -57,8 +57,8 @@ class PlaceFilter extends AbstractFilter
         $to = $value['to'];
 
         $builder->withAvg('reviews', 'rating')
-                ->having('reviews_avg_rating', '>=', $from)
-                ->having('reviews_avg_rating', '<=', $to);
+            ->havingRaw('COALESCE(reviews_avg_rating, 0) >= ?', [$from])
+            ->havingRaw('COALESCE(reviews_avg_rating, 0) <= ?', [$to]);
     }
 
     /**

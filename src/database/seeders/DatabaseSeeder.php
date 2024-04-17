@@ -20,7 +20,9 @@ class DatabaseSeeder extends Seeder
             PlaceReviewsTableSeeder::class,
             PlaceImagesTableSeeder::class,
             RoutesTableSeeder::class,
-            RoutePointsTableSeeder::class
+            RoutePointsTableSeeder::class,
+            RouteReviewsTableSeeder::class,
+            UserRouteProgressesTableSeeder::class
         ]);
     }
 }
