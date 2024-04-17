@@ -7,19 +7,21 @@ use App\Application\Contracts\Out\Repositories\Place\IPlaceRepository;
 use App\Application\DTO\Collection\CursorDto;
 use App\Application\DTO\In\Place\GetPlaceDto;
 use App\Application\DTO\In\Place\GetPlacesDto;
-use App\Application\DTO\Out\Place\PlaceCursorDto;
 use App\Application\DTO\Out\Place\PlaceDto;
 use App\Application\Exceptions\Place\PlaceNotFound;
 use App\Domain\Contracts\In\DomainManagers\IDistanceManager;
 use App\Utils\Mappers\Out\Place\PlaceCursorDtoMapper;
 use App\Utils\Mappers\Out\Place\PlaceDtoMapper;
+use App\Domain\Factories\Distance\DistanceManagerFactory;
 
 class PlaceService implements IPlaceService
 {
+    private readonly IDistanceManager $distanceManager;
+
     public function __construct(
         private readonly IPlaceRepository $placeRepository,
-        private readonly IDistanceManager $distanceManager
     ) {
+        $this->distanceManager = DistanceManagerFactory::createInstance();
     }
 
     /**

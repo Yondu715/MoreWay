@@ -32,8 +32,6 @@ use App\Application\Services\Place\Review\PlaceReviewService;
 use App\Application\Services\Route\Review\RouteReviewService;
 use App\Application\Services\Route\RouteService;
 use App\Application\Services\User\UserService;
-use App\Domain\Contracts\In\DomainManagers\IDistanceManager;
-use App\Domain\Managers\Distance\DistanceManager;
 use App\Infrastructure\Database\Repositories\Friend\FriendshipRepository;
 use App\Infrastructure\Database\Repositories\Place\Locality\LocalityRepository;
 use App\Infrastructure\Database\Repositories\Place\PlaceRepository;
@@ -84,8 +82,6 @@ class AppServiceProvider extends ServiceProvider
         ITransactionManager::class => TransactionManager::class,
         INotifierManager::class => FriendNotifier::class,
 
-        /** DomainManagers */
-        IDistanceManager::class => DistanceManager::class,
     ];
 
     /**
