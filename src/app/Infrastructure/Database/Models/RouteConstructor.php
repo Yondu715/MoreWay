@@ -1,15 +1,24 @@
 <?php
 
-namespace App\Infrastructure\Database\Models\Infrastructure\Database\Models;
+namespace App\Infrastructure\Database\Models;
 
-use App\Infrastructure\Database\Models\RouteConstructorPoint;
-use App\Infrastructure\Database\Models\User;
+use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+/**
+ * @property int $id
+ * @property int $creator_id
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property Carbon|null $deleted_at
+ * @property-read User $creator
+ * @property-read Collection<int, RouteConstructorPoint> $routePoints
+ */
 class RouteConstructor extends Model
 {
     use HasFactory;
@@ -42,6 +51,6 @@ class RouteConstructor extends Model
 
     public function routePoints(): HasMany
     {
-        return $this->hasMany(RouteConstructorPoint::class);
+        return $this->hasMany(RouteConstructorPoint::class, 'constructor_id', 'id');
     }
 }

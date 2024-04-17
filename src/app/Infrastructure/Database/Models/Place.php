@@ -2,7 +2,6 @@
 
 namespace App\Infrastructure\Database\Models;
 
-use App\Infrastructure\Database\Models\Filters\Place\PlaceFilter;
 use App\Infrastructure\Database\Models\Traits\Filterable;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -85,5 +84,10 @@ class Place extends Model
     public function rating(): ?float
     {
         return round($this->reviews()->avg('rating'), 2);
+    }
+
+    public function routeConstructorsPoints(): HasMany
+    {
+        return $this->hasMany(RouteConstructorPoint::class, 'place_id', 'id');
     }
 }

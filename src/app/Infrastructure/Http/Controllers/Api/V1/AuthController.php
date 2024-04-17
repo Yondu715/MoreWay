@@ -3,7 +3,6 @@
 namespace App\Infrastructure\Http\Controllers\Api\V1;
 
 use App\Application\Contracts\In\Services\Auth\IAuthService;
-use Throwable;
 use Illuminate\Http\JsonResponse;
 use App\Infrastructure\Exceptions\ApiException;
 use App\Infrastructure\Http\Controllers\Controller;
@@ -124,6 +123,7 @@ class AuthController extends Controller
      * @param VerifyPasswordCodeRequest $verifyPasswordCodeRequest
      * @return JsonResponse
      * @throws ApiException
+     * @throws UserNotFound
      */
     public function verifyPasswordCode(VerifyPasswordCodeRequest $verifyPasswordCodeRequest): JsonResponse
     {
@@ -143,6 +143,7 @@ class AuthController extends Controller
      * @param ResetPasswordRequest $resetPasswordRequest
      * @return void
      * @throws ApiException
+     * @throws UserNotFound
      */
     public function resetPassword(ResetPasswordRequest $resetPasswordRequest): void
     {

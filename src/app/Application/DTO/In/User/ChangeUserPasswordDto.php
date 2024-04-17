@@ -3,7 +3,7 @@
 namespace App\Application\DTO\In\User;
 
 use App\Infrastructure\Http\Requests\User\ChangeUserPasswordRequest;
-use App\Infrastructure\Database\Models\Infrastructure\Database\Models\Lib\HashId\HashManager;
+use App\Infrastructure\Database\Models\Lib\HashId\HashManager;
 
 class ChangeUserPasswordDto
 {

@@ -19,6 +19,7 @@ return new class extends Migration
             $table->timestamps();
 
             $table->unique(['place_id', 'constructor_id']);
+            $table->unique(['index', 'constructor_id']);
 
             $table->foreign('place_id')->references('id')->on('places')->cascadeOnUpdate();
             $table->foreign('constructor_id')->references('id')->on('route_constructors')->cascadeOnUpdate()->cascadeOnDelete();

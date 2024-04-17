@@ -77,7 +77,7 @@ abstract class NotifierWebSocket implements MessageComponentInterface
         return $params;
     }
 
-    public static function sendNotification(int $userId, mixed $notification)
+    public static function sendNotification(int $userId, mixed $notification): void
     {
         $isUserExist = isset(self::$clients[$userId]);
         if (!$isUserExist) {
