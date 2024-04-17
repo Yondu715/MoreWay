@@ -5,10 +5,6 @@ namespace App\Infrastructure\Http\Controllers\Api\V1;
 use App\Application\Contracts\In\Services\Place\Filter\IPlaceFilterService;
 use App\Application\Contracts\In\Services\Place\IPlaceService;
 use App\Application\Contracts\In\Services\Place\Review\IPlaceReviewService;
-use App\Application\DTO\In\Place\GetPlaceDto;
-use App\Application\DTO\In\Place\GetPlacesDto;
-use App\Application\DTO\In\Place\Review\CreatePlaceReviewDto;
-use App\Application\DTO\In\Place\Review\GetPlaceReviewsDto;
 use App\Application\Exceptions\Place\PlaceNotFound;
 use App\Infrastructure\Exceptions\ApiException;
 use App\Infrastructure\Http\Controllers\Controller;
@@ -21,7 +17,10 @@ use App\Infrastructure\Http\Resources\Place\PlaceCursorResource;
 use App\Infrastructure\Http\Resources\Place\PlaceResource;
 use App\Infrastructure\Http\Resources\Review\ReviewCursorResource;
 use App\Infrastructure\Http\Resources\Review\ReviewResource;
-
+use App\Utils\Mappers\In\Place\GetPlaceDtoMapper;
+use App\Utils\Mappers\In\Place\Review\GetPlaceReviewsDtoMapper;
+use App\Utils\Mappers\In\Place\GetPlacesDtoMapper;
+use App\Utils\Mappers\In\Place\Review\CreatePlaceReviewDtoMapper;
 
 class PlaceController extends Controller
 {
@@ -39,7 +38,7 @@ class PlaceController extends Controller
      */
     public function getPlaces(GetPlacesRequest $getPlacesRequest): PlaceCursorResource
     {
-        $getPlacesDto = GetPlacesDto::fromRequest($getPlacesRequest);
+        $getPlacesDto = GetPlacesDtoMapper::fromRequest($getPlacesRequest);
         return PlaceCursorResource::make(
             $this->placeService->getPlaces($getPlacesDto)
         );
@@ -53,7 +52,7 @@ class PlaceController extends Controller
     public function getPlace(GetPlaceRequest $getPlaceRequest): PlaceResource
     {
         try {
-            $getPlaceDto = GetPlaceDto::fromRequest($getPlaceRequest);
+            $getPlaceDto = GetPlaceDtoMapper::fromRequest($getPlaceRequest);
             return PlaceResource::make(
                 $this->placeService->getPlaceById($getPlaceDto)
             );
@@ -68,7 +67,7 @@ class PlaceController extends Controller
      */
     public function createReview(CreateReviewRequest $createReviewRequest): ReviewResource
     {
-        $createReviewDto = CreatePlaceReviewDto::fromRequest($createReviewRequest);
+        $createReviewDto = CreatePlaceReviewDtoMapper::fromRequest($createReviewRequest);
         return ReviewResource::make(
             $this->reviewService->createReviews($createReviewDto)
         );
@@ -80,7 +79,7 @@ class PlaceController extends Controller
      */
     public function getReviews(GetReviewsRequest $getReviewsRequest): ReviewCursorResource
     {
-        $getReviewsDto = GetPlaceReviewsDto::fromRequest($getReviewsRequest);
+        $getReviewsDto = GetPlaceReviewsDtoMapper::fromRequest($getReviewsRequest);
         return ReviewCursorResource::make(
             $this->reviewService->getReviews($getReviewsDto)
         );

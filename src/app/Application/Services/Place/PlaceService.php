@@ -11,6 +11,8 @@ use App\Application\DTO\Out\Place\PlaceCursorDto;
 use App\Application\DTO\Out\Place\PlaceDto;
 use App\Application\Exceptions\Place\PlaceNotFound;
 use App\Domain\Contracts\In\DomainManagers\IDistanceManager;
+use App\Utils\Mappers\Out\Place\PlaceCursorDtoMapper;
+use App\Utils\Mappers\Out\Place\PlaceDtoMapper;
 
 class PlaceService implements IPlaceService
 {
@@ -28,7 +30,7 @@ class PlaceService implements IPlaceService
     public function getPlaceById(GetPlaceDto $getPlaceDto): PlaceDto
     {
         $place = $this->placeRepository->getPlaceById($getPlaceDto);
-        return PlaceDto::fromPlaceModel($place, $this->distanceManager
+        return PlaceDtoMapper::fromPlaceModel($place, $this->distanceManager
             ->calculate(
             $place->lat,
             $place->lon,
@@ -56,8 +58,8 @@ class PlaceService implements IPlaceService
         }
 
         $places = $this->placeRepository->getPlaces($getPlacesDto);
-        return PlaceCursorDto::fromPaginator(collect($places->items())->map(function ($place) use ($getPlacesDto){
-            return PlaceDto::fromPlaceModel($place, $this->distanceManager
+        return PlaceCursorDtoMapper::fromPaginator(collect($places->items())->map(function ($place) use ($getPlacesDto){
+            return PlaceDtoMapper::fromPlaceModel($place, $this->distanceManager
                 ->calculate(
                     $place->lat,
                     $place->lon,

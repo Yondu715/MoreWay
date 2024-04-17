@@ -2,8 +2,6 @@
 
 namespace App\Application\DTO\In\Auth\Password;
 
-use App\Infrastructure\Http\Requests\Auth\Password\ResetPasswordRequest;
-
 class ResetPasswordDto
 {
     public readonly string $email;
@@ -20,12 +18,4 @@ class ResetPasswordDto
         $this->token = $token;
     }
 
-    public static function fromRequest(ResetPasswordRequest $resetPasswordRequest): self
-    {
-        return new self(
-            email: $resetPasswordRequest->email,
-            password: $resetPasswordRequest->password,
-            token: $resetPasswordRequest->token
-        );
-    }
 }

@@ -2,8 +2,6 @@
 
 namespace App\Application\DTO\In\Route;
 
-use App\Infrastructure\Http\Requests\Route\CompletedRoutePointRequest;
-
 class CompleteRoutePointDto
 {
     public readonly int $userId;
@@ -18,14 +16,5 @@ class CompleteRoutePointDto
         $this->userId = $userId;
         $this->routeId = $routeId;
         $this->routePointId = $routePointId;
-    }
-
-    public static function fromRequest(CompletedRoutePointRequest $completedRoutePointRequest): self
-    {
-        return new self(
-            userId: $completedRoutePointRequest->userId,
-            routeId: $completedRoutePointRequest->routeId,
-            routePointId: $completedRoutePointRequest->routePointId
-        );
     }
 }

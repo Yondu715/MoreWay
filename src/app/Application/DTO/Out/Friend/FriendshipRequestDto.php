@@ -3,7 +3,6 @@
 namespace App\Application\DTO\Out\Friend;
 
 use App\Application\DTO\Out\Auth\UserDto;
-use App\Infrastructure\Database\Models\Friendship;
 
 class FriendshipRequestDto
 {
@@ -18,15 +17,4 @@ class FriendshipRequestDto
         $this->user = $user;
     }
 
-    /**
-     * @param Friendship $friend
-     * @return FriendshipRequestDto
-     */
-    public static function fromFriendModule(Friendship $friend): FriendshipRequestDto
-    {
-        return new self(
-            id: $friend->id,
-            user: UserDto::fromUserModel($friend->user)
-        );
-    }
 }

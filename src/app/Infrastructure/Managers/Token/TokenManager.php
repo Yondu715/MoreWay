@@ -7,6 +7,7 @@ use App\Application\DTO\In\Auth\LoginDto;
 use App\Application\DTO\Out\Auth\UserDto;
 use App\Infrastructure\Database\Models\User;
 use App\Infrastructure\Exceptions\InvalidToken;
+use App\Utils\Mappers\Out\Auth\UserDtoMapper;
 use Exception;
 use Illuminate\Support\Facades\Auth;
 use Tymon\JWTAuth\JWTGuard;
@@ -54,7 +55,7 @@ class TokenManager implements ITokenManager
             throw new InvalidToken();
         }
 
-        return UserDto::fromUserModel($user);
+        return UserDtoMapper::fromUserModel($user);
     }
 
     /**
@@ -65,7 +66,7 @@ class TokenManager implements ITokenManager
     public function parseToken(string $token): ?UserDto
     {
         try {
-            return UserDto::fromUserModel(
+            return UserDtoMapper::fromUserModel(
                 $this->getAuth()->setToken($token)->user()
             );
         } catch (Exception $e) {

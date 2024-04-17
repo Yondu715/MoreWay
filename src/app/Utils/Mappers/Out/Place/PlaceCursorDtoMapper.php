@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Application\DTO\Out\Place;
+namespace App\Utils\Mappers\Out\Place;
 
 use App\Application\DTO\Collection\CursorDto;
+use App\Utils\Mappers\Collection\CursorDtoMapper;
 use Illuminate\Support\Collection;
 
-class PlaceCursorDto extends CursorDto
+class PlaceCursorDtoMapper
 {
     /**
      * @param Collection $places
@@ -14,6 +15,6 @@ class PlaceCursorDto extends CursorDto
      */
     public static function fromPaginator(Collection $places, ?string $nextCursor): CursorDto
     {
-        return CursorDto::fromCollectionAndCursor($places, $nextCursor);
+        return CursorDtoMapper::fromCollectionAndCursor($places, $nextCursor);
     }
 }

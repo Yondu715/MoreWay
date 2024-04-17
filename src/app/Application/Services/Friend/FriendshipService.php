@@ -12,7 +12,9 @@ use App\Application\DTO\Out\Friend\FriendshipRequestDto;
 use App\Application\Enums\Friend\RelationshipTypeId;
 use App\Application\Exceptions\Friend\FriendRequestConflict;
 use App\Infrastructure\Database\Models\Friendship;
+use App\Utils\Mappers\Out\Auth\UserDtoMapper;
 use Illuminate\Support\Collection;
+use Src\App\Utils\Mappers\Out\Friend\FriendshipRequestDtoMapper;
 
 class FriendshipService implements IFriendshipService
 {
@@ -30,7 +32,7 @@ class FriendshipService implements IFriendshipService
     {
         $friendships = $this->friendRepository->getUserFriendships($userId);
         return $friendships->map(function (Friendship $friendship) {
-            return UserDto::fromUserModel($friendship->friend);
+            return UserDtoMapper::fromUserModel($friendship->friend);
         });
     }
 
@@ -42,7 +44,7 @@ class FriendshipService implements IFriendshipService
     {
         $friendships = $this->friendRepository->getFriendRequests($userId);
         return $friendships->map(function (Friendship $friendship) {
-            return FriendshipRequestDto::fromFriendModule($friendship);
+            return FriendshipRequestDtoMapper::fromFriendshipModel($friendship);
         });
     }
 
@@ -78,9 +80,9 @@ class FriendshipService implements IFriendshipService
             'relationship_id' => RelationshipTypeId::REQUEST
         ]);
 
-        $this->notifier->sendNotification($addFriendDto->friendId, FriendshipRequestDto::fromFriendModule($request));
+        $this->notifier->sendNotification($addFriendDto->friendId, FriendshipRequestDtoMapper::fromFriendshipModel($request));
 
-        return FriendshipRequestDto::fromFriendModule($request);
+        return FriendshipRequestDtoMapper::fromFriendshipModel($request);
     }
 
     /**

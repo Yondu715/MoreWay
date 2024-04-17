@@ -2,8 +2,6 @@
 
 namespace App\Application\DTO\Out\Auth;
 
-use App\Infrastructure\Database\Models\User;
-
 class UserDto
 {
     public readonly int $id;
@@ -22,19 +20,4 @@ class UserDto
         $this->avatar = $avatar;
         $this->email = $email;
     }
-
-    /**
-     * @param User $user
-     * @return self
-     */
-    public static function fromUserModel(User $user): self
-    {
-        return new self(
-            id: $user->id,
-            name: $user->name,
-            avatar: $user->avatar,
-            email: $user->email
-        );
-    }
-
 }
