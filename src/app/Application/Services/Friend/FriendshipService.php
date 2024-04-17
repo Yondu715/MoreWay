@@ -9,7 +9,7 @@ use App\Application\DTO\In\Friend\AcceptFriendDto;
 use App\Application\DTO\In\Friend\AddFriendDto;
 use App\Application\DTO\Out\Auth\UserDto;
 use App\Application\DTO\Out\Friend\FriendshipRequestDto;
-use App\Application\Enums\Friend\RelationshipTypeId;
+use App\Application\Enums\Friend\RelationshipType;
 use App\Application\Exceptions\Friend\FriendRequestConflict;
 use App\Infrastructure\Database\Models\Friendship;
 use App\Utils\Mappers\Out\Auth\UserDtoMapper;
@@ -77,7 +77,7 @@ class FriendshipService implements IFriendshipService
         $request = $this->friendRepository->create([
             'user_id' => $addFriendDto->userId,
             'friend_id' => $addFriendDto->friendId,
-            'relationship_id' => RelationshipTypeId::REQUEST
+            'relationship_id' => RelationshipType::REQUEST
         ]);
 
         $this->notifier->sendNotification($addFriendDto->friendId, FriendshipRequestDtoMapper::fromFriendshipModel($request));
@@ -96,13 +96,13 @@ class FriendshipService implements IFriendshipService
 
 
         $this->friendRepository->update($friendship->id, [
-            'relationship_id' => RelationshipTypeId::FRIEND
+            'relationship_id' => RelationshipType::FRIEND
         ]);
 
         $this->friendRepository->create([
             'user_id' => $friendship->friend_id,
             'friend_id' => $friendship->user_id,
-            'relationship_id' => RelationshipTypeId::FRIEND
+            'relationship_id' => RelationshipType::FRIEND
         ]);
     }
 

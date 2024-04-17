@@ -2,7 +2,7 @@
 
 namespace App\Application\Enums\Role;
 
-enum RoleTypeId: int
+enum RoleType: int
 {
     const ADMIN = 1;
     const USER = 2;
