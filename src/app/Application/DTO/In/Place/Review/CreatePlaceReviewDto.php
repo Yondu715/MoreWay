@@ -2,8 +2,6 @@
 
 namespace App\Application\DTO\In\Place\Review;
 
-use App\Infrastructure\Http\Requests\Review\CreateReviewRequest;
-
 class CreatePlaceReviewDto
 {
     public readonly int $placeId;
@@ -21,19 +19,5 @@ class CreatePlaceReviewDto
         $this->userId = $userId;
         $this->rating = $rating;
         $this->text = $text;
-    }
-
-    /**
-     * @param CreateReviewRequest $createReviewRequest
-     * @return self
-     */
-    public static function fromRequest(CreateReviewRequest $createReviewRequest): self
-    {
-        return new self(
-            placeId: $createReviewRequest->route('placeId'),
-            userId: $createReviewRequest->userId,
-            rating: $createReviewRequest->rating,
-            text: $createReviewRequest->text
-        );
     }
 }

@@ -14,14 +14,4 @@ class PointDto
         $this->index = $index;
         $this->placeId = $placeId;
     }
-
-    public static function fromArray(array $routePoints): array
-    {
-        return array_map(function ($routePoint) {
-            return new self(
-                index: $routePoint['index'],
-                placeId: $routePoint['placeId']
-            );
-        }, $routePoints);
-    }
 }

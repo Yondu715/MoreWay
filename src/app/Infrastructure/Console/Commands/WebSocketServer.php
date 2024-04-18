@@ -26,8 +26,9 @@ class WebSocketServer extends Command
 
     /**
      * Execute the console command.
+     * @return void
      */
-    public function handle()
+    public function handle(): void
     {
         $host = config('app.ws_host');
         $port = config('app.ws_port');

@@ -3,10 +3,6 @@
 namespace App\Infrastructure\Http\Controllers\Api\V1;
 
 use App\Application\Contracts\In\Services\User\IUserService;
-use App\Application\DTO\In\User\ChangeUserAvatarDto;
-use App\Application\DTO\In\User\ChangeUserDataDto;
-use App\Application\DTO\In\User\ChangeUserPasswordDto;
-use App\Application\DTO\In\User\GetUsersDto;
 use App\Application\Exceptions\User\InvalidOldPassword;
 use App\Application\Exceptions\User\UserNotFound;
 use App\Infrastructure\Exceptions\ApiException;
@@ -18,6 +14,10 @@ use App\Infrastructure\Http\Requests\User\GetUsersRequest;
 use App\Infrastructure\Http\Resources\Auth\UserResource;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Response;
+use App\Utils\Mappers\In\User\ChangeUserAvatarDtoMapper;
+use App\Utils\Mappers\In\User\ChangeUserDataDtoMapper;
+use App\Utils\Mappers\In\User\ChangeUserPasswordDtoMapper;
+use App\Utils\Mappers\In\User\GetUsersDtoMapper;
 
 class UserController extends Controller
 {
@@ -32,7 +32,7 @@ class UserController extends Controller
      */
     public function getUsers(GetUsersRequest $getUsersRequest): AnonymousResourceCollection
     {
-        $getUsersDto = GetUsersDto::fromRequest($getUsersRequest);
+        $getUsersDto = GetUsersDtoMapper::fromRequest($getUsersRequest);
         return UserResource::collection(
             $this->userService->getUsers($getUsersDto)
         );
@@ -62,7 +62,7 @@ class UserController extends Controller
     public function changeData(ChangeUserDataRequest $changeUserDataRequest): UserResource
     {
         try {
-            $changeUserDataDto = ChangeUserDataDto::fromRequest($changeUserDataRequest);
+            $changeUserDataDto = ChangeUserDataDtoMapper::fromRequest($changeUserDataRequest);
             $this->userService->changeData($changeUserDataDto);
             return UserResource::make(
                 $this->userService->changeData($changeUserDataDto)
@@ -90,7 +90,7 @@ class UserController extends Controller
     public function changeAvatar(ChangeUserAvatarRequest $changeUserAvatarRequest): UserResource
     {
         try {
-            $changeUserAvatarDto = ChangeUserAvatarDto::fromRequest($changeUserAvatarRequest);
+            $changeUserAvatarDto = ChangeUserAvatarDtoMapper::fromRequest($changeUserAvatarRequest);
             return UserResource::make(
                 $this->userService->changeAvatar($changeUserAvatarDto)
             );
@@ -107,7 +107,7 @@ class UserController extends Controller
     public function changePassword(ChangeUserPasswordRequest $changeUserPasswordRequest): UserResource
     {
         try {
-            $changeUserPasswordDto = ChangeUserPasswordDto::fromRequest($changeUserPasswordRequest);
+            $changeUserPasswordDto = ChangeUserPasswordDtoMapper::fromRequest($changeUserPasswordRequest);
             return UserResource::make(
                 $this->userService->changePassword($changeUserPasswordDto)
             );

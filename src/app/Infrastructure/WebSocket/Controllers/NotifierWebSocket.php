@@ -21,7 +21,11 @@ abstract class NotifierWebSocket implements MessageComponentInterface
     ) {
     }
 
-    public function onOpen(ConnectionInterface $conn)
+    /**
+     * @param ConnectionInterface $conn
+     * @return void
+     */
+    public function onOpen(ConnectionInterface $conn): void
     {
         $params = $this->parseQuery($conn->httpRequest);
         $token = $params['token'] ?? null;
@@ -45,11 +49,20 @@ abstract class NotifierWebSocket implements MessageComponentInterface
         $conn->send('Вы успешно подключились');
     }
 
-    public function onMessage(ConnectionInterface $conn, MessageInterface $msg)
+    /**
+     * @param ConnectionInterface $conn
+     * @param MessageInterface $msg
+     * @return void
+     */
+    public function onMessage(ConnectionInterface $conn, MessageInterface $msg): void
     {
     }
 
-    public function onClose(ConnectionInterface $conn)
+    /**
+     * @param ConnectionInterface $conn
+     * @return void
+     */
+    public function onClose(ConnectionInterface $conn): void
     {
         $userId = array_search($conn, self::$clients, true);
         if (!$userId) {
@@ -61,7 +74,12 @@ abstract class NotifierWebSocket implements MessageComponentInterface
         echo "Соединение закрыто! {$userId}\n";
     }
 
-    public function onError(ConnectionInterface $conn, Exception $e)
+    /**
+     * @param ConnectionInterface $conn
+     * @param Exception $e
+     * @return void
+     */
+    public function onError(ConnectionInterface $conn, Exception $e): void
     {
         $userId = array_search($conn, self::$clients, true);
         unset(self::$clients[$userId]);
@@ -69,7 +87,11 @@ abstract class NotifierWebSocket implements MessageComponentInterface
         echo "Ошибка! " . $e->getMessage();
     }
 
-    private function parseQuery(RequestInterface $request)
+    /**
+     * @param RequestInterface $request
+     * @return array<string, string>
+     */
+    private function parseQuery(RequestInterface $request): array
     {
         $params = [];
         $queryParams = $request->getUri()->getQuery();
@@ -77,6 +99,11 @@ abstract class NotifierWebSocket implements MessageComponentInterface
         return $params;
     }
 
+    /**
+     * @param int $userId
+     * @param mixed $notification
+     * @return void
+     */
     public static function sendNotification(int $userId, mixed $notification): void
     {
         $isUserExist = isset(self::$clients[$userId]);

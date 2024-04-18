@@ -3,9 +3,6 @@
 namespace App\Application\DTO\Out\Review;
 
 use App\Application\DTO\Out\Auth\UserDto;
-use App\Infrastructure\Database\Models\PlaceReview;
-use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Model;
 
 class ReviewDto
 {
@@ -19,29 +16,13 @@ class ReviewDto
         string $id,
         ?string $text,
         float $rating,
-        string $created_at,
+        string $createdAt,
         UserDto $author,
     ) {
         $this->id = $id;
         $this->text = $text;
         $this->rating = $rating;
-        $this->created_at = $created_at;
+        $this->createdAt = $createdAt;
         $this->author= $author;
-    }
-
-    /**
-     * @param PlaceReview $review
-     * @return self
-     */
-    public static function fromReviewModel(Model $review): self
-    {
-        $create_at = new Carbon($review->created_at);
-        return new self(
-            id: $review->id,
-            text: $review->text,
-            rating: $review->rating,
-            created_at: (string)$create_at,
-            author: UserDto::fromUserModel($review->author),
-        );
     }
 }

@@ -2,8 +2,6 @@
 
 namespace App\Application\DTO\In\Auth;
 
-use App\Infrastructure\Http\Requests\Auth\LoginRequest;
-
 class LoginDto
 {
     public readonly string $email;
@@ -17,15 +15,4 @@ class LoginDto
         $this->password = $password;
     }
 
-    /**
-     * @param LoginRequest $loginRequest
-     * @return self
-     */
-    public static function fromRequest(LoginRequest $loginRequest): self
-    {
-        return new self(
-            email: $loginRequest->email,
-            password: $loginRequest->password
-        );
-    }
 }

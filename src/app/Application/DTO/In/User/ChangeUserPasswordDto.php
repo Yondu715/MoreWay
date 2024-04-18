@@ -2,9 +2,6 @@
 
 namespace App\Application\DTO\In\User;
 
-use App\Infrastructure\Http\Requests\User\ChangeUserPasswordRequest;
-use App\Infrastructure\Database\Models\Lib\HashId\HashManager;
-
 class ChangeUserPasswordDto
 {
     public readonly int $userId;
@@ -21,12 +18,4 @@ class ChangeUserPasswordDto
         $this->userId = $userId;
     }
 
-    public static function fromRequest(ChangeUserPasswordRequest $changeUserPasswordRequest): self
-    {
-        return new self(
-            oldPassword: $changeUserPasswordRequest->oldPassword,
-            newPassword: $changeUserPasswordRequest->newPassword,
-            userId: $changeUserPasswordRequest->route('userId')
-        );
-    }
 }

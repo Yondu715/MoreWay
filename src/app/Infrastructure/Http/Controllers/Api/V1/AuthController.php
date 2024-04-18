@@ -6,14 +6,9 @@ use App\Application\Contracts\In\Services\Auth\IAuthService;
 use Illuminate\Http\JsonResponse;
 use App\Infrastructure\Exceptions\ApiException;
 use App\Infrastructure\Http\Controllers\Controller;
-use App\Application\DTO\In\Auth\LoginDto;
-use App\Application\DTO\In\Auth\RegisterDto;
 use App\Infrastructure\Http\Requests\Auth\LoginRequest;
 use App\Infrastructure\Http\Resources\Auth\UserResource;
-use App\Application\DTO\In\Auth\Password\ResetPasswordDto;
 use App\Infrastructure\Http\Requests\Auth\RegisterRequest;
-use App\Application\DTO\In\Auth\Password\ForgotPasswordDto;
-use App\Application\DTO\In\Auth\Password\VerifyPasswordCodeDto;
 use App\Application\Exceptions\Auth\InvalidPassword;
 use App\Application\Exceptions\Auth\Password\ExpiredResetPasswordToken;
 use App\Application\Exceptions\Auth\Password\ExpiredVerifyPasswordCode;
@@ -25,6 +20,11 @@ use App\Infrastructure\Exceptions\InvalidToken;
 use App\Infrastructure\Http\Requests\Auth\Password\ResetPasswordRequest;
 use App\Infrastructure\Http\Requests\Auth\Password\ForgotPasswordRequest;
 use App\Infrastructure\Http\Requests\Auth\Password\VerifyPasswordCodeRequest;
+use App\Utils\Mappers\In\Auth\LoginDtoMapper;
+use App\Utils\Mappers\In\Auth\Password\ForgotPasswordDtoMapper;
+use App\Utils\Mappers\In\Auth\Password\ResetPasswordDtoMapper;
+use App\Utils\Mappers\In\Auth\RegisterDtoMapper;
+use Src\App\Utils\Mappers\In\Auth\Password\VerifyPasswordCodeDtoMapper;
 
 class AuthController extends Controller
 {
@@ -41,7 +41,7 @@ class AuthController extends Controller
     public function login(LoginRequest $loginRequest): JsonResponse
     {
         try {
-            $inLoginDto = LoginDto::fromRequest($loginRequest);
+            $inLoginDto = LoginDtoMapper::fromRequest($loginRequest);
 
             return response()->json([
                 'data' => [
@@ -61,7 +61,7 @@ class AuthController extends Controller
     public function register(RegisterRequest $registerRequest): JsonResponse
     {
         try {
-            $registerDto = RegisterDto::fromRequest($registerRequest);
+            $registerDto = RegisterDtoMapper::fromRequest($registerRequest);
             $this->authService->register($registerDto);
             return response()->json()->setStatusCode(201);
         } catch (RegistrationConflict $e) {
@@ -112,7 +112,7 @@ class AuthController extends Controller
     public function forgotPassword(ForgotPasswordRequest $forgotPasswordRequest): void
     {
         try {
-            $forgotPasswordDto = ForgotPasswordDto::fromRequest($forgotPasswordRequest);
+            $forgotPasswordDto = ForgotPasswordDtoMapper::fromRequest($forgotPasswordRequest);
             $this->authService->forgotPassword($forgotPasswordDto);
         } catch (UserNotFound $e) {
             throw new ApiException($e->getMessage(), $e->getCode());
@@ -128,7 +128,7 @@ class AuthController extends Controller
     public function verifyPasswordCode(VerifyPasswordCodeRequest $verifyPasswordCodeRequest): JsonResponse
     {
         try {
-            $verifyPasswordCodeDto = VerifyPasswordCodeDto::fromRequest($verifyPasswordCodeRequest);
+            $verifyPasswordCodeDto = VerifyPasswordCodeDtoMapper::fromRequest($verifyPasswordCodeRequest);
             return response()->json([
                 'data' => [
                     'resetPasswordToken' => $this->authService->verifyPasswordCode($verifyPasswordCodeDto)
@@ -148,7 +148,7 @@ class AuthController extends Controller
     public function resetPassword(ResetPasswordRequest $resetPasswordRequest): void
     {
         try {
-            $resetPasswordDto = ResetPasswordDto::fromRequest($resetPasswordRequest);
+            $resetPasswordDto = ResetPasswordDtoMapper::fromRequest($resetPasswordRequest);
             $this->authService->resetPassword($resetPasswordDto);
         } catch (InvalidResetPasswordToken | ExpiredResetPasswordToken $e) {
             throw new ApiException($e->getMessage(), $e->getCode());

@@ -10,6 +10,8 @@ use App\Application\DTO\In\Place\Review\GetPlaceReviewsDto;
 use App\Application\DTO\Out\Review\ReviewCursorDto;
 use App\Application\DTO\Out\Review\ReviewDto;
 use App\Application\Exceptions\Review\FailedToCreateReview;
+use App\Utils\Mappers\Out\Review\ReviewCursorDtoMapper;
+use App\Utils\Mappers\Out\Review\ReviewDtoMapper;
 use Throwable;
 
 class PlaceReviewService implements IPlaceReviewService
@@ -32,7 +34,7 @@ class PlaceReviewService implements IPlaceReviewService
                 'text' => $createReviewDto->text,
                 'rating' => $createReviewDto->rating
             ]);
-            return ReviewDto::fromReviewModel($review);
+            return ReviewDtoMapper::fromReviewModel($review);
         } catch (Throwable) {
             throw new FailedToCreateReview();
         }
@@ -44,6 +46,6 @@ class PlaceReviewService implements IPlaceReviewService
      */
     public function getReviews(GetPlaceReviewsDto $getReviewsDto): CursorDto
     {
-        return ReviewCursorDto::fromPaginator($this->reviewRepository->getReviews($getReviewsDto));
+        return ReviewCursorDtoMapper::fromPaginator($this->reviewRepository->getReviews($getReviewsDto));
     }
 }

@@ -3,8 +3,6 @@
 namespace App\Infrastructure\Http\Controllers\Api\V1;
 
 use App\Application\Contracts\In\Services\Friend\IFriendshipService;
-use App\Application\DTO\In\Friend\AcceptFriendDto;
-use App\Application\DTO\In\Friend\AddFriendDto;
 use App\Application\Exceptions\Friend\FriendRequestConflict;
 use App\Infrastructure\Exceptions\ApiException;
 use App\Infrastructure\Http\Controllers\Controller;
@@ -12,6 +10,8 @@ use App\Infrastructure\Http\Requests\Friend\AcceptFriendRequest;
 use App\Infrastructure\Http\Requests\Friend\AddFriendRequest;
 use App\Infrastructure\Http\Resources\Auth\UserResource;
 use App\Infrastructure\Http\Resources\Friend\FriendshipRequestResource;
+use App\Utils\Mappers\In\Friend\AcceptFriendDtoMapper;
+use App\Utils\Mappers\In\Friend\AddFriendDtoMapper;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Response;
 
@@ -65,7 +65,7 @@ class FriendController extends Controller
     public function addFriendRequest(AddFriendRequest $addFriendRequest): FriendshipRequestResource
     {
         try {
-            $addFriendDto = AddFriendDto::fromRequest($addFriendRequest);
+            $addFriendDto = AddFriendDtoMapper::fromRequest($addFriendRequest);
             return FriendshipRequestResource::make(
                 $this->friendService->addFriendRequest($addFriendDto)
             );
@@ -80,7 +80,7 @@ class FriendController extends Controller
      */
     public function acceptFriendRequest(AcceptFriendRequest $acceptFriendRequest): Response
     {
-        $acceptFriendDto = AcceptFriendDto::fromRequest($acceptFriendRequest);
+        $acceptFriendDto = AcceptFriendDtoMapper::fromRequest($acceptFriendRequest);
         $this->friendService->acceptFriendRequest($acceptFriendDto);
         return response()->noContent();
     }

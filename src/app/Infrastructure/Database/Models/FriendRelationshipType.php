@@ -45,6 +45,6 @@ class FriendRelationshipType extends Model
 
     public function friends(): HasMany
     {
-        return $this->hasMany(Friend::class, 'relationship_id', 'id');
+        return $this->hasMany(Friendship::class, 'relationship_id', 'id');
     }
 }
