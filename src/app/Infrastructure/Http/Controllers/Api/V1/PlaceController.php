@@ -5,6 +5,7 @@ namespace App\Infrastructure\Http\Controllers\Api\V1;
 use App\Application\Contracts\In\Services\Place\Filter\IPlaceFilterService;
 use App\Application\Contracts\In\Services\Place\IPlaceService;
 use App\Application\Contracts\In\Services\Place\Review\IPlaceReviewService;
+use App\Application\Exceptions\Filter\FilterOutOfRange;
 use App\Application\Exceptions\Place\PlaceNotFound;
 use App\Infrastructure\Exceptions\ApiException;
 use App\Infrastructure\Http\Controllers\Controller;
@@ -34,7 +35,7 @@ class PlaceController extends Controller
     /**
      * @param GetPlacesRequest $getPlacesRequest
      * @return PlaceCursorResource
-     * @throws ApiException
+     * @throws FilterOutOfRange
      */
     public function getPlaces(GetPlacesRequest $getPlacesRequest): PlaceCursorResource
     {
@@ -87,7 +88,6 @@ class PlaceController extends Controller
 
     /**
      * @return PlaceFilterResource
-     * @throws ApiException
      */
     public function getFilters(): PlaceFilterResource
     {

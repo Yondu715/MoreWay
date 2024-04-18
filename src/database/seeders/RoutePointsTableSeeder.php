@@ -34,14 +34,11 @@ class RoutePointsTableSeeder extends Seeder
             ['index' => 1, 'place_id' => 4, 'route_id' => 4],
             ['index' => 2, 'place_id' => 11, 'route_id' => 4],
             ['index' => 3, 'place_id' => 12, 'route_id' => 4],
-            ['index' => 4, 'place_id' => 6, 'route_id' => 4],
-            ['index' => 5, 'place_id' => 7, 'route_id' => 4],
 
             ['index' => 1, 'place_id' => 13, 'route_id' => 5],
             ['index' => 2, 'place_id' => 14, 'route_id' => 5],
             ['index' => 3, 'place_id' => 2, 'route_id' => 5],
             ['index' => 4, 'place_id' => 10, 'route_id' => 5],
-            ['index' => 5, 'place_id' => 1, 'route_id' => 5],
         ];
 
         foreach ($placePoints as $placePoint) {

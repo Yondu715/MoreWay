@@ -60,13 +60,10 @@ class PlaceService implements IPlaceService
         }
 
         $places = $this->placeRepository->getPlaces($getPlacesDto);
+
         return PlaceCursorDtoMapper::fromPaginator(collect($places->items())->map(function ($place) use ($getPlacesDto){
             return PlaceDtoMapper::fromPlaceModel($place, $this->distanceManager
-                ->calculate(
-                    $place->lat,
-                    $place->lon,
-                    $getPlacesDto->lat,
-                    $getPlacesDto->lon
+                ->calculate($place->lat, $place->lon, $getPlacesDto->lat, $getPlacesDto->lon
                 ));
         }), $places->nextCursor() ? $places->nextCursor()->encode() : null);
     }

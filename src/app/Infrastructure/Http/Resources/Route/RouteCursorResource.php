@@ -1,26 +1,27 @@
 <?php
 
-namespace App\Infrastructure\Http\Resources\Review;
+namespace App\Infrastructure\Http\Resources\Route;
 
 use App\Application\DTO\Collection\CursorDto;
 use App\Infrastructure\Http\Resources\Auth\UserResource;
-use Illuminate\Http\Request;
+use App\Infrastructure\Http\Resources\Route\Point\PointResource;
+use http\Client\Curl\User;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Http\Request;
 
 /**
  * @mixin CursorDto
  */
-class ReviewCursorResource extends JsonResource
+class RouteCursorResource extends JsonResource
 {
     /**
-     * Transform the resource into an array.
-     *
-     * @return array<string, mixed>
+     * @param Request $request
+     * @return array
      */
     public function toArray(Request $request): array
     {
         return [
-            'data' => ReviewResource::collection($this->data),
+            'data' => RouteResource::collection($this->data),
             'meta' => [
                 'next_cursor' => $this->next_cursor
             ]
