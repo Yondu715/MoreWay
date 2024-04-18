@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Infrastructure\WebSocket\Controllers\Friend;
+namespace App\Infrastructure\WebSocket\Notifiers;
 
 use App\Application\Contracts\Out\Managers\Notifier\INotifierManager;
+use App\Infrastructure\WebSocket\Controllers\Friend\FriendWebSocketController;
 
 class FriendNotifier implements INotifierManager
 {
