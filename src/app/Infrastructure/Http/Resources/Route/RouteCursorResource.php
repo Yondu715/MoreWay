@@ -21,15 +21,7 @@ class RouteCursorResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'data' => $this->data->map(function ($resource) {
-                return [
-                    'id' => $resource->id,
-                    'name' => $resource->name,
-                    'rating' => $resource->rating,
-                    'points' => PointResource::collection($resource->points),
-                    'creator' => UserResource::make($resource->creator)
-                ];
-            }),
+            'data' => RouteResource::collection($this->data),
             'meta' => [
                 'next_cursor' => $this->next_cursor
             ]

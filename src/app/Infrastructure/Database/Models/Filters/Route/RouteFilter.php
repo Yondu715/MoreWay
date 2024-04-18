@@ -4,6 +4,7 @@ namespace App\Infrastructure\Database\Models\Filters\Route;
 
 use App\Infrastructure\Database\Models\Filters\AbstractFilter;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\DB;
 
 class RouteFilter extends AbstractFilter
 {
@@ -61,26 +62,18 @@ class RouteFilter extends AbstractFilter
         $from = $value['from'];
         $to = $value['to'];
 
-        $builder->withCount(['routePoints' => function ($query) {
-            $query->whereHas('progresses', function ($query) {
-                $query->where('is_completed', true);
-            });
-        }])
-            ->whereHas('routePoints', function ($query) use ($from, $to) {
-                $query->where(function ($subquery) use ($from, $to) {
-                    $subquery->whereIn('id', function ($innerQuery) use ($from, $to) {
-                        $innerQuery->select('route_point_id')
-                            ->from('user_route_progresses')
-                            ->where('is_completed', true)
-                            ->groupBy('route_point_id')
-                            ->havingRaw('COUNT(DISTINCT user_id) BETWEEN ? AND ?', [$from, $to]);
-                    });
-
-                    if ($from == 0) {
-                        $subquery->orWhereDoesntHave('progresses');
-                    }
-                });
-            });
+        //*rewrite to Eloquent
+        $builder->withCount(['routePoints as total_route_points'])
+            ->whereRaw('(SELECT COUNT(DISTINCT user_id)
+                 FROM (
+                     SELECT user_id, COUNT(DISTINCT route_point_id) as completed_points
+                     FROM user_route_progresses
+                     WHERE route_point_id IN (SELECT id FROM route_points WHERE route_id = routes.id)
+                       AND is_completed = true
+                     GROUP BY user_id
+                     HAVING COUNT(DISTINCT route_point_id) = (SELECT COUNT(*) FROM route_points WHERE route_id = routes.id)
+                 ) as completed_routes
+                ) BETWEEN ? AND ?', [$from, $to]);
     }
 
     /**
@@ -105,25 +98,23 @@ class RouteFilter extends AbstractFilter
                 $builder->orderBy('created_at', $value['sortType']);
             }
 
+            //*rewrite to Eloquent
             case 'passing': {
-                $builder->withCount(['routePoints' => function ($query) {
-                    $query->whereHas('progresses', function ($query) {
-                        $query->where('is_completed', true);
-                    });
-                }])
-                    ->whereHas('routePoints', function ($query) {
-                        $query->where(function ($subquery){
-                            $subquery->whereIn('id', function ($innerQuery){
-                                $innerQuery->select('route_point_id')
-                                    ->from('user_route_progresses')
-                                    ->where('is_completed', true)
-                                    ->groupBy('route_point_id')
-                                    ->havingRaw('COUNT(DISTINCT user_id)');
-                            });
-                            $subquery->orWhereDoesntHave('progresses');
-                        });
-                    })
-                    ->orderBy('route_points_count', $value['sortType']);
+                $builder->withCount(['routePoints as total_route_points'])
+                    ->addSelect(['completed_users' => function ($query) {
+                        $query->select(DB::raw('COUNT(*)'))
+                            ->from(DB::raw('(SELECT user_id, COUNT(DISTINCT route_point_id) as completed_points
+                            FROM user_route_progresses
+                            WHERE route_point_id IN (
+                                SELECT id FROM route_points WHERE route_id = routes.id
+                            ) AND is_completed = true
+                            GROUP BY user_id
+                            HAVING COUNT(DISTINCT route_point_id) = (
+                                SELECT COUNT(*) FROM route_points WHERE route_id = routes.id
+                            )
+                        ) as completed_routes'));
+                    }])
+                    ->orderBy('completed_users', $value['sortType']);
             }
 
             case 'places': {
