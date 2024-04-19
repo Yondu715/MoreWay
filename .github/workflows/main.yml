@@ -1,4 +1,4 @@
-name: CI/CD with ISPmanager
+name: CI/CD with HIP-HOSTING
 
 on:
   push:
@@ -18,8 +18,8 @@ jobs:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE }}
           REMOTE_HOST: ${{ secrets.HOST }}
           REMOTE_USER: ${{ secrets.USER }}
-          SOURCE: "./src/"
-          TARGET: "www/more-way.ru"
+          SOURCE: "./"
+          TARGET: "MoreWay"
           SCRIPT_BEFORE: |
             whoami
             ls -al
