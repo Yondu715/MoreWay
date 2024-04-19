@@ -2,7 +2,6 @@
 
 namespace App\Infrastructure\Database\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -49,6 +48,7 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
  * @property-read UserScore|null $score
  * @property-read Collection<int, PersonalAccessToken> $tokens
  * @property-read int|null $tokens_count
+ * @property-read RouteConstructor $constructor
  */
 class User extends \TCG\Voyager\Models\User implements JWTSubject
 {
@@ -134,5 +134,15 @@ class User extends \TCG\Voyager\Models\User implements JWTSubject
     public function favoriteRoutes(): BelongsToMany
     {
         return $this->belongsToMany(Route::class, 'user_favorite_routes');
+    }
+
+    public function constructor(): HasOne
+    {
+        return $this->hasOne(RouteConstructor::class, 'creator_id', 'id');
+    }
+
+    public function routes(): HasMany
+    {
+        return $this->hasMany(Route::class, 'creator_id', 'id');
     }
 }

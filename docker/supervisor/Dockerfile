@@ -1,6 +1,5 @@
 FROM php:8.2-fpm
 
-ARG REDIS_VERSION=6.0.2
 # ARG MCRYPT_VERSION=1.0.1
 # ARG RDKAFKA_VERSION=6.0.0
 
@@ -11,10 +10,10 @@ RUN apt-get update &&\
     apt-get install -y libfreetype6-dev libjpeg62-turbo-dev &&\
     apt-get install -y --no-install-recommends librdkafka-dev &&\
     apt-get install -y libzip-dev
+
+# RUN apt-get update &&\
     # pecl install rdkafka-${RDKAFKA_VERSION} &&\
     # pecl install mcrypt-${MCRYPT_VERSION} &&\
-    # pecl install redis-${REDIS_VERSION} &&\
-    # pecl install -y redis-server
     # pecl install gnupg
 
 RUN docker-php-ext-install zip \
@@ -24,7 +23,6 @@ RUN docker-php-ext-install zip \
     && docker-php-ext-install exif \
     && docker-php-ext-configure bcmath \
     && docker-php-ext-install bcmath \
-    # && docker-php-ext-enable redis \
     && docker-php-ext-install sockets \
     # && docker-php-ext-enable gnupg \
     && docker-php-ext-install pdo pdo_mysql \
@@ -57,14 +55,13 @@ ARG WEB_USER_NAME=${WEB_USER_NAME}
 
 COPY ./custom.ini /usr/local/etc/php/conf.d/custom.ini
 COPY ./supervisord.conf  /var/supervisor/supervisord.conf
-COPY ./crontab.cfg /var/spool/cron/crontabs/${WEB_USER_NAME}
+# COPY ./crontab.cfg /var/spool/cron/crontabs/${WEB_USER_NAME}
 COPY ./supervisorctl /var/supervisor/supervisorctl
-COPY ./redis.conf /var/redis/redis.conf
 
 RUN useradd -m -u ${WEB_USER_ID} ${WEB_USER_NAME} || echo "User exists" \
     && ln -sf /proc/1/fd/1 /var/supervisor/supervisor.log \
-    && chown -R ${WEB_USER_ID}:${WEB_USER_ID} /var/supervisor \
-    && crontab -u ${WEB_USER_NAME} /var/spool/cron/crontabs/${WEB_USER_NAME}
+    && chown -R ${WEB_USER_ID}:${WEB_USER_ID} /var/supervisor
+    # && crontab -u ${WEB_USER_NAME} /var/spool/cron/crontabs/${WEB_USER_NAME}
 
 WORKDIR '/var/supervisor'
 ENV SUPERVISOR_USER ${WEB_USER_NAME}

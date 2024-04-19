@@ -9,14 +9,13 @@ use App\Application\DTO\In\User\GetUsersDto;
 use App\Application\DTO\Out\Auth\UserDto;
 use App\Application\Exceptions\User\InvalidOldPassword;
 use App\Application\Exceptions\User\UserNotFound;
-use App\Infrastructure\Database\Models\User;
 use Illuminate\Support\Collection;
 
 interface IUserService
 {
     /**
      * @param GetUsersDto $getUsersDto
-     * @return Collection<int,User>
+     * @return Collection<int,UserDto>
      */
     public function getUsers(GetUsersDto $getUsersDto): Collection;
 

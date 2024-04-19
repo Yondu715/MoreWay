@@ -14,10 +14,4 @@ class AcceptFriendDto
         $this->requestId = $requestId;
     }
 
-    public static function fromRequest(AcceptFriendRequest $acceptFriendRequest): self
-    {
-        return new self(
-            requestId: $acceptFriendRequest->requestId
-        );
-    }
 }

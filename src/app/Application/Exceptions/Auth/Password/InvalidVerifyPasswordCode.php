@@ -10,5 +10,5 @@ class InvalidVerifyPasswordCode extends Exception
     protected $code = 400;
 
     /** @var string */
-    protected $message = "Введенный код восстановления пароля неверен";
+    protected $message = "Неверный код для восстановления пароля";
 }

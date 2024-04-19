@@ -2,9 +2,6 @@
 
 namespace App\Application\DTO\In\Route;
 
-use App\Application\DTO\In\Route\Point\PointDto;
-use App\Infrastructure\Http\Requests\Route\CreateRouteRequest;
-
 class CreateRouteDto
 {
     public readonly int $userId;
@@ -21,12 +18,4 @@ class CreateRouteDto
         $this->routePoints = $routePoints;
     }
 
-    public static function fromRequest(CreateRouteRequest $createRouteRequest): self
-    {
-        return new self(
-            userId: $createRouteRequest->userId,
-            name: $createRouteRequest->name,
-            routePoints: PointDto::fromArray($createRouteRequest->routePoints)
-        );
-    }
 }

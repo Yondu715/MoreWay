@@ -14,6 +14,7 @@ use App\Application\DTO\Out\Auth\UserDto;
 use App\Application\Enums\Storage\StoragePaths;
 use App\Application\Exceptions\User\InvalidOldPassword;
 use App\Infrastructure\Database\Models\User;
+use App\Utils\Mappers\Out\Auth\UserDtoMapper;
 use Illuminate\Support\Collection;
 
 class UserService implements IUserService
@@ -36,7 +37,7 @@ class UserService implements IUserService
             $this->userRepository->getByName($getUsersDto->name) :
             $this->userRepository->all();
         return $users->map(function (User $user) {
-            return UserDto::fromUserModel($user);
+            return UserDtoMapper::fromUserModel($user);
         });
     }
 
@@ -48,7 +49,7 @@ class UserService implements IUserService
     {
         /** @var User $user */
         $user = $this->userRepository->findById($userId);
-        return UserDto::fromUserModel($user);
+        return UserDtoMapper::fromUserModel($user);
     }
 
     /**
@@ -77,7 +78,7 @@ class UserService implements IUserService
         $updatedUser = $this->userRepository->update($user->id, [
             'password' => $changeUserPasswordDto->newPassword
         ]);
-        return UserDto::fromUserModel($updatedUser);
+        return UserDtoMapper::fromUserModel($updatedUser);
     }
 
     /**
@@ -95,7 +96,7 @@ class UserService implements IUserService
         $updatedUser = $this->userRepository->update($user->id, [
             'avatar' => $path
         ]);
-        return UserDto::fromUserModel($updatedUser);
+        return UserDtoMapper::fromUserModel($updatedUser);
     }
 
     /**
@@ -112,6 +113,6 @@ class UserService implements IUserService
 
         /** @var User $updatedUser */
         $updatedUser = $this->userRepository->update($user->id, $data);
-        return UserDto::fromUserModel($updatedUser);
+        return UserDtoMapper::fromUserModel($updatedUser);
     }
 }

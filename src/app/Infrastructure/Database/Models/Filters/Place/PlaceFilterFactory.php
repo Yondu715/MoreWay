@@ -4,7 +4,6 @@ namespace App\Infrastructure\Database\Models\Filters\Place;
 
 class PlaceFilterFactory
 {
-
     /**
      * @param array $filters
      * @return PlaceFilter

@@ -20,16 +20,4 @@ class RegisterDto
         $this->password = $password;
     }
 
-    /**
-     * @param RegisterRequest $registerRequest
-     * @return self
-     */
-    public static function fromRequest(RegisterRequest $registerRequest): self
-    {
-        return new self(
-            name: $registerRequest->name,
-            email: $registerRequest->email,
-            password: $registerRequest->password
-        );
-    }
 }

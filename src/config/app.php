@@ -60,7 +60,7 @@ return [
     'ws_host' => env('WS_HOST', 'localhost'),
     'ws_port' => env('WS_PORT', '8080'),
     'ws_address' => env('WS_ADDRESS', '127.0.0.1'),
-    
+
     'asset_url' => env('ASSET_URL'),
 
     /*

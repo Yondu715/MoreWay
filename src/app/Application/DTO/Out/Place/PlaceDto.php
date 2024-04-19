@@ -2,10 +2,8 @@
 
 namespace App\Application\DTO\Out\Place;
 
-use App\Application\DTO\Out\Place\Image\ImageDto;
 use App\Application\DTO\Out\Place\Locality\LocalityDto;
 use App\Application\DTO\Out\Place\Type\PlaceTypeDto;
-use App\Infrastructure\Database\Models\Place;
 use Illuminate\Support\Collection;
 
 class PlaceDto
@@ -23,7 +21,7 @@ class PlaceDto
 
     public function __construct(
         ?float       $distance,
-        string       $id,
+        int          $id,
         string       $name,
         float        $lat,
         float        $lon,
@@ -43,26 +41,5 @@ class PlaceDto
         $this->images = $images;
         $this->locality = $locality;
         $this->type = $type;
-    }
-
-    /**
-     * @param Place $place
-     * @param float|null $distance
-     * @return self
-     */
-    public static function fromPlaceModel(Place $place, float $distance = null): self
-    {
-        return new self(
-            distance: $distance ?? $place->distance,
-            id: $place->id,
-            name: $place->name,
-            lat: $place->lat,
-            lon: $place->lon,
-            rating: $place->rating(),
-            description: $place->description,
-            images: ImageDto::fromImageCollection($place->images),
-            locality: LocalityDto::fromLocalityModel($place->locality),
-            type: PlaceTypeDto::fromTypeModel($place->type)
-        );
     }
 }

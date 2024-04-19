@@ -7,17 +7,21 @@ use App\Application\Contracts\Out\Repositories\Place\IPlaceRepository;
 use App\Application\DTO\Collection\CursorDto;
 use App\Application\DTO\In\Place\GetPlaceDto;
 use App\Application\DTO\In\Place\GetPlacesDto;
-use App\Application\DTO\Out\Place\PlaceCursorDto;
 use App\Application\DTO\Out\Place\PlaceDto;
 use App\Application\Exceptions\Place\PlaceNotFound;
 use App\Domain\Contracts\In\DomainManagers\IDistanceManager;
+use App\Utils\Mappers\Out\Place\PlaceCursorDtoMapper;
+use App\Utils\Mappers\Out\Place\PlaceDtoMapper;
+use App\Domain\Factories\Distance\DistanceManagerFactory;
 
 class PlaceService implements IPlaceService
 {
+    private readonly IDistanceManager $distanceManager;
+
     public function __construct(
         private readonly IPlaceRepository $placeRepository,
-        private readonly IDistanceManager $distanceManager
     ) {
+        $this->distanceManager = DistanceManagerFactory::createInstance();
     }
 
     /**
@@ -28,7 +32,7 @@ class PlaceService implements IPlaceService
     public function getPlaceById(GetPlaceDto $getPlaceDto): PlaceDto
     {
         $place = $this->placeRepository->getPlaceById($getPlaceDto);
-        return PlaceDto::fromPlaceModel($place, $this->distanceManager
+        return PlaceDtoMapper::fromPlaceModel($place, $this->distanceManager
             ->calculate(
             $place->lat,
             $place->lon,
@@ -56,13 +60,10 @@ class PlaceService implements IPlaceService
         }
 
         $places = $this->placeRepository->getPlaces($getPlacesDto);
-        return PlaceCursorDto::fromPaginator(collect($places->items())->map(function ($place) use ($getPlacesDto){
-            return PlaceDto::fromPlaceModel($place, $this->distanceManager
-                ->calculate(
-                    $place->lat,
-                    $place->lon,
-                    $getPlacesDto->lat,
-                    $getPlacesDto->lon
+
+        return PlaceCursorDtoMapper::fromPaginator(collect($places->items())->map(function ($place) use ($getPlacesDto){
+            return PlaceDtoMapper::fromPlaceModel($place, $this->distanceManager
+                ->calculate($place->lat, $place->lon, $getPlacesDto->lat, $getPlacesDto->lon
                 ));
         }), $places->nextCursor() ? $places->nextCursor()->encode() : null);
     }

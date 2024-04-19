@@ -6,6 +6,7 @@ use App\Application\Contracts\In\Services\Place\Filter\IPlaceFilterService;
 use App\Application\Contracts\Out\Repositories\Place\Locality\ILocalityRepository;
 use App\Application\Contracts\Out\Repositories\Place\Type\IPlaceTypeRepository;
 use App\Application\DTO\Out\Place\Filter\PlaceFilterDto;
+use App\Utils\Mappers\Out\Place\Filter\PlaceFilterDtoMapper;
 
 class PlaceFilterService implements IPlaceFilterService
 {
@@ -19,7 +20,7 @@ class PlaceFilterService implements IPlaceFilterService
      */
     public function getFilters(): PlaceFilterDto
     {
-        return PlaceFilterDto::fromFilters([
+        return PlaceFilterDtoMapper::fromFilters([
             'localities' => $this->localityRepository->all(),
             'types' => $this->typeRepository->all(),
             'minDistance' => 0,

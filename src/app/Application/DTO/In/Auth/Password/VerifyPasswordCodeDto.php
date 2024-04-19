@@ -2,8 +2,6 @@
 
 namespace App\Application\DTO\In\Auth\Password;
 
-use App\Infrastructure\Http\Requests\Auth\Password\VerifyPasswordCodeRequest;
-
 class VerifyPasswordCodeDto
 {
     public readonly string $email;
@@ -17,11 +15,4 @@ class VerifyPasswordCodeDto
         $this->code = $code;
     }
 
-    public static function fromRequest(VerifyPasswordCodeRequest $verifyPasswordCodeRequest): self
-    {
-        return new self(
-            email: $verifyPasswordCodeRequest->email,
-            code: $verifyPasswordCodeRequest->code
-        );
-    }
 }

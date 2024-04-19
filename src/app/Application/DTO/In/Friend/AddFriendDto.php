@@ -2,8 +2,6 @@
 
 namespace App\Application\DTO\In\Friend;
 
-use App\Infrastructure\Http\Requests\Friend\AddFriendRequest;
-
 class AddFriendDto
 {
     public readonly int $userId;
@@ -17,11 +15,4 @@ class AddFriendDto
         $this->friendId = $friendId;
     }
 
-    public static function fromRequest(AddFriendRequest $addFriendRequest): self
-    {
-        return new self(
-            userId: $addFriendRequest->userId,
-            friendId: $addFriendRequest->friendId
-        );
-    }
 }

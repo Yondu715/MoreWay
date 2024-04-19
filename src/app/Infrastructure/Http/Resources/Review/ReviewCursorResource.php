@@ -20,15 +20,7 @@ class ReviewCursorResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'data' => $this->data->map(function ($resource) {
-                return [
-                    'id' => $resource->id,
-                    'text' => $resource->text,
-                    'rating' => $resource->rating,
-                    'createdAt' => $resource->created_at,
-                    'author' => UserResource::make($resource->author),
-                ];
-            }),
+            'data' => ReviewResource::collection($this->data),
             'meta' => [
                 'next_cursor' => $this->next_cursor
             ]

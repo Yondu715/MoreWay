@@ -3,7 +3,7 @@
 namespace App\Infrastructure\Database\Repositories\Friend;
 
 use App\Application\Contracts\Out\Repositories\Friend\IFriendshipRepository;
-use App\Application\Enums\Friend\RelationshipTypeId;
+use App\Application\Enums\Friend\RelationshipType;
 use App\Infrastructure\Database\Models\Friendship;
 use App\Infrastructure\Database\Repositories\BaseRepository\BaseRepository;
 use Illuminate\Database\Eloquent\Collection;
@@ -40,7 +40,7 @@ class FriendshipRepository extends BaseRepository implements IFriendshipReposito
     {
         return $this->model->query()->where([
             'user_id' => $userId,
-            'relationship_id' => RelationshipTypeId::FRIEND
+            'relationship_id' => RelationshipType::FRIEND
         ])->with('friend')->get();
     }
 
@@ -66,7 +66,7 @@ class FriendshipRepository extends BaseRepository implements IFriendshipReposito
     {
         return $this->model->query()->where([
             'friend_id' => $userId,
-            'relationship_id' => RelationshipTypeId::REQUEST
+            'relationship_id' => RelationshipType::REQUEST
         ])->with('user')->get();
     }
 }
