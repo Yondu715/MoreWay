@@ -80,7 +80,7 @@ class RouteRepository implements IRouteRepository
         try {
             return Route::query()
             ->filter($this->routeFilterFactory->create($getRoutesDto->filter))
-            ->cursorPaginate(perPage: $getRoutesDto->limit, cursor: $getRoutesDto->cursor);
+            ->cursorPaginate(perPage: $getRoutesDto->limit ?? 2, cursor: $getRoutesDto->cursor);
         } catch (Throwable $throwable) {
             dd($throwable->getMessage(), $throwable->getCode(), $throwable);
         }
