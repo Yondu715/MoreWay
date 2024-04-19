@@ -14,10 +14,10 @@ abstract class NotifierWebSocket implements MessageComponentInterface
     /**
      * @var array<int, ConnectionInterface>
      */
-    private static array $clients = [];
+    protected static array $clients = [];
 
     public function __construct(
-        private readonly ITokenManager $tokenManager
+        protected readonly ITokenManager $tokenManager
     ) {
     }
 
