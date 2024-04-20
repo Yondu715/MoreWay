@@ -18,6 +18,8 @@ return new class extends Migration
             $table->boolean('is_completed')->default(false);
             $table->timestamps();
 
+            $table->unique(['user_id', 'route_point_id']);
+
             $table->foreign('user_id')->references('id')->on('users')->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreign('route_point_id')->references('id')->on('route_points')->cascadeOnUpdate()->cascadeOnDelete();
 

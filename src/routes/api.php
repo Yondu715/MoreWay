@@ -103,7 +103,7 @@ Route::prefix('routes')
         Route::middleware('owner')
             ->group(function () {
                 Route::post('/', [RouteController::class, 'createRoute']);
-                Route::patch('/route-point/status',[RouteController::class, 'completedRoutePoint']);
+                Route::put('/route-points/status',[RouteController::class, 'completedRoutePoint']);
             });
         Route::prefix('/{routeId}/reviews')
             ->group(function () {

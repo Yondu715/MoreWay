@@ -27,7 +27,9 @@ class RouteConstructorRepository implements IRouteConstructorRepository
     {
         try {
             /** @var RouteConstructor $routeConstructor */
-            $routeConstructor = RouteConstructor::query()->where('creator_id', $routeConstructorDto->userId)->get()[0];
+            $routeConstructor = RouteConstructor::query()
+                ->where('creator_id', $routeConstructorDto->userId)
+                ->first();
 
             if(!$routeConstructor){
                 throw new ConstructorNotFound();
@@ -36,23 +38,22 @@ class RouteConstructorRepository implements IRouteConstructorRepository
             $this->transactionManager->beginTransaction();
             $routePoints = collect($routeConstructorDto->routePoints)->sortBy('index')->values();
 
-            $prevIndex = 0;
-            foreach ($routePoints as $routePoint) {
-                if ($routePoint->index !== $prevIndex + 1) {
+            $routePoints->each(function ($routePoint, $index) use ($routeConstructor) {
+                if ($routePoint->index !== $index + 1) {
                     throw new InvalidRoutePointIndex();
                 }
                 RouteConstructorPoint::query()->updateOrCreate([
                     'index' => $routePoint->index,
                     'constructor_id' => $routeConstructor->id,
                 ], [
-                    'index' => $routePoint->index,
                     'place_id' => $routePoint->placeId,
-                    'constructor_id' => $routeConstructor->id,
                 ]);
-                $prevIndex = $routePoint->index;
-            }
+            });
 
-            RouteConstructorPoint::query()->where('constructor_id', $routeConstructor->id)->whereNotIn('index', $routePoints->pluck('index'))->forceDelete();
+            RouteConstructorPoint::query()
+                ->where('constructor_id', $routeConstructor->id)
+                ->whereNotIn('index', $routePoints->pluck('index'))
+                ->forceDelete();
 
             $this->transactionManager->commit();
 
@@ -60,7 +61,7 @@ class RouteConstructorRepository implements IRouteConstructorRepository
 
         } catch (Throwable $e) {
             $this->transactionManager->rollback();
-            throw new InvalidRoutePointIndex();
+            throw $e;
         }
     }
 

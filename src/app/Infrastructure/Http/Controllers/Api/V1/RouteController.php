@@ -9,11 +9,14 @@ use App\Application\Contracts\In\Services\Route\Review\IRouteReviewService;
 use App\Application\Exceptions\Filter\FilterOutOfRange;
 use App\Application\Exceptions\Route\Constructor\InvalidRoutePointIndex;
 use App\Application\Exceptions\Route\FailedToCreateRoute;
+use App\Application\Exceptions\Route\IncorrectOrderRoutePoints;
 use App\Application\Exceptions\Route\RouteNotFound;
+use App\Application\Exceptions\Route\UserRouteProgressNotFound;
 use App\Infrastructure\Exceptions\ApiException;
 use App\Infrastructure\Http\Controllers\Controller;
 use App\Infrastructure\Http\Requests\Review\CreateReviewRequest;
 use App\Infrastructure\Http\Requests\Review\GetReviewsRequest;
+use App\Infrastructure\Http\Requests\Route\CompletedRoutePointRequest;
 use App\Infrastructure\Http\Requests\Route\Constructor\ChangeUserRouteConstructorRequest;
 use App\Infrastructure\Http\Requests\Route\CreateRouteRequest;
 use App\Infrastructure\Http\Requests\Route\GetRoutesRequest;
@@ -23,6 +26,7 @@ use App\Infrastructure\Http\Resources\Route\Constructor\ConstructorResource;
 use App\Infrastructure\Http\Resources\Route\Filter\RouteFilterResource;
 use App\Infrastructure\Http\Resources\Route\RouteCursorResource;
 use App\Infrastructure\Http\Resources\Route\RouteResource;
+use App\Utils\Mappers\In\Route\CompletedRoutePointDtoMapper;
 use App\Utils\Mappers\In\Route\Constructor\ConstructorDtoMapper;
 use App\Utils\Mappers\In\Route\CreateRouteDtoMapper;
 use App\Utils\Mappers\In\Route\GetRoutesDtoMapper;
@@ -141,6 +145,10 @@ class RouteController extends Controller
         }
     }
 
+    /**
+     * @param int $userId
+     * @return ConstructorResource
+     */
     public function getUserRouteConstructor(int $userId): ConstructorResource
     {
         return ConstructorResource::make(
@@ -148,9 +156,18 @@ class RouteController extends Controller
         );
     }
 
-//    public function completedRoutePoint(CompletedRoutePointRequest $completedRoutePointRequest): void
-//    {
-//        $completedRoutePointDto = CompletedRoutePointDtoMapper::fromRequest();
-//        $this->routeService->completedRoutePoint($completedRoutePointDto);
-//    }
+    /**
+     * @param CompletedRoutePointRequest $completedRoutePointRequest
+     * @return void
+     * @throws ApiException
+     */
+    public function completedRoutePoint(CompletedRoutePointRequest $completedRoutePointRequest): void
+    {
+        try {
+            $completedRoutePointDto = CompletedRoutePointDtoMapper::fromRequest($completedRoutePointRequest);
+            $this->routeService->completedRoutePoint($completedRoutePointDto);
+        } catch (RouteNotFound|IncorrectOrderRoutePoints|UserRouteProgressNotFound $e) {
+            throw new ApiException($e->getMessage(), $e->getCode());
+        }
+    }
 }

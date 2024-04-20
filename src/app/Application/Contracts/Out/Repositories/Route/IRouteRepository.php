@@ -2,10 +2,13 @@
 
 namespace App\Application\Contracts\Out\Repositories\Route;
 
+use App\Application\DTO\In\Route\CompletedRoutePointDto;
 use App\Application\DTO\In\Route\CreateRouteDto;
 use App\Application\DTO\In\Route\GetRoutesDto;
 use App\Application\Exceptions\Route\FailedToCreateRoute;
+use App\Application\Exceptions\Route\IncorrectOrderRoutePoints;
 use App\Application\Exceptions\Route\RouteNotFound;
+use App\Application\Exceptions\Route\UserRouteProgressNotFound;
 use App\Infrastructure\Database\Models\Route;
 use Illuminate\Contracts\Pagination\CursorPaginator;
 
@@ -32,5 +35,12 @@ interface IRouteRepository
      */
     public function getRoutes(GetRoutesDto $getRoutesDto): CursorPaginator;
 
-
+    /**
+     * @param CompletedRoutePointDto $completedRoutePointDto
+     * @return void
+     * @throws UserRouteProgressNotFound
+     * @throws IncorrectOrderRoutePoints
+     * @throws RouteNotFound
+     */
+    public function changeUserRouteProgress(CompletedRoutePointDto $completedRoutePointDto): void;
 }
