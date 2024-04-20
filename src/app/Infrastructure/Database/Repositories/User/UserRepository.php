@@ -3,18 +3,33 @@
 namespace App\Infrastructure\Database\Repositories\User;
 
 use App\Application\Contracts\Out\Repositories\User\IUserRepository;
+use App\Application\DTO\In\User\GetUsersDto;
+use App\Application\Enums\Role\RoleType;
 use App\Application\Exceptions\User\UserNotFound;
+use App\Infrastructure\Database\Models\Filters\User\UserFilterFactory;
 use App\Infrastructure\Database\Models\User;
 use App\Infrastructure\Database\Repositories\BaseRepository\BaseRepository;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Collection;
 use Throwable;
 
 class UserRepository extends BaseRepository implements IUserRepository
 {
 
-    public function __construct(User $user)
-    {
+    public function __construct(
+        User $user,
+        private readonly UserFilterFactory $userFilterFactory
+    ) {
         parent::__construct($user);
+    }
+
+    /**
+     * @return Collection<int, User>
+     */
+    public function getUsers(GetUsersDto $getUsersDto): Collection
+    {
+        return $this->model->filter($this->userFilterFactory->create($getUsersDto->filter))
+            ->where('role_id', '<>', RoleType::ADMIN)
+            ->get();
     }
 
     /**
@@ -43,16 +58,6 @@ class UserRepository extends BaseRepository implements IUserRepository
         return $this->model->query()->firstWhere([
             'email'  => $email
         ]);
-    }
-
-    /**
-     * @param string $name
-     * @return Collection<int,User>
-     */
-    public function getByName(string $name): Collection
-    {
-        /** @var Collection<int,User> */
-        return $this->model->query()->where('name', 'like', $name . '%')->get();
     }
 
 }

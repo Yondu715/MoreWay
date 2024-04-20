@@ -33,9 +33,7 @@ class UserService implements IUserService
      */
     public function getUsers(GetUsersDto $getUsersDto): Collection
     {
-        $users = $getUsersDto->name ?
-            $this->userRepository->getByName($getUsersDto->name) :
-            $this->userRepository->all();
+        $users = $this->userRepository->getUsers($getUsersDto);
         return $users->map(function (User $user) {
             return UserDtoMapper::fromUserModel($user);
         });
