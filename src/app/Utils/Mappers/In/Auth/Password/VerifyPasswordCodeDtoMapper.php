@@ -1,6 +1,6 @@
 <?php
 
-namespace Src\App\Utils\Mappers\In\Auth\Password;
+namespace App\Utils\Mappers\In\Auth\Password;
 
 use App\Application\DTO\In\Auth\Password\VerifyPasswordCodeDto;
 use App\Infrastructure\Http\Requests\Auth\Password\VerifyPasswordCodeRequest;

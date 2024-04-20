@@ -1,6 +1,6 @@
 <?php
 
-namespace Src\App\Utils\Mappers\Out\Friend;
+namespace App\Utils\Mappers\Out\Friend;
 
 use App\Application\DTO\Out\Friend\FriendshipRequestDto;
 use App\Infrastructure\Database\Models\Friendship;

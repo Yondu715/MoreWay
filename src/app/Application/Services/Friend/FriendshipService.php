@@ -14,7 +14,7 @@ use App\Application\Exceptions\Friend\FriendRequestConflict;
 use App\Infrastructure\Database\Models\Friendship;
 use App\Utils\Mappers\Out\Auth\UserDtoMapper;
 use Illuminate\Support\Collection;
-use Src\App\Utils\Mappers\Out\Friend\FriendshipRequestDtoMapper;
+use App\Utils\Mappers\Out\Friend\FriendshipRequestDtoMapper;
 
 class FriendshipService implements IFriendshipService
 {

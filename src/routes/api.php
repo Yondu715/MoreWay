@@ -79,8 +79,8 @@ Route::prefix('places')
     ->middleware('auth:api', 'role:user', 'content.type')
     ->group(function () {
         Route::get('/', [PlaceController::class, 'getPlaces']);
-        Route::get('/{placeId}', [PlaceController::class, 'getPlace']);
         Route::get('/filters', [PlaceController::class, 'getFilters']);
+        Route::get('/{placeId}', [PlaceController::class, 'getPlace']);
         Route::prefix('/{placeId}/reviews')
             ->group(function () {
                 Route::middleware('owner')
@@ -93,6 +93,7 @@ Route::prefix('routes')
     ->middleware('auth:api', 'role:user')
     ->group(function () {
         Route::get('/', [RouteController::class, 'getRoutes']);
+        Route::get('/filters', [RouteController::class, 'getFilters']);
         Route::get('/{routeId}', [RouteController::class, 'getRoute']);
         Route::middleware('owner')
             ->group(function () {

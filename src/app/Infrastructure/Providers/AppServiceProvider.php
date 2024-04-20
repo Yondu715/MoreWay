@@ -5,6 +5,7 @@ namespace App\Infrastructure\Providers;
 use App\Application\Contracts\In\Services\Auth\IAuthService;
 use App\Application\Contracts\In\Services\Friend\IFriendshipService;
 use App\Application\Contracts\In\Services\Place\Filter\IPlaceFilterService;
+use App\Application\Contracts\In\Services\Route\Filter\IRouteFilterService;
 use App\Application\Contracts\In\Services\Place\IPlaceService;
 use App\Application\Contracts\In\Services\Place\Review\IPlaceReviewService;
 use App\Application\Contracts\In\Services\Route\IRouteService;
@@ -29,6 +30,7 @@ use App\Application\Services\Friend\FriendshipService;
 use App\Application\Services\Place\Filter\PlaceFilterService;
 use App\Application\Services\Place\PlaceService;
 use App\Application\Services\Place\Review\PlaceReviewService;
+use App\Application\Services\Route\Filter\RouteFilterService;
 use App\Application\Services\Route\Review\RouteReviewService;
 use App\Application\Services\Route\RouteService;
 use App\Application\Services\User\UserService;
@@ -60,9 +62,10 @@ class AppServiceProvider extends ServiceProvider
         IFriendshipService::class => FriendshipService::class,
         IPlaceService::class => PlaceService::class,
         IPlaceReviewService::class => PlaceReviewService::class,
+        IPlaceFilterService::class => PlaceFilterService::class,
         IRouteService::class => RouteService::class,
         IRouteReviewService::class => RouteReviewService::class,
-        IPlaceFilterService::class => PlaceFilterService::class,
+        IRouteFilterService::class => RouteFilterService::class,
 
         /** REPOSITORIES */
         IUserRepository::class => UserRepository::class,

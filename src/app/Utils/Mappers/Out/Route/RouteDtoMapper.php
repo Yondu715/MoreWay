@@ -19,7 +19,8 @@ class RouteDtoMapper
             id: $route->id,
             name: $route->name,
             points: RoutePointDtoMapper::fromPointCollection($route->routePoints),
-            creator: UserDtoMapper::fromUserModel($route->creator)
+            creator: UserDtoMapper::fromUserModel($route->creator),
+            rating: $route->rating()
         );
     }
 }

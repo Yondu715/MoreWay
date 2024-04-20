@@ -7,10 +7,10 @@ use App\Application\Contracts\Out\Repositories\Route\IRouteRepository;
 use App\Application\DTO\Collection\CursorDto;
 use App\Application\DTO\In\Route\CreateRouteDto;
 use App\Application\DTO\In\Route\GetRoutesDto;
-use App\Application\DTO\Out\Route\RouteCursorDto;
 use App\Application\DTO\Out\Route\RouteDto;
 use App\Application\Exceptions\Route\FailedToCreateRoute;
 use App\Application\Exceptions\Route\RouteNotFound;
+use App\Utils\Mappers\Out\Route\RouteCursorDtoMapper;
 use App\Utils\Mappers\Out\Route\RouteDtoMapper;
 
 class RouteService implements IRouteService
@@ -48,6 +48,6 @@ class RouteService implements IRouteService
      */
     public function getRoutes(GetRoutesDto $getRoutesDto): CursorDto
     {
-        return RouteCursorDto::fromPaginator($this->routeRepository->getRoutes($getRoutesDto));
+        return RouteCursorDtoMapper::fromPaginator($this->routeRepository->getRoutes($getRoutesDto));
     }
 }

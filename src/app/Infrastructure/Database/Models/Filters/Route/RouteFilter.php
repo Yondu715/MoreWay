@@ -117,7 +117,7 @@ class RouteFilter extends AbstractFilter
                     ->orderBy('completed_users', $value['sortType']);
             }
 
-            case 'places': {
+            case 'points': {
                 $builder->withCount('routePoints')->orderBy('route_points_count', $value['sortType']);
             }
         }

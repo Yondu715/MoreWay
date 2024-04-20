@@ -2,9 +2,9 @@
 
 namespace App\Infrastructure\Http\Controllers\Api\V1;
 
+use App\Application\Contracts\In\Services\Route\Filter\IRouteFilterService;
 use App\Application\Contracts\In\Services\Route\IRouteService;
 use App\Application\Contracts\In\Services\Route\Review\IRouteReviewService;
-use App\Application\DTO\In\Route\GetRoutesDto;
 use App\Application\Exceptions\Filter\FilterOutOfRange;
 use App\Application\Exceptions\Route\FailedToCreateRoute;
 use App\Application\Exceptions\Route\RouteNotFound;
@@ -16,9 +16,11 @@ use App\Infrastructure\Http\Requests\Route\CreateRouteRequest;
 use App\Infrastructure\Http\Requests\Route\GetRoutesRequest;
 use App\Infrastructure\Http\Resources\Review\ReviewCursorResource;
 use App\Infrastructure\Http\Resources\Review\ReviewResource;
+use App\Infrastructure\Http\Resources\Route\Filter\RouteFilterResource;
 use App\Infrastructure\Http\Resources\Route\RouteCursorResource;
 use App\Infrastructure\Http\Resources\Route\RouteResource;
 use App\Utils\Mappers\In\Route\CreateRouteDtoMapper;
+use App\Utils\Mappers\In\Route\GetRoutesDtoMapper;
 use App\Utils\Mappers\In\Route\Review\GetRouteReviewsDtoMapper;
 use App\Utils\Mappers\In\Route\Review\CreateRouteReviewDtoMapper;
 
@@ -27,6 +29,7 @@ class RouteController extends Controller
     public function __construct(
         private readonly IRouteService $routeService,
         private readonly IRouteReviewService $reviewService,
+        private readonly IRouteFilterService $filterService
     ) {
     }
 
@@ -72,7 +75,7 @@ class RouteController extends Controller
     public function getRoutes(GetRoutesRequest $getRoutesRequest): RouteCursorResource
     {
         try {
-            $getRoutesDto = GetRoutesDto::fromRequest($getRoutesRequest);
+            $getRoutesDto = GetRoutesDtoMapper::fromRequest($getRoutesRequest);
             return RouteCursorResource::make(
                 $this->routeService->getRoutes($getRoutesDto)
             );
@@ -102,6 +105,16 @@ class RouteController extends Controller
         $getReviewsDto = GetRouteReviewsDtoMapper::fromRequest($getReviewsRequest);
         return ReviewCursorResource::make(
             $this->reviewService->getReviews($getReviewsDto)
+        );
+    }
+
+    /**
+     * @return RouteFilterResource
+     */
+    public function getFilters(): RouteFilterResource
+    {
+        return RouteFilterResource::make(
+            $this->filterService->getFilters()
         );
     }
 }

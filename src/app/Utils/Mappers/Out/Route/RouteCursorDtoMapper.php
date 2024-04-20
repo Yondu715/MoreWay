@@ -1,14 +1,12 @@
 <?php
 
-namespace App\Utils\Mappers\Out\Review;
+namespace App\Utils\Mappers\Out\Route;
 
 use App\Application\DTO\Collection\CursorDto;
-use App\Infrastructure\Database\Models\PlaceReview;
-use App\Infrastructure\Database\Models\RouteReview;
 use App\Utils\Mappers\Collection\CursorDtoMapper;
 use Illuminate\Contracts\Pagination\CursorPaginator;
 
-class ReviewCursorDtoMapper
+class RouteCursorDtoMapper
 {
     /**
      * @param CursorPaginator $paginator
@@ -16,8 +14,8 @@ class ReviewCursorDtoMapper
      */
     public static function fromPaginator(CursorPaginator $paginator): CursorDto
     {
-        return CursorDtoMapper::fromPaginatorAndMapper($paginator, function (PlaceReview|RouteReview $review) {
-            return ReviewDtoMapper::fromReviewModel($review);
+        return CursorDtoMapper::fromPaginatorAndMapper($paginator, function ($route){
+            return RouteDtoMapper::fromRouteModel($route);
         });
     }
 }

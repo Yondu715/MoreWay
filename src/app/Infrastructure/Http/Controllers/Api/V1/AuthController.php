@@ -24,7 +24,7 @@ use App\Utils\Mappers\In\Auth\LoginDtoMapper;
 use App\Utils\Mappers\In\Auth\Password\ForgotPasswordDtoMapper;
 use App\Utils\Mappers\In\Auth\Password\ResetPasswordDtoMapper;
 use App\Utils\Mappers\In\Auth\RegisterDtoMapper;
-use Src\App\Utils\Mappers\In\Auth\Password\VerifyPasswordCodeDtoMapper;
+use App\Utils\Mappers\In\Auth\Password\VerifyPasswordCodeDtoMapper;
 
 class AuthController extends Controller
 {
