@@ -9,6 +9,7 @@ use App\Application\Exceptions\User\UserNotFound;
 use App\Infrastructure\Database\Models\Filters\User\UserFilterFactory;
 use App\Infrastructure\Database\Models\User;
 use App\Infrastructure\Database\Repositories\BaseRepository\BaseRepository;
+use Illuminate\Pagination\CursorPaginator;
 use Illuminate\Support\Collection;
 use Throwable;
 
@@ -23,13 +24,13 @@ class UserRepository extends BaseRepository implements IUserRepository
     }
 
     /**
-     * @return Collection<int, User>
+     * @return CursorPaginator
      */
-    public function getUsers(GetUsersDto $getUsersDto): Collection
+    public function getUsers(GetUsersDto $getUsersDto): CursorPaginator
     {
         return $this->model->filter($this->userFilterFactory->create($getUsersDto->filter))
             ->where('role_id', '<>', RoleType::ADMIN)
-            ->get();
+            ->cursorPaginate(perPage: $getUsersDto->limit, cursor: $getUsersDto->cursor);
     }
 
     /**

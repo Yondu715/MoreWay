@@ -33,9 +33,13 @@ class UserController extends Controller
     public function getUsers(GetUsersRequest $getUsersRequest): AnonymousResourceCollection
     {
         $getUsersDto = GetUsersDtoMapper::fromRequest($getUsersRequest);
-        return UserResource::collection(
-            $this->userService->getUsers($getUsersDto)
-        );
+        $users = $this->userService->getUsers($getUsersDto);
+        return UserResource::collection($users->data)
+        ->additional([
+            'meta' => [
+                'next_cursor' => $users->next_cursor
+            ]
+        ]);
     }
 
     /**

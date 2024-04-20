@@ -6,6 +6,7 @@ use App\Application\Contracts\In\Services\User\IUserService;
 use App\Application\Contracts\Out\Managers\Hash\IHashManager;
 use App\Application\Contracts\Out\Managers\Storage\IStorageManager;
 use App\Application\Contracts\Out\Repositories\User\IUserRepository;
+use App\Application\DTO\Collection\CursorDto;
 use App\Application\DTO\In\User\ChangeUserAvatarDto;
 use App\Application\DTO\In\User\ChangeUserDataDto;
 use App\Application\DTO\In\User\ChangeUserPasswordDto;
@@ -29,14 +30,12 @@ class UserService implements IUserService
 
     /**
      * @param GetUsersDto $getUsersDto
-     * @return Collection<int,UserDto>
+     * @return CursorDto
      */
-    public function getUsers(GetUsersDto $getUsersDto): Collection
+    public function getUsers(GetUsersDto $getUsersDto): CursorDto
     {
         $users = $this->userRepository->getUsers($getUsersDto);
-        return $users->map(function (User $user) {
-            return UserDtoMapper::fromUserModel($user);
-        });
+        return UserDtoMapper::fromPaginator($users);
     }
 
     /**
