@@ -20,10 +20,3 @@ jobs:
           REMOTE_USER: ${{ secrets.USER }}
           SOURCE: "./"
           TARGET: "MoreWay"
-          SCRIPT_BEFORE: |
-            whoami
-            ls -al
-          SCRIPT_AFTER: |
-            whoami
-            ls -al
-            echo $RSYNC_STDOUT
