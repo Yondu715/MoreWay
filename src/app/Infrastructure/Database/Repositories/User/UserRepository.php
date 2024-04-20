@@ -10,7 +10,6 @@ use App\Infrastructure\Database\Models\Filters\User\UserFilterFactory;
 use App\Infrastructure\Database\Models\User;
 use App\Infrastructure\Database\Repositories\BaseRepository\BaseRepository;
 use Illuminate\Pagination\CursorPaginator;
-use Illuminate\Support\Collection;
 use Throwable;
 
 class UserRepository extends BaseRepository implements IUserRepository
@@ -30,7 +29,7 @@ class UserRepository extends BaseRepository implements IUserRepository
     {
         return $this->model->filter($this->userFilterFactory->create($getUsersDto->filter))
             ->where('role_id', '<>', RoleType::ADMIN)
-            ->cursorPaginate(perPage: $getUsersDto->limit, cursor: $getUsersDto->cursor);
+            ->cursorPaginate(perPage: $getUsersDto->limit ?? 2, cursor: $getUsersDto->cursor);
     }
 
     /**
