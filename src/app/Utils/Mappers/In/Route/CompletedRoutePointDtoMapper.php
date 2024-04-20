@@ -15,7 +15,6 @@ class CompletedRoutePointDtoMapper
     {
         return new CompletedRoutePointDto(
             userId: $completedRoutePointRequest->userId,
-            routeId: $completedRoutePointRequest->routeId,
             routePointId: $completedRoutePointRequest->routePointId
         );
     }
