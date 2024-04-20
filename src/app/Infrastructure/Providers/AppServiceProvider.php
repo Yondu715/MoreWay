@@ -5,6 +5,7 @@ namespace App\Infrastructure\Providers;
 use App\Application\Contracts\In\Services\Auth\IAuthService;
 use App\Application\Contracts\In\Services\Friend\IFriendshipService;
 use App\Application\Contracts\In\Services\Place\Filter\IPlaceFilterService;
+use App\Application\Contracts\In\Services\Route\Constructor\IRouteConstructorService;
 use App\Application\Contracts\In\Services\Route\Filter\IRouteFilterService;
 use App\Application\Contracts\In\Services\Place\IPlaceService;
 use App\Application\Contracts\In\Services\Place\Review\IPlaceReviewService;
@@ -22,6 +23,7 @@ use App\Application\Contracts\Out\Repositories\Place\IPlaceRepository;
 use App\Application\Contracts\Out\Repositories\Place\Locality\ILocalityRepository;
 use App\Application\Contracts\Out\Repositories\Place\Review\IPlaceReviewRepository;
 use App\Application\Contracts\Out\Repositories\Place\Type\IPlaceTypeRepository;
+use App\Application\Contracts\Out\Repositories\Route\Constructor\IRouteConstructorRepository;
 use App\Application\Contracts\Out\Repositories\Route\IRouteRepository;
 use App\Application\Contracts\Out\Repositories\Route\Review\IRouteReviewRepository;
 use App\Application\Contracts\Out\Repositories\User\IUserRepository;
@@ -30,6 +32,7 @@ use App\Application\Services\Friend\FriendshipService;
 use App\Application\Services\Place\Filter\PlaceFilterService;
 use App\Application\Services\Place\PlaceService;
 use App\Application\Services\Place\Review\PlaceReviewService;
+use App\Application\Services\Route\Constructor\RouteConstructorService;
 use App\Application\Services\Route\Filter\RouteFilterService;
 use App\Application\Services\Route\Review\RouteReviewService;
 use App\Application\Services\Route\RouteService;
@@ -39,6 +42,7 @@ use App\Infrastructure\Database\Repositories\Place\Locality\LocalityRepository;
 use App\Infrastructure\Database\Repositories\Place\PlaceRepository;
 use App\Infrastructure\Database\Repositories\Place\Review\PlaceReviewRepository;
 use App\Infrastructure\Database\Repositories\Place\Type\PlaceTypeRepository;
+use App\Infrastructure\Database\Repositories\Route\Constructor\RouteConstructorRepository;
 use App\Infrastructure\Database\Repositories\Route\Review\RouteReviewRepository;
 use App\Infrastructure\Database\Repositories\Route\RouteRepository;
 use App\Infrastructure\Database\Repositories\User\UserRepository;
@@ -66,6 +70,7 @@ class AppServiceProvider extends ServiceProvider
         IRouteService::class => RouteService::class,
         IRouteReviewService::class => RouteReviewService::class,
         IRouteFilterService::class => RouteFilterService::class,
+        IRouteConstructorService::class => RouteConstructorService::class,
 
         /** REPOSITORIES */
         IUserRepository::class => UserRepository::class,
@@ -76,6 +81,7 @@ class AppServiceProvider extends ServiceProvider
         IRouteReviewRepository::class => RouteReviewRepository::class,
         ILocalityRepository::class => LocalityRepository::class,
         IPlaceTypeRepository::class => PlaceTypeRepository::class,
+        IRouteConstructorRepository::class => RouteConstructorRepository::class,
 
         /** InfrastructureManagers */
         ITokenManager::class => TokenManager::class,

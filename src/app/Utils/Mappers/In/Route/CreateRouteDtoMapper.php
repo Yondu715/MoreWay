@@ -4,7 +4,7 @@ namespace App\Utils\Mappers\In\Route;
 
 use App\Application\DTO\In\Route\CreateRouteDto;
 use App\Infrastructure\Http\Requests\Route\CreateRouteRequest;
-use App\Utils\Mappers\In\Route\Point\RoutePointDtoMapper;
+use App\Utils\Mappers\In\Route\Point\PointDtoMapper;
 
 class CreateRouteDtoMapper
 {
@@ -17,7 +17,7 @@ class CreateRouteDtoMapper
         return new CreateRouteDto(
             userId: $createRouteRequest->userId,
             name: $createRouteRequest->name,
-            routePoints: RoutePointDtoMapper::fromArray($createRouteRequest->routePoints)
+            routePoints: PointDtoMapper::fromArray($createRouteRequest->routePoints)
         );
     }
 }

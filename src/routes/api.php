@@ -50,6 +50,11 @@ Route::prefix('users')
                                 Route::delete('/{friendId}', [FriendController::class, 'deleteFriend']);
                                 Route::get('/requests', [FriendController::class, 'getFriendRequests']);
                             });
+                        Route::prefix('/constructor')
+                            ->group(function (){
+                                Route::get('/', [RouteController::class, 'getUserRouteConstructor']);
+                                Route::put('/', [RouteController::class, 'changeUserRouteConstructor']);
+                            });
                         Route::prefix('/active-route')
                             ->group(function (){
                                 Route::get('/', [RouteController::class, 'getActiveUserRoute']);

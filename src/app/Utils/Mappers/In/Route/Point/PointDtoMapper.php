@@ -4,7 +4,7 @@ namespace App\Utils\Mappers\In\Route\Point;
 
 use App\Application\DTO\In\Route\Point\PointDto;
 
-class RoutePointDtoMapper
+class PointDtoMapper
 {
     /**
      * @param array $routePoints
