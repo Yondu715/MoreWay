@@ -1,6 +1,6 @@
 <?php
 
-namespace Src\App\Utils\Mappers\Out\Friend;
+namespace App\Utils\Mappers\Out\Friend;
 
 use App\Application\DTO\Out\Friend\FriendshipRequestDto;
 use App\Infrastructure\Database\Models\Friendship;
@@ -16,7 +16,9 @@ class FriendshipRequestDtoMapper
     {
         return new FriendshipRequestDto(
             id: $friendship->id,
-            user: UserDtoMapper::fromUserModel($friendship->user)
+            user: UserDtoMapper::fromUserModel($friendship->user),
+            userId: $friendship->user_id,
+            friendId: $friendship->friend_id
         );
     }
 }
