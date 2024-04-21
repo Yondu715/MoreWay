@@ -14,7 +14,11 @@ class GetUsersDtoMapper
     public static function fromRequest(GetUsersRequest $getUsersRequest): GetUsersDto
     {
         return new GetUsersDto(
-            name: $getUsersRequest->name
+            cursor: $getUsersRequest->cursor,
+            limit: $getUsersRequest->limit,
+            filter: [
+                'name' => $getUsersRequest->name
+            ]
         );
     }
 }

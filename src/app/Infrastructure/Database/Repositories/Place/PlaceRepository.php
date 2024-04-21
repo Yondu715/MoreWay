@@ -48,6 +48,6 @@ class PlaceRepository extends BaseRepository implements IPlaceRepository
     {
         return $this->model
             ->filter($this->placeFilterFactory->create($getPlacesDto->filter))
-            ->cursorPaginate(perPage: $getPlacesDto->limit, cursor: $getPlacesDto->cursor);
+            ->cursorPaginate(perPage: $getPlacesDto->limit ?? 2, cursor: $getPlacesDto->cursor);
     }
 }

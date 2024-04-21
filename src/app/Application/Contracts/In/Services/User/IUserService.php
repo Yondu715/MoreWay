@@ -2,6 +2,7 @@
 
 namespace App\Application\Contracts\In\Services\User;
 
+use App\Application\DTO\Collection\CursorDto;
 use App\Application\DTO\In\User\ChangeUserAvatarDto;
 use App\Application\DTO\In\User\ChangeUserDataDto;
 use App\Application\DTO\In\User\ChangeUserPasswordDto;
@@ -9,15 +10,14 @@ use App\Application\DTO\In\User\GetUsersDto;
 use App\Application\DTO\Out\Auth\UserDto;
 use App\Application\Exceptions\User\InvalidOldPassword;
 use App\Application\Exceptions\User\UserNotFound;
-use Illuminate\Support\Collection;
 
 interface IUserService
 {
     /**
      * @param GetUsersDto $getUsersDto
-     * @return Collection<int,UserDto>
+     * @return CursorDto
      */
-    public function getUsers(GetUsersDto $getUsersDto): Collection;
+    public function getUsers(GetUsersDto $getUsersDto): CursorDto;
 
     /**
      * @param int $userId

@@ -2,11 +2,13 @@
 
 namespace App\Utils\Mappers\Out\Review;
 
+use App\Application\DTO\Collection\CursorDto;
 use App\Application\DTO\Out\Review\ReviewDto;
 use App\Infrastructure\Database\Models\PlaceReview;
 use App\Infrastructure\Database\Models\RouteReview;
+use App\Utils\Mappers\Collection\CursorDtoMapper;
 use App\Utils\Mappers\Out\Auth\UserDtoMapper;
-use Carbon\Carbon;
+use Illuminate\Pagination\CursorPaginator;
 
 class ReviewDtoMapper
 {
@@ -16,13 +18,23 @@ class ReviewDtoMapper
      */
     public static function fromReviewModel(PlaceReview|RouteReview $review): ReviewDto
     {
-        $createdAt = new Carbon($review->created_at);
         return new ReviewDto(
             id: $review->id,
             text: $review->text,
             rating: $review->rating,
-            createdAt: $createdAt->timestamp,
+            createdAt: $review->created_at->format('Y-m-d H:i:s'),
             author: UserDtoMapper::fromUserModel($review->author),
         );
+    }
+
+    /**
+     * @param CursorPaginator $paginator
+     * @return CursorDto
+     */
+    public static function fromPaginator(CursorPaginator $paginator): CursorDto
+    {
+        return CursorDtoMapper::fromPaginatorAndMapper($paginator, function (PlaceReview|RouteReview $review) {
+            return ReviewDtoMapper::fromReviewModel($review);
+        });
     }
 }

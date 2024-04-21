@@ -20,7 +20,7 @@ class ImageResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'path' => 'https://more-way.ru/storage/' . $this->path,
+            'path' => url("/storage/{$this->path}"),
         ];
     }
 }

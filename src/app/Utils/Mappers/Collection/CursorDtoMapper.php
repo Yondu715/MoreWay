@@ -4,7 +4,6 @@ namespace App\Utils\Mappers\Collection;
 
 use App\Application\DTO\Collection\CursorDto;
 use Illuminate\Contracts\Pagination\CursorPaginator;
-use Illuminate\Support\Collection;
 
 class CursorDtoMapper
 {
@@ -21,16 +20,4 @@ class CursorDtoMapper
         );
     }
 
-    /**
-     * @param Collection $places
-     * @param string|null $nextCursor
-     * @return CursorDto
-     */
-    public static function fromCollectionAndCursor(Collection $places, ?string $nextCursor): CursorDto
-    {
-        return new CursorDto(
-            data: $places,
-            next_cursor: $nextCursor
-        );
-    } 
 }

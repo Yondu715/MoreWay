@@ -2,7 +2,9 @@
 
 namespace App\Infrastructure\WebSocket\Routing;
 
-class Route
+use InvalidArgumentException;
+
+class WebSocketRouter
 {
     /**
      * @var array<string, class-string>
@@ -13,9 +15,13 @@ class Route
      * @param string $uri
      * @param string $controller
      * @return void
+     * @throws InvalidArgumentException
      */
     public static function ws(string $uri, string $controller): void
     {
+        if (!is_string($uri) || !class_exists($controller)) {
+            throw new InvalidArgumentException('Неверный тип переданного аргумента');
+        }
         self::$routes[$uri] = $controller;
     }
 

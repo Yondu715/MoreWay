@@ -4,12 +4,19 @@ namespace App\Application\DTO\In\User;
 
 class GetUsersDto
 {
-    public readonly ?string $name;
+
+    public readonly ?string $cursor;
+    public array $filter;
+    public readonly ?int $limit;
 
     public function __construct(
-        ?string $name
+        ?string $cursor,
+        array $filter,
+        ?int $limit
     ) {
-        $this->name = $name;
+        $this->cursor = $cursor;
+        $this->filter = $filter;
+        $this->limit = $limit;
     }
 
 }

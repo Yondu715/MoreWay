@@ -53,7 +53,7 @@ use App\Infrastructure\Managers\Hash\HashManager;
 use App\Infrastructure\Managers\Mail\MailManager;
 use App\Infrastructure\Managers\Storage\StorageManager;
 use App\Infrastructure\Managers\Token\TokenManager;
-use App\Infrastructure\WebSocket\Controllers\Friend\FriendNotifier;
+use App\Infrastructure\WebSocket\Notifiers\FriendNotifier;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -83,15 +83,22 @@ class AppServiceProvider extends ServiceProvider
         IPlaceTypeRepository::class => PlaceTypeRepository::class,
         IRouteConstructorRepository::class => RouteConstructorRepository::class,
 
-        /** InfrastructureManagers */
+        /** Managers */
         ITokenManager::class => TokenManager::class,
         IStorageManager::class => StorageManager::class,
         ICacheManager::class => CacheManager::class,
         IMailManager::class => MailManager::class,
         IHashManager::class => HashManager::class,
         ITransactionManager::class => TransactionManager::class,
-        INotifierManager::class => FriendNotifier::class,
 
+    ];
+
+
+    /** @var array<class-string, array<int, string>> */
+    public array $whenBindings = [
+        FriendshipService::class => [
+            INotifierManager::class => FriendNotifier::class,
+        ],
     ];
 
     /**
@@ -99,7 +106,13 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        foreach ($this->whenBindings as $concrete => $bindings) {
+            foreach ($bindings as $abstract => $implementation) {
+                $this->app->when($concrete)
+                    ->needs($abstract)
+                    ->give($implementation);
+            }
+        }
     }
 
     /**

@@ -20,7 +20,7 @@ class RouteReviewRepository implements IRouteReviewRepository
         return RouteReview::query()
             ->where('route_id', $getReviewsDto->routeId)
             ->orderBy('created_at', 'desc')
-            ->cursorPaginate(perPage: $getReviewsDto->limit, cursor: $getReviewsDto->cursor);
+            ->cursorPaginate(perPage: $getReviewsDto->limit ?? 2, cursor: $getReviewsDto->cursor);
     }
 
     /**

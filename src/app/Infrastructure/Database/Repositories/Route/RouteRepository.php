@@ -82,8 +82,8 @@ class RouteRepository implements IRouteRepository
     public function getRoutes(GetRoutesDto $getRoutesDto): CursorPaginator
     {
         return Route::query()
-        ->filter($this->routeFilterFactory->create($getRoutesDto->filter))
-        ->cursorPaginate(perPage: $getRoutesDto->limit, cursor: $getRoutesDto->cursor);
+            ->filter($this->routeFilterFactory->create($getRoutesDto->filter))
+            ->cursorPaginate(perPage: $getRoutesDto->limit ?? 2, cursor: $getRoutesDto->cursor);
     }
 
     /**

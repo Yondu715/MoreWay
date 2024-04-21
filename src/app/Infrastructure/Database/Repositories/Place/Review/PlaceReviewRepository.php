@@ -27,7 +27,7 @@ class PlaceReviewRepository extends BaseRepository implements IPlaceReviewReposi
         return $this->model->query()
             ->where('place_id', $getReviewsDto->placeId)
             ->orderBy('created_at', 'desc')
-            ->cursorPaginate(perPage: $getReviewsDto->limit, cursor: $getReviewsDto->cursor);
+            ->cursorPaginate(perPage: $getReviewsDto->limit ?? 2, cursor: $getReviewsDto->cursor);
     }
 
 
