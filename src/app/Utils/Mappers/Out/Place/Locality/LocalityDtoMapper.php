@@ -21,13 +21,13 @@ class LocalityDtoMapper
     }
 
     /**
-     * @param Collection<int, Locality> $localities
+     * @param Collection<int, LocalityDto> $localities
      * @return Collection<int, string>
      */
     public static function fromLocalityCollection(Collection $localities): Collection
     {
-        return $localities->map(function ($locality) {
-            return $locality->name;
+        return $localities->map(function (LocalityDto $localityDto) {
+            return $localityDto->name;
         });
     }
 }

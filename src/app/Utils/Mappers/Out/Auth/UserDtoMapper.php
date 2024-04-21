@@ -21,7 +21,8 @@ class UserDtoMapper
             id: $user->id,
             name: $user->name,
             avatar: $user->avatar,
-            email: $user->email
+            email: $user->email,
+            password: $user->password
         );
     }
 

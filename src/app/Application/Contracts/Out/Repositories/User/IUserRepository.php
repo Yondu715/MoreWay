@@ -2,23 +2,48 @@
 
 namespace App\Application\Contracts\Out\Repositories\User;
 
-use App\Application\Contracts\Out\Repositories\Base\IBaseRepository;
+use App\Application\DTO\Collection\CursorDto;
+use App\Application\DTO\In\Auth\RegisterDto;
 use App\Application\DTO\In\User\GetUsersDto;
-use App\Infrastructure\Database\Models\User;
-use Illuminate\Pagination\CursorPaginator;
+use App\Application\DTO\Out\Auth\UserDto;
 
-interface IUserRepository extends IBaseRepository
+interface IUserRepository
 {
 
     /**
      * @param GetUsersDto $getUsersDto
-     * @return CursorPaginator
+     * @return CursorDto
      */
-    public function getUsers(GetUsersDto $getUsersDto): CursorPaginator;
+    public function getAll(GetUsersDto $getUsersDto): CursorDto;
+
+    /**
+     * @param int $id
+     * @return UserDto
+     */
+    public function findById(int $id): UserDto;
+
     /**
      * @param string $email
-     * @return User|null
+     * @return UserDto|null
      */
-    public function findByEmail(string $email): ?User;
+    public function findByEmail(string $email): ?UserDto;
+
+    /**
+     * @param RegisterDto $registerDto
+     * @return UserDto
+     */
+    public function create(UserDto $userDto): UserDto;
+
+    /**
+     * @param UserDto $userDto
+     * @return UserDto
+     */
+    public function update(UserDto $userDto): UserDto;
+
+    /**
+     * @param int $id
+     * @return bool
+     */
+    public function deleteById(int $id): bool;
 
 }

@@ -3,46 +3,50 @@
 namespace App\Infrastructure\Database\Repositories\User;
 
 use App\Application\Contracts\Out\Repositories\User\IUserRepository;
+use App\Application\DTO\Collection\CursorDto;
+use App\Application\DTO\In\User\ChangeUserPasswordDto;
 use App\Application\DTO\In\User\GetUsersDto;
+use App\Application\DTO\Out\Auth\UserDto;
 use App\Application\Enums\Role\RoleType;
 use App\Application\Exceptions\User\UserNotFound;
 use App\Infrastructure\Database\Models\Filters\User\UserFilterFactory;
 use App\Infrastructure\Database\Models\User;
-use App\Infrastructure\Database\Repositories\BaseRepository\BaseRepository;
-use Illuminate\Pagination\CursorPaginator;
+use App\Utils\Mappers\Out\Auth\UserDtoMapper;
+use Illuminate\Database\Eloquent\Model;
 use Throwable;
 
-class UserRepository extends BaseRepository implements IUserRepository
+class UserRepository implements IUserRepository
 {
+
+    private Model $model;
 
     public function __construct(
         User $user,
         private readonly UserFilterFactory $userFilterFactory
     ) {
-        parent::__construct($user);
+        $this->model = $user;
     }
 
     /**
-     * @return CursorPaginator
+     * @return CursorDto
      */
-    public function getUsers(GetUsersDto $getUsersDto): CursorPaginator
+    public function getAll(GetUsersDto $getUsersDto): CursorDto
     {
-        return $this->model->filter($this->userFilterFactory->create($getUsersDto->filter))
+        $paginator = $this->model->filter($this->userFilterFactory->create($getUsersDto->filter))
             ->where('role_id', '<>', RoleType::ADMIN)
             ->cursorPaginate(perPage: $getUsersDto->limit ?? 2, cursor: $getUsersDto->cursor);
+        return UserDtoMapper::fromPaginator($paginator);
     }
 
     /**
      * @param int $id
-     * @return User
+     * @return UserDto
      * @throws UserNotFound
      */
-    public function findById(int $id): User
+    public function findById(int $id): UserDto
     {
         try {
-            /** @var User $user */
-            $user = parent::findById($id);
-            return $user;
+            return UserDtoMapper::fromUserModel($this->model->query()->findOrFail($id));
         } catch (Throwable) {
             throw new UserNotFound();
         }
@@ -50,14 +54,52 @@ class UserRepository extends BaseRepository implements IUserRepository
 
     /**
      * @param string $email
-     * @return User|null
+     * @return UserDto|null
      */
-    public function findByEmail(string $email): ?User
+    public function findByEmail(string $email): ?UserDto
     {
-        /** @var ?User */
-        return $this->model->query()->firstWhere([
+        $user = $this->model->query()->firstWhere([
             'email'  => $email
         ]);
+        return $user ? UserDtoMapper::fromUserModel($user) : null;
+    }
+
+    /**
+     * @param int $id
+     * @return bool
+     */
+    public function deleteById(int $id): bool
+    {
+        return $this->model->query()->where([
+            'id' => $id
+        ])->delete();
+    }
+
+    /**
+     * @param user$userDto $userDto
+     * @return UserDto
+     */
+    public function create(UserDto $userDto): UserDto
+    {
+        $user = $this->model->query()->create([
+            'name' => $userDto->name,
+            'email' => $userDto->email,
+            'password' => $userDto->password
+        ]);
+        return UserDtoMapper::fromUserModel($user);
+    }
+
+    /**
+     * @param ChangeUserPasswordDto $changeUserPasswordDto
+     * @return UserDto
+     */
+    public function update(UserDto $userDto): UserDto
+    {
+        $user = $this->model->query()->find($userDto->id);
+        $user->update([
+            'password' => $userDto->password
+        ]);
+        return UserDtoMapper::fromUserModel($user->refresh());
     }
 
 }

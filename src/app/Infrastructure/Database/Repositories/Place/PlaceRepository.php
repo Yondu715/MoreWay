@@ -3,38 +3,45 @@
 namespace App\Infrastructure\Database\Repositories\Place;
 
 use App\Application\Contracts\Out\Repositories\Place\IPlaceRepository;
+use App\Application\DTO\Collection\CursorDto;
 use App\Application\DTO\In\Place\GetPlaceDto;
 use App\Application\DTO\In\Place\GetPlacesDto;
+use App\Application\DTO\Out\Place\PlaceDto;
 use App\Application\Exceptions\Place\PlaceNotFound;
 use App\Infrastructure\Database\Models\Filters\Place\PlaceFilterFactory;
 use App\Infrastructure\Database\Models\Place;
-use App\Infrastructure\Database\Repositories\BaseRepository\BaseRepository;
-use Illuminate\Contracts\Pagination\CursorPaginator;
+use App\Utils\Mappers\Out\Place\PlaceDtoMapper;
+use Closure;
+use Illuminate\Database\Eloquent\Model;
 use Throwable;
 
-class PlaceRepository extends BaseRepository implements IPlaceRepository
+class PlaceRepository implements IPlaceRepository
 {
+
+    private readonly Model $model;
+
     public function __construct(
         private readonly PlaceFilterFactory $placeFilterFactory,
         Place $place
     ) {
-        parent::__construct($place);
+        $this->model = $place;
     }
 
     /**
      * @param GetPlaceDto $getPlaceDto
-     * @return Place
+     * @param Closure(float, float): float $distanceCalculator
      * @throws PlaceNotFound
+     * @return PlaceDto
      */
-    public function getPlaceById(GetPlaceDto $getPlaceDto): Place
+    public function getById(GetPlaceDto $getPlaceDto, Closure $distanceCalculator): PlaceDto
     {
         try {
             /** @var Place */
-            return $this
-                ->model
-                ->query()
-                ->where('id', $getPlaceDto->id)
-                ->first();
+            $place = $this->model->query()->find($getPlaceDto->id);
+            return PlaceDtoMapper::fromPlaceModel(
+                $place,
+                $distanceCalculator($place->lat, $place->lon)
+            );
         } catch (Throwable $th) {
             throw new PlaceNotFound();
         }
@@ -42,12 +49,16 @@ class PlaceRepository extends BaseRepository implements IPlaceRepository
 
     /**
      * @param GetPlacesDto $getPlacesDto
-     * @return CursorPaginator
+     * @param Closure(float, float): float $distanceCalculator
+     * @return CursorDto
      */
-    public function getPlaces(GetPlacesDto $getPlacesDto): CursorPaginator
+    public function getAll(GetPlacesDto $getPlacesDto, Closure $distanceCalculator): CursorDto
     {
-        return $this->model
-            ->filter($this->placeFilterFactory->create($getPlacesDto->filter))
+        $places = $this->model
+            ->filter($this->placeFilterFactory->create($getPlacesDto->filter, $distanceCalculator))
             ->cursorPaginate(perPage: $getPlacesDto->limit ?? 2, cursor: $getPlacesDto->cursor);
+        return PlaceDtoMapper::fromPaginator($places, function ($place) use ($distanceCalculator) {
+            return PlaceDtoMapper::fromPlaceModel($place, $distanceCalculator($place->lat, $place->lon));
+        });
     }
 }

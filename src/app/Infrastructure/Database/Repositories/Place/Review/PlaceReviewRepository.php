@@ -3,44 +3,49 @@
 namespace App\Infrastructure\Database\Repositories\Place\Review;
 
 use App\Application\Contracts\Out\Repositories\Place\Review\IPlaceReviewRepository;
+use App\Application\DTO\Collection\CursorDto;
 use App\Application\DTO\In\Place\Review\GetPlaceReviewsDto;
+use App\Application\DTO\Out\Review\ReviewDto;
 use App\Application\Exceptions\Review\FailedToCreateReview;
 use App\Infrastructure\Database\Models\PlaceReview;
-use App\Infrastructure\Database\Repositories\BaseRepository\BaseRepository;
-use Illuminate\Contracts\Pagination\CursorPaginator;
+use App\Utils\Mappers\Out\Review\ReviewDtoMapper;
+use Illuminate\Database\Eloquent\Model;
 use Throwable;
 
-class PlaceReviewRepository extends BaseRepository implements IPlaceReviewRepository
+class PlaceReviewRepository implements IPlaceReviewRepository
 {
+
+    private Model $model;
 
     public function __construct(PlaceReview $review)
     {
-        parent::__construct($review);
+        $this->model = $review;
     }
 
     /**
      * @param GetPlaceReviewsDto $getReviewsDto
-     * @return CursorPaginator
+     * @return CursorDto
      */
-    public function getReviews(GetPlaceReviewsDto $getReviewsDto): CursorPaginator
+    public function getAll(GetPlaceReviewsDto $getReviewsDto): CursorDto
     {
-        return $this->model->query()
+        $reviews = $this->model->query()
             ->where('place_id', $getReviewsDto->placeId)
             ->orderBy('created_at', 'desc')
             ->cursorPaginate(perPage: $getReviewsDto->limit ?? 2, cursor: $getReviewsDto->cursor);
+        return ReviewDtoMapper::fromPaginator($reviews);
     }
 
 
     /**
      * @param array $attributes
-     * @return PlaceReview
+     * @return ReviewDto
      * @throws FailedToCreateReview
      */
-    public function create(array $attributes): PlaceReview
+    public function create(array $attributes): ReviewDto
     {
         try {
-            /** @var PlaceReview */
-            return parent::create($attributes);
+            $review = $this->model->query()->create($attributes);
+            return ReviewDtoMapper::fromReviewModel($review);
         } catch (Throwable) {
             throw new FailedToCreateReview();
         }

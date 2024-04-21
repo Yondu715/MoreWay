@@ -16,7 +16,9 @@ class FriendshipRequestDtoMapper
     {
         return new FriendshipRequestDto(
             id: $friendship->id,
-            user: UserDtoMapper::fromUserModel($friendship->user)
+            user: UserDtoMapper::fromUserModel($friendship->user),
+            userId: $friendship->user_id,
+            friendId: $friendship->friend_id
         );
     }
 }

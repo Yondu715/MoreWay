@@ -23,7 +23,7 @@ class ReviewResource extends JsonResource
             'id' => $this->id,
             'text' => $this->text,
             'rating' => $this->rating,
-            'createdAt' => $this->created_at,
+            'createdAt' => $this->createdAt,
             'author' => UserResource::make($this->author),
         ];
     }

@@ -2,24 +2,26 @@
 
 namespace App\Application\Contracts\Out\Repositories\Place;
 
+use App\Application\DTO\Collection\CursorDto;
 use App\Application\DTO\In\Place\GetPlaceDto;
 use App\Application\DTO\In\Place\GetPlacesDto;
-use App\Application\Exceptions\Place\PlaceNotFound;
-use App\Infrastructure\Database\Models\Place;
-use Illuminate\Contracts\Pagination\CursorPaginator;
+use App\Application\DTO\Out\Place\PlaceDto;
+use Closure;
 
 interface IPlaceRepository
 {
+
     /**
      * @param GetPlaceDto $getPlaceDto
-     * @return Place
-     * @throws PlaceNotFound
+     * @param Closure $distanceCalculator
+     * @return PlaceDto
      */
-    public function getPlaceById(GetPlaceDto $getPlaceDto): Place;
+    public function getById(GetPlaceDto $getPlaceDto, Closure $distanceCalculator): PlaceDto;
 
     /**
      * @param GetPlacesDto $getPlacesDto
-     * @return CursorPaginator
+     * @param Closure $distanceCalculator
+     * @return CursorDto
      */
-    public function getPlaces(GetPlacesDto $getPlacesDto): CursorPaginator;
+    public function getAll(GetPlacesDto $getPlacesDto, Closure $distanceCalculator): CursorDto;
 }

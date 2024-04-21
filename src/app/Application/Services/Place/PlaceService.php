@@ -10,7 +10,6 @@ use App\Application\DTO\In\Place\GetPlacesDto;
 use App\Application\DTO\Out\Place\PlaceDto;
 use App\Application\Exceptions\Place\PlaceNotFound;
 use App\Domain\Contracts\In\DomainManagers\IDistanceManager;
-use App\Utils\Mappers\Out\Place\PlaceDtoMapper;
 use App\Domain\Factories\Distance\DistanceManagerFactory;
 
 class PlaceService implements IPlaceService
@@ -30,14 +29,10 @@ class PlaceService implements IPlaceService
      */
     public function getPlaceById(GetPlaceDto $getPlaceDto): PlaceDto
     {
-        $place = $this->placeRepository->getPlaceById($getPlaceDto);
-        return PlaceDtoMapper::fromPlaceModel($place, $this->distanceManager
-            ->calculate(
-                $place->lat,
-                $place->lon,
-                $getPlaceDto->lat,
-                $getPlaceDto->lon
-            ));
+        $distanceCalc = function (float $lat, float $lon) use ($getPlaceDto) {
+            return $this->distanceManager->calculate($lat, $lon, $getPlaceDto->lat, $getPlaceDto->lon);
+        };
+        return $this->placeRepository->getById($getPlaceDto, $distanceCalc);
     }
 
     /**
@@ -46,28 +41,10 @@ class PlaceService implements IPlaceService
      */
     public function getPlaces(GetPlacesDto $getPlacesDto): CursorDto
     {
-        if ($getPlacesDto->filter['distance']) {
-            $getPlacesDto->filter['distance']['calculate'] = function ($lat, $lon) use ($getPlacesDto) {
+        $distanceCalc = function (float $lat, float $lon) use ($getPlacesDto) {
                 return $this->distanceManager->calculate($lat, $lon, $getPlacesDto->lat, $getPlacesDto->lon);
-            };
-        }
-        if ($getPlacesDto->filter['sort']) {
-            if ($getPlacesDto->filter['sort']['sort'] === 'distance')
-                $getPlacesDto->filter['sort']['calculate'] = function ($lat, $lon) use ($getPlacesDto) {
-                    return $this->distanceManager->calculate($lat, $lon, $getPlacesDto->lat, $getPlacesDto->lon);
-                };
-        }
+        };
 
-        $places = $this->placeRepository->getPlaces($getPlacesDto);
-
-        return PlaceDtoMapper::fromPaginator($places, function ($place) use ($getPlacesDto) {
-            return PlaceDtoMapper::fromPlaceModel($place, $this->distanceManager
-                ->calculate(
-                    $place->lat,
-                    $place->lon,
-                    $getPlacesDto->lat,
-                    $getPlacesDto->lon
-                ));
-        });
+        return $this->placeRepository->getAll($getPlacesDto, $distanceCalc);
     }
 }

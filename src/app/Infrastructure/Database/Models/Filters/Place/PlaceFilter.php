@@ -3,10 +3,20 @@
 namespace App\Infrastructure\Database\Models\Filters\Place;
 
 use App\Infrastructure\Database\Models\Filters\AbstractFilter;
+use Closure;
 use Illuminate\Database\Eloquent\Builder;
 
 class PlaceFilter extends AbstractFilter
 {
+
+    private Closure $distanceCalculator;
+
+    public function __construct(array $filters, Closure $distanceCalculator)
+    {
+        parent::__construct($filters);
+        $this->distanceCalculator = $distanceCalculator;
+    }
+
     /**
      * @return array[]
      */
@@ -70,8 +80,8 @@ class PlaceFilter extends AbstractFilter
     {
         $placesId = [];
 
-        $builder->get()->map(function ($place) use ($value) {
-            $place->distance = $value['calculate']($place->lat, $place->lon);
+        $builder->get()->map(function ($place) {
+            $place->distance = call_user_func($this->distanceCalculator, [$place->lat, $place->lon]);
             return $place;
         })->filter(function ($place) use ($value, &$placesId) {
             if ($place->distance >= $value['from'] && $place->distance <= $value['to']) {
@@ -106,8 +116,8 @@ class PlaceFilter extends AbstractFilter
             }
 
             case 'distance': {
-                $places = $builder->get()->map(function ($place) use ($value) {
-                    $place->distance = $value['calculate']($place->lat, $place->lon);
+                $places = $builder->get()->map(function ($place) {
+                    $place->distance = call_user_func($this->distanceCalculator, [$place->lat, $place->lon]);
                     return $place;
                 });
 
