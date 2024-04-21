@@ -68,11 +68,11 @@ class AuthService implements IAuthService
             throw new RegistrationConflict();
         }
 
-        $this->userRepository->create([
-            'name' => $registerDto->name,
-            'email' => $registerDto->email,
-            'password' => $registerDto->password
-        ]);
+        $this->userRepository->create(new UserDto(
+            email: $registerDto-> email,
+            name: $registerDto->name,
+            password: $registerDto->password
+        ));
     }
 
     /**
@@ -182,8 +182,9 @@ class AuthService implements IAuthService
             throw new InvalidResetPasswordToken();
         }
 
-        $this->userRepository->update($user->id, [
-            'password' => $resetPasswordDto->password
-        ]);
+        $this->userRepository->update(new UserDto(
+            id: $user->id,
+            password: $resetPasswordDto->password
+        ));
     }
 }

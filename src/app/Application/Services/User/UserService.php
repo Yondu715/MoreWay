@@ -14,9 +14,6 @@ use App\Application\DTO\In\User\GetUsersDto;
 use App\Application\DTO\Out\Auth\UserDto;
 use App\Application\Enums\Storage\StoragePaths;
 use App\Application\Exceptions\User\InvalidOldPassword;
-use App\Infrastructure\Database\Models\User;
-use App\Utils\Mappers\Out\Auth\UserDtoMapper;
-use Illuminate\Support\Collection;
 
 class UserService implements IUserService
 {
@@ -34,8 +31,7 @@ class UserService implements IUserService
      */
     public function getUsers(GetUsersDto $getUsersDto): CursorDto
     {
-        $users = $this->userRepository->getUsers($getUsersDto);
-        return UserDtoMapper::fromPaginator($users);
+        return $this->userRepository->getAll($getUsersDto);
     }
 
     /**
@@ -44,9 +40,7 @@ class UserService implements IUserService
      */
     public function getUserById(int $userId): UserDto
     {
-        /** @var User $user */
-        $user = $this->userRepository->findById($userId);
-        return UserDtoMapper::fromUserModel($user);
+        return $this->userRepository->findById($userId);
     }
 
     /**
@@ -65,17 +59,15 @@ class UserService implements IUserService
      */
     public function changePassword(ChangeUserPasswordDto $changeUserPasswordDto): UserDto
     {
-        /** @var User $user */
         $user = $this->userRepository->findById($changeUserPasswordDto->userId);
         if (!$this->hashManager->check($changeUserPasswordDto->oldPassword, $user->password)) {
             throw new InvalidOldPassword();
         }
 
-        /** @var User $updatedUser */
-        $updatedUser = $this->userRepository->update($user->id, [
-            'password' => $changeUserPasswordDto->newPassword
-        ]);
-        return UserDtoMapper::fromUserModel($updatedUser);
+        return $this->userRepository->update(new UserDto(
+            id: $changeUserPasswordDto->userId,
+            password: $changeUserPasswordDto->newPassword
+        ));
     }
 
     /**
@@ -84,16 +76,15 @@ class UserService implements IUserService
      */
     public function changeAvatar(ChangeUserAvatarDto $changeUserAvatarDto): UserDto
     {
-        /** @var User $user */
         $user = $this->userRepository->findById($changeUserAvatarDto->userId);
+
         $path = StoragePaths::UserAvatar->value . "/$user->id.jpg";
         $this->storageManager->store($path, $changeUserAvatarDto->avatar);
 
-        /** @var User $updatedUser*/
-        $updatedUser = $this->userRepository->update($user->id, [
-            'avatar' => $path
-        ]);
-        return UserDtoMapper::fromUserModel($updatedUser);
+        return $this->userRepository->update(new UserDto(
+            id: $changeUserAvatarDto->userId,
+            avatar: $changeUserAvatarDto->avatar
+        ));
     }
 
     /**
@@ -102,14 +93,9 @@ class UserService implements IUserService
      */
     public function changeData(ChangeUserDataDto $changeUserDataDto): UserDto
     {
-        /** @var User $user */
-        $user = $this->userRepository->findById($changeUserDataDto->userId);
-        $data = collect($changeUserDataDto)->filter(function (?string $value) {
-            return !is_null($value);
-        })->toArray();
-
-        /** @var User $updatedUser */
-        $updatedUser = $this->userRepository->update($user->id, $data);
-        return UserDtoMapper::fromUserModel($updatedUser);
+        return $this->userRepository->update(new UserDto(
+            id: $changeUserDataDto->userId,
+            name: $changeUserDataDto->name
+        ));
     }
 }
