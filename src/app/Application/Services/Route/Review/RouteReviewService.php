@@ -7,10 +7,8 @@ use App\Application\Contracts\Out\Repositories\Route\Review\IRouteReviewReposito
 use App\Application\DTO\Collection\CursorDto;
 use App\Application\DTO\In\Route\Review\CreateRouteReviewDto;
 use App\Application\DTO\In\Route\Review\GetRouteReviewsDto;
-use App\Application\DTO\Out\Review\ReviewCursorDto;
 use App\Application\DTO\Out\Review\ReviewDto;
 use App\Application\Exceptions\Review\FailedToCreateReview;
-use App\Utils\Mappers\Out\Review\ReviewCursorDtoMapper;
 use App\Utils\Mappers\Out\Review\ReviewDtoMapper;
 use Throwable;
 
@@ -46,6 +44,6 @@ class RouteReviewService implements IRouteReviewService
      */
     public function getReviews(GetRouteReviewsDto $getReviewsDto): CursorDto
     {
-        return ReviewCursorDtoMapper::fromPaginator($this->reviewRepository->getReviews($getReviewsDto));
+        return ReviewDtoMapper::fromPaginator($this->reviewRepository->getReviews($getReviewsDto));
     }
 }

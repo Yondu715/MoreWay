@@ -7,6 +7,7 @@ use App\Application\DTO\Out\Auth\UserDto;
 use App\Infrastructure\Database\Models\User;
 use App\Utils\Mappers\Collection\CursorDtoMapper;
 use Illuminate\Pagination\CursorPaginator;
+use Illuminate\Support\Collection;
 
 class UserDtoMapper
 {

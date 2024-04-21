@@ -2,11 +2,14 @@
 
 namespace App\Utils\Mappers\Out\Place;
 
+use App\Application\DTO\Collection\CursorDto;
 use App\Application\DTO\Out\Place\PlaceDto;
 use App\Infrastructure\Database\Models\Place;
+use App\Utils\Mappers\Collection\CursorDtoMapper;
 use App\Utils\Mappers\Out\Place\Image\ImageDtoMapper;
 use App\Utils\Mappers\Out\Place\Locality\LocalityDtoMapper;
 use App\Utils\Mappers\Out\Place\Type\PlaceTypeDtoMapper;
+use Illuminate\Pagination\CursorPaginator;
 
 class PlaceDtoMapper
 {
@@ -29,5 +32,15 @@ class PlaceDtoMapper
             locality: LocalityDtoMapper::fromLocalityModel($place->locality),
             type: PlaceTypeDtoMapper::fromTypeModel($place->type)
         );
+    }
+
+    /**
+     * @param CursorPaginator $cursorPaginator
+     * @param callable $mapFunc
+     * @return CursorDto
+     */
+    public static function fromPaginator(CursorPaginator $cursorPaginator, callable $mapFunc): CursorDto
+    {
+        return CursorDtoMapper::fromPaginatorAndMapper($cursorPaginator, $mapFunc);
     }
 }
