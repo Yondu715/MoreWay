@@ -2,24 +2,23 @@
 
 namespace App\Application\Contracts\Out\Repositories\Place\Review;
 
-use App\Application\Contracts\Out\Repositories\Base\IBaseRepository;
+use App\Application\DTO\Collection\CursorDto;
 use App\Application\DTO\In\Place\Review\GetPlaceReviewsDto;
+use App\Application\DTO\Out\Review\ReviewDto;
 use App\Application\Exceptions\Review\FailedToCreateReview;
-use App\Infrastructure\Database\Models\PlaceReview;
-use Illuminate\Contracts\Pagination\CursorPaginator;
 
-interface IPlaceReviewRepository extends IBaseRepository
+interface IPlaceReviewRepository
 {
     /**
      * @param GetPlaceReviewsDto $getReviewsDto
-     * @return CursorPaginator
+     * @return CursorDto
      */
-    public function getReviews(GetPlaceReviewsDto $getReviewsDto): CursorPaginator;
+    public function getAll(GetPlaceReviewsDto $getReviewsDto): CursorDto;
 
     /**
      * @param array $attributes
-     * @return PlaceReview
+     * @return ReviewDto
      * @throws FailedToCreateReview
      */
-    public function create(array $attributes): PlaceReview;
+    public function create(array $attributes): ReviewDto;
 }

@@ -21,8 +21,8 @@ class PlaceFilterService implements IPlaceFilterService
     public function getFilters(): PlaceFilterDto
     {
         return PlaceFilterDtoMapper::fromFilters([
-            'localities' => $this->localityRepository->all(),
-            'types' => $this->typeRepository->all(),
+            'localities' => $this->localityRepository->getAll(),
+            'types' => $this->typeRepository->getAll(),
             'minDistance' => 0,
             'maxDistance' => 700
         ]);
