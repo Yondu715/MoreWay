@@ -6,6 +6,7 @@ use App\Application\Contracts\Out\Repositories\Route\IRouteRepository;
 use App\Application\DTO\In\Route\CompletedRoutePointDto;
 use App\Application\DTO\In\Route\CreateRouteDto;
 use App\Application\DTO\In\Route\GetRoutesDto;
+use App\Application\DTO\In\Route\GetUserRoutesDto;
 use App\Application\Exceptions\Route\FailedToCreateRoute;
 use App\Application\Exceptions\Route\IncorrectOrderRoutePoints;
 use App\Application\Exceptions\Route\RouteNotFound;
@@ -16,6 +17,7 @@ use App\Infrastructure\Database\Models\RoutePoint;
 use App\Infrastructure\Database\Models\UserActiveRoute;
 use App\Infrastructure\Database\Models\UserRouteProgress;
 use App\Infrastructure\Database\Transaction\Interface\ITransactionManager;
+use App\Infrastructure\Http\Requests\Route\GetUserRoutesRequest;
 use Illuminate\Contracts\Pagination\CursorPaginator;
 use Throwable;
 
@@ -83,7 +85,7 @@ class RouteRepository implements IRouteRepository
     {
         return Route::query()
             ->filter($this->routeFilterFactory->create($getRoutesDto->filter))
-            ->cursorPaginate(perPage: $getRoutesDto->limit ?? 2, cursor: $getRoutesDto->cursor);
+            ->cursorPaginate(perPage: $getRoutesDto->limit, cursor: $getRoutesDto->cursor);
     }
 
     /**
@@ -150,5 +152,12 @@ class RouteRepository implements IRouteRepository
         if ($userProgresses === $route->routePoints->count()) {
             $activeRoute->forceDelete();
         }
+    }
+
+    public function getUsersRoutes(GetUserRoutesDto $getUserRoutesDto): CursorPaginator
+    {
+        return Route::query()
+            ->where('creator_id', $getUserRoutesDto->userId)
+            ->cursorPaginate(perPage: $getUserRoutesDto->limit, cursor: $getUserRoutesDto->cursor);
     }
 }

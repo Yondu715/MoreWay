@@ -8,6 +8,7 @@ use App\Application\DTO\Collection\CursorDto;
 use App\Application\DTO\In\Route\CompletedRoutePointDto;
 use App\Application\DTO\In\Route\CreateRouteDto;
 use App\Application\DTO\In\Route\GetRoutesDto;
+use App\Application\DTO\In\Route\GetUserRoutesDto;
 use App\Application\DTO\Out\Route\RouteDto;
 use App\Application\Exceptions\Route\FailedToCreateRoute;
 use App\Application\Exceptions\Route\IncorrectOrderRoutePoints;
@@ -51,7 +52,9 @@ class RouteService implements IRouteService
      */
     public function getRoutes(GetRoutesDto $getRoutesDto): CursorDto
     {
-        return RouteCursorDtoMapper::fromPaginator($this->routeRepository->getRoutes($getRoutesDto));
+        return RouteCursorDtoMapper::fromPaginator(
+            $this->routeRepository->getRoutes($getRoutesDto)
+        );
     }
 
     /**
@@ -64,5 +67,12 @@ class RouteService implements IRouteService
     public function completedRoutePoint(CompletedRoutePointDto $completedRoutePointDto): void
     {
         $this->routeRepository->changeUserRouteProgress($completedRoutePointDto);
+    }
+
+    public function getUsersRoutes(GetUserRoutesDto $getUserRoutesDto): CursorDto
+    {
+        return RouteCursorDtoMapper::fromPaginator(
+            $this->routeRepository->getUsersRoutes($getUserRoutesDto)
+        );
     }
 }

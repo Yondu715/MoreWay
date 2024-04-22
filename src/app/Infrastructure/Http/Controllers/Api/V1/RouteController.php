@@ -20,6 +20,7 @@ use App\Infrastructure\Http\Requests\Route\CompletedRoutePointRequest;
 use App\Infrastructure\Http\Requests\Route\Constructor\ChangeUserRouteConstructorRequest;
 use App\Infrastructure\Http\Requests\Route\CreateRouteRequest;
 use App\Infrastructure\Http\Requests\Route\GetRoutesRequest;
+use App\Infrastructure\Http\Requests\Route\GetUserRoutesRequest;
 use App\Infrastructure\Http\Resources\Review\ReviewCursorResource;
 use App\Infrastructure\Http\Resources\Review\ReviewResource;
 use App\Infrastructure\Http\Resources\Route\Constructor\ConstructorResource;
@@ -30,6 +31,7 @@ use App\Utils\Mappers\In\Route\CompletedRoutePointDtoMapper;
 use App\Utils\Mappers\In\Route\Constructor\ConstructorDtoMapper;
 use App\Utils\Mappers\In\Route\CreateRouteDtoMapper;
 use App\Utils\Mappers\In\Route\GetRoutesDtoMapper;
+use App\Utils\Mappers\In\Route\GetUserRoutesDtoMapper;
 use App\Utils\Mappers\In\Route\Review\GetRouteReviewsDtoMapper;
 use App\Utils\Mappers\In\Route\Review\CreateRouteReviewDtoMapper;
 use Throwable;
@@ -169,5 +171,13 @@ class RouteController extends Controller
         } catch (RouteNotFound|IncorrectOrderRoutePoints|UserRouteProgressNotFound $e) {
             throw new ApiException($e->getMessage(), $e->getCode());
         }
+    }
+
+    public function getUsersRoutes(GetUserRoutesRequest $getUserRoutesRequest): RouteCursorResource
+    {
+        $getUserRoutesDto = GetUserRoutesDtoMapper::fromRequest($getUserRoutesRequest);
+        return RouteCursorResource::make(
+            $this->routeService->getUsersRoutes($getUserRoutesDto)
+        );
     }
 }
