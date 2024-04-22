@@ -2,12 +2,14 @@
 
 namespace App\Application\Contracts\Out\Repositories\Route;
 
+use App\Application\DTO\In\Route\ChangeActiveUserRouteDto;
 use App\Application\DTO\In\Route\CompletedRoutePointDto;
 use App\Application\DTO\In\Route\CreateRouteDto;
 use App\Application\DTO\In\Route\GetRoutesDto;
 use App\Application\DTO\In\Route\GetUserRoutesDto;
 use App\Application\Exceptions\Route\FailedToCreateRoute;
 use App\Application\Exceptions\Route\IncorrectOrderRoutePoints;
+use App\Application\Exceptions\Route\RouteIsCompleted;
 use App\Application\Exceptions\Route\RouteNotFound;
 use App\Application\Exceptions\Route\UserHaveNotActiveRoute;
 use App\Application\Exceptions\Route\UserRouteProgressNotFound;
@@ -67,4 +69,11 @@ interface IRouteRepository
      * @throws UserHaveNotActiveRoute
      */
     public function getActiveUserRoute(int $userId): UserActiveRoute;
+
+    /**
+     * @param ChangeActiveUserRouteDto $changeActiveUserRouteDto
+     * @return UserActiveRoute
+     * @throws RouteIsCompleted
+     */
+    public function changeActiveUserRoute(ChangeActiveUserRouteDto $changeActiveUserRouteDto): UserActiveRoute;
 }

@@ -10,6 +10,7 @@ use App\Application\Exceptions\Filter\FilterOutOfRange;
 use App\Application\Exceptions\Route\Constructor\InvalidRoutePointIndex;
 use App\Application\Exceptions\Route\FailedToCreateRoute;
 use App\Application\Exceptions\Route\IncorrectOrderRoutePoints;
+use App\Application\Exceptions\Route\RouteIsCompleted;
 use App\Application\Exceptions\Route\RouteNotFound;
 use App\Application\Exceptions\Route\UserHaveNotActiveRoute;
 use App\Application\Exceptions\Route\UserRouteProgressNotFound;
@@ -17,6 +18,7 @@ use App\Infrastructure\Exceptions\ApiException;
 use App\Infrastructure\Http\Controllers\Controller;
 use App\Infrastructure\Http\Requests\Review\CreateReviewRequest;
 use App\Infrastructure\Http\Requests\Review\GetReviewsRequest;
+use App\Infrastructure\Http\Requests\Route\ChangeActiveUserRouteRequest;
 use App\Infrastructure\Http\Requests\Route\CompletedRoutePointRequest;
 use App\Infrastructure\Http\Requests\Route\Constructor\ChangeUserRouteConstructorRequest;
 use App\Infrastructure\Http\Requests\Route\CreateRouteRequest;
@@ -29,6 +31,7 @@ use App\Infrastructure\Http\Resources\Route\Filter\RouteFilterResource;
 use App\Infrastructure\Http\Resources\Route\RouteCursorResource;
 use App\Infrastructure\Http\Resources\Route\RouteResource;
 use App\Infrastructure\Http\Resources\Route\UserActiveRouteResource;
+use App\Utils\Mappers\In\Route\ChangeActiveUserRouteDtoMapper;
 use App\Utils\Mappers\In\Route\CompletedRoutePointDtoMapper;
 use App\Utils\Mappers\In\Route\Constructor\ConstructorDtoMapper;
 use App\Utils\Mappers\In\Route\CreateRouteDtoMapper;
@@ -214,6 +217,23 @@ class RouteController extends Controller
                 $this->routeService->getActiveUserRoute($userId)
             );
         } catch (UserHaveNotActiveRoute $e) {
+            throw new ApiException($e->getMessage(), $e->getCode());
+        }
+    }
+
+    /**
+     * @param ChangeActiveUserRouteRequest $changeActiveUserRouteRequest
+     * @return UserActiveRouteResource
+     * @throws ApiException
+     */
+    public function changeActiveUserRoute(ChangeActiveUserRouteRequest $changeActiveUserRouteRequest): UserActiveRouteResource
+    {
+        try {
+            $changeActiveUserRouteDto = ChangeActiveUserRouteDtoMapper::fromRequest($changeActiveUserRouteRequest);
+            return UserActiveRouteResource::make(
+                $this->routeService->changeActiveUserRoute($changeActiveUserRouteDto)
+            );
+        } catch (RouteIsCompleted $e) {
             throw new ApiException($e->getMessage(), $e->getCode());
         }
     }

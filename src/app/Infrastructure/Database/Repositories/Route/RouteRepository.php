@@ -3,12 +3,14 @@
 namespace App\Infrastructure\Database\Repositories\Route;
 
 use App\Application\Contracts\Out\Repositories\Route\IRouteRepository;
+use App\Application\DTO\In\Route\ChangeActiveUserRouteDto;
 use App\Application\DTO\In\Route\CompletedRoutePointDto;
 use App\Application\DTO\In\Route\CreateRouteDto;
 use App\Application\DTO\In\Route\GetRoutesDto;
 use App\Application\DTO\In\Route\GetUserRoutesDto;
 use App\Application\Exceptions\Route\FailedToCreateRoute;
 use App\Application\Exceptions\Route\IncorrectOrderRoutePoints;
+use App\Application\Exceptions\Route\RouteIsCompleted;
 use App\Application\Exceptions\Route\RouteNotFound;
 use App\Application\Exceptions\Route\UserHaveNotActiveRoute;
 use App\Application\Exceptions\Route\UserRouteProgressNotFound;
@@ -18,6 +20,7 @@ use App\Infrastructure\Database\Models\RoutePoint;
 use App\Infrastructure\Database\Models\UserActiveRoute;
 use App\Infrastructure\Database\Models\UserRouteProgress;
 use App\Infrastructure\Database\Transaction\Interface\ITransactionManager;
+use App\Infrastructure\Http\Requests\Route\ChangeActiveUserRouteRequest;
 use Illuminate\Contracts\Pagination\CursorPaginator;
 use Throwable;
 
@@ -191,14 +194,58 @@ class RouteRepository implements IRouteRepository
      */
     public function getActiveUserRoute(int $userId): UserActiveRoute
     {
-        /** @var UserActiveRoute $route */
-        $route = UserActiveRoute::query()
-            ->where('user_id', $userId)->get()->first();
+        /** @var UserActiveRoute $userActiveRoute */
+        $userActiveRoute = UserActiveRoute::query()
+            ->where('user_id', $userId)
+            ->get()
+            ->first();
 
-        if(!$route){
+        if(!$userActiveRoute){
             throw new UserHaveNotActiveRoute();
         }
 
-        return $route;
+        return $userActiveRoute;
+    }
+
+    /**
+     * @param ChangeActiveUserRouteDto $changeActiveUserRouteDto
+     * @return UserActiveRoute
+     * @throws RouteIsCompleted
+     */
+    public function changeActiveUserRoute(ChangeActiveUserRouteDto $changeActiveUserRouteDto): UserActiveRoute
+    {
+        $route = Route::query()
+            ->where('id', $changeActiveUserRouteDto->routeId)
+            ->get()
+            ->first();
+
+        $userActiveRoute = UserRouteProgress::query()
+            ->where('user_id', $changeActiveUserRouteDto->userId)
+            ->whereIn('route_point_id', $route->routePoints->pluck('id'))
+            ->get();
+
+        if($userActiveRoute->where("is_completed", true)
+                ->count() === $route->routePoints->count()){
+            throw new RouteIsCompleted();
+        }
+
+        if(UserRouteProgress::query()
+            ->where('user_id', $changeActiveUserRouteDto->userId)
+            ->whereIn('route_point_id', $route->routePoints->pluck('id'))
+            ->get()->isEmpty()) {
+            $route->routePoints()->each(function ($routePoint) use ($changeActiveUserRouteDto) {
+                UserRouteProgress::query()->create([
+                    'user_id' => $changeActiveUserRouteDto->userId,
+                    'route_point_id' => $routePoint->id,
+                ]);
+            });
+        }
+
+        return UserActiveRoute::query()
+            ->updateOrCreate([
+                'user_id' => $changeActiveUserRouteDto->userId,
+            ], [
+                'route_id' =>  $changeActiveUserRouteDto->routeId,
+            ])->get()->first();
     }
 }
