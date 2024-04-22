@@ -8,7 +8,7 @@ use Illuminate\Foundation\Http\FormRequest;
 /**
  * @property int $routeId
  */
-class ChangeActiveUserRouteRequest extends FormRequest
+class ChangeUserRouteRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.

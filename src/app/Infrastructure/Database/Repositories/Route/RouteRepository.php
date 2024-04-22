@@ -3,7 +3,7 @@
 namespace App\Infrastructure\Database\Repositories\Route;
 
 use App\Application\Contracts\Out\Repositories\Route\IRouteRepository;
-use App\Application\DTO\In\Route\ChangeActiveUserRouteDto;
+use App\Application\DTO\In\Route\ChangeUserRouteDto;
 use App\Application\DTO\In\Route\CompletedRoutePointDto;
 use App\Application\DTO\In\Route\CreateRouteDto;
 use App\Application\DTO\In\Route\GetRoutesDto;
@@ -18,9 +18,9 @@ use App\Infrastructure\Database\Models\Filters\Route\RouteFilterFactory;
 use App\Infrastructure\Database\Models\Route;
 use App\Infrastructure\Database\Models\RoutePoint;
 use App\Infrastructure\Database\Models\UserActiveRoute;
+use App\Infrastructure\Database\Models\UserFavoriteRoute;
 use App\Infrastructure\Database\Models\UserRouteProgress;
 use App\Infrastructure\Database\Transaction\Interface\ITransactionManager;
-use App\Infrastructure\Http\Requests\Route\ChangeActiveUserRouteRequest;
 use Illuminate\Contracts\Pagination\CursorPaginator;
 use Throwable;
 
@@ -208,11 +208,11 @@ class RouteRepository implements IRouteRepository
     }
 
     /**
-     * @param ChangeActiveUserRouteDto $changeActiveUserRouteDto
+     * @param ChangeUserRouteDto $changeActiveUserRouteDto
      * @return UserActiveRoute
      * @throws RouteIsCompleted
      */
-    public function changeActiveUserRoute(ChangeActiveUserRouteDto $changeActiveUserRouteDto): UserActiveRoute
+    public function changeActiveUserRoute(ChangeUserRouteDto $changeActiveUserRouteDto): UserActiveRoute
     {
         $route = Route::query()
             ->where('id', $changeActiveUserRouteDto->routeId)
@@ -247,5 +247,50 @@ class RouteRepository implements IRouteRepository
             ], [
                 'route_id' =>  $changeActiveUserRouteDto->routeId,
             ])->get()->first();
+    }
+
+    /**
+     * @param GetUserRoutesDto $getUserRoutesDto
+     * @return CursorPaginator
+     */
+    public function getFavoriteUserRoutes(GetUserRoutesDto $getUserRoutesDto): CursorPaginator
+    {
+        return Route::query()->whereIn('id', UserFavoriteRoute::query()
+            ->where('user_id', $getUserRoutesDto->userId)->get()->pluck('route_id'))
+            ->cursorPaginate(perPage: $getUserRoutesDto->limit, cursor: $getUserRoutesDto->cursor);
+    }
+
+    /**
+     * @param ChangeUserRouteDto $changeUserRouteDto
+     * @return Route
+     */
+    public function addRouteToUserFavorite(ChangeUserRouteDto $changeUserRouteDto): Route
+    {
+        /** @var UserFavoriteRoute $userFavoriteRoute */
+        $userFavoriteRoute = UserFavoriteRoute::query()->create([
+            'user_id' => $changeUserRouteDto->userId,
+            'route_id' => $changeUserRouteDto->routeId,
+        ]);
+
+        return $userFavoriteRoute->route;
+    }
+
+    /**
+     * @param int $userId
+     * @param int $routeId
+     * @return void
+     * @throws RouteNotFound
+     */
+    public function deleteRouteFromUserFavorite(int $userId, int $routeId): void
+    {
+        $route = UserFavoriteRoute::query()
+            ->where('route_id', $routeId)
+            ->where('user_id', $userId);
+
+        if($route->get()->isEmpty()){
+            throw new RouteNotFound();
+        }
+
+        $route->delete();
     }
 }

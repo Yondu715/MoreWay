@@ -18,7 +18,7 @@ use App\Infrastructure\Exceptions\ApiException;
 use App\Infrastructure\Http\Controllers\Controller;
 use App\Infrastructure\Http\Requests\Review\CreateReviewRequest;
 use App\Infrastructure\Http\Requests\Review\GetReviewsRequest;
-use App\Infrastructure\Http\Requests\Route\ChangeActiveUserRouteRequest;
+use App\Infrastructure\Http\Requests\Route\ChangeUserRouteRequest;
 use App\Infrastructure\Http\Requests\Route\CompletedRoutePointRequest;
 use App\Infrastructure\Http\Requests\Route\Constructor\ChangeUserRouteConstructorRequest;
 use App\Infrastructure\Http\Requests\Route\CreateRouteRequest;
@@ -31,7 +31,7 @@ use App\Infrastructure\Http\Resources\Route\Filter\RouteFilterResource;
 use App\Infrastructure\Http\Resources\Route\RouteCursorResource;
 use App\Infrastructure\Http\Resources\Route\RouteResource;
 use App\Infrastructure\Http\Resources\Route\UserActiveRouteResource;
-use App\Utils\Mappers\In\Route\ChangeActiveUserRouteDtoMapper;
+use App\Utils\Mappers\In\Route\ChangeUserRouteDtoMapper;
 use App\Utils\Mappers\In\Route\CompletedRoutePointDtoMapper;
 use App\Utils\Mappers\In\Route\Constructor\ConstructorDtoMapper;
 use App\Utils\Mappers\In\Route\CreateRouteDtoMapper;
@@ -222,18 +222,57 @@ class RouteController extends Controller
     }
 
     /**
-     * @param ChangeActiveUserRouteRequest $changeActiveUserRouteRequest
+     * @param ChangeUserRouteRequest $changeActiveUserRouteRequest
      * @return UserActiveRouteResource
      * @throws ApiException
      */
-    public function changeActiveUserRoute(ChangeActiveUserRouteRequest $changeActiveUserRouteRequest): UserActiveRouteResource
+    public function changeActiveUserRoute(ChangeUserRouteRequest $changeActiveUserRouteRequest): UserActiveRouteResource
     {
         try {
-            $changeActiveUserRouteDto = ChangeActiveUserRouteDtoMapper::fromRequest($changeActiveUserRouteRequest);
+            $changeActiveUserRouteDto = ChangeUserRouteDtoMapper::fromRequest($changeActiveUserRouteRequest);
             return UserActiveRouteResource::make(
                 $this->routeService->changeActiveUserRoute($changeActiveUserRouteDto)
             );
         } catch (RouteIsCompleted $e) {
+            throw new ApiException($e->getMessage(), $e->getCode());
+        }
+    }
+
+    /**
+     * @param GetUserRoutesRequest $getUserRoutesRequest
+     * @return RouteCursorResource
+     */
+    public function getFavoriteUserRoutes(GetUserRoutesRequest $getUserRoutesRequest): RouteCursorResource
+    {
+        $getUserRoutesDto = GetUserRoutesDtoMapper::fromRequest($getUserRoutesRequest);
+        return RouteCursorResource::make(
+            $this->routeService->getFavoriteUserRoutes($getUserRoutesDto)
+        );
+    }
+
+    /**
+     * @param ChangeUserRouteRequest $changeUserRouteRequest
+     * @return RouteResource
+     */
+    public function addRouteToUserFavorite(ChangeUserRouteRequest $changeUserRouteRequest): RouteResource
+    {
+        $changeUserRouteDto = ChangeUserRouteDtoMapper::fromRequest($changeUserRouteRequest);
+        return RouteResource::make(
+            $this->routeService->addRouteToUserFavorite($changeUserRouteDto)
+        );
+    }
+
+    /**
+     * @param int $userId
+     * @param int $routeId
+     * @return void
+     * @throws ApiException
+     */
+    public function deleteRouteFromUserFavorite(int $userId, int $routeId): void
+    {
+        try {
+            $this->routeService->deleteRouteFromUserFavorite($userId, $routeId);
+        } catch (RouteNotFound $e) {
             throw new ApiException($e->getMessage(), $e->getCode());
         }
     }

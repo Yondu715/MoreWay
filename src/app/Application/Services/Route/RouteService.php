@@ -5,7 +5,7 @@ namespace App\Application\Services\Route;
 use App\Application\Contracts\In\Services\Route\IRouteService;
 use App\Application\Contracts\Out\Repositories\Route\IRouteRepository;
 use App\Application\DTO\Collection\CursorDto;
-use App\Application\DTO\In\Route\ChangeActiveUserRouteDto;
+use App\Application\DTO\In\Route\ChangeUserRouteDto;
 use App\Application\DTO\In\Route\CompletedRoutePointDto;
 use App\Application\DTO\In\Route\CreateRouteDto;
 use App\Application\DTO\In\Route\GetRoutesDto;
@@ -109,14 +109,47 @@ class RouteService implements IRouteService
     }
 
     /**
-     * @param ChangeActiveUserRouteDto $changeActiveUserRouteDto
+     * @param ChangeUserRouteDto $changeActiveUserRouteDto
      * @return ActiveRouteDto
      * @throws RouteIsCompleted
      */
-    public function changeActiveUserRoute(ChangeActiveUserRouteDto $changeActiveUserRouteDto): ActiveRouteDto
+    public function changeActiveUserRoute(ChangeUserRouteDto $changeActiveUserRouteDto): ActiveRouteDto
     {
         return ActiveRouteDtoMapper::fromRouteModel(
             $this->routeRepository->changeActiveUserRoute($changeActiveUserRouteDto)
         );
+    }
+
+    /**
+     * @param GetUserRoutesDto $getUserRoutesDto
+     * @return CursorDto
+     */
+    public function getFavoriteUserRoutes(GetUserRoutesDto $getUserRoutesDto): CursorDto
+    {
+        return RouteCursorDtoMapper::fromPaginator(
+            $this->routeRepository->getFavoriteUserRoutes($getUserRoutesDto)
+        );
+    }
+
+    /**
+     * @param ChangeUserRouteDto $changeUserRouteDto
+     * @return RouteDto
+     */
+    public function addRouteToUserFavorite(ChangeUserRouteDto $changeUserRouteDto): RouteDto
+    {
+        return RouteDtoMapper::fromRouteModel(
+          $this->routeRepository->addRouteToUserFavorite($changeUserRouteDto)
+        );
+    }
+
+    /**
+     * @param int $userId
+     * @param int $routeId
+     * @return void
+     * @throws RouteNotFound
+     */
+    public function deleteRouteFromUserFavorite(int $userId, int $routeId): void
+    {
+        $this->routeRepository->deleteRouteFromUserFavorite($userId, $routeId);
     }
 }

@@ -2,7 +2,7 @@
 
 namespace App\Application\Contracts\Out\Repositories\Route;
 
-use App\Application\DTO\In\Route\ChangeActiveUserRouteDto;
+use App\Application\DTO\In\Route\ChangeUserRouteDto;
 use App\Application\DTO\In\Route\CompletedRoutePointDto;
 use App\Application\DTO\In\Route\CreateRouteDto;
 use App\Application\DTO\In\Route\GetRoutesDto;
@@ -71,9 +71,29 @@ interface IRouteRepository
     public function getActiveUserRoute(int $userId): UserActiveRoute;
 
     /**
-     * @param ChangeActiveUserRouteDto $changeActiveUserRouteDto
+     * @param ChangeUserRouteDto $changeActiveUserRouteDto
      * @return UserActiveRoute
      * @throws RouteIsCompleted
      */
-    public function changeActiveUserRoute(ChangeActiveUserRouteDto $changeActiveUserRouteDto): UserActiveRoute;
+    public function changeActiveUserRoute(ChangeUserRouteDto $changeActiveUserRouteDto): UserActiveRoute;
+
+    /**
+     * @param GetUserRoutesDto $getUserRoutesDto
+     * @return CursorPaginator
+     */
+    public function getFavoriteUserRoutes(GetUserRoutesDto $getUserRoutesDto): CursorPaginator;
+
+    /**
+     * @param ChangeUserRouteDto $changeUserRouteDto
+     * @return Route
+     */
+    public function addRouteToUserFavorite(ChangeUserRouteDto $changeUserRouteDto): Route;
+
+    /**
+     * @param int $userId
+     * @param int $routeId
+     * @return void
+     * @throws RouteNotFound
+     */
+    public function deleteRouteFromUserFavorite(int $userId, int $routeId): void;
 }

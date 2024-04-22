@@ -2,7 +2,7 @@
 
 namespace App\Application\DTO\In\Route;
 
-class ChangeActiveUserRouteDto
+class ChangeUserRouteDto
 {
     public readonly int $userId;
     public readonly int $routeId;
