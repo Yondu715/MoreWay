@@ -64,5 +64,4 @@ class GetRoutesDtoMapper
             limit: $getRoutesRequest->limit ?? 2
         );
     }
-
 }

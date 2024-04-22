@@ -8,7 +8,7 @@ use App\Infrastructure\Http\Requests\Route\CompletedRoutePointRequest;
 class CompletedRoutePointDtoMapper
 {
     /**
-     * @param CompletedRoutePointRequest$completedRoutePointRequest
+     * @param CompletedRoutePointRequest $completedRoutePointRequest
      * @return CompletedRoutePointDto
      */
     public static function fromRequest(CompletedRoutePointRequest $completedRoutePointRequest): CompletedRoutePointDto

@@ -10,26 +10,33 @@ use App\Application\Exceptions\Filter\FilterOutOfRange;
 use App\Application\Exceptions\Route\Constructor\InvalidRoutePointIndex;
 use App\Application\Exceptions\Route\FailedToCreateRoute;
 use App\Application\Exceptions\Route\IncorrectOrderRoutePoints;
+use App\Application\Exceptions\Route\RouteIsCompleted;
 use App\Application\Exceptions\Route\RouteNotFound;
+use App\Application\Exceptions\Route\UserHaveNotActiveRoute;
 use App\Application\Exceptions\Route\UserRouteProgressNotFound;
 use App\Infrastructure\Exceptions\ApiException;
 use App\Infrastructure\Http\Controllers\Controller;
 use App\Infrastructure\Http\Requests\Review\CreateReviewRequest;
 use App\Infrastructure\Http\Requests\Review\GetReviewsRequest;
+use App\Infrastructure\Http\Requests\Route\ChangeUserRouteRequest;
 use App\Infrastructure\Http\Requests\Route\CompletedRoutePointRequest;
 use App\Infrastructure\Http\Requests\Route\Constructor\ChangeUserRouteConstructorRequest;
 use App\Infrastructure\Http\Requests\Route\CreateRouteRequest;
 use App\Infrastructure\Http\Requests\Route\GetRoutesRequest;
+use App\Infrastructure\Http\Requests\Route\GetUserRoutesRequest;
 use App\Infrastructure\Http\Resources\Review\ReviewCursorResource;
 use App\Infrastructure\Http\Resources\Review\ReviewResource;
 use App\Infrastructure\Http\Resources\Route\Constructor\ConstructorResource;
 use App\Infrastructure\Http\Resources\Route\Filter\RouteFilterResource;
 use App\Infrastructure\Http\Resources\Route\RouteCursorResource;
 use App\Infrastructure\Http\Resources\Route\RouteResource;
+use App\Infrastructure\Http\Resources\Route\UserActiveRouteResource;
+use App\Utils\Mappers\In\Route\ChangeUserRouteDtoMapper;
 use App\Utils\Mappers\In\Route\CompletedRoutePointDtoMapper;
 use App\Utils\Mappers\In\Route\Constructor\ConstructorDtoMapper;
 use App\Utils\Mappers\In\Route\CreateRouteDtoMapper;
 use App\Utils\Mappers\In\Route\GetRoutesDtoMapper;
+use App\Utils\Mappers\In\Route\GetUserRoutesDtoMapper;
 use App\Utils\Mappers\In\Route\Review\GetRouteReviewsDtoMapper;
 use App\Utils\Mappers\In\Route\Review\CreateRouteReviewDtoMapper;
 use Throwable;
@@ -167,6 +174,105 @@ class RouteController extends Controller
             $completedRoutePointDto = CompletedRoutePointDtoMapper::fromRequest($completedRoutePointRequest);
             $this->routeService->completedRoutePoint($completedRoutePointDto);
         } catch (RouteNotFound|IncorrectOrderRoutePoints|UserRouteProgressNotFound $e) {
+            throw new ApiException($e->getMessage(), $e->getCode());
+        }
+    }
+
+    /**
+     * @param GetUserRoutesRequest $getUserRoutesRequest
+     * @return RouteCursorResource
+     */
+    public function getUsersRoutes(GetUserRoutesRequest $getUserRoutesRequest): RouteCursorResource
+    {
+        $getUserRoutesDto = GetUserRoutesDtoMapper::fromRequest($getUserRoutesRequest);
+        return RouteCursorResource::make(
+            $this->routeService->getUsersRoutes($getUserRoutesDto)
+        );
+    }
+
+    /**
+     * @param int $userId
+     * @param int $routeId
+     * @return void
+     * @throws ApiException
+     */
+    public function deleteUserRoute(int $userId, int $routeId): void
+    {
+        try {
+            $this->routeService->deleteUserRoute($userId, $routeId);
+        } catch (RouteNotFound $e) {
+            throw new ApiException($e->getMessage(), $e->getCode());
+        }
+    }
+
+    /**
+     * @param int $userId
+     * @return UserActiveRouteResource
+     * @throws ApiException
+     */
+    public function getActiveUserRoute(int $userId): UserActiveRouteResource
+    {
+        try {
+            return UserActiveRouteResource::make(
+                $this->routeService->getActiveUserRoute($userId)
+            );
+        } catch (UserHaveNotActiveRoute $e) {
+            throw new ApiException($e->getMessage(), $e->getCode());
+        }
+    }
+
+    /**
+     * @param ChangeUserRouteRequest $changeActiveUserRouteRequest
+     * @return UserActiveRouteResource
+     * @throws ApiException
+     */
+    public function changeActiveUserRoute(ChangeUserRouteRequest $changeActiveUserRouteRequest): UserActiveRouteResource
+    {
+        try {
+            $changeActiveUserRouteDto = ChangeUserRouteDtoMapper::fromRequest($changeActiveUserRouteRequest);
+            return UserActiveRouteResource::make(
+                $this->routeService->changeActiveUserRoute($changeActiveUserRouteDto)
+            );
+        } catch (RouteIsCompleted $e) {
+            throw new ApiException($e->getMessage(), $e->getCode());
+        }
+    }
+
+    /**
+     * @param GetUserRoutesRequest $getUserRoutesRequest
+     * @return RouteCursorResource
+     */
+    public function getFavoriteUserRoutes(GetUserRoutesRequest $getUserRoutesRequest): RouteCursorResource
+    {
+        $getUserRoutesDto = GetUserRoutesDtoMapper::fromRequest($getUserRoutesRequest);
+        return RouteCursorResource::make(
+            $this->routeService->getFavoriteUserRoutes($getUserRoutesDto)
+        );
+    }
+
+    /**
+     * @param ChangeUserRouteRequest $changeUserRouteRequest
+     * @return RouteResource
+     */
+    public function addRouteToUserFavorite(ChangeUserRouteRequest $changeUserRouteRequest): RouteResource
+    {
+        $changeUserRouteDto = ChangeUserRouteDtoMapper::fromRequest($changeUserRouteRequest);
+        return RouteResource::make(
+            $this->routeService->addRouteToUserFavorite($changeUserRouteDto)
+        );
+    }
+
+    /**
+     * @param int $userId
+     * @param int $routeId
+     * @return void
+     * @throws ApiException
+     */
+    public function deleteRouteFromUserFavorite(int $userId, int $routeId): void
+    {
+        try {
+            $this->routeService->deleteRouteFromUserFavorite($userId, $routeId);
+        } catch (RouteNotFound $e) {
             throw new ApiException($e->getMessage(), $e->getCode());
         }
     }
