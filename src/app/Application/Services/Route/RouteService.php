@@ -69,10 +69,25 @@ class RouteService implements IRouteService
         $this->routeRepository->changeUserRouteProgress($completedRoutePointDto);
     }
 
+    /**
+     * @param GetUserRoutesDto $getUserRoutesDto
+     * @return CursorDto
+     */
     public function getUsersRoutes(GetUserRoutesDto $getUserRoutesDto): CursorDto
     {
         return RouteCursorDtoMapper::fromPaginator(
             $this->routeRepository->getUsersRoutes($getUserRoutesDto)
         );
+    }
+
+    /**
+     * @param int $userId
+     * @param int $routeId
+     * @return void
+     * @throws RouteNotFound
+     */
+    public function deleteUserRoute(int $userId, int $routeId): void
+    {
+        $this->routeRepository->deleteUserRoute($userId, $routeId);
     }
 }

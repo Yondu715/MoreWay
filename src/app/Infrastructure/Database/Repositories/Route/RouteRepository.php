@@ -17,7 +17,6 @@ use App\Infrastructure\Database\Models\RoutePoint;
 use App\Infrastructure\Database\Models\UserActiveRoute;
 use App\Infrastructure\Database\Models\UserRouteProgress;
 use App\Infrastructure\Database\Transaction\Interface\ITransactionManager;
-use App\Infrastructure\Http\Requests\Route\GetUserRoutesRequest;
 use Illuminate\Contracts\Pagination\CursorPaginator;
 use Throwable;
 
@@ -154,10 +153,33 @@ class RouteRepository implements IRouteRepository
         }
     }
 
+    /**
+     * @param GetUserRoutesDto $getUserRoutesDto
+     * @return CursorPaginator
+     */
     public function getUsersRoutes(GetUserRoutesDto $getUserRoutesDto): CursorPaginator
     {
         return Route::query()
             ->where('creator_id', $getUserRoutesDto->userId)
             ->cursorPaginate(perPage: $getUserRoutesDto->limit, cursor: $getUserRoutesDto->cursor);
+    }
+
+    /**
+     * @param int $userId
+     * @param int $routeId
+     * @return void
+     * @throws RouteNotFound
+     */
+    public function deleteUserRoute(int $userId, int $routeId): void
+    {
+        $route = Route::query()
+            ->where('id', $routeId)
+            ->where('creator_id', $userId);
+
+        if($route->get()->isEmpty()){
+            throw new RouteNotFound();
+        }
+
+        $route->delete();
     }
 }

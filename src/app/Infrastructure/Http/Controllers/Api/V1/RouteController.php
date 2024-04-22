@@ -173,11 +173,30 @@ class RouteController extends Controller
         }
     }
 
+    /**
+     * @param GetUserRoutesRequest $getUserRoutesRequest
+     * @return RouteCursorResource
+     */
     public function getUsersRoutes(GetUserRoutesRequest $getUserRoutesRequest): RouteCursorResource
     {
         $getUserRoutesDto = GetUserRoutesDtoMapper::fromRequest($getUserRoutesRequest);
         return RouteCursorResource::make(
             $this->routeService->getUsersRoutes($getUserRoutesDto)
         );
+    }
+
+    /**
+     * @param int $userId
+     * @param int $routeId
+     * @return void
+     * @throws ApiException
+     */
+    public function deleteUserRoute(int $userId, int $routeId): void
+    {
+        try {
+            $this->routeService->deleteUserRoute($userId, $routeId);
+        } catch (RouteNotFound $e) {
+            throw new ApiException($e->getMessage(), $e->getCode());
+        }
     }
 }

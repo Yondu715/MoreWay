@@ -6,6 +6,7 @@ use App\Application\DTO\Collection\CursorDto;
 use App\Application\DTO\In\Route\CompletedRoutePointDto;
 use App\Application\DTO\In\Route\CreateRouteDto;
 use App\Application\DTO\In\Route\GetRoutesDto;
+use App\Application\DTO\In\Route\GetUserRoutesDto;
 use App\Application\DTO\Out\Route\RouteDto;
 use App\Application\Exceptions\Route\FailedToCreateRoute;
 use App\Application\Exceptions\Route\IncorrectOrderRoutePoints;
@@ -43,4 +44,18 @@ interface IRouteService
      * @throws RouteNotFound
      */
     public function completedRoutePoint(CompletedRoutePointDto $completedRoutePointDto): void;
+
+    /**
+     * @param GetUserRoutesDto $getUserRoutesDto
+     * @return CursorDto
+     */
+    public function getUsersRoutes(GetUserRoutesDto $getUserRoutesDto): CursorDto;
+
+    /**
+     * @param int $userId
+     * @param int $routeId
+     * @return void
+     * @throws RouteNotFound
+     */
+    public function deleteUserRoute(int $userId, int $routeId): void;
 }
