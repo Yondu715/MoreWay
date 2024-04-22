@@ -9,8 +9,10 @@ use App\Application\DTO\In\Route\GetUserRoutesDto;
 use App\Application\Exceptions\Route\FailedToCreateRoute;
 use App\Application\Exceptions\Route\IncorrectOrderRoutePoints;
 use App\Application\Exceptions\Route\RouteNotFound;
+use App\Application\Exceptions\Route\UserHaveNotActiveRoute;
 use App\Application\Exceptions\Route\UserRouteProgressNotFound;
 use App\Infrastructure\Database\Models\Route;
+use App\Infrastructure\Database\Models\UserActiveRoute;
 use Illuminate\Contracts\Pagination\CursorPaginator;
 
 interface IRouteRepository
@@ -58,4 +60,11 @@ interface IRouteRepository
      * @throws RouteNotFound
      */
     public function deleteUserRoute(int $userId, int $routeId): void;
+
+    /**
+     * @param int $userId
+     * @return UserActiveRoute
+     * @throws UserHaveNotActiveRoute
+     */
+    public function getActiveUserRoute(int $userId): UserActiveRoute;
 }

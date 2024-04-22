@@ -10,6 +10,7 @@ use App\Application\DTO\In\Route\GetUserRoutesDto;
 use App\Application\Exceptions\Route\FailedToCreateRoute;
 use App\Application\Exceptions\Route\IncorrectOrderRoutePoints;
 use App\Application\Exceptions\Route\RouteNotFound;
+use App\Application\Exceptions\Route\UserHaveNotActiveRoute;
 use App\Application\Exceptions\Route\UserRouteProgressNotFound;
 use App\Infrastructure\Database\Models\Filters\Route\RouteFilterFactory;
 use App\Infrastructure\Database\Models\Route;
@@ -181,5 +182,23 @@ class RouteRepository implements IRouteRepository
         }
 
         $route->delete();
+    }
+
+    /**
+     * @param int $userId
+     * @return UserActiveRoute
+     * @throws UserHaveNotActiveRoute
+     */
+    public function getActiveUserRoute(int $userId): UserActiveRoute
+    {
+        /** @var UserActiveRoute $route */
+        $route = UserActiveRoute::query()
+            ->where('user_id', $userId)->get()->first();
+
+        if(!$route){
+            throw new UserHaveNotActiveRoute();
+        }
+
+        return $route;
     }
 }

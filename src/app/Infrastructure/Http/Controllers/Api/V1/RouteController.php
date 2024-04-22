@@ -11,6 +11,7 @@ use App\Application\Exceptions\Route\Constructor\InvalidRoutePointIndex;
 use App\Application\Exceptions\Route\FailedToCreateRoute;
 use App\Application\Exceptions\Route\IncorrectOrderRoutePoints;
 use App\Application\Exceptions\Route\RouteNotFound;
+use App\Application\Exceptions\Route\UserHaveNotActiveRoute;
 use App\Application\Exceptions\Route\UserRouteProgressNotFound;
 use App\Infrastructure\Exceptions\ApiException;
 use App\Infrastructure\Http\Controllers\Controller;
@@ -27,6 +28,7 @@ use App\Infrastructure\Http\Resources\Route\Constructor\ConstructorResource;
 use App\Infrastructure\Http\Resources\Route\Filter\RouteFilterResource;
 use App\Infrastructure\Http\Resources\Route\RouteCursorResource;
 use App\Infrastructure\Http\Resources\Route\RouteResource;
+use App\Infrastructure\Http\Resources\Route\UserActiveRouteResource;
 use App\Utils\Mappers\In\Route\CompletedRoutePointDtoMapper;
 use App\Utils\Mappers\In\Route\Constructor\ConstructorDtoMapper;
 use App\Utils\Mappers\In\Route\CreateRouteDtoMapper;
@@ -196,6 +198,22 @@ class RouteController extends Controller
         try {
             $this->routeService->deleteUserRoute($userId, $routeId);
         } catch (RouteNotFound $e) {
+            throw new ApiException($e->getMessage(), $e->getCode());
+        }
+    }
+
+    /**
+     * @param int $userId
+     * @return UserActiveRouteResource
+     * @throws ApiException
+     */
+    public function getActiveUserRoute(int $userId): UserActiveRouteResource
+    {
+        try {
+            return UserActiveRouteResource::make(
+                $this->routeService->getActiveUserRoute($userId)
+            );
+        } catch (UserHaveNotActiveRoute $e) {
             throw new ApiException($e->getMessage(), $e->getCode());
         }
     }

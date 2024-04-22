@@ -7,10 +7,12 @@ use App\Application\DTO\In\Route\CompletedRoutePointDto;
 use App\Application\DTO\In\Route\CreateRouteDto;
 use App\Application\DTO\In\Route\GetRoutesDto;
 use App\Application\DTO\In\Route\GetUserRoutesDto;
+use App\Application\DTO\Out\Route\ActiveRouteDto;
 use App\Application\DTO\Out\Route\RouteDto;
 use App\Application\Exceptions\Route\FailedToCreateRoute;
 use App\Application\Exceptions\Route\IncorrectOrderRoutePoints;
 use App\Application\Exceptions\Route\RouteNotFound;
+use App\Application\Exceptions\Route\UserHaveNotActiveRoute;
 use App\Application\Exceptions\Route\UserRouteProgressNotFound;
 
 interface IRouteService
@@ -58,4 +60,11 @@ interface IRouteService
      * @throws RouteNotFound
      */
     public function deleteUserRoute(int $userId, int $routeId): void;
+
+    /**
+     * @param int $userId
+     * @return ActiveRouteDto
+     * @throws UserHaveNotActiveRoute
+     */
+    public function getActiveUserRoute(int $userId): ActiveRouteDto;
 }
