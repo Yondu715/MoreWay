@@ -75,8 +75,11 @@ Route::prefix('users')
 Route::prefix('friends')
     ->middleware('auth:api', 'role:user')
     ->group(function () {
-        Route::post('/requests', [FriendController::class, 'addFriendRequest']);
-        Route::put('/requests', [FriendController::class, 'acceptFriendRequest']);
+        Route::middleware('owner')
+            ->group(function () {
+                Route::post('/requests', [FriendController::class, 'addFriendRequest']);
+                Route::put('/requests', [FriendController::class, 'acceptFriendRequest']);
+            });
         Route::delete('/requests/{requestId}', [FriendController::class, 'rejectFriendRequest']);
     });
 
