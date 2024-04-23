@@ -8,7 +8,6 @@ use Illuminate\Foundation\Http\FormRequest;
 /**
  * @property string $name
  * @property int $userId
- * @property array $routePoints
  */
 class CreateRouteRequest extends FormRequest
 {
@@ -22,8 +21,6 @@ class CreateRouteRequest extends FormRequest
         return [
             'name' => 'required|string|max:255',
             'userId' => 'required|numeric',
-            'routePoints' => 'required|array',
-            'routePoints.*' => 'required|array:placeId,index'
         ];
     }
 }

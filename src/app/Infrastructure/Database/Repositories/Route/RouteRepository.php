@@ -16,11 +16,13 @@ use App\Application\Exceptions\Route\UserHaveNotActiveRoute;
 use App\Application\Exceptions\Route\UserRouteProgressNotFound;
 use App\Infrastructure\Database\Models\Filters\Route\RouteFilterFactory;
 use App\Infrastructure\Database\Models\Route;
+use App\Infrastructure\Database\Models\RouteConstructorPoint;
 use App\Infrastructure\Database\Models\RoutePoint;
 use App\Infrastructure\Database\Models\UserActiveRoute;
 use App\Infrastructure\Database\Models\UserFavoriteRoute;
 use App\Infrastructure\Database\Models\UserRouteProgress;
 use App\Infrastructure\Database\Transaction\Interface\ITransactionManager;
+use Exception;
 use Illuminate\Contracts\Pagination\CursorPaginator;
 use Throwable;
 
@@ -47,13 +49,24 @@ class RouteRepository implements IRouteRepository
                 'creator_id' => $createRouteDto->userId
             ]);
 
-            foreach ($createRouteDto->routePoints as $routePoint){
+            $routePoints = RouteConstructorPoint::with('constructor')
+                ->whereHas('constructor', function ($query) use ($createRouteDto) {
+                    $query->where('creator_id', $createRouteDto->userId);
+                })->get();
+
+            if($routePoints->count() < 2) {
+                throw new Exception();
+            }
+
+            $routePoints->each(function ($routePoint) use ($route){
                 RoutePoint::query()->create([
                     'index' => $routePoint->index,
-                    'place_id' => $routePoint->placeId,
+                    'place_id' => $routePoint->place_id,
                     'route_id' => $route->id,
                 ]);
-            }
+
+                $routePoint->delete();
+            });
 
             $this->transactionManager->commit();
 

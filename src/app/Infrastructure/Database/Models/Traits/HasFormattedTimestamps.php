@@ -1,6 +1,6 @@
 <?php
 
-namespace Src\App\Infrastructure\Database\Models\Traits;
+namespace App\Infrastructure\Database\Models\Traits;
 
 // Test trait
 trait HasFormattedTimestamps
