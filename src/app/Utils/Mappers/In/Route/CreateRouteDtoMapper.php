@@ -17,7 +17,6 @@ class CreateRouteDtoMapper
         return new CreateRouteDto(
             userId: $createRouteRequest->userId,
             name: $createRouteRequest->name,
-            routePoints: PointDtoMapper::fromArray($createRouteRequest->routePoints)
         );
     }
 }

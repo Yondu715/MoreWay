@@ -36,13 +36,13 @@ class PlaceRepository implements IPlaceRepository
     public function getById(GetPlaceDto $getPlaceDto, Closure $distanceCalculator): PlaceDto
     {
         try {
-            /** @var Place */
+            /** @var Place $place */
             $place = $this->model->query()->find($getPlaceDto->id);
             return PlaceDtoMapper::fromPlaceModel(
                 $place,
                 $distanceCalculator($place->lat, $place->lon)
             );
-        } catch (Throwable $th) {
+        } catch (Throwable) {
             throw new PlaceNotFound();
         }
     }

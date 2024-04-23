@@ -2,16 +2,17 @@
 
 namespace App\Application\DTO\In\Route;
 
-class CreateRouteDto
+class ChangeUserRouteDto
 {
     public readonly int $userId;
-    public readonly string $name;
+    public readonly int $routeId;
 
     public function __construct(
         int $userId,
-        string $name,
+        int $routeId
     ) {
         $this->userId = $userId;
-        $this->name = $name;
+        $this->routeId = $routeId;
     }
 }
+

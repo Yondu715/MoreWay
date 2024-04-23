@@ -3,19 +3,26 @@
 namespace App\Infrastructure\Database\Repositories\Route;
 
 use App\Application\Contracts\Out\Repositories\Route\IRouteRepository;
+use App\Application\DTO\In\Route\ChangeUserRouteDto;
 use App\Application\DTO\In\Route\CompletedRoutePointDto;
 use App\Application\DTO\In\Route\CreateRouteDto;
 use App\Application\DTO\In\Route\GetRoutesDto;
+use App\Application\DTO\In\Route\GetUserRoutesDto;
 use App\Application\Exceptions\Route\FailedToCreateRoute;
 use App\Application\Exceptions\Route\IncorrectOrderRoutePoints;
+use App\Application\Exceptions\Route\RouteIsCompleted;
 use App\Application\Exceptions\Route\RouteNotFound;
+use App\Application\Exceptions\Route\UserHaveNotActiveRoute;
 use App\Application\Exceptions\Route\UserRouteProgressNotFound;
 use App\Infrastructure\Database\Models\Filters\Route\RouteFilterFactory;
 use App\Infrastructure\Database\Models\Route;
+use App\Infrastructure\Database\Models\RouteConstructorPoint;
 use App\Infrastructure\Database\Models\RoutePoint;
 use App\Infrastructure\Database\Models\UserActiveRoute;
+use App\Infrastructure\Database\Models\UserFavoriteRoute;
 use App\Infrastructure\Database\Models\UserRouteProgress;
 use App\Infrastructure\Database\Transaction\Interface\ITransactionManager;
+use Exception;
 use Illuminate\Contracts\Pagination\CursorPaginator;
 use Throwable;
 
@@ -42,13 +49,24 @@ class RouteRepository implements IRouteRepository
                 'creator_id' => $createRouteDto->userId
             ]);
 
-            foreach ($createRouteDto->routePoints as $routePoint){
+            $routePoints = RouteConstructorPoint::with('constructor')
+                ->whereHas('constructor', function ($query) use ($createRouteDto) {
+                    $query->where('creator_id', $createRouteDto->userId);
+                })->get();
+
+            if($routePoints->count() < 2) {
+                throw new Exception();
+            }
+
+            $routePoints->each(function ($routePoint) use ($route){
                 RoutePoint::query()->create([
                     'index' => $routePoint->index,
-                    'place_id' => $routePoint->placeId,
+                    'place_id' => $routePoint->place_id,
                     'route_id' => $route->id,
                 ]);
-            }
+
+                $routePoint->delete();
+            });
 
             $this->transactionManager->commit();
 
@@ -83,7 +101,7 @@ class RouteRepository implements IRouteRepository
     {
         return Route::query()
             ->filter($this->routeFilterFactory->create($getRoutesDto->filter))
-            ->cursorPaginate(perPage: $getRoutesDto->limit ?? 2, cursor: $getRoutesDto->cursor);
+            ->cursorPaginate(perPage: $getRoutesDto->limit, cursor: $getRoutesDto->cursor);
     }
 
     /**
@@ -150,5 +168,142 @@ class RouteRepository implements IRouteRepository
         if ($userProgresses === $route->routePoints->count()) {
             $activeRoute->forceDelete();
         }
+    }
+
+    /**
+     * @param GetUserRoutesDto $getUserRoutesDto
+     * @return CursorPaginator
+     */
+    public function getUsersRoutes(GetUserRoutesDto $getUserRoutesDto): CursorPaginator
+    {
+        return Route::query()
+            ->where('creator_id', $getUserRoutesDto->userId)
+            ->cursorPaginate(perPage: $getUserRoutesDto->limit, cursor: $getUserRoutesDto->cursor);
+    }
+
+    /**
+     * @param int $userId
+     * @param int $routeId
+     * @return void
+     * @throws RouteNotFound
+     */
+    public function deleteUserRoute(int $userId, int $routeId): void
+    {
+        $route = Route::query()
+            ->where('id', $routeId)
+            ->where('creator_id', $userId);
+
+        if($route->get()->isEmpty()){
+            throw new RouteNotFound();
+        }
+
+        $route->delete();
+    }
+
+    /**
+     * @param int $userId
+     * @return UserActiveRoute
+     * @throws UserHaveNotActiveRoute
+     */
+    public function getActiveUserRoute(int $userId): UserActiveRoute
+    {
+        /** @var UserActiveRoute $userActiveRoute */
+        $userActiveRoute = UserActiveRoute::query()
+            ->where('user_id', $userId)
+            ->get()
+            ->first();
+
+        if(!$userActiveRoute){
+            throw new UserHaveNotActiveRoute();
+        }
+
+        return $userActiveRoute;
+    }
+
+    /**
+     * @param ChangeUserRouteDto $changeActiveUserRouteDto
+     * @return UserActiveRoute
+     * @throws RouteIsCompleted
+     */
+    public function changeActiveUserRoute(ChangeUserRouteDto $changeActiveUserRouteDto): UserActiveRoute
+    {
+        $route = Route::query()
+            ->where('id', $changeActiveUserRouteDto->routeId)
+            ->get()
+            ->first();
+
+        $userActiveRoute = UserRouteProgress::query()
+            ->where('user_id', $changeActiveUserRouteDto->userId)
+            ->whereIn('route_point_id', $route->routePoints->pluck('id'))
+            ->get();
+
+        if($userActiveRoute->where("is_completed", true)
+                ->count() === $route->routePoints->count()){
+            throw new RouteIsCompleted();
+        }
+
+        if(UserRouteProgress::query()
+            ->where('user_id', $changeActiveUserRouteDto->userId)
+            ->whereIn('route_point_id', $route->routePoints->pluck('id'))
+            ->get()->isEmpty()) {
+            $route->routePoints()->each(function ($routePoint) use ($changeActiveUserRouteDto) {
+                UserRouteProgress::query()->create([
+                    'user_id' => $changeActiveUserRouteDto->userId,
+                    'route_point_id' => $routePoint->id,
+                ]);
+            });
+        }
+
+        return UserActiveRoute::query()
+            ->updateOrCreate([
+                'user_id' => $changeActiveUserRouteDto->userId,
+            ], [
+                'route_id' =>  $changeActiveUserRouteDto->routeId,
+            ])->get()->first();
+    }
+
+    /**
+     * @param GetUserRoutesDto $getUserRoutesDto
+     * @return CursorPaginator
+     */
+    public function getFavoriteUserRoutes(GetUserRoutesDto $getUserRoutesDto): CursorPaginator
+    {
+        return Route::query()->whereIn('id', UserFavoriteRoute::query()
+            ->where('user_id', $getUserRoutesDto->userId)->get()->pluck('route_id'))
+            ->cursorPaginate(perPage: $getUserRoutesDto->limit, cursor: $getUserRoutesDto->cursor);
+    }
+
+    /**
+     * @param ChangeUserRouteDto $changeUserRouteDto
+     * @return Route
+     */
+    public function addRouteToUserFavorite(ChangeUserRouteDto $changeUserRouteDto): Route
+    {
+        /** @var UserFavoriteRoute $userFavoriteRoute */
+        $userFavoriteRoute = UserFavoriteRoute::query()->create([
+            'user_id' => $changeUserRouteDto->userId,
+            'route_id' => $changeUserRouteDto->routeId,
+        ]);
+
+        return $userFavoriteRoute->route;
+    }
+
+    /**
+     * @param int $userId
+     * @param int $routeId
+     * @return void
+     * @throws RouteNotFound
+     */
+    public function deleteRouteFromUserFavorite(int $userId, int $routeId): void
+    {
+        $route = UserFavoriteRoute::query()
+            ->where('route_id', $routeId)
+            ->where('user_id', $userId);
+
+        if($route->get()->isEmpty()){
+            throw new RouteNotFound();
+        }
+
+        $route->delete();
     }
 }

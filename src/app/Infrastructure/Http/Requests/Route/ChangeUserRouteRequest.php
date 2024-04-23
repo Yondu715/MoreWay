@@ -6,10 +6,9 @@ use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 /**
- * @property string $name
- * @property int $userId
+ * @property int $routeId
  */
-class CreateRouteRequest extends FormRequest
+class ChangeUserRouteRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -19,8 +18,7 @@ class CreateRouteRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|max:255',
-            'userId' => 'required|numeric',
+            'routeId' => 'required|numeric',
         ];
     }
 }
