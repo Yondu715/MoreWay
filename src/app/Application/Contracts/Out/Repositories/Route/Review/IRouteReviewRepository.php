@@ -2,23 +2,23 @@
 
 namespace App\Application\Contracts\Out\Repositories\Route\Review;
 
+use App\Application\DTO\Collection\CursorDto;
 use App\Application\DTO\In\Route\Review\GetRouteReviewsDto;
+use App\Application\DTO\Out\Review\ReviewDto;
 use App\Application\Exceptions\Review\FailedToCreateReview;
-use App\Infrastructure\Database\Models\RouteReview;
-use Illuminate\Contracts\Pagination\CursorPaginator;
 
 interface IRouteReviewRepository
 {
     /**
      * @param GetRouteReviewsDto $getReviewsDto
-     * @return CursorPaginator
+     * @return CursorDto
      */
-    public function getReviews(GetRouteReviewsDto $getReviewsDto): CursorPaginator;
+    public function getAll(GetRouteReviewsDto $getReviewsDto): CursorDto;
 
     /**
      * @param array $attributes
-     * @return RouteReview
+     * @return ReviewDto
      * @throws FailedToCreateReview
      */
-    public function create(array $attributes): RouteReview;
+    public function create(array $attributes): ReviewDto;
 }

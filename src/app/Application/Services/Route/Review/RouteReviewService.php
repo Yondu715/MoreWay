@@ -9,14 +9,13 @@ use App\Application\DTO\In\Route\Review\CreateRouteReviewDto;
 use App\Application\DTO\In\Route\Review\GetRouteReviewsDto;
 use App\Application\DTO\Out\Review\ReviewDto;
 use App\Application\Exceptions\Review\FailedToCreateReview;
-use App\Utils\Mappers\Out\Review\ReviewDtoMapper;
-use Throwable;
 
 class RouteReviewService implements IRouteReviewService
 {
     public function __construct(
         private readonly IRouteReviewRepository $reviewRepository
-    ) {}
+    ) {
+    }
 
     /**
      * @param CreateRouteReviewDto $createReviewDto
@@ -25,17 +24,12 @@ class RouteReviewService implements IRouteReviewService
      */
     public function createReviews(CreateRouteReviewDto $createReviewDto): ReviewDto
     {
-        try {
-            $review = $this->reviewRepository->create([
-                'author_id' => $createReviewDto->userId,
-                'route_id' => $createReviewDto->routeId,
-                'text' => $createReviewDto->text,
-                'rating' => $createReviewDto->rating
-            ]);
-            return ReviewDtoMapper::fromReviewModel($review);
-        } catch (Throwable) {
-            throw new FailedToCreateReview();
-        }
+        return $this->reviewRepository->create([
+            'author_id' => $createReviewDto->userId,
+            'route_id' => $createReviewDto->routeId,
+            'text' => $createReviewDto->text,
+            'rating' => $createReviewDto->rating
+        ]);
     }
 
     /**
@@ -44,6 +38,6 @@ class RouteReviewService implements IRouteReviewService
      */
     public function getReviews(GetRouteReviewsDto $getReviewsDto): CursorDto
     {
-        return ReviewDtoMapper::fromPaginator($this->reviewRepository->getReviews($getReviewsDto));
+        return $this->reviewRepository->getAll($getReviewsDto);
     }
 }
