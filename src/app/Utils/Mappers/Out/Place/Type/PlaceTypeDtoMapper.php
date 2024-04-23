@@ -26,7 +26,7 @@ class PlaceTypeDtoMapper
      */
     public static function fromTypeCollection(Collection $types): Collection
     {
-        return $types->map(function (PlaceType $type) {
+        return $types->map(function (PlaceTypeDto $type) {
             return $type->name;
         });
     }
