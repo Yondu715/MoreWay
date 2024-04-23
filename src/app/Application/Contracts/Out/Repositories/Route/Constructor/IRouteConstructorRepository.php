@@ -2,24 +2,24 @@
 
 namespace App\Application\Contracts\Out\Repositories\Route\Constructor;
 
-use App\Application\DTO\In\Route\Constructor\RouteConstructorDto;
+use App\Application\DTO\In\Route\Constructor\RouteConstructorDto as InRouteConstructorDto;
+use App\Application\DTO\Out\Route\Constructor\RouteConstructorDto as OutRouteConstructorDto;
 use App\Application\Exceptions\Route\Constructor\InvalidRoutePointIndex;
-use App\Infrastructure\Database\Models\RouteConstructor;
 use Throwable;
 
 interface IRouteConstructorRepository
 {
     /**
      * @param RouteConstructorDto $routeConstructorDto
-     * @return RouteConstructor
+     * @return OutRouteConstructorDto
      * @throws InvalidRoutePointIndex
      * @throws Throwable
      */
-    public function change(RouteConstructorDto $routeConstructorDto): RouteConstructor;
+    public function update(InRouteConstructorDto $routeConstructorDto): OutRouteConstructorDto;
 
     /**
      * @param int $userId
-     * @return RouteConstructor
+     * @return OutRouteConstructorDto
      */
-    public function get(int $userId): RouteConstructor;
+    public function findByUserId(int $userId): OutRouteConstructorDto;
 }

@@ -7,14 +7,14 @@ use App\Application\Contracts\Out\Repositories\Route\Constructor\IRouteConstruct
 use App\Application\DTO\In\Route\Constructor\RouteConstructorDto as InRouteConstructorDto;
 use App\Application\DTO\Out\Route\Constructor\RouteConstructorDto as OutRouteConstructorDto;
 use App\Application\Exceptions\Route\Constructor\InvalidRoutePointIndex;
-use App\Utils\Mappers\Out\Route\Constructor\ConstructorDtoMapper;
 use Throwable;
 
 class RouteConstructorService implements IRouteConstructorService
 {
     public function __construct(
         private readonly IRouteConstructorRepository $routeConstructorRepository
-    ) {}
+    ) {
+    }
 
     /**
      * @param InRouteConstructorDto $routeConstructorDto
@@ -22,10 +22,9 @@ class RouteConstructorService implements IRouteConstructorService
      * @throws InvalidRoutePointIndex
      * @throws Throwable
      */
-    public function change(InRouteConstructorDto $routeConstructorDto): OutRouteConstructorDto {
-        return ConstructorDtoMapper::fromRouteConstructorModel(
-            $this->routeConstructorRepository->change($routeConstructorDto)
-        );
+    public function change(InRouteConstructorDto $routeConstructorDto): OutRouteConstructorDto
+    {
+        return $this->routeConstructorRepository->update($routeConstructorDto);
     }
 
     /**
@@ -34,8 +33,6 @@ class RouteConstructorService implements IRouteConstructorService
      */
     public function get(int $userId): OutRouteConstructorDto
     {
-        return ConstructorDtoMapper::fromRouteConstructorModel(
-            $this->routeConstructorRepository->get($userId)
-        );
+        return $this->routeConstructorRepository->findByUserId($userId);
     }
 }

@@ -120,6 +120,5 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // $this->app->when(IFriendshipService::class)->needs(INotifierManager::class)->give(FriendNotifier::class);
     }
 }

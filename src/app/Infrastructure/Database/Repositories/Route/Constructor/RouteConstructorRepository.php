@@ -3,35 +3,38 @@
 namespace App\Infrastructure\Database\Repositories\Route\Constructor;
 
 use App\Application\Contracts\Out\Repositories\Route\Constructor\IRouteConstructorRepository;
-use App\Application\DTO\In\Route\Constructor\RouteConstructorDto;
+use App\Application\DTO\In\Route\Constructor\RouteConstructorDto as InRouteConstructorDto;
+use App\Application\DTO\Out\Route\Constructor\RouteConstructorDto as OutRouteConstructorDto;
 use App\Application\Exceptions\Route\Constructor\ConstructorNotFound;
 use App\Application\Exceptions\Route\Constructor\InvalidRoutePointIndex;
 use App\Infrastructure\Database\Models\RouteConstructor;
 use App\Infrastructure\Database\Models\RouteConstructorPoint;
 use App\Infrastructure\Database\Transaction\Interface\ITransactionManager;
+use App\Utils\Mappers\Out\Route\Constructor\ConstructorDtoMapper;
 use Throwable;
 
 class RouteConstructorRepository implements IRouteConstructorRepository
 {
     public function __construct(
         private readonly ITransactionManager $transactionManager
-    ) {}
+    ) {
+    }
 
     /**
      * @param RouteConstructorDto $routeConstructorDto
-     * @return RouteConstructor
+     * @return ConstructorRouteConstructorDto
      * @throws InvalidRoutePointIndex
      * @throws Throwable
      */
-    public function change(RouteConstructorDto $routeConstructorDto): RouteConstructor
+    public function update(InRouteConstructorDto $routeConstructorDto): OutRouteConstructorDto
     {
         try {
-            /** @var RouteConstructor $routeConstructor */
+            /** @var ?RouteConstructor $routeConstructor */
             $routeConstructor = RouteConstructor::query()
                 ->where('creator_id', $routeConstructorDto->userId)
                 ->first();
 
-            if(!$routeConstructor){
+            if (!$routeConstructor) {
                 throw new ConstructorNotFound();
             }
 
@@ -57,21 +60,23 @@ class RouteConstructorRepository implements IRouteConstructorRepository
 
             $this->transactionManager->commit();
 
-            return $routeConstructor;
-
-        } catch (Throwable $e) {
+            return ConstructorDtoMapper::fromRouteConstructorModel($routeConstructor);
+        } catch (Throwable $th) {
             $this->transactionManager->rollback();
-            throw $e;
+            throw $th;
         }
     }
 
     /**
      * @param int $userId
-     * @return RouteConstructor
+     * @return OutRouteConstructorDto
      */
-    public function get(int $userId): RouteConstructor
+    public function findByUserId(int $userId): OutRouteConstructorDto
     {
-        /** @var RouteConstructor */
-        return RouteConstructor::query()->firstOrCreate(['creator_id' => $userId]);
+        return ConstructorDtoMapper::fromRouteConstructorModel(
+            RouteConstructor::query()->firstOrCreate([
+                'creator_id' => $userId
+            ])
+        );
     }
 }
