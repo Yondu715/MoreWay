@@ -17,7 +17,6 @@ use Throwable;
 
 class PlaceRepository implements IPlaceRepository
 {
-
     private readonly Model $model;
 
     public function __construct(

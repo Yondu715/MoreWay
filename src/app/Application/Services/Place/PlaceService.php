@@ -8,7 +8,6 @@ use App\Application\DTO\Collection\CursorDto;
 use App\Application\DTO\In\Place\GetPlaceDto;
 use App\Application\DTO\In\Place\GetPlacesDto;
 use App\Application\DTO\Out\Place\PlaceDto;
-use App\Application\Exceptions\Place\PlaceNotFound;
 use App\Domain\Contracts\In\DomainManagers\IDistanceManager;
 use App\Domain\Factories\Distance\DistanceManagerFactory;
 
@@ -25,7 +24,6 @@ class PlaceService implements IPlaceService
     /**
      * @param GetPlaceDto $getPlaceDto
      * @return PlaceDto
-     * @throws PlaceNotFound
      */
     public function getPlaceById(GetPlaceDto $getPlaceDto): PlaceDto
     {

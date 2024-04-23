@@ -15,7 +15,7 @@ use Throwable;
 class PlaceReviewRepository implements IPlaceReviewRepository
 {
 
-    private Model $model;
+    private readonly Model $model;
 
     public function __construct(PlaceReview $review)
     {
@@ -44,6 +44,7 @@ class PlaceReviewRepository implements IPlaceReviewRepository
     public function create(array $attributes): ReviewDto
     {
         try {
+            /** @var PlaceReview $review */
             $review = $this->model->query()->create($attributes);
             return ReviewDtoMapper::fromReviewModel($review);
         } catch (Throwable) {

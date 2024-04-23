@@ -3,7 +3,7 @@
 namespace App\Infrastructure\Http\Resources\Route;
 
 use App\Infrastructure\Http\Resources\Auth\ShortUserResource;
-use App\Infrastructure\Http\Resources\Route\Point\PointResource;
+use App\Infrastructure\Http\Resources\Route\Point\ShortPointResource;
 use Illuminate\Http\Request;
 use App\Application\DTO\Out\Route\RouteDto;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -11,7 +11,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 /**
  * @mixin RouteDto
  */
-class RouteResource extends JsonResource
+class ShortRouteResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -25,7 +25,7 @@ class RouteResource extends JsonResource
             'name' => $this->name,
             'rating' => $this->rating,
             'places' => $this->points->count(),
-            'routePoints' => PointResource::collection($this->points),
+            'routePoints' => ShortPointResource::collection($this->points),
             'creator' => ShortUserResource::make($this->creator)
         ];
     }

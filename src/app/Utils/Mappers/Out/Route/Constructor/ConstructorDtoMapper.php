@@ -16,6 +16,7 @@ class ConstructorDtoMapper
     {
         return new RouteConstructorDto(
             points: PointDtoMapper::fromPointCollection($constructor->routePoints),
+            id: $constructor->id
         );
     }
 }

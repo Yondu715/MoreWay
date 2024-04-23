@@ -21,6 +21,7 @@ class ConstructorResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
+            'id' => $this->id,
             'routePoints' => PointResource::collection($this->points),
         ];
     }

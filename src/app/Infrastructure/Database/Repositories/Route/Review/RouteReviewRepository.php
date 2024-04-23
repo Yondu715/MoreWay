@@ -9,17 +9,25 @@ use App\Application\DTO\Out\Review\ReviewDto;
 use App\Application\Exceptions\Review\FailedToCreateReview;
 use App\Infrastructure\Database\Models\RouteReview;
 use App\Utils\Mappers\Out\Review\ReviewDtoMapper;
+use Illuminate\Database\Eloquent\Model;
 use Throwable;
 
 class RouteReviewRepository implements IRouteReviewRepository
 {
+    private readonly Model $model;
+
+    public function __construct(RouteReview $routeReview)
+    {
+        $this->model = $routeReview;
+    }
+
     /**
      * @param GetRouteReviewsDto $getReviewsDto
      * @return CursorDto
      */
     public function getAll(GetRouteReviewsDto $getReviewsDto): CursorDto
     {
-        $paginator = RouteReview::query()
+        $paginator = $this->model->query()
             ->where('route_id', $getReviewsDto->routeId)
             ->orderBy('created_at', 'desc')
             ->cursorPaginate(perPage: $getReviewsDto->limit ?? 2, cursor: $getReviewsDto->cursor);
@@ -34,8 +42,10 @@ class RouteReviewRepository implements IRouteReviewRepository
     public function create(array $attributes): ReviewDto
     {
         try {
+            /** @var RouteReview $review */
+            $review = $this->model->query()->create($attributes);
             return ReviewDtoMapper::fromReviewModel(
-                RouteReview::query()->create($attributes)
+                $review
             );
         } catch (Throwable) {
             throw new FailedToCreateReview();

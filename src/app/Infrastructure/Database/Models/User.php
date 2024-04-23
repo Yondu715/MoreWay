@@ -2,6 +2,7 @@
 
 namespace App\Infrastructure\Database\Models;
 
+use App\Infrastructure\Database\Models\Filters\AbstractFilter;
 use App\Infrastructure\Database\Models\Traits\Filterable;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -50,6 +51,7 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
  * @property-read Collection<int, PersonalAccessToken> $tokens
  * @property-read int|null $tokens_count
  * @property-read RouteConstructor $constructor
+ * @method filter(AbstractFilter $filters)
  */
 class User extends \TCG\Voyager\Models\User implements JWTSubject
 {

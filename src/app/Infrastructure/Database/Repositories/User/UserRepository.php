@@ -28,6 +28,7 @@ class UserRepository implements IUserRepository
     }
 
     /**
+     * @param GetUsersDto $getUsersDto
      * @return CursorDto
      */
     public function getAll(GetUsersDto $getUsersDto): CursorDto
@@ -46,7 +47,9 @@ class UserRepository implements IUserRepository
     public function findById(int $id): UserDto
     {
         try {
-            return UserDtoMapper::fromUserModel($this->model->query()->findOrFail($id));
+            /** @var User $user */
+            $user = $this->model->query()->findOrFail($id);
+            return UserDtoMapper::fromUserModel($user);
         } catch (Throwable) {
             throw new UserNotFound();
         }
@@ -58,6 +61,7 @@ class UserRepository implements IUserRepository
      */
     public function findByEmail(string $email): ?UserDto
     {
+        /** @var User $user */
         $user = $this->model->query()->firstWhere([
             'email'  => $email
         ]);
@@ -76,11 +80,12 @@ class UserRepository implements IUserRepository
     }
 
     /**
-     * @param user$userDto $userDto
+     * @param UserDto $userDto
      * @return UserDto
      */
     public function create(UserDto $userDto): UserDto
     {
+        /** @var User $user */
         $user = $this->model->query()->create([
             'name' => $userDto->name,
             'email' => $userDto->email,
@@ -90,11 +95,12 @@ class UserRepository implements IUserRepository
     }
 
     /**
-     * @param ChangeUserPasswordDto $changeUserPasswordDto
+     * @param UserDto $userDto
      * @return UserDto
      */
     public function update(UserDto $userDto): UserDto
     {
+        /** @var User $user */
         $user = $this->model->query()->find($userDto->id);
         $user->update([
             'password' => $userDto->password

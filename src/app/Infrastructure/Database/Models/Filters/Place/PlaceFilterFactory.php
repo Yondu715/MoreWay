@@ -8,6 +8,7 @@ class PlaceFilterFactory
 {
     /**
      * @param array $filters
+     * @param Closure $distanceCalculator
      * @return PlaceFilter
      */
     public function create(array $filters, Closure $distanceCalculator): PlaceFilter

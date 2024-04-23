@@ -2,6 +2,7 @@
 
 namespace App\Infrastructure\Database\Models;
 
+use App\Infrastructure\Database\Models\Filters\AbstractFilter;
 use App\Infrastructure\Database\Models\Traits\Filterable;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -29,6 +30,7 @@ use Illuminate\Support\Carbon;
  * @property-read int|null $images_count
  * @property-read Locality $locality
  * @property-read PlaceType $type
+ * @method filter(AbstractFilter $filters)
  */
 class Place extends Model
 {

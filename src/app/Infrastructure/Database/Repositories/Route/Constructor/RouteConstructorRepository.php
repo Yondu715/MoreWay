@@ -11,18 +11,25 @@ use App\Infrastructure\Database\Models\RouteConstructor;
 use App\Infrastructure\Database\Models\RouteConstructorPoint;
 use App\Infrastructure\Database\Transaction\Interface\ITransactionManager;
 use App\Utils\Mappers\Out\Route\Constructor\ConstructorDtoMapper;
+use Illuminate\Database\Eloquent\Model;
 use Throwable;
 
 class RouteConstructorRepository implements IRouteConstructorRepository
 {
+    private readonly Model $model;
+
     public function __construct(
-        private readonly ITransactionManager $transactionManager
-    ) {
+        private readonly ITransactionManager $transactionManager,
+        RouteConstructor $routeConstructor
+    )
+    {
+        $this->model = $routeConstructor;
     }
 
     /**
-     * @param RouteConstructorDto $routeConstructorDto
-     * @return ConstructorRouteConstructorDto
+     * @param InRouteConstructorDto $routeConstructorDto
+     * @return OutRouteConstructorDto
+     * @throws ConstructorNotFound
      * @throws InvalidRoutePointIndex
      * @throws Throwable
      */
@@ -30,7 +37,7 @@ class RouteConstructorRepository implements IRouteConstructorRepository
     {
         try {
             /** @var ?RouteConstructor $routeConstructor */
-            $routeConstructor = RouteConstructor::query()
+            $routeConstructor = $this->model->query()
                 ->where('creator_id', $routeConstructorDto->userId)
                 ->first();
 
@@ -73,10 +80,12 @@ class RouteConstructorRepository implements IRouteConstructorRepository
      */
     public function findByUserId(int $userId): OutRouteConstructorDto
     {
+        /** @var RouteConstructor $constructor */
+        $constructor = $this->model->query()->firstOrCreate([
+            'creator_id' => $userId
+        ]);
         return ConstructorDtoMapper::fromRouteConstructorModel(
-            RouteConstructor::query()->firstOrCreate([
-                'creator_id' => $userId
-            ])
+            $constructor
         );
     }
 }

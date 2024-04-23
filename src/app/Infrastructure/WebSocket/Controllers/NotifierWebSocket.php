@@ -3,6 +3,7 @@
 namespace App\Infrastructure\WebSocket\Controllers;
 
 use App\Application\Contracts\Out\Managers\Token\ITokenManager;
+use App\Infrastructure\Exceptions\InvalidToken;
 use Exception;
 use Psr\Http\Message\RequestInterface;
 use Ratchet\ConnectionInterface;
@@ -24,6 +25,7 @@ abstract class NotifierWebSocket implements MessageComponentInterface
     /**
      * @param ConnectionInterface $conn
      * @return void
+     * @throws InvalidToken
      */
     public function onOpen(ConnectionInterface $conn): void
     {

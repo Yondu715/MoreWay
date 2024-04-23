@@ -27,14 +27,19 @@ use App\Infrastructure\Database\Models\UserRouteProgress;
 use App\Infrastructure\Database\Transaction\Interface\ITransactionManager;
 use App\Utils\Mappers\Out\Route\RouteDtoMapper;
 use Exception;
+use Illuminate\Database\Eloquent\Model;
 use Throwable;
 
 class RouteRepository implements IRouteRepository
 {
+    private readonly Model $model;
     public function __construct(
       private readonly ITransactionManager $transactionManager,
-      private readonly RouteFilterFactory $routeFilterFactory
-    ) {}
+      private readonly RouteFilterFactory $routeFilterFactory,
+      Route $route
+    ) {
+        $this->model = $route;
+    }
 
     /**
      * @param CreateRouteDto $createRouteDto
@@ -47,7 +52,7 @@ class RouteRepository implements IRouteRepository
             $this->transactionManager->beginTransaction();
 
             /** @var Route $route */
-            $route = Route::query()->create([
+            $route = $this->model->query()->create([
                 'name' => $createRouteDto->name,
                 'creator_id' => $createRouteDto->userId
             ]);
@@ -89,7 +94,7 @@ class RouteRepository implements IRouteRepository
     {
         try {
             /** @var Route $route */
-            $route = Route::query()->findOrFail($routeId);
+            $route = $this->model->query()->findOrFail($routeId);
             return RouteDtoMapper::fromRouteModel($route);
         } catch (Throwable) {
             throw new RouteNotFound();
@@ -102,7 +107,7 @@ class RouteRepository implements IRouteRepository
      */
     public function getRoutes(GetRoutesDto $getRoutesDto): CursorDto
     {
-        $routes = Route::query()
+        $routes = $this->model
             ->filter($this->routeFilterFactory->create($getRoutesDto->filter))
             ->cursorPaginate(perPage: $getRoutesDto->limit, cursor: $getRoutesDto->cursor);
         return RouteDtoMapper::fromPaginator($routes);
@@ -180,7 +185,7 @@ class RouteRepository implements IRouteRepository
      */
     public function getUsersRoutes(GetUserRoutesDto $getUserRoutesDto): CursorDto
     {
-        $routes = Route::query()
+        $routes = $this->model->query()
             ->where('creator_id', $getUserRoutesDto->userId)
             ->cursorPaginate(perPage: $getUserRoutesDto->limit, cursor: $getUserRoutesDto->cursor);
         return RouteDtoMapper::fromPaginator($routes);
@@ -194,7 +199,7 @@ class RouteRepository implements IRouteRepository
      */
     public function deleteUserRoute(int $userId, int $routeId): void
     {
-        $route = Route::query()
+        $route = $this->model->query()
             ->where('id', $routeId)
             ->where('creator_id', $userId);
 
@@ -232,7 +237,7 @@ class RouteRepository implements IRouteRepository
      */
     public function changeActiveUserRoute(ChangeUserRouteDto $changeActiveUserRouteDto): ActiveRouteDto
     {
-        $route = Route::query()
+        $route = $this->model->query()
             ->where('id', $changeActiveUserRouteDto->routeId)
             ->get()
             ->first();
@@ -274,7 +279,7 @@ class RouteRepository implements IRouteRepository
      */
     public function getFavoriteUserRoutes(GetUserRoutesDto $getUserRoutesDto): CursorDto
     {
-        $routes = Route::query()->whereIn('id', UserFavoriteRoute::query()
+        $routes = $this->model->query()->whereIn('id', UserFavoriteRoute::query()
             ->where('user_id', $getUserRoutesDto->userId)->get()->pluck('route_id'))
             ->cursorPaginate(perPage: $getUserRoutesDto->limit, cursor: $getUserRoutesDto->cursor);
         return RouteDtoMapper::fromPaginator($routes);

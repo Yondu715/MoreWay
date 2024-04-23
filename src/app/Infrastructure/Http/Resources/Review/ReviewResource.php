@@ -3,7 +3,9 @@
 namespace App\Infrastructure\Http\Resources\Review;
 
 use App\Application\DTO\Out\Review\ReviewDto;
+use App\Infrastructure\Http\Resources\Auth\ShortUserResource;
 use App\Infrastructure\Http\Resources\Auth\UserResource;
+use App\Infrastructure\Http\Resources\Place\ShortPlaceResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -24,7 +26,7 @@ class ReviewResource extends JsonResource
             'text' => $this->text,
             'rating' => $this->rating,
             'createdAt' => $this->createdAt,
-            'author' => UserResource::make($this->author),
+            'author' => ShortUserResource::make($this->author),
         ];
     }
 }

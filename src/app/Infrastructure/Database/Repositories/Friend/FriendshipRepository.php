@@ -10,11 +10,12 @@ use App\Utils\Mappers\Out\Auth\UserDtoMapper;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use App\Utils\Mappers\Out\Friend\FriendshipRequestDtoMapper;
+use Throwable;
 
 class FriendshipRepository implements IFriendshipRepository
 {
 
-    private Model $model;
+    private readonly Model $model;
 
     public function __construct(Friendship $friend)
     {
@@ -28,8 +29,10 @@ class FriendshipRepository implements IFriendshipRepository
     public function findById(int $id): FriendshipRequestDto
     {
         try {
-            return FriendshipRequestDtoMapper::fromFriendshipModel($this->model->query()->findOrFail($id));
-        } catch (\Throwable $th) {
+            /** @var Friendship $friendship */
+            $friendship = $this->model->query()->findOrFail($id);
+            return FriendshipRequestDtoMapper::fromFriendshipModel($friendship);
+        } catch (Throwable) {
             dd('abobaa');
         }
     }
@@ -51,6 +54,7 @@ class FriendshipRepository implements IFriendshipRepository
      */
     public function create(array $data): FriendshipRequestDto
     {
+        /** @var Friendship $friendship */
         $friendship = $this->model->query()->create($data);
         return FriendshipRequestDtoMapper::fromFriendshipModel($friendship);
     }
@@ -62,6 +66,7 @@ class FriendshipRepository implements IFriendshipRepository
      */
     public function update(int $id, array $data): FriendshipRequestDto
     {
+        /** @var Friendship $friendship */
         $friendship = $this->model->query()->findOrFail($id);
         $friendship->update($data);
         return FriendshipRequestDtoMapper::fromFriendshipModel($friendship->refresh());
@@ -106,7 +111,7 @@ class FriendshipRepository implements IFriendshipRepository
      */
     public function findByUserIdAndFriendId(int $userId, int $friendId): ?FriendshipRequestDto
     {
-        /** @var ?Friendship */
+        /** @var Friendship $friendship */
         $friendship = $this->model->query()->firstWhere([
             'user_id' => $userId,
             'friend_id' => $friendId

@@ -37,8 +37,8 @@ use App\Utils\Mappers\In\Route\Constructor\ConstructorDtoMapper;
 use App\Utils\Mappers\In\Route\CreateRouteDtoMapper;
 use App\Utils\Mappers\In\Route\GetRoutesDtoMapper;
 use App\Utils\Mappers\In\Route\GetUserRoutesDtoMapper;
-use App\Utils\Mappers\In\Route\Review\GetRouteReviewsDtoMapper;
 use App\Utils\Mappers\In\Route\Review\CreateRouteReviewDtoMapper;
+use App\Utils\Mappers\In\Route\Review\GetRouteReviewsDtoMapper;
 use Throwable;
 
 class RouteController extends Controller
