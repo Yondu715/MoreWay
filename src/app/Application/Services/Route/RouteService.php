@@ -18,9 +18,7 @@ use App\Application\Exceptions\Route\RouteIsCompleted;
 use App\Application\Exceptions\Route\RouteNotFound;
 use App\Application\Exceptions\Route\UserHaveNotActiveRoute;
 use App\Application\Exceptions\Route\UserRouteProgressNotFound;
-use App\Utils\Mappers\Out\Route\ActiveRouteDtoMapper;
-use App\Utils\Mappers\Out\Route\RouteCursorDtoMapper;
-use App\Utils\Mappers\Out\Route\RouteDtoMapper;
+
 
 class RouteService implements IRouteService
 {
@@ -35,8 +33,7 @@ class RouteService implements IRouteService
      */
     public function createRoute(CreateRouteDto $createRouteDto): RouteDto
     {
-        $route = $this->routeRepository->create($createRouteDto);
-        return RouteDtoMapper::fromRouteModel($route);
+        return $this->routeRepository->create($createRouteDto);
     }
 
     /**
@@ -46,8 +43,7 @@ class RouteService implements IRouteService
      */
     public function getRouteById(int $routeId): RouteDto
     {
-        $route = $this->routeRepository->getRouteById($routeId);
-        return RouteDtoMapper::fromRouteModel($route);
+        return $this->routeRepository->getRouteById($routeId);
     }
 
     /**
@@ -57,9 +53,7 @@ class RouteService implements IRouteService
      */
     public function getRoutes(GetRoutesDto $getRoutesDto): CursorDto
     {
-        return RouteCursorDtoMapper::fromPaginator(
-            $this->routeRepository->getRoutes($getRoutesDto)
-        );
+        return $this->routeRepository->getRoutes($getRoutesDto);
     }
 
     /**
@@ -80,9 +74,7 @@ class RouteService implements IRouteService
      */
     public function getUsersRoutes(GetUserRoutesDto $getUserRoutesDto): CursorDto
     {
-        return RouteCursorDtoMapper::fromPaginator(
-            $this->routeRepository->getUsersRoutes($getUserRoutesDto)
-        );
+        return $this->routeRepository->getUsersRoutes($getUserRoutesDto);
     }
 
     /**
@@ -103,9 +95,7 @@ class RouteService implements IRouteService
      */
     public function getActiveUserRoute(int $userId): ActiveRouteDto
     {
-        return ActiveRouteDtoMapper::fromRouteModel(
-          $this->routeRepository->getActiveUserRoute($userId)
-        );
+        return $this->routeRepository->getActiveUserRoute($userId);
     }
 
     /**
@@ -115,9 +105,7 @@ class RouteService implements IRouteService
      */
     public function changeActiveUserRoute(ChangeUserRouteDto $changeActiveUserRouteDto): ActiveRouteDto
     {
-        return ActiveRouteDtoMapper::fromRouteModel(
-            $this->routeRepository->changeActiveUserRoute($changeActiveUserRouteDto)
-        );
+        return $this->routeRepository->changeActiveUserRoute($changeActiveUserRouteDto);
     }
 
     /**
@@ -126,9 +114,7 @@ class RouteService implements IRouteService
      */
     public function getFavoriteUserRoutes(GetUserRoutesDto $getUserRoutesDto): CursorDto
     {
-        return RouteCursorDtoMapper::fromPaginator(
-            $this->routeRepository->getFavoriteUserRoutes($getUserRoutesDto)
-        );
+        return $this->routeRepository->getFavoriteUserRoutes($getUserRoutesDto);
     }
 
     /**
@@ -137,9 +123,7 @@ class RouteService implements IRouteService
      */
     public function addRouteToUserFavorite(ChangeUserRouteDto $changeUserRouteDto): RouteDto
     {
-        return RouteDtoMapper::fromRouteModel(
-          $this->routeRepository->addRouteToUserFavorite($changeUserRouteDto)
-        );
+        return  $this->routeRepository->addRouteToUserFavorite($changeUserRouteDto);
     }
 
     /**

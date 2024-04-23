@@ -2,43 +2,43 @@
 
 namespace App\Application\Contracts\Out\Repositories\Route;
 
+use App\Application\DTO\Collection\CursorDto;
 use App\Application\DTO\In\Route\ChangeUserRouteDto;
 use App\Application\DTO\In\Route\CompletedRoutePointDto;
 use App\Application\DTO\In\Route\CreateRouteDto;
 use App\Application\DTO\In\Route\GetRoutesDto;
 use App\Application\DTO\In\Route\GetUserRoutesDto;
+use App\Application\DTO\Out\Route\ActiveRouteDto;
+use App\Application\DTO\Out\Route\RouteDto;
 use App\Application\Exceptions\Route\FailedToCreateRoute;
 use App\Application\Exceptions\Route\IncorrectOrderRoutePoints;
 use App\Application\Exceptions\Route\RouteIsCompleted;
 use App\Application\Exceptions\Route\RouteNotFound;
 use App\Application\Exceptions\Route\UserHaveNotActiveRoute;
 use App\Application\Exceptions\Route\UserRouteProgressNotFound;
-use App\Infrastructure\Database\Models\Route;
-use App\Infrastructure\Database\Models\UserActiveRoute;
-use Illuminate\Contracts\Pagination\CursorPaginator;
 
 interface IRouteRepository
 {
     /**
      * @param CreateRouteDto $createRouteDto
-     * @return Route
+     * @return RouteDto
      * @throws FailedToCreateRoute
      */
-    public function create(CreateRouteDto $createRouteDto):Route;
+    public function create(CreateRouteDto $createRouteDto): RouteDto;
 
     /**
      * @param int $routeId
-     * @return Route
+     * @return RouteDto
      * @throws RouteNotFound
      */
-    public function getRouteById(int $routeId): Route;
+    public function getRouteById(int $routeId): RouteDto;
 
     /**
      * @param GetRoutesDto $getRoutesDto
-     * @return CursorPaginator
+     * @return CursorDto
      * @throws RouteNotFound
      */
-    public function getRoutes(GetRoutesDto $getRoutesDto): CursorPaginator;
+    public function getRoutes(GetRoutesDto $getRoutesDto): CursorDto;
 
     /**
      * @param CompletedRoutePointDto $completedRoutePointDto
@@ -51,9 +51,9 @@ interface IRouteRepository
 
     /**
      * @param GetUserRoutesDto $getUserRoutesDto
-     * @return CursorPaginator
+     * @return CursorDto
      */
-    public function getUsersRoutes(GetUserRoutesDto $getUserRoutesDto): CursorPaginator;
+    public function getUsersRoutes(GetUserRoutesDto $getUserRoutesDto): CursorDto;
 
     /**
      * @param int $userId
@@ -65,29 +65,29 @@ interface IRouteRepository
 
     /**
      * @param int $userId
-     * @return UserActiveRoute
+     * @return ActiveRouteDto
      * @throws UserHaveNotActiveRoute
      */
-    public function getActiveUserRoute(int $userId): UserActiveRoute;
+    public function getActiveUserRoute(int $userId): ActiveRouteDto;
 
     /**
      * @param ChangeUserRouteDto $changeActiveUserRouteDto
-     * @return UserActiveRoute
+     * @return ActiveRouteDto
      * @throws RouteIsCompleted
      */
-    public function changeActiveUserRoute(ChangeUserRouteDto $changeActiveUserRouteDto): UserActiveRoute;
+    public function changeActiveUserRoute(ChangeUserRouteDto $changeActiveUserRouteDto): ActiveRouteDto;
 
     /**
      * @param GetUserRoutesDto $getUserRoutesDto
-     * @return CursorPaginator
+     * @return CursorDto
      */
-    public function getFavoriteUserRoutes(GetUserRoutesDto $getUserRoutesDto): CursorPaginator;
+    public function getFavoriteUserRoutes(GetUserRoutesDto $getUserRoutesDto): CursorDto;
 
     /**
      * @param ChangeUserRouteDto $changeUserRouteDto
-     * @return Route
+     * @return RouteDto
      */
-    public function addRouteToUserFavorite(ChangeUserRouteDto $changeUserRouteDto): Route;
+    public function addRouteToUserFavorite(ChangeUserRouteDto $changeUserRouteDto): RouteDto;
 
     /**
      * @param int $userId
