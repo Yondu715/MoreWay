@@ -3,6 +3,7 @@
 namespace App\Infrastructure\Http\Resources\Friend;
 
 use App\Application\DTO\Out\Friend\FriendshipRequestDto;
+use App\Infrastructure\Http\Resources\Auth\UserResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -20,7 +21,7 @@ class FriendshipRequestResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'user' => $this->user,
+            'user' => UserResource::make($this->user),
         ];
     }
 }
