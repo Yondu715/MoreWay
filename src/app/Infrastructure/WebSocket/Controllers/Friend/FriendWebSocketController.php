@@ -4,9 +4,11 @@ namespace App\Infrastructure\WebSocket\Controllers\Friend;
 
 use App\Application\Contracts\Out\Managers\Token\ITokenManager;
 use App\Infrastructure\Broker\RabbitMqConsumer;
+use App\Infrastructure\Http\Resources\Friend\FriendshipRequestResource;
 use App\Infrastructure\WebSocket\Controllers\NotifierWebSocket;
 use Bunny\Channel;
 use Bunny\Message;
+use Psr\Log\LoggerInterface;
 
 class FriendWebSocketController extends NotifierWebSocket
 {
@@ -26,6 +28,8 @@ class FriendWebSocketController extends NotifierWebSocket
                 $this->sendNotification($msg['to'], json_encode($msg['notification']));
                 $channel->ack($message);
             } catch (\Throwable $th) {
+                $logger = app(LoggerInterface::class);
+                $logger->info($th->getMessage());
                 $channel->nack($message);
             }
         });
