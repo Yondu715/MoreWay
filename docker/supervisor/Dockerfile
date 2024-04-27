@@ -1,7 +1,5 @@
 FROM php:8.2-fpm
 
-# ARG MCRYPT_VERSION=1.0.1
-# ARG RDKAFKA_VERSION=6.0.0
 
 RUN apt-get update &&\
     apt-get install -y openssl libssl-dev libcurl4-openssl-dev pkg-config libsasl2-dev libpcre3-dev &&\
@@ -11,11 +9,6 @@ RUN apt-get update &&\
     apt-get install -y --no-install-recommends librdkafka-dev &&\
     apt-get install -y libzip-dev
 
-# RUN apt-get update &&\
-    # pecl install rdkafka-${RDKAFKA_VERSION} &&\
-    # pecl install mcrypt-${MCRYPT_VERSION} &&\
-    # pecl install gnupg
-
 RUN docker-php-ext-install zip \
     && docker-php-ext-install pcntl \
     && docker-php-ext-configure imap --with-imap-ssl --with-kerberos \
@@ -24,11 +17,9 @@ RUN docker-php-ext-install zip \
     && docker-php-ext-configure bcmath \
     && docker-php-ext-install bcmath \
     && docker-php-ext-install sockets \
-    # && docker-php-ext-enable gnupg \
     && docker-php-ext-install pdo pdo_mysql \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install gd
-    # && docker-php-ext-enable rdkafka
 
 # Install composer
 ARG COMPOSER_VERSION=2.5.8
@@ -55,13 +46,11 @@ ARG WEB_USER_NAME=${WEB_USER_NAME}
 
 COPY ./custom.ini /usr/local/etc/php/conf.d/custom.ini
 COPY ./supervisord.conf  /var/supervisor/supervisord.conf
-# COPY ./crontab.cfg /var/spool/cron/crontabs/${WEB_USER_NAME}
 COPY ./supervisorctl /var/supervisor/supervisorctl
 
 RUN useradd -m -u ${WEB_USER_ID} ${WEB_USER_NAME} || echo "User exists" \
     && ln -sf /proc/1/fd/1 /var/supervisor/supervisor.log \
     && chown -R ${WEB_USER_ID}:${WEB_USER_ID} /var/supervisor
-    # && crontab -u ${WEB_USER_NAME} /var/spool/cron/crontabs/${WEB_USER_NAME}
 
 WORKDIR '/var/supervisor'
 ENV SUPERVISOR_USER ${WEB_USER_NAME}
