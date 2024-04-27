@@ -3,22 +3,49 @@
 namespace App\Infrastructure\WebSocket\Controllers;
 
 use App\Application\Contracts\Out\Managers\Token\ITokenManager;
+use Bunny\Async\Client;
+use Bunny\Channel;
+use Bunny\Message;
 use Exception;
 use Psr\Http\Message\RequestInterface;
+use Psr\Log\LoggerInterface;
 use Ratchet\ConnectionInterface;
 use Ratchet\RFC6455\Messaging\MessageInterface;
 use Ratchet\WebSocket\MessageComponentInterface;
+use React\EventLoop\Loop;
 
 abstract class NotifierWebSocket implements MessageComponentInterface
 {
-    /**
-     * @var array<int, ConnectionInterface>
-     */
-    protected static array $clients = [];
+
+    protected array $clients = [];
+    private Client $connection;
+    private string $queueName = 'ws';
 
     public function __construct(
         protected readonly ITokenManager $tokenManager
     ) {
+        $loop = Loop::get();
+        $this->connection = new Client($loop, [
+            'host' => config('queue.connections.rabbitmq.host'),
+            'port' => config('queue.connections.rabbitmq.port'),
+            'user' => config('queue.connections.rabbitmq.username'),
+            'password' => config('queue.connections.rabbitmq.password'),
+            'vhost' => config('queue.connections.rabbitmq.vhost')
+        ]);
+        $logger = app(LoggerInterface::class);
+        $this->connection->connect()->then(function (Client $client) {
+            return $client->channel();
+        })->then(function (Channel $channel) {
+            return $channel->qos(0, 5)->then(function () use ($channel) {
+                return $channel;
+            });
+        })->then(function (Channel $channel) {
+            $channel->consume(function (Message $message, Channel $channel, Client $client) {
+                $logger = app(LoggerInterface::class);
+                $logger->info('success');
+            }, $this->queueName);
+        });
+        $logger->info('setup done');
     }
 
     /**
@@ -29,7 +56,6 @@ abstract class NotifierWebSocket implements MessageComponentInterface
     {
         $params = $this->parseQuery($conn->httpRequest);
         $token = $params['token'] ?? null;
-
         if (!$token) {
             $conn->send('Необходимо добавить query параметр token');
             $conn->close();
@@ -44,9 +70,7 @@ abstract class NotifierWebSocket implements MessageComponentInterface
             return;
         }
 
-        self::$clients[$user->id] = $conn;
-        echo "Новое соединение для пользователя с id={$user->id}\n";
-        $conn->send('Вы успешно подключились');
+        $this->clients[$user->id] = $conn;
     }
 
     /**
@@ -64,13 +88,13 @@ abstract class NotifierWebSocket implements MessageComponentInterface
      */
     public function onClose(ConnectionInterface $conn): void
     {
-        $userId = array_search($conn, self::$clients, true);
+        $userId = array_search($conn, $this->clients, true);
         if (!$userId) {
             echo "Соединение закрыто, но клиент не был найден в списке.\n";
             return;
         }
 
-        unset(self::$clients[$userId]);
+        unset($this->clients[$userId]);
         echo "Соединение закрыто! {$userId}\n";
     }
 
@@ -81,8 +105,8 @@ abstract class NotifierWebSocket implements MessageComponentInterface
      */
     public function onError(ConnectionInterface $conn, Exception $e): void
     {
-        $userId = array_search($conn, self::$clients, true);
-        unset(self::$clients[$userId]);
+        $userId = array_search($conn, $this->clients, true);
+        unset($this->clients[$userId]);
         $conn->close();
         echo "Ошибка! " . $e->getMessage();
     }
@@ -99,18 +123,10 @@ abstract class NotifierWebSocket implements MessageComponentInterface
         return $params;
     }
 
-    /**
-     * @param int $userId
-     * @param mixed $notification
-     * @return void
-     */
-    public static function sendNotification(int $userId, mixed $notification): void
+
+
+    private function handleNotification(int $userId, string $msg): void
     {
-        $isUserExist = isset(self::$clients[$userId]);
-        if (!$isUserExist) {
-            echo "Клиент с ID $userId не найден.\n";
-            return;
-        }
-        self::$clients[$userId]->send(json_encode($notification));
+        $this->clients[$userId]->send($msg);
     }
 }
