@@ -3,34 +3,18 @@
 namespace App\Infrastructure\WebSocket\Notifiers;
 
 use App\Application\Contracts\Out\Managers\Notifier\INotifierManager;
-use Bunny\Channel;
-use Bunny\Client;
+use App\Infrastructure\Broker\RabbitMqPublisher;
 
 class FriendNotifier implements INotifierManager
 {
 
-    private Client $connection;
-    private Channel $channel;
-    private string $queueName;
+    private string $queueName = 'notification:friends';
+    private readonly RabbitMqPublisher $publisher;
 
-
-    public function __construct()
-    {
-        $this->connection = new Client([
-            'host' => config('queue.connections.rabbitmq.host'),
-            'port' => config('queue.connections.rabbitmq.port'),
-            'user' => config('queue.connections.rabbitmq.username'),
-            'password' => config('queue.connections.rabbitmq.password'),
-            'vhost' => config('queue.connections.rabbitmq.vhost')
-        ]);
-        $this->channel = $this->connection->channel();
-        $this->queueName = 'ws';
-    }
-
-    public function __destruct()
-    {
-        $this->channel->close();
-        $this->connection->disconnect();
+    public function __construct(
+        RabbitMqPublisher $publisher
+    ) {
+        $this->publisher = $publisher;
     }
 
     /**
@@ -40,8 +24,12 @@ class FriendNotifier implements INotifierManager
      */
     public function sendNotification(int $userId, mixed $notification): void
     {
-        $this->channel->publish(
-            body: json_encode($notification),
+        $message = [
+            'to' => $userId,
+            'notification' => $notification
+        ];
+        $this->publisher->publish(
+            body: json_encode($message),
             routingKey: $this->queueName
         );
     }
