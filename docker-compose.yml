@@ -84,11 +84,9 @@ services:
     environment:
       - RABBITMQ_DEFAULT_USER=web
       - RABBITMQ_DEFAULT_PASS=123
-      - RABBITMQ_DEFAULT_VHOST=rabbitmq
     volumes:
       - /home/web/www/more_way/local/rabbitmq:/var/lib/rabbitmq
     ports:
-      - 6379:6379
       - 15672:15672
     restart: unless-stopped
     tty: true
