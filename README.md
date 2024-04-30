@@ -3,9 +3,11 @@
 
 ## Backend и Frontend
 Серверная часть: 
+
 [![Server](https://skillicons.dev/icons?i=laravel,php,mysql)](https://github.com/Yondu715/MoreWay_Backend)
 
 Клиентская часть: 
+
 [![Client](https://skillicons.dev/icons?i=flutter,dart)](https://github.com/whitefooox/moreway-app)
 
 ## Стек
