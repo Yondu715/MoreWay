@@ -4,7 +4,7 @@
 ## Backend и Frontend
 Серверная часть: 
 
-[![Server](https://skillicons.dev/icons?i=laravel,php,mysql)](https://github.com/Yondu715/MoreWay_Backend)
+[![Server](https://skillicons.dev/icons?i=laravel,php,mysql,redis,rabbitmq,docker)](https://github.com/Yondu715/MoreWay_Backend)
 
 Клиентская часть: 
 
