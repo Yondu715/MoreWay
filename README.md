@@ -2,7 +2,8 @@
 Система, которая позволяет планировать и создавать маршруты для путешествия по достопримечательностям Кузбасса с элементами геймификации.
 
 ## Backend и Frontend
-Серверная часть: https://github.com/Yondu715/MoreWay_Backend\n
+Серверная часть: https://github.com/Yondu715/MoreWay_Backend
+
 Клиентская часть: https://github.com/whitefooox/moreway-app
 
 ## Стек
