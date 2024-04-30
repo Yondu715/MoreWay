@@ -45,6 +45,7 @@ composer install
 ```
 
 Далее создаем файл .env и описываем окружение по примеру .env.example
+
 Главное указать следующие параметры
 ```sh
 DB_CONNECTION=mysql
