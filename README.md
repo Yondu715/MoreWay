@@ -2,9 +2,11 @@
 Система, которая позволяет планировать и создавать маршруты для путешествия по достопримечательностям Кузбасса с элементами геймификации.
 
 ## Backend и Frontend
-Серверная часть: https://github.com/Yondu715/MoreWay_Backend
+Серверная часть: 
+[![Server](https://skillicons.dev/icons?i=laravel,php,mysql)](https://github.com/Yondu715/MoreWay_Backend)
 
-Клиентская часть: https://github.com/whitefooox/moreway-app
+Клиентская часть: 
+[![Client](https://skillicons.dev/icons?i=flutter,dart)](https://github.com/whitefooox/moreway-app)
 
 ## Стек
 - PHP (v8.2) - Язык программирования
