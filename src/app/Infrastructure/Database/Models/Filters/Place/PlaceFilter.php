@@ -81,7 +81,7 @@ class PlaceFilter extends AbstractFilter
         $placesId = [];
 
         $builder->get()->map(function ($place) {
-            $place->distance = call_user_func($this->distanceCalculator, [$place->lat, $place->lon]);
+            $place->distance = call_user_func($this->distanceCalculator, $place->lat, $place->lon);
             return $place;
         })->filter(function ($place) use ($value, &$placesId) {
             if ($place->distance >= $value['from'] && $place->distance <= $value['to']) {
@@ -117,7 +117,7 @@ class PlaceFilter extends AbstractFilter
 
             case 'distance': {
                 $places = $builder->get()->map(function ($place) {
-                    $place->distance = call_user_func($this->distanceCalculator, [$place->lat, $place->lon]);
+                    $place->distance = call_user_func($this->distanceCalculator, $place->lat, $place->lon);
                     return $place;
                 });
 

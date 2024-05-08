@@ -3,10 +3,20 @@
 namespace App\Infrastructure\WebSocket\Notifiers;
 
 use App\Application\Contracts\Out\Managers\Notifier\INotifierManager;
-use App\Infrastructure\WebSocket\Controllers\Friend\FriendWebSocketController;
+use App\Infrastructure\Broker\RabbitMqPublisher;
 
 class FriendNotifier implements INotifierManager
 {
+
+    private string $queueName = 'notification:friends';
+    private readonly RabbitMqPublisher $publisher;
+
+    public function __construct(
+        RabbitMqPublisher $publisher
+    ) {
+        $this->publisher = $publisher;
+    }
+
     /**
      * @param int $userId
      * @param mixed $notification
@@ -14,6 +24,13 @@ class FriendNotifier implements INotifierManager
      */
     public function sendNotification(int $userId, mixed $notification): void
     {
-        FriendWebSocketController::sendNotification($userId, $notification);
+        $message = [
+            'to' => $userId,
+            'notification' => $notification
+        ];
+        $this->publisher->publish(
+            body: json_encode($message),
+            routingKey: $this->queueName
+        );
     }
 }

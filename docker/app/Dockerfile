@@ -49,10 +49,6 @@ RUN docker-php-ext-configure soap --enable-soap \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install gd
 
-# Install nodejs, npm
-# RUN curl -sL https://deb.nodesource.com/setup_14.x | bash - &&\
-#     apt-get install nodejs -y
-
 # Setup the Composer installer
 RUN curl -o /tmp/composer-setup.php https://getcomposer.org/installer \
   && curl -o /tmp/composer-setup.sig https://composer.github.io/installer.sig \

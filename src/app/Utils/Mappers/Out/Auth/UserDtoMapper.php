@@ -7,7 +7,6 @@ use App\Application\DTO\Out\Auth\UserDto;
 use App\Infrastructure\Database\Models\User;
 use App\Utils\Mappers\Collection\CursorDtoMapper;
 use Illuminate\Pagination\CursorPaginator;
-use Illuminate\Support\Collection;
 
 class UserDtoMapper
 {
@@ -23,6 +22,16 @@ class UserDtoMapper
             avatar: $user->avatar,
             email: $user->email,
             password: $user->password
+        );
+    }
+
+    public static function fromUserModelToNotify(User $user): UserDto
+    {
+        return new UserDto(
+            id: $user->id,
+            name: $user->name,
+            avatar: $user->avatar,
+            email: $user->email
         );
     }
 

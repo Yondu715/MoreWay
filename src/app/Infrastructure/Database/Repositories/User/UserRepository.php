@@ -4,7 +4,6 @@ namespace App\Infrastructure\Database\Repositories\User;
 
 use App\Application\Contracts\Out\Repositories\User\IUserRepository;
 use App\Application\DTO\Collection\CursorDto;
-use App\Application\DTO\In\User\ChangeUserPasswordDto;
 use App\Application\DTO\In\User\GetUsersDto;
 use App\Application\DTO\Out\Auth\UserDto;
 use App\Application\Enums\Role\RoleType;

@@ -31,11 +31,13 @@ services:
       PHP_IDE_CONFIG: serverName=more_way.test
     depends_on:
       - mysql
+      - redis
+      - rabbitmq
     tty: true
 
   nginx:
     build:
-      context: ./docker/nginx/
+      context: ./docker/nginx
       args:
         WEB_USER_ID: 1000
         WEB_USER_NAME: web
@@ -69,19 +71,29 @@ services:
 
   redis:
     build:
-      context: docker/redis
+      context: ./docker/redis
     volumes:
       - /home/web/www/more_way/local/redis:/var/lib/redis
+    restart: unless-stopped
+    tty: true
+  
+  rabbitmq:
+    build:
+      context: ./docker/rabbitmq
+    hostname: rabbitmq
+    environment:
+      - RABBITMQ_DEFAULT_USER=web
+      - RABBITMQ_DEFAULT_PASS=123
+    volumes:
+      - /home/web/www/more_way/local/rabbitmq:/var/lib/rabbitmq
     ports:
-      - 6379:6379
-    restart: always
-    depends_on:
-      - app
+      - 15672:15672
+    restart: unless-stopped
     tty: true
 
   supervisor:
     build:
-      context: docker/supervisor
+      context: ./docker/supervisor
       args:
         WEB_USER_ID: 1000
         WEB_USER_NAME: web
@@ -93,7 +105,7 @@ services:
       - .:/var/www
     depends_on:
       - app
+      - rabbitmq
     ports:
-      - 9999:9999
       - 8877:8877
     tty: true

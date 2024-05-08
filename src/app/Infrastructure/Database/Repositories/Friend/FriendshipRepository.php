@@ -79,13 +79,15 @@ class FriendshipRepository implements IFriendshipRepository
      */
     public function deleteFriendship(int $userId, int $friendId): bool
     {
-        return $this->model->query()->where([
-            'user_id' => $userId,
-            'friend_id' => $friendId
-        ])->orWhere([
-            'user_id' => $friendId,
-            'friend_id' => $userId
-        ])->delete();
+        return $this->model->query()->where(function ($query) use ($userId, $friendId) {
+            $query->where([
+                'user_id' => $userId,
+                'friend_id' => $friendId
+            ])->orWhere([
+                'user_id' => $friendId,
+                'friend_id' => $userId
+            ]);
+        })->delete();
     }
 
     /**
@@ -111,12 +113,18 @@ class FriendshipRepository implements IFriendshipRepository
      */
     public function findByUserIdAndFriendId(int $userId, int $friendId): ?FriendshipRequestDto
     {
-        /** @var Friendship $friendship */
-        $friendship = $this->model->query()->firstWhere([
+        /** @var ?Friendship $friendship1 */
+        $friendship1 = $this->model->query()->where([
             'user_id' => $userId,
             'friend_id' => $friendId
-        ]);
+        ])->first();
 
+        /** @var ?Friendship $friendship2 */
+        $friendship2 = $this->model->query()->where([
+            'user_id' => $friendId,
+            'friend_id' => $userId
+        ])->first();
+        $friendship = $friendship1 ?: $friendship2;
         return $friendship ? FriendshipRequestDtoMapper::fromFriendshipModel($friendship) : null;
     }
 

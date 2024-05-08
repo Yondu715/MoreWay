@@ -12,14 +12,17 @@ use Ratchet\WebSocket\MessageComponentInterface;
 
 abstract class NotifierWebSocket implements MessageComponentInterface
 {
+
     /**
      * @var array<int, ConnectionInterface>
      */
-    protected static array $clients = [];
+    protected array $clients = [];
+    protected readonly ITokenManager $tokenManager;
 
     public function __construct(
-        protected readonly ITokenManager $tokenManager
+        ITokenManager $tokenManager,
     ) {
+        $this->tokenManager = $tokenManager;
     }
 
     /**
@@ -31,7 +34,6 @@ abstract class NotifierWebSocket implements MessageComponentInterface
     {
         $params = $this->parseQuery($conn->httpRequest);
         $token = $params['token'] ?? null;
-
         if (!$token) {
             $conn->send('Необходимо добавить query параметр token');
             $conn->close();
@@ -46,9 +48,7 @@ abstract class NotifierWebSocket implements MessageComponentInterface
             return;
         }
 
-        self::$clients[$user->id] = $conn;
-        echo "Новое соединение для пользователя с id={$user->id}\n";
-        $conn->send('Вы успешно подключились');
+        $this->clients[$user->id] = $conn;
     }
 
     /**
@@ -66,14 +66,11 @@ abstract class NotifierWebSocket implements MessageComponentInterface
      */
     public function onClose(ConnectionInterface $conn): void
     {
-        $userId = array_search($conn, self::$clients, true);
+        $userId = array_search($conn, $this->clients, true);
         if (!$userId) {
-            echo "Соединение закрыто, но клиент не был найден в списке.\n";
             return;
         }
-
-        unset(self::$clients[$userId]);
-        echo "Соединение закрыто! {$userId}\n";
+        unset($this->clients[$userId]);
     }
 
     /**
@@ -83,10 +80,9 @@ abstract class NotifierWebSocket implements MessageComponentInterface
      */
     public function onError(ConnectionInterface $conn, Exception $e): void
     {
-        $userId = array_search($conn, self::$clients, true);
-        unset(self::$clients[$userId]);
+        $userId = array_search($conn, $this->clients, true);
+        unset($this->clients[$userId]);
         $conn->close();
-        echo "Ошибка! " . $e->getMessage();
     }
 
     /**
@@ -95,24 +91,15 @@ abstract class NotifierWebSocket implements MessageComponentInterface
      */
     private function parseQuery(RequestInterface $request): array
     {
-        $params = [];
-        $queryParams = $request->getUri()->getQuery();
-        parse_str($queryParams, $params);
+        parse_str($request->getUri()->getQuery(), $params);
         return $params;
     }
 
+
     /**
      * @param int $userId
-     * @param mixed $notification
+     * @param string $msg
      * @return void
      */
-    public static function sendNotification(int $userId, mixed $notification): void
-    {
-        $isUserExist = isset(self::$clients[$userId]);
-        if (!$isUserExist) {
-            echo "Клиент с ID $userId не найден.\n";
-            return;
-        }
-        self::$clients[$userId]->send(json_encode($notification));
-    }
+    abstract function sendNotification(int $userId, string $notification): void;
 }
