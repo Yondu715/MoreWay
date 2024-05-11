@@ -15,7 +15,7 @@ use Illuminate\Support\Carbon;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property Carbon|null $deleted_at
- * @property-read Collection<int, Friend> $friends
+ * @property-read Collection<int, Friendship> $friends
  * @property-read int|null $friends_count
  */
 class FriendRelationshipType extends Model

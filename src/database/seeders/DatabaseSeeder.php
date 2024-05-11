@@ -22,7 +22,11 @@ class DatabaseSeeder extends Seeder
             RoutesTableSeeder::class,
             RoutePointsTableSeeder::class,
             RouteReviewsTableSeeder::class,
-            UserRouteProgressesTableSeeder::class
+            UserRouteProgressesTableSeeder::class,
+            FriendRelationshipTypesTableSeeder::class,
+            AchievementTypesTableSeeder::class,
+            AchievementsTableSeeder::class,
+            UserAchievementProgressesTableSeeder::class,
         ]);
     }
 }
