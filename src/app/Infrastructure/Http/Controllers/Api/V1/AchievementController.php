@@ -20,6 +20,10 @@ class AchievementController extends Controller
         private readonly IAchievementService $achievementService,
     ) {}
 
+    /**
+     * @param GetAchievementsRequest $getAchievementsRequest
+     * @return AchievementCursorResource
+     */
     public function getAchievements (GetAchievementsRequest $getAchievementsRequest): AchievementCursorResource
     {
         $getAchievementsDto = GetAchievementsDtoMapper::fromRequest($getAchievementsRequest);
@@ -28,6 +32,10 @@ class AchievementController extends Controller
         );
     }
 
+    /**
+     * @param GetUserAchievementsRequest $getUserAchievementsRequest
+     * @return UserAchievementCursorResource
+     */
     public function getUserAchievements(GetUserAchievementsRequest $getUserAchievementsRequest): UserAchievementCursorResource
     {
         $getUserAchievementsDto = GetUserAchievementsDtoMapper::fromRequest($getUserAchievementsRequest);
@@ -36,6 +44,10 @@ class AchievementController extends Controller
         );
     }
 
+    /**
+     * @param GetAchievementsTypesRequest $getAchievementsTypesRequest
+     * @return AchievementTypeCursorResource
+     */
     public function getAchievementsTypes(GetAchievementsTypesRequest $getAchievementsTypesRequest): AchievementTypeCursorResource
     {
         $getAchievementsTypesDto = GetAchievementsTypesDtoMapper::fromRequest($getAchievementsTypesRequest);
