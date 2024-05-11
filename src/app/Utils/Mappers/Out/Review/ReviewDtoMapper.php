@@ -34,7 +34,7 @@ class ReviewDtoMapper
     public static function fromPaginator(CursorPaginator $paginator): CursorDto
     {
         return CursorDtoMapper::fromPaginatorAndMapper($paginator, function (PlaceReview|RouteReview $review) {
-            return ReviewDtoMapper::fromReviewModel($review);
+            return self::fromReviewModel($review);
         });
     }
 }

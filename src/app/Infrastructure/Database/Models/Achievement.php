@@ -5,6 +5,7 @@ namespace App\Infrastructure\Database\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
 
@@ -52,5 +53,10 @@ class Achievement extends Model
     public function type(): BelongsTo
     {
         return $this->belongsTo(AchievementType::class, 'type_id', 'id');
+    }
+
+    public function userProgress(): HasMany
+    {
+        return $this->hasMany(UserAchievementProgress::class, 'achievement_id', 'id');
     }
 }

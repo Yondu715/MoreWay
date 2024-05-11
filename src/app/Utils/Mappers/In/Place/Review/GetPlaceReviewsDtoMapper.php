@@ -16,7 +16,7 @@ class GetPlaceReviewsDtoMapper
         return new GetPlaceReviewsDto(
             placeId: $getReviewsRequest->route('placeId'),
             cursor: $getReviewsRequest->cursor,
-            limit: $getReviewsRequest->limit
+            limit: $getReviewsRequest->limit ?? 2
         );
     }
 }

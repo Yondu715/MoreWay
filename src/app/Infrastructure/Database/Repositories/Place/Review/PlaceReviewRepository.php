@@ -31,7 +31,7 @@ class PlaceReviewRepository implements IPlaceReviewRepository
         $reviews = $this->model->query()
             ->where('place_id', $getReviewsDto->placeId)
             ->orderBy('created_at', 'desc')
-            ->cursorPaginate(perPage: $getReviewsDto->limit ?? 2, cursor: $getReviewsDto->cursor);
+            ->cursorPaginate(perPage: $getReviewsDto->limit, cursor: $getReviewsDto->cursor);
         return ReviewDtoMapper::fromPaginator($reviews);
     }
 

@@ -2,15 +2,19 @@
 
 namespace App\Infrastructure\Http\Controllers\Api\V1;
 
+use App\Application\Contracts\In\Services\Achievement\IAchievementService;
 use App\Infrastructure\Http\Controllers\Controller;
 use App\Infrastructure\Http\Requests\Achievement\GetAchievementsRequest;
 use App\Infrastructure\Http\Requests\Achievement\GetUserAchievementsRequest;
 use App\Infrastructure\Http\Requests\Achievement\Type\GetAchievementsTypesRequest;
 use App\Infrastructure\Http\Resources\Achievement\AchievementCursorResource;
-use App\Infrastructure\Http\Resources\Achievement\Type\TypeAchievementCursorResource;
+use App\Infrastructure\Http\Resources\Achievement\Type\AchievementTypeCursorResource;
 use App\Infrastructure\Http\Resources\Achievement\UserAchievementCursorResource;
+use App\Utils\Mappers\In\Achievement\GetAchievementsDtoMapper;
+use App\Utils\Mappers\In\Achievement\GetUserAchievementsDtoMapper;
+use App\Utils\Mappers\In\Achievement\Type\GetAchievementsTypesDtoMapper;
 
-class AchievementController  extends Controller
+class AchievementController extends Controller
 {
     public function __construct(
         private readonly IAchievementService $achievementService,
@@ -32,11 +36,11 @@ class AchievementController  extends Controller
         );
     }
 
-    public function getAchievementsTypes(GetAchievementsTypesRequest $getAchievementsTypesRequest): TypeAchievementCursorResource
+    public function getAchievementsTypes(GetAchievementsTypesRequest $getAchievementsTypesRequest): AchievementTypeCursorResource
     {
         $getAchievementsTypesDto = GetAchievementsTypesDtoMapper::fromRequest($getAchievementsTypesRequest);
-        return TypeAchievementCursorResource::make(
-            $this->achievementService->getUserAchievements($getAchievementsTypesDto)
+        return AchievementTypeCursorResource::make(
+                $this->achievementService->getAchievementsTypes($getAchievementsTypesDto)
         );
     }
 }

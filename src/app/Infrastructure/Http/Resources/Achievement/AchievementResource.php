@@ -2,7 +2,7 @@
 
 namespace App\Infrastructure\Http\Resources\Achievement;
 
-use App\Infrastructure\Http\Resources\Achievement\Type\TypeAchievementResource;
+use App\Infrastructure\Http\Resources\Achievement\Type\AchievementTypeResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -20,7 +20,7 @@ class AchievementResource extends JsonResource
             'name' => $this->name,
             'description' => $this->description,
             'target' => $this->target,
-            'type' => TypeAchievementResource::make($this->type),
+            'type' => AchievementTypeResource::make($this->type),
             'image' => $this->image
         ];
     }

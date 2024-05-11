@@ -7,6 +7,8 @@ use Illuminate\Foundation\Http\FormRequest;
 
 /**
  * @property string $name
+ * @property ?string cursor
+ * @property ?int limit
  */
 class GetUsersRequest extends FormRequest
 {
@@ -18,7 +20,9 @@ class GetUsersRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'string|max:255'
+            'name' => 'string|max:255',
+            'cursor' => 'string',
+            'limit' => 'numeric'
         ];
     }
 }

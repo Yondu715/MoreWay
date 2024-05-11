@@ -34,7 +34,7 @@ class UserRepository implements IUserRepository
     {
         $paginator = $this->model->filter($this->userFilterFactory->create($getUsersDto->filter))
             ->where('role_id', '<>', RoleType::ADMIN)
-            ->cursorPaginate(perPage: $getUsersDto->limit ?? 2, cursor: $getUsersDto->cursor);
+            ->cursorPaginate(perPage: $getUsersDto->limit, cursor: $getUsersDto->cursor);
         return UserDtoMapper::fromPaginator($paginator);
     }
 

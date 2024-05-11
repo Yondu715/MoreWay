@@ -5,7 +5,7 @@ namespace App\Infrastructure\Http\Resources\Achievement\Type;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class TypeAchievementResource extends JsonResource
+class AchievementTypeResource extends JsonResource
 {
     /**
      * Transform the resource into an array.

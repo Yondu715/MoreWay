@@ -9,7 +9,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 /**
  * @mixin CursorDto
  */
-class TypeAchievementCursorResource extends JsonResource
+class AchievementTypeCursorResource extends JsonResource
 {
     /**
      * @param Request $request
@@ -18,7 +18,7 @@ class TypeAchievementCursorResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'data' => TypeAchievementResource::collection($this->data),
+            'data' => AchievementTypeResource::collection($this->data),
             'meta' => [
                 'next_cursor' => $this->next_cursor
             ]

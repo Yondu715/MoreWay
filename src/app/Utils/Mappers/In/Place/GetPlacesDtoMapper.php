@@ -53,7 +53,7 @@ class GetPlacesDtoMapper
                     ] : null,
                 'search' => $getPlacesRequest->search,
             ],
-            limit: $getPlacesRequest->limit
+            limit: $getPlacesRequest->limit ?? 2
         );
     }
 }

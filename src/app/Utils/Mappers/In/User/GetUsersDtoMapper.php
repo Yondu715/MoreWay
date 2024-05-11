@@ -15,10 +15,10 @@ class GetUsersDtoMapper
     {
         return new GetUsersDto(
             cursor: $getUsersRequest->cursor,
-            limit: $getUsersRequest->limit,
             filter: [
                 'name' => $getUsersRequest->name
-            ]
+            ],
+            limit: $getUsersRequest->limit
         );
     }
 }
