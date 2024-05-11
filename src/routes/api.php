@@ -4,6 +4,7 @@ use App\Infrastructure\Http\Controllers\Api\V1\AchievementController;
 use App\Infrastructure\Http\Controllers\Api\V1\AuthController;
 use App\Infrastructure\Http\Controllers\Api\V1\FriendController;
 use App\Infrastructure\Http\Controllers\Api\V1\PlaceController;
+use App\Infrastructure\Http\Controllers\Api\V1\RatingController;
 use App\Infrastructure\Http\Controllers\Api\V1\RouteController;
 use App\Infrastructure\Http\Controllers\Api\V1\UserController;
 use Illuminate\Support\Facades\Route;
@@ -80,6 +81,12 @@ Route::prefix('achievements')
     ->group(function () {
         Route::get('/', [AchievementController::class, 'getAchievements']);
         Route::get('/types', [AchievementController::class, 'getAchievementsTypes']);
+    });
+
+Route::prefix('rating')
+    ->middleware('auth:api', 'role:user')
+    ->group(function () {
+        Route::get('/', [RatingController::class, 'getRating']);
     });
 
 Route::prefix('friends')

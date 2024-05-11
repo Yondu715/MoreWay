@@ -6,6 +6,7 @@ use App\Application\Contracts\In\Services\Achievement\IAchievementService;
 use App\Application\Contracts\In\Services\Auth\IAuthService;
 use App\Application\Contracts\In\Services\Friend\IFriendshipService;
 use App\Application\Contracts\In\Services\Place\Filter\IPlaceFilterService;
+use App\Application\Contracts\In\Services\Rating\IRatingService;
 use App\Application\Contracts\In\Services\Route\Constructor\IRouteConstructorService;
 use App\Application\Contracts\In\Services\Route\Filter\IRouteFilterService;
 use App\Application\Contracts\In\Services\Place\IPlaceService;
@@ -26,6 +27,7 @@ use App\Application\Contracts\Out\Repositories\Place\IPlaceRepository;
 use App\Application\Contracts\Out\Repositories\Place\Locality\ILocalityRepository;
 use App\Application\Contracts\Out\Repositories\Place\Review\IPlaceReviewRepository;
 use App\Application\Contracts\Out\Repositories\Place\Type\IPlaceTypeRepository;
+use App\Application\Contracts\Out\Repositories\Rating\IRatingRepository;
 use App\Application\Contracts\Out\Repositories\Route\Constructor\IRouteConstructorRepository;
 use App\Application\Contracts\Out\Repositories\Route\IRouteRepository;
 use App\Application\Contracts\Out\Repositories\Route\Review\IRouteReviewRepository;
@@ -36,6 +38,7 @@ use App\Application\Services\Friend\FriendshipService;
 use App\Application\Services\Place\Filter\PlaceFilterService;
 use App\Application\Services\Place\PlaceService;
 use App\Application\Services\Place\Review\PlaceReviewService;
+use App\Application\Services\Rating\RatingService;
 use App\Application\Services\Route\Constructor\RouteConstructorService;
 use App\Application\Services\Route\Filter\RouteFilterService;
 use App\Application\Services\Route\Review\RouteReviewService;
@@ -48,6 +51,7 @@ use App\Infrastructure\Database\Repositories\Place\Locality\LocalityRepository;
 use App\Infrastructure\Database\Repositories\Place\PlaceRepository;
 use App\Infrastructure\Database\Repositories\Place\Review\PlaceReviewRepository;
 use App\Infrastructure\Database\Repositories\Place\Type\PlaceTypeRepository;
+use App\Infrastructure\Database\Repositories\Rating\RatingRepository;
 use App\Infrastructure\Database\Repositories\Route\Constructor\RouteConstructorRepository;
 use App\Infrastructure\Database\Repositories\Route\Review\RouteReviewRepository;
 use App\Infrastructure\Database\Repositories\Route\RouteRepository;
@@ -78,6 +82,7 @@ class AppServiceProvider extends ServiceProvider
         IRouteFilterService::class => RouteFilterService::class,
         IRouteConstructorService::class => RouteConstructorService::class,
         IAchievementService::class => AchievementService::class,
+        IRatingService::class => RatingService::class,
 
         /** REPOSITORIES */
         IUserRepository::class => UserRepository::class,
@@ -91,6 +96,7 @@ class AppServiceProvider extends ServiceProvider
         IRouteConstructorRepository::class => RouteConstructorRepository::class,
         IAchievementRepository::class => AchievementRepository::class,
         IAchievementTypeRepository::class => AchievementTypeRepository::class,
+        IRatingRepository::class => RatingRepository::class,
 
         /** Managers */
         ITokenManager::class => TokenManager::class,
