@@ -1,5 +1,6 @@
 <?php
 
+use App\Infrastructure\Http\Controllers\Api\V1\AchievementController;
 use App\Infrastructure\Http\Controllers\Api\V1\AuthController;
 use App\Infrastructure\Http\Controllers\Api\V1\FriendController;
 use App\Infrastructure\Http\Controllers\Api\V1\PlaceController;
@@ -69,7 +70,16 @@ Route::prefix('users')
                     });
                 Route::get('/routes', [RouteController::class, 'getUsersRoutes']);
                 Route::get('/favorite-routes', [RouteController::class, 'getFavoriteUserRoutes']);
+
+                Route::get('/achievements', [AchievementController::class, 'getUserAchievements']);
             });
+    });
+
+Route::prefix('achievements')
+    ->middleware('auth:api', 'role:user')
+    ->group(function () {
+        Route::get('/', [AchievementController::class, 'getAchievements']);
+        Route::get('/types', [AchievementController::class, 'getAchievementsTypes']);
     });
 
 Route::prefix('friends')
