@@ -2,6 +2,8 @@
 
 namespace App\Infrastructure\Http\Resources\Achievement;
 
+use App\Application\DTO\Out\Achievement\UserAchievementDto;
+use App\Infrastructure\Http\Resources\Achievement\Type\AchievementTypeResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -18,7 +20,12 @@ class UserAchievementResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            AchievementResource::make($this->achievement),
+            'id' => $this->achievement->id,
+            'name' => $this->achievement->name,
+            'description' => $this->achievement->description,
+            'target' => $this->achievement->target,
+            'type' => AchievementTypeResource::make($this->achievement->type),
+            'image' =>  url("/storage/{$this->achievement->image}"),
             'currentProgress' => $this->currentProgress
         ];
     }
