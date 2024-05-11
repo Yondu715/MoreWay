@@ -21,7 +21,7 @@ class ShortUserResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'avatar' => $this->avatar,
+            'avatar' => url("/storage/{$this->avatar}"),
         ];
     }
 }

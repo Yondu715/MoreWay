@@ -38,6 +38,7 @@ class AchievementRepository implements IAchievementRepository
      */
     public function getAllForUser(GetUserAchievementsDto $getUserAchievementsDto): CursorDto
     {
+        //!!! and etc.
         $paginator = UserAchievementProgress::query()
             ->where('user_id', $getUserAchievementsDto->userId)
             ->cursorPaginate(perPage: $getUserAchievementsDto->limit , cursor: $getUserAchievementsDto->cursor);

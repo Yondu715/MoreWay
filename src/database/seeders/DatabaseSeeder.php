@@ -27,6 +27,7 @@ class DatabaseSeeder extends Seeder
             AchievementTypesTableSeeder::class,
             AchievementsTableSeeder::class,
             UserAchievementProgressesTableSeeder::class,
+            UserScoresTableSeeder::class,
         ]);
     }
 }
