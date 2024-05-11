@@ -66,10 +66,10 @@ class TokenManager implements ITokenManager
     public function parseToken(string $token): ?UserDto
     {
         try {
-            return UserDtoMapper::fromUserModel(
-                $this->getAuth()->setToken($token)->user()
-            );
-        } catch (Exception $e) {
+            /** @var ?User $user */
+            $user = $this->getAuth()->setToken($token)->user();
+            return UserDtoMapper::fromUserModel($user);
+        } catch (Exception) {
             throw new InvalidToken();
         }
     }
@@ -77,6 +77,7 @@ class TokenManager implements ITokenManager
     /**
      * @param string $role
      * @return bool
+     * @throws InvalidToken
      */
     public function hasRole(string $role): bool
     {

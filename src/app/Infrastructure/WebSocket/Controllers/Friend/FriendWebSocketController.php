@@ -4,7 +4,6 @@ namespace App\Infrastructure\WebSocket\Controllers\Friend;
 
 use App\Application\Contracts\Out\Managers\Token\ITokenManager;
 use App\Infrastructure\Broker\RabbitMqConsumer;
-use App\Infrastructure\Http\Resources\Friend\FriendshipRequestResource;
 use App\Infrastructure\WebSocket\Controllers\NotifierWebSocket;
 use Bunny\Channel;
 use Bunny\Message;

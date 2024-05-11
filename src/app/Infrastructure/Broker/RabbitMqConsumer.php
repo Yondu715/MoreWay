@@ -4,7 +4,6 @@ namespace App\Infrastructure\Broker;
 
 use Bunny\Async\Client;
 use Bunny\Channel;
-use Bunny\Message;
 use React\EventLoop\Loop;
 
 class RabbitMqConsumer
