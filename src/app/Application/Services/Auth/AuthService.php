@@ -70,8 +70,8 @@ class AuthService implements IAuthService
 
         $this->userRepository->create(new UserDto(
             name: $registerDto->name,
-            password: $registerDto->password,
-            email: $registerDto-> email
+            email: $registerDto-> email,
+            password: $registerDto->password
         ));
     }
 

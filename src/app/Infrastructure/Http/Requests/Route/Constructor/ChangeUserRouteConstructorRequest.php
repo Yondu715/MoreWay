@@ -6,7 +6,7 @@ use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 /**
- * @property array $routePoints
+ * @property array{placeId: int, index: int} $routePoints
  */
 class ChangeUserRouteConstructorRequest extends FormRequest
 {

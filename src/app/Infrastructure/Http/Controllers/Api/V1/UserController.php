@@ -34,6 +34,7 @@ class UserController extends Controller
     {
         $getUsersDto = GetUsersDtoMapper::fromRequest($getUsersRequest);
         $users = $this->userService->getUsers($getUsersDto);
+        //!!!!!!!!!!
         return UserResource::collection($users->data)
         ->additional([
             'meta' => [

@@ -2,6 +2,7 @@
 
 use App\Infrastructure\Http\Controllers\Api\V1\AchievementController;
 use App\Infrastructure\Http\Controllers\Api\V1\AuthController;
+use App\Infrastructure\Http\Controllers\Api\V1\ChatController;
 use App\Infrastructure\Http\Controllers\Api\V1\FriendController;
 use App\Infrastructure\Http\Controllers\Api\V1\PlaceController;
 use App\Infrastructure\Http\Controllers\Api\V1\RatingController;
@@ -68,6 +69,7 @@ Route::prefix('users')
                                 Route::delete('/{routeId}', [RouteController::class, 'deleteRouteFromUserFavorite']);
                             });
                         Route::delete('/routes/{routeId}', [RouteController::class, 'deleteUserRoute']);
+                        Route::get('/chats', [ChatController::class, 'getUserChats']);
                     });
                 Route::get('/routes', [RouteController::class, 'getUsersRoutes']);
                 Route::get('/favorite-routes', [RouteController::class, 'getFavoriteUserRoutes']);
@@ -130,5 +132,32 @@ Route::prefix('routes')
                 Route::middleware('owner')
                     ->post('/', [RouteController::class, 'createReview']);
                 Route::get('/', [RouteController::class, 'getReviews']);
+            });
+    });
+
+Route::prefix('chats')
+    ->middleware('auth:api', 'role:user')
+    ->group(function () {
+        Route::middleware('owner')
+            ->post('/', [ChatController::class, 'createChat']);
+        Route::prefix('/{chatId}')
+            ->group(function () {
+                Route::get('/', [ChatController::class, 'getChat']);
+                Route::prefix('/members')
+                    ->group(function () {
+                        Route::post('/', [ChatController::class, 'addMember']);
+                        Route::delete('/{memberId}', [ChatController::class, 'deleteMember']);
+                    });
+                Route::prefix('/messages')
+                    ->group(function () {
+                        Route::get('/', [ChatController::class, 'getMessages']);
+                        Route::middleware('owner')
+                            ->post('/', [ChatController::class, 'addMessage']);
+                    });
+                Route::prefix('/activity')
+                    ->group(function () {
+                        Route::get('/', [ChatController::class, 'getActivity']);
+                        Route::put('/', [ChatController::class, 'changeActivity']);
+                    });
             });
     });

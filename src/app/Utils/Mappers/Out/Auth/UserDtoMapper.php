@@ -4,9 +4,11 @@ namespace App\Utils\Mappers\Out\Auth;
 
 use App\Application\DTO\Collection\CursorDto;
 use App\Application\DTO\Out\Auth\UserDto;
+use App\Infrastructure\Database\Models\ChatMember;
 use App\Infrastructure\Database\Models\User;
 use App\Utils\Mappers\Collection\CursorDtoMapper;
 use Illuminate\Pagination\CursorPaginator;
+use Illuminate\Support\Collection;
 
 class UserDtoMapper
 {
@@ -25,6 +27,21 @@ class UserDtoMapper
         );
     }
 
+    /**
+     * @param Collection<int, User> $users
+     * @return Collection<int, UserDto>
+     */
+    public static function fromChatMemberCollection(Collection $users): Collection
+    {
+        return $users->map(function (ChatMember $user) {
+            return self::fromUserModelToNotify($user->user);
+        });
+    }
+
+    /**
+     * @param User $user
+     * @return UserDto
+     */
     public static function fromUserModelToNotify(User $user): UserDto
     {
         return new UserDto(
