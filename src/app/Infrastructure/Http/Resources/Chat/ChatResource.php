@@ -2,11 +2,15 @@
 
 namespace App\Infrastructure\Http\Resources\Chat;
 
+use App\Application\DTO\Out\Chat\ChatDto;
 use App\Infrastructure\Http\Resources\Auth\ShortUserResource;
 use App\Infrastructure\Http\Resources\Route\ShortRouteResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Request;
 
+/**
+ * @mixin ChatDto
+ */
 class ChatResource extends JsonResource
 {
     /**
