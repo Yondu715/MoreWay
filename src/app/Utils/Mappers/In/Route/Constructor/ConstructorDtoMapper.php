@@ -16,7 +16,7 @@ class ConstructorDtoMapper
     {
         return new RouteConstructorDto(
             userId: (int)$changeUserRouteConstructorRequest->route('userId'),
-            routePoints: PointDtoMapper::fromArray($changeUserRouteConstructorRequest->routePoints)
+            routePoints: PointDtoMapper::fromArray($changeUserRouteConstructorRequest->items)
         );
     }
 }

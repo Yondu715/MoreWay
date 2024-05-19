@@ -6,7 +6,7 @@ use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 /**
- * @property array{placeId: int, index: int} $routePoints
+ * @property array{placeId: int, index: int} $items
  */
 class ChangeUserRouteConstructorRequest extends FormRequest
 {
@@ -18,8 +18,8 @@ class ChangeUserRouteConstructorRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'routePoints' => 'array',
-            'routePoints.*' => 'array:placeId,index'
+            'items' => 'array',
+            'items.*' => 'array:placeId,index'
         ];
     }
 }

@@ -22,7 +22,7 @@ class ConstructorResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'routePoints' => PointResource::collection($this->points),
+            'items' => PointResource::collection($this->points),
         ];
     }
 }
