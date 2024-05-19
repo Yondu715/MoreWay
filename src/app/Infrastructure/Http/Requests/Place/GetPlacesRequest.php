@@ -8,15 +8,15 @@ use Illuminate\Foundation\Http\FormRequest;
 /**
  * @property float $lat
  * @property float $lon
- * @property ?string cursor
- * @property ?string search
- * @property ?string sort
- * @property ?int sortType
- * @property ?string locality
- * @property ?string type
- * @property ?string rating
- * @property ?string distance
- * @property ?int limit
+ * @property ?string $cursor
+ * @property ?string $search
+ * @property ?string $sort
+ * @property ?int $sortType
+ * @property ?string $locality
+ * @property ?string $type
+ * @property ?string $rating
+ * @property ?string $distance
+ * @property ?int $limit
  */
 class GetPlacesRequest extends FormRequest
 {

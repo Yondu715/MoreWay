@@ -5,12 +5,12 @@ namespace App\Infrastructure\Database\Repositories\User;
 use App\Application\Contracts\Out\Repositories\User\IUserRepository;
 use App\Application\DTO\Collection\CursorDto;
 use App\Application\DTO\In\User\GetUsersDto;
-use App\Application\DTO\Out\Auth\UserDto;
+use App\Application\DTO\Out\User\UserDto;
 use App\Application\Enums\Role\RoleType;
 use App\Application\Exceptions\User\UserNotFound;
 use App\Infrastructure\Database\Models\Filters\User\UserFilterFactory;
 use App\Infrastructure\Database\Models\User;
-use App\Utils\Mappers\Out\Auth\UserDtoMapper;
+use App\Utils\Mappers\Out\User\UserDtoMapper;
 use Illuminate\Database\Eloquent\Model;
 use Throwable;
 

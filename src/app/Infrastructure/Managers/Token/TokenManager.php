@@ -4,10 +4,10 @@ namespace App\Infrastructure\Managers\Token;
 
 use App\Application\Contracts\Out\Managers\Token\ITokenManager;
 use App\Application\DTO\In\Auth\LoginDto;
-use App\Application\DTO\Out\Auth\UserDto;
+use App\Application\DTO\Out\User\UserDto;
 use App\Infrastructure\Database\Models\User;
 use App\Infrastructure\Exceptions\InvalidToken;
-use App\Utils\Mappers\Out\Auth\UserDtoMapper;
+use App\Utils\Mappers\Out\User\UserDtoMapper;
 use Exception;
 use Illuminate\Support\Facades\Auth;
 use Tymon\JWTAuth\JWTGuard;

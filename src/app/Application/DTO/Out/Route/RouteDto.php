@@ -2,7 +2,7 @@
 
 namespace App\Application\DTO\Out\Route;
 
-use App\Application\DTO\Out\Auth\UserDto;
+use App\Application\DTO\Out\User\UserDto;
 use Illuminate\Support\Collection;
 
 class RouteDto

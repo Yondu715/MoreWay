@@ -6,14 +6,14 @@ use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 /**
- * @property ?string cursor
- * @property ?string search
- * @property ?string sort
- * @property ?int sortType
- * @property ?string rating
- * @property ?string passing
- * @property ?int limit
- * @property ?string point
+ * @property ?string $cursor
+ * @property ?string $search
+ * @property ?string $sort
+ * @property ?int $sortType
+ * @property ?string $rating
+ * @property ?string $passing
+ * @property ?int $limit
+ * @property ?string $point
  */
 class GetRoutesRequest extends FormRequest
 {

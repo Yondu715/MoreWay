@@ -3,20 +3,25 @@
 namespace App\Infrastructure\Http\Controllers\Api\V1;
 
 use App\Application\Contracts\In\Services\Chat\IChatService;
+use App\Application\Contracts\In\Services\Chat\Member\IMemberService;
 use App\Application\Contracts\In\Services\Chat\Message\IMessageService;
 use App\Application\Exceptions\Chat\FailedToCreateChat;
+use App\Application\Exceptions\Chat\Members\FailedToAddMembers;
 use App\Application\Exceptions\Chat\Message\FailedToCreateMessage;
 use App\Infrastructure\Exceptions\ApiException;
 use App\Infrastructure\Exceptions\Forbidden;
 use App\Infrastructure\Exceptions\InvalidToken;
 use App\Infrastructure\Http\Requests\Chat\CreateChatRequest;
 use App\Infrastructure\Http\Requests\Chat\GetUserChatsRequest;
+use App\Infrastructure\Http\Requests\Chat\Member\AddMembersRequest;
 use App\Infrastructure\Http\Requests\Chat\Message\AddMessageRequest;
 use App\Infrastructure\Http\Resources\Chat\ChatResource;
 use App\Infrastructure\Http\Resources\Chat\ShortChatCursorResource;
 use App\Infrastructure\Http\Resources\Chat\Message\MessageResource;
+use App\Infrastructure\Http\Resources\User\UserCollectionResource;
 use App\Utils\Mappers\In\Chat\CreateChatDtoMapper;
 use App\Utils\Mappers\In\Chat\GetUserChatsDtoMapper;
+use App\Utils\Mappers\In\Chat\Member\AddMembersDtoMapper;
 use App\Utils\Mappers\In\Chat\Message\AddMessageDtoMapper;
 
 class ChatController
@@ -24,6 +29,7 @@ class ChatController
     public function __construct(
         private readonly IChatService $chatService,
         private readonly IMessageService $messageService,
+        private readonly IMemberService  $memberService,
     ) {}
 
     public function getUserChats(GetUserChatsRequest $getUserChatsRequest): ShortChatCursorResource
@@ -63,6 +69,23 @@ class ChatController
                 $this->chatService->getChat($chatId)
             );
         } catch (Forbidden|InvalidToken $e) {
+            throw new ApiException($e->getMessage(), $e->getCode());
+        }
+    }
+
+    /**
+     * @param AddMembersRequest $addMemberRequest
+     * @return UserCollectionResource
+     * @throws ApiException
+     */
+    public function addMembers(AddMembersRequest $addMemberRequest): UserCollectionResource
+    {
+        $addMembersDto = AddMembersDtoMapper::fromRequest($addMemberRequest);
+        try {
+            return UserCollectionResource::make(
+                $this->memberService->addMembers($addMembersDto)
+            );
+        } catch (FailedToAddMembers|InvalidToken $e) {
             throw new ApiException($e->getMessage(), $e->getCode());
         }
     }

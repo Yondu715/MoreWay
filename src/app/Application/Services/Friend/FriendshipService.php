@@ -7,7 +7,7 @@ use App\Application\Contracts\Out\Managers\Notifier\INotifierManager;
 use App\Application\Contracts\Out\Repositories\Friend\IFriendshipRepository;
 use App\Application\DTO\In\Friend\AcceptFriendDto;
 use App\Application\DTO\In\Friend\AddFriendDto;
-use App\Application\DTO\Out\Auth\UserDto;
+use App\Application\DTO\Out\User\UserDto;
 use App\Application\DTO\Out\Friend\FriendshipRequestDto;
 use App\Application\Enums\Friend\RelationshipType;
 use App\Application\Exceptions\Friend\FriendRequestConflict;

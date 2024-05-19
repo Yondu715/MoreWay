@@ -6,8 +6,8 @@ use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 /**
- * @property ?string cursor
- * @property ?int limit
+ * @property ?string $cursor
+ * @property ?int $limit
  */
 class GetUserRoutesRequest extends FormRequest
 {

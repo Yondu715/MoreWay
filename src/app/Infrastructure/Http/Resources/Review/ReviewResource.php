@@ -3,7 +3,7 @@
 namespace App\Infrastructure\Http\Resources\Review;
 
 use App\Application\DTO\Out\Review\ReviewDto;
-use App\Infrastructure\Http\Resources\Auth\ShortUserResource;
+use App\Infrastructure\Http\Resources\User\ShortUserResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 

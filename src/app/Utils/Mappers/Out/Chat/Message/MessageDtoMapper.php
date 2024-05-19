@@ -4,7 +4,7 @@ namespace App\Utils\Mappers\Out\Chat\Message;
 
 use App\Application\DTO\Out\Chat\Message\MessageDto;
 use App\Infrastructure\Database\Models\ChatMessage;
-use App\Utils\Mappers\Out\Auth\UserDtoMapper;
+use App\Utils\Mappers\Out\User\UserDtoMapper;
 use Illuminate\Support\Collection;
 
 class MessageDtoMapper

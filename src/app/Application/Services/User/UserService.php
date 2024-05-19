@@ -11,7 +11,7 @@ use App\Application\DTO\In\User\ChangeUserAvatarDto;
 use App\Application\DTO\In\User\ChangeUserDataDto;
 use App\Application\DTO\In\User\ChangeUserPasswordDto;
 use App\Application\DTO\In\User\GetUsersDto;
-use App\Application\DTO\Out\Auth\UserDto;
+use App\Application\DTO\Out\User\UserDto;
 use App\Application\Enums\Storage\StoragePaths;
 use App\Application\Exceptions\User\InvalidOldPassword;
 

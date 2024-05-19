@@ -8,7 +8,7 @@ use App\Infrastructure\Exceptions\ApiException;
 use App\Infrastructure\Http\Controllers\Controller;
 use App\Infrastructure\Http\Requests\Friend\AcceptFriendRequest;
 use App\Infrastructure\Http\Requests\Friend\AddFriendRequest;
-use App\Infrastructure\Http\Resources\Auth\UserResource;
+use App\Infrastructure\Http\Resources\User\UserResource;
 use App\Infrastructure\Http\Resources\Friend\FriendshipRequestResource;
 use App\Utils\Mappers\In\Friend\AcceptFriendDtoMapper;
 use App\Utils\Mappers\In\Friend\AddFriendDtoMapper;

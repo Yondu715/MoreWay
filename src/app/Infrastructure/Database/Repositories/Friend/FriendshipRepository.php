@@ -6,7 +6,7 @@ use App\Application\Contracts\Out\Repositories\Friend\IFriendshipRepository;
 use App\Application\DTO\Out\Friend\FriendshipRequestDto;
 use App\Application\Enums\Friend\RelationshipType;
 use App\Infrastructure\Database\Models\Friendship;
-use App\Utils\Mappers\Out\Auth\UserDtoMapper;
+use App\Utils\Mappers\Out\User\UserDtoMapper;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use App\Utils\Mappers\Out\Friend\FriendshipRequestDtoMapper;

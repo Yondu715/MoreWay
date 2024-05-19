@@ -2,7 +2,7 @@
 
 namespace App\Infrastructure\Http\Resources\Route;
 
-use App\Infrastructure\Http\Resources\Auth\ShortUserResource;
+use App\Infrastructure\Http\Resources\User\ShortUserResource;
 use App\Infrastructure\Http\Resources\Route\Point\ShortPointResource;
 use Illuminate\Http\Request;
 use App\Application\DTO\Out\Route\RouteDto;

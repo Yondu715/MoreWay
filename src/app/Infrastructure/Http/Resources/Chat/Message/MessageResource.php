@@ -3,7 +3,7 @@
 namespace App\Infrastructure\Http\Resources\Chat\Message;
 
 use App\Application\DTO\Out\Chat\Message\MessageDto;
-use App\Infrastructure\Http\Resources\Auth\ShortUserResource;
+use App\Infrastructure\Http\Resources\User\ShortUserResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 

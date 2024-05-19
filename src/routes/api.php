@@ -145,7 +145,7 @@ Route::prefix('chats')
                 Route::get('/', [ChatController::class, 'getChat']);
                 Route::prefix('/members')
                     ->group(function () {
-                        Route::post('/', [ChatController::class, 'addMember']);
+                        Route::post('/', [ChatController::class, 'addMembers']);
                         Route::delete('/{memberId}', [ChatController::class, 'deleteMember']);
                     });
                 Route::prefix('/messages')

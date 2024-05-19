@@ -6,8 +6,8 @@ use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 /**
- * @property int userId
- * @property string message
+ * @property int $userId
+ * @property string $message
  */
 class AddMessageRequest extends FormRequest
 {

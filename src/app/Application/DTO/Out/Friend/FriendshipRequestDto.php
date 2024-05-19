@@ -2,7 +2,7 @@
 
 namespace App\Application\DTO\Out\Friend;
 
-use App\Application\DTO\Out\Auth\UserDto;
+use App\Application\DTO\Out\User\UserDto;
 
 class FriendshipRequestDto
 {

@@ -7,8 +7,8 @@ use Illuminate\Foundation\Http\FormRequest;
 
 /**
  * @property string $name
- * @property ?string cursor
- * @property ?int limit
+ * @property ?string $cursor
+ * @property ?int $limit
  */
 class GetUsersRequest extends FormRequest
 {

@@ -3,7 +3,7 @@
 namespace App\Infrastructure\Http\Resources\Friend;
 
 use App\Application\DTO\Out\Friend\FriendshipRequestDto;
-use App\Infrastructure\Http\Resources\Auth\UserResource;
+use App\Infrastructure\Http\Resources\User\UserResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 

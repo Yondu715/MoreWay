@@ -3,7 +3,7 @@
 namespace App\Application\Contracts\Out\Managers\Token;
 
 use App\Application\DTO\In\Auth\LoginDto;
-use App\Application\DTO\Out\Auth\UserDto;
+use App\Application\DTO\Out\User\UserDto;
 use App\Infrastructure\Exceptions\InvalidToken;
 
 interface ITokenManager

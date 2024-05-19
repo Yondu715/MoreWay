@@ -7,7 +7,7 @@ use App\Application\DTO\In\Auth\Password\ForgotPasswordDto;
 use App\Application\DTO\In\Auth\Password\ResetPasswordDto;
 use App\Application\DTO\In\Auth\Password\VerifyPasswordCodeDto;
 use App\Application\DTO\In\Auth\RegisterDto;
-use App\Application\DTO\Out\Auth\UserDto;
+use App\Application\DTO\Out\User\UserDto;
 use App\Application\Exceptions\Auth\InvalidPassword;
 use App\Application\Exceptions\Auth\Password\ExpiredResetPasswordToken;
 use App\Application\Exceptions\Auth\Password\ExpiredVerifyPasswordCode;

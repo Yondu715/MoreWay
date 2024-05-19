@@ -7,7 +7,7 @@ use Illuminate\Http\JsonResponse;
 use App\Infrastructure\Exceptions\ApiException;
 use App\Infrastructure\Http\Controllers\Controller;
 use App\Infrastructure\Http\Requests\Auth\LoginRequest;
-use App\Infrastructure\Http\Resources\Auth\UserResource;
+use App\Infrastructure\Http\Resources\User\UserResource;
 use App\Infrastructure\Http\Requests\Auth\RegisterRequest;
 use App\Application\Exceptions\Auth\InvalidPassword;
 use App\Application\Exceptions\Auth\Password\ExpiredResetPasswordToken;

@@ -11,7 +11,8 @@ use App\Infrastructure\Http\Requests\User\ChangeUserAvatarRequest;
 use App\Infrastructure\Http\Requests\User\ChangeUserDataRequest;
 use App\Infrastructure\Http\Requests\User\ChangeUserPasswordRequest;
 use App\Infrastructure\Http\Requests\User\GetUsersRequest;
-use App\Infrastructure\Http\Resources\Auth\UserResource;
+use App\Infrastructure\Http\Resources\User\UserCursorResource;
+use App\Infrastructure\Http\Resources\User\UserResource;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Response;
 use App\Utils\Mappers\In\User\ChangeUserAvatarDtoMapper;
@@ -28,19 +29,14 @@ class UserController extends Controller
 
     /**
      * @param GetUsersRequest $getUsersRequest
-     * @return AnonymousResourceCollection
+     * @return UserCursorResource
      */
-    public function getUsers(GetUsersRequest $getUsersRequest): AnonymousResourceCollection
+    public function getUsers(GetUsersRequest $getUsersRequest): UserCursorResource
     {
         $getUsersDto = GetUsersDtoMapper::fromRequest($getUsersRequest);
-        $users = $this->userService->getUsers($getUsersDto);
-        //!!!!!!!!!!
-        return UserResource::collection($users->data)
-        ->additional([
-            'meta' => [
-                'next_cursor' => $users->next_cursor
-            ]
-        ]);
+        return UserCursorResource::make(
+            $this->userService->getUsers($getUsersDto)
+        );
     }
 
     /**

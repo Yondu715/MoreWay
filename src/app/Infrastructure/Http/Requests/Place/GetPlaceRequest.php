@@ -6,8 +6,8 @@ use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 /**
- * @property float lat
- * @property float lon
+ * @property float $lat
+ * @property float $lon
  */
 class GetPlaceRequest extends FormRequest
 {

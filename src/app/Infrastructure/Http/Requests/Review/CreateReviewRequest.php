@@ -6,9 +6,9 @@ use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 /**
- * @property int userId
- * @property int rating
- * @property ?string text
+ * @property int $userId
+ * @property int $rating
+ * @property ?string $text
  */
 class CreateReviewRequest extends FormRequest
 {

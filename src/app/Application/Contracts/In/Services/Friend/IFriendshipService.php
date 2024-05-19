@@ -4,7 +4,7 @@ namespace App\Application\Contracts\In\Services\Friend;
 
 use App\Application\DTO\In\Friend\AcceptFriendDto;
 use App\Application\DTO\In\Friend\AddFriendDto;
-use App\Application\DTO\Out\Auth\UserDto;
+use App\Application\DTO\Out\User\UserDto;
 use App\Application\DTO\Out\Friend\FriendshipRequestDto;
 use Illuminate\Support\Collection;
 

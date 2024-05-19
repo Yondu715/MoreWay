@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Infrastructure\Http\Resources\Auth;
+namespace App\Infrastructure\Http\Resources\User;
 
-use App\Application\DTO\Out\Auth\UserDto;
+use App\Application\DTO\Out\User\UserDto;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 

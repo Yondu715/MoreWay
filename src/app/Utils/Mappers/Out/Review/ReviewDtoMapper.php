@@ -7,7 +7,7 @@ use App\Application\DTO\Out\Review\ReviewDto;
 use App\Infrastructure\Database\Models\PlaceReview;
 use App\Infrastructure\Database\Models\RouteReview;
 use App\Utils\Mappers\Collection\CursorDtoMapper;
-use App\Utils\Mappers\Out\Auth\UserDtoMapper;
+use App\Utils\Mappers\Out\User\UserDtoMapper;
 use Illuminate\Pagination\CursorPaginator;
 
 class ReviewDtoMapper

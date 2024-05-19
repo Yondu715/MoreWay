@@ -8,7 +8,7 @@ use App\Application\DTO\Out\Route\RouteDto;
 use App\Infrastructure\Database\Models\Route;
 use App\Infrastructure\Database\Models\UserActiveRoute;
 use App\Utils\Mappers\Collection\CursorDtoMapper;
-use App\Utils\Mappers\Out\Auth\UserDtoMapper;
+use App\Utils\Mappers\Out\User\UserDtoMapper;
 use App\Utils\Mappers\Out\Route\Point\PointDtoMapper;
 use Illuminate\Pagination\CursorPaginator;
 

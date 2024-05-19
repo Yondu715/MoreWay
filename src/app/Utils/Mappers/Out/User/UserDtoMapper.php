@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Utils\Mappers\Out\Auth;
+namespace App\Utils\Mappers\Out\User;
 
 use App\Application\DTO\Collection\CursorDto;
-use App\Application\DTO\Out\Auth\UserDto;
+use App\Application\DTO\Out\User\UserDto;
 use App\Infrastructure\Database\Models\ChatMember;
 use App\Infrastructure\Database\Models\User;
 use App\Utils\Mappers\Collection\CursorDtoMapper;

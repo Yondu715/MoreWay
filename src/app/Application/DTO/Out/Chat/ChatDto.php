@@ -2,7 +2,7 @@
 
 namespace App\Application\DTO\Out\Chat;
 
-use App\Application\DTO\Out\Auth\UserDto;
+use App\Application\DTO\Out\User\UserDto;
 use App\Application\DTO\Out\Route\RouteDto;
 use Illuminate\Support\Collection;
 

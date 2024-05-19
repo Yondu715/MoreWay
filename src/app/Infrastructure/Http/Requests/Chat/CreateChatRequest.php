@@ -6,10 +6,10 @@ use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 /**
- * @property string name
- * @property int userId
- * @property int routeId
- * @property array{id: int} members
+ * @property string $name
+ * @property int $userId
+ * @property int $routeId
+ * @property array{id: int} $members
  */
 class CreateChatRequest extends FormRequest
 {

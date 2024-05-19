@@ -4,7 +4,7 @@ namespace App\Utils\Mappers\Out\Friend;
 
 use App\Application\DTO\Out\Friend\FriendshipRequestDto;
 use App\Infrastructure\Database\Models\Friendship;
-use App\Utils\Mappers\Out\Auth\UserDtoMapper;
+use App\Utils\Mappers\Out\User\UserDtoMapper;
 
 class FriendshipRequestDtoMapper
 {
