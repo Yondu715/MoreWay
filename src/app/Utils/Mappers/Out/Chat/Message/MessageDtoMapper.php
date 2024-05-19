@@ -2,9 +2,12 @@
 
 namespace App\Utils\Mappers\Out\Chat\Message;
 
+use App\Application\DTO\Collection\CursorDto;
 use App\Application\DTO\Out\Chat\Message\MessageDto;
 use App\Infrastructure\Database\Models\ChatMessage;
+use App\Utils\Mappers\Collection\CursorDtoMapper;
 use App\Utils\Mappers\Out\User\UserDtoMapper;
+use Illuminate\Pagination\CursorPaginator;
 use Illuminate\Support\Collection;
 
 class MessageDtoMapper
@@ -30,6 +33,17 @@ class MessageDtoMapper
     public static function fromChatMessageCollection(Collection $messages): Collection
     {
         return $messages->map(function (ChatMessage $message) {
+            return self::fromMessageModel($message);
+        });
+    }
+
+    /**
+     * @param CursorPaginator $paginator
+     * @return CursorDto
+     */
+    public static function fromPaginator(CursorPaginator $paginator): CursorDto
+    {
+        return CursorDtoMapper::fromPaginatorAndMapper($paginator, function ($message) {
             return self::fromMessageModel($message);
         });
     }
