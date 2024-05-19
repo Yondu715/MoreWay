@@ -10,5 +10,5 @@ class FailedToCreateChat extends Exception
     protected $code = 400;
 
     /** @var string */
-    protected $message = "Не удалось создать чат";
+    protected $message = "Не удалось создать чат.";
 }

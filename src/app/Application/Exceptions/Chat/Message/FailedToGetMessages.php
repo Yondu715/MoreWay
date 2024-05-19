@@ -10,5 +10,5 @@ class FailedToGetMessages extends Exception
     protected $code = 400;
 
     /** @var string */
-    protected $message = "Не удалось загрузить изображения";
+    protected $message = "Не удалось загрузить сообщения";
 }

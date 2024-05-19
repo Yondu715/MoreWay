@@ -8,10 +8,18 @@ use App\Application\Contracts\Out\Repositories\Chat\IChatRepository;
 use App\Application\DTO\Collection\CursorDto;
 use App\Application\DTO\In\Chat\CreateChatDto;
 use App\Application\DTO\In\Chat\GetUserChatsDto;
+use App\Application\DTO\In\Chat\Member\AddMembersDto;
 use App\Application\DTO\Out\Chat\ChatDto;
+use App\Application\DTO\Out\Route\RouteDto;
+use App\Application\DTO\Out\User\UserDto;
+use App\Application\Exceptions\Chat\Activity\FailedToGetActivity;
 use App\Application\Exceptions\Chat\FailedToCreateChat;
+use App\Application\Exceptions\Chat\Members\FailedToAddMembers;
+use App\Application\Exceptions\Chat\Members\FailedToDeleteMember;
+use App\Infrastructure\Database\Models\Route;
 use App\Infrastructure\Exceptions\Forbidden;
 use App\Infrastructure\Exceptions\InvalidToken;
+use Illuminate\Support\Collection;
 
 class ChatService implements IChatService
 {
@@ -48,5 +56,39 @@ class ChatService implements IChatService
     public function getChat(int $chatId): ChatDto
     {
         return $this->chatRepository->getChat($chatId, $this->tokenManager->getAuthUser()->id);
+    }
+
+    /**
+     * @param AddMembersDto $addMembersDto
+     * @return Collection<int, UserDto>
+     * @throws InvalidToken
+     * @throws FailedToAddMembers
+     */
+    public function addMembers(AddMembersDto $addMembersDto): Collection
+    {
+        return $this->chatRepository->createMembers($addMembersDto, $this->tokenManager->getAuthUser()->id);
+    }
+
+    /**
+     * @param int $chatId
+     * @param int $memberId
+     * @return bool
+     * @throws InvalidToken
+     * @throws FailedToDeleteMember
+     */
+    public function deleteMember(int $chatId, int $memberId): bool
+    {
+        return $this->chatRepository->deleteMember($chatId, $memberId, $this->tokenManager->getAuthUser()->id);
+    }
+
+    /**
+     * @param int $chatId
+     * @return RouteDto
+     * @throws InvalidToken
+     * @throws FailedToGetActivity
+     */
+    public function getActivity(int $chatId): RouteDto
+    {
+        return $this->chatRepository->getActivity($chatId, $this->tokenManager->getAuthUser()->id);
     }
 }

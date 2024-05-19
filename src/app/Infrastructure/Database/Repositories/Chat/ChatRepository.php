@@ -2,20 +2,28 @@
 
 namespace App\Infrastructure\Database\Repositories\Chat;
 
-use App\Application\Contracts\Out\Managers\Token\ITokenManager;
 use App\Application\Contracts\Out\Repositories\Chat\IChatRepository;
 use App\Application\DTO\Collection\CursorDto;
 use App\Application\DTO\In\Chat\CreateChatDto;
 use App\Application\DTO\In\Chat\GetUserChatsDto;
+use App\Application\DTO\In\Chat\Member\AddMembersDto;
 use App\Application\DTO\Out\Chat\ChatDto;
+use App\Application\DTO\Out\Route\RouteDto;
+use App\Application\DTO\Out\User\UserDto;
+use App\Application\Exceptions\Chat\Activity\FailedToGetActivity;
 use App\Application\Exceptions\Chat\FailedToCreateChat;
+use App\Application\Exceptions\Chat\Members\FailedToAddMembers;
+use App\Application\Exceptions\Chat\Members\FailedToDeleteMember;
 use App\Infrastructure\Database\Models\Chat;
 use App\Infrastructure\Database\Models\ChatActiveRoute;
 use App\Infrastructure\Database\Models\ChatMember;
 use App\Infrastructure\Database\Transaction\Interface\ITransactionManager;
 use App\Infrastructure\Exceptions\Forbidden;
 use App\Utils\Mappers\Out\Chat\ChatDtoMapper;
+use App\Utils\Mappers\Out\Route\RouteDtoMapper;
+use App\Utils\Mappers\Out\User\UserDtoMapper;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 use Throwable;
 
 class ChatRepository implements IChatRepository
@@ -105,6 +113,77 @@ class ChatRepository implements IChatRepository
             return ChatDtoMapper::fromChatModel($chat);
         } catch (Throwable) {
             throw new Forbidden();
+        }
+    }
+
+    /**
+     * @param AddMembersDto $addMembersDto
+     * @param int $userId
+     * @return Collection<int, UserDto>
+     * @throws FailedToAddMembers
+     */
+    public function createMembers(AddMembersDto $addMembersDto, int $userId): Collection
+    {
+        try {
+            $this->transactionManager->beginTransaction();
+
+            $this->model->query()->where('id', $addMembersDto->chatId)
+                ->where('creator_id', $userId)->firstOrFail();
+
+            $members = new Collection();
+
+            foreach ($addMembersDto->members as $member) {
+                $members->add(ChatMember::query()->create([
+                    'chat_id' => $addMembersDto->chatId,
+                    'user_id' => $member,
+                ]));
+            }
+
+            $this->transactionManager->commit();
+
+            return UserDtoMapper::fromChatMemberCollection($members);
+        } catch (Throwable) {
+            $this->transactionManager->rollBack();
+            throw new FailedToAddMembers();
+        }
+    }
+
+    /**
+     * @param int $chatId
+     * @param int $memberId
+     * @param int $creatorId
+     * @return bool
+     * @throws FailedToDeleteMember
+     */
+    public function deleteMember(int $chatId, int $memberId, int $creatorId): bool
+    {
+        try {
+             $chat = $this->model->query()->where('id', $chatId)
+                ->where('creator_id', $creatorId)->firstOrFail();
+
+            return $chat->where('user_id', $memberId)->firstOrFail()->delete();
+        } catch (Throwable) {
+            throw new FailedToDeleteMember();
+        }
+    }
+
+    /**
+     * @param int $chatId
+     * @param int $userId
+     * @return RouteDto
+     * @throws FailedToGetActivity
+     */
+    public function getActivity(int $chatId, int $userId): RouteDto
+    {
+        try{
+            /** @var Chat $chat */
+            $chat = $this->model->query()->whereHas('members', function ($query) use ($userId) {
+                $query->where('user_id', $userId);
+            })->where('id', $chatId)->firstOrFail();
+
+            return RouteDtoMapper::fromRouteModel($chat->activeRoute->route);
+        } catch (Throwable) {
+            throw new FailedToGetActivity();
         }
     }
 }

@@ -3,8 +3,8 @@
 namespace App\Infrastructure\Http\Controllers\Api\V1;
 
 use App\Application\Contracts\In\Services\Chat\IChatService;
-use App\Application\Contracts\In\Services\Chat\Member\IMemberService;
 use App\Application\Contracts\In\Services\Chat\Message\IMessageService;
+use App\Application\Exceptions\Chat\Activity\FailedToGetActivity;
 use App\Application\Exceptions\Chat\FailedToCreateChat;
 use App\Application\Exceptions\Chat\Members\FailedToAddMembers;
 use App\Application\Exceptions\Chat\Members\FailedToDeleteMember;
@@ -21,6 +21,7 @@ use App\Infrastructure\Http\Resources\Chat\ChatResource;
 use App\Infrastructure\Http\Resources\Chat\Message\MessageCursorResource;
 use App\Infrastructure\Http\Resources\Chat\ShortChatCursorResource;
 use App\Infrastructure\Http\Resources\Chat\Message\MessageResource;
+use App\Infrastructure\Http\Resources\Route\RouteResource;
 use App\Infrastructure\Http\Resources\User\UserCollectionResource;
 use App\Utils\Mappers\In\Chat\CreateChatDtoMapper;
 use App\Utils\Mappers\In\Chat\GetUserChatsDtoMapper;
@@ -34,7 +35,6 @@ class ChatController
     public function __construct(
         private readonly IChatService $chatService,
         private readonly IMessageService $messageService,
-        private readonly IMemberService  $memberService,
     ) {}
 
     public function getUserChats(GetUserChatsRequest $getUserChatsRequest): ShortChatCursorResource
@@ -88,7 +88,7 @@ class ChatController
         $addMembersDto = AddMembersDtoMapper::fromRequest($addMemberRequest);
         try {
             return UserCollectionResource::make(
-                $this->memberService->addMembers($addMembersDto)
+                $this->chatService->addMembers($addMembersDto)
             );
         } catch (FailedToAddMembers|InvalidToken $e) {
             throw new ApiException($e->getMessage(), $e->getCode());
@@ -104,7 +104,7 @@ class ChatController
     public function deleteMember(int $chatId, int $memberId): Response
     {
         try {
-            $this->memberService->deleteMember($chatId, $memberId);
+            $this->chatService->deleteMember($chatId, $memberId);
             return response()->noContent();
         } catch (FailedToDeleteMember|InvalidToken $e) {
             throw new ApiException($e->getMessage(), $e->getCode());
@@ -141,6 +141,22 @@ class ChatController
                 $this->messageService->createMessage($addMessageDto)
             );
         } catch (FailedToGetMessages $e) {
+            throw new ApiException($e->getMessage(), $e->getCode());
+        }
+    }
+
+    /**
+     * @param int $chatId
+     * @return RouteResource
+     * @throws ApiException
+     */
+    public function getActivity(int $chatId): RouteResource
+    {
+        try {
+            return RouteResource::make(
+                $this->chatService->getActivity($chatId)
+            );
+        } catch (FailedToGetActivity|InvalidToken  $e) {
             throw new ApiException($e->getMessage(), $e->getCode());
         }
     }
