@@ -6,12 +6,14 @@ use App\Application\Contracts\In\Services\Chat\IChatService;
 use App\Application\Contracts\Out\Managers\Token\ITokenManager;
 use App\Application\Contracts\Out\Repositories\Chat\IChatRepository;
 use App\Application\DTO\Collection\CursorDto;
+use App\Application\DTO\In\Chat\Activity\ChangeActivityDto;
 use App\Application\DTO\In\Chat\CreateChatDto;
 use App\Application\DTO\In\Chat\GetUserChatsDto;
 use App\Application\DTO\In\Chat\Member\AddMembersDto;
 use App\Application\DTO\Out\Chat\ChatDto;
 use App\Application\DTO\Out\Route\RouteDto;
 use App\Application\DTO\Out\User\UserDto;
+use App\Application\Exceptions\Chat\Activity\FailedToChangeActivity;
 use App\Application\Exceptions\Chat\Activity\FailedToGetActivity;
 use App\Application\Exceptions\Chat\FailedToCreateChat;
 use App\Application\Exceptions\Chat\Members\FailedToAddMembers;
@@ -90,5 +92,16 @@ class ChatService implements IChatService
     public function getActivity(int $chatId): RouteDto
     {
         return $this->chatRepository->getActivity($chatId, $this->tokenManager->getAuthUser()->id);
+    }
+
+    /**
+     * @param ChangeActivityDto $changeActivityDto
+     * @return RouteDto
+     * @throws InvalidToken
+     * @throws FailedToChangeActivity
+     */
+    public function changeActivity(changeActivityDto $changeActivityDto): RouteDto
+    {
+        return $this->chatRepository->changeActivity($changeActivityDto, $this->tokenManager->getAuthUser()->id);
     }
 }

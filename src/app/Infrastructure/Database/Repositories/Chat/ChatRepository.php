@@ -4,12 +4,14 @@ namespace App\Infrastructure\Database\Repositories\Chat;
 
 use App\Application\Contracts\Out\Repositories\Chat\IChatRepository;
 use App\Application\DTO\Collection\CursorDto;
+use App\Application\DTO\In\Chat\Activity\ChangeActivityDto;
 use App\Application\DTO\In\Chat\CreateChatDto;
 use App\Application\DTO\In\Chat\GetUserChatsDto;
 use App\Application\DTO\In\Chat\Member\AddMembersDto;
 use App\Application\DTO\Out\Chat\ChatDto;
 use App\Application\DTO\Out\Route\RouteDto;
 use App\Application\DTO\Out\User\UserDto;
+use App\Application\Exceptions\Chat\Activity\FailedToChangeActivity;
 use App\Application\Exceptions\Chat\Activity\FailedToGetActivity;
 use App\Application\Exceptions\Chat\FailedToCreateChat;
 use App\Application\Exceptions\Chat\Members\FailedToAddMembers;
@@ -19,6 +21,7 @@ use App\Infrastructure\Database\Models\ChatActiveRoute;
 use App\Infrastructure\Database\Models\ChatMember;
 use App\Infrastructure\Database\Transaction\Interface\ITransactionManager;
 use App\Infrastructure\Exceptions\Forbidden;
+use App\Infrastructure\Http\Requests\Chat\Activity\ChangeActivityRequest;
 use App\Utils\Mappers\Out\Chat\ChatDtoMapper;
 use App\Utils\Mappers\Out\Route\RouteDtoMapper;
 use App\Utils\Mappers\Out\User\UserDtoMapper;
@@ -125,12 +128,13 @@ class ChatRepository implements IChatRepository
     public function createMembers(AddMembersDto $addMembersDto, int $userId): Collection
     {
         try {
-            $this->transactionManager->beginTransaction();
 
             $this->model->query()->where('id', $addMembersDto->chatId)
                 ->where('creator_id', $userId)->firstOrFail();
 
             $members = new Collection();
+
+            $this->transactionManager->beginTransaction();
 
             foreach ($addMembersDto->members as $member) {
                 $members->add(ChatMember::query()->create([
@@ -184,6 +188,31 @@ class ChatRepository implements IChatRepository
             return RouteDtoMapper::fromRouteModel($chat->activeRoute->route);
         } catch (Throwable) {
             throw new FailedToGetActivity();
+        }
+    }
+
+    /**
+     * @param ChangeActivityDto $changeActivityDto
+     * @param int $creatorId
+     * @return RouteDto
+     * @throws FailedToChangeActivity
+     */
+    public function changeActivity(ChangeActivityDto $changeActivityDto, int $creatorId): RouteDto
+    {
+        try {
+            $this->model->query()->where('id', $changeActivityDto->chatId)
+                ->where('creator_id', $creatorId)->firstOrFail();
+
+            /** @var ChatActiveRoute $activity */
+            $activity = ChatActiveRoute::query()->where('chat_id', $changeActivityDto->chatId)->first();
+
+            $activity->update([
+                'route_id' => $changeActivityDto->routeId,
+            ]);
+
+            return RouteDtoMapper::fromRouteModel($activity->route);
+        } catch (Throwable) {
+            throw new FailedToChangeActivity();
         }
     }
 }

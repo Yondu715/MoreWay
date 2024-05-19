@@ -3,12 +3,14 @@
 namespace App\Application\Contracts\Out\Repositories\Chat;
 
 use App\Application\DTO\Collection\CursorDto;
+use App\Application\DTO\In\Chat\Activity\ChangeActivityDto;
 use App\Application\DTO\In\Chat\CreateChatDto;
 use App\Application\DTO\In\Chat\GetUserChatsDto;
 use App\Application\DTO\In\Chat\Member\AddMembersDto;
 use App\Application\DTO\Out\Chat\ChatDto;
 use App\Application\DTO\Out\Route\RouteDto;
 use App\Application\DTO\Out\User\UserDto;
+use App\Application\Exceptions\Chat\Activity\FailedToChangeActivity;
 use App\Application\Exceptions\Chat\Activity\FailedToGetActivity;
 use App\Application\Exceptions\Chat\FailedToCreateChat;
 use App\Application\Exceptions\Chat\Members\FailedToAddMembers;
@@ -63,4 +65,12 @@ interface IChatRepository
      * @throws FailedToGetActivity
      */
     public function getActivity(int $chatId, int $userId): RouteDto;
+
+    /**
+     * @param ChangeActivityDto $changeActivityDto
+     * @param int $creatorId
+     * @return RouteDto
+     * @throws FailedToChangeActivity
+     */
+    public function changeActivity(ChangeActivityDto $changeActivityDto, int $creatorId): RouteDto;
 }
