@@ -2,6 +2,7 @@
 
 namespace App\Infrastructure\Database\Repositories\Chat;
 
+use App\Application\Contracts\Out\Managers\Token\ITokenManager;
 use App\Application\Contracts\Out\Repositories\Chat\IChatRepository;
 use App\Application\DTO\Collection\CursorDto;
 use App\Application\DTO\In\Chat\CreateChatDto;
@@ -12,6 +13,7 @@ use App\Infrastructure\Database\Models\Chat;
 use App\Infrastructure\Database\Models\ChatActiveRoute;
 use App\Infrastructure\Database\Models\ChatMember;
 use App\Infrastructure\Database\Transaction\Interface\ITransactionManager;
+use App\Infrastructure\Exceptions\Forbidden;
 use App\Utils\Mappers\Out\Chat\ChatDtoMapper;
 use Illuminate\Database\Eloquent\Model;
 use Throwable;
@@ -82,6 +84,27 @@ class ChatRepository implements IChatRepository
         } catch (Throwable) {
             $this->transactionManager->rollback();
             throw new FailedToCreateChat();
+        }
+    }
+
+    /**
+     * @param int $chatId
+     * @param int $userId
+     * @return ChatDto
+     * @throws Forbidden
+     */
+    public function getChat(int $chatId, int $userId): ChatDto
+    {
+        try{
+            /** @var Chat $chat */
+            $chat = $this->model::query()->where('id', $chatId)
+                ->whereHas('members', function ($query) use ($userId) {
+                $query->where('user_id', $userId);
+            })->firstOrFail();
+
+            return ChatDtoMapper::fromChatModel($chat);
+        } catch (Throwable) {
+            throw new Forbidden();
         }
     }
 }

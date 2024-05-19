@@ -32,15 +32,9 @@ class MessageRepository implements IMessageRepository
     public function create(AddMessageDto $addMessageDto): MessageDto
     {
         try {
-
-            $chat = Chat::query()->where('id', $addMessageDto->chatId)
-                ->whereHas('members', function ($query) use ($addMessageDto) {
-                    $query->where('user_id', $addMessageDto->senderId);
-                })->get();
-
-            if(!count($chat)) {
-                throw new Exception();
-            }
+            Chat::query()->whereHas('members', function ($query) use ($addMessageDto) {
+                $query->where('user_id', $addMessageDto->senderId);
+            })->where('id', $addMessageDto->chatId)->firstOrFail();
 
             /** @var ChatMessage $message */
             $message = $this->model->query()->create([

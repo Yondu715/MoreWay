@@ -7,6 +7,7 @@ use App\Application\DTO\In\Chat\CreateChatDto;
 use App\Application\DTO\In\Chat\GetUserChatsDto;
 use App\Application\DTO\Out\Chat\ChatDto;
 use App\Application\Exceptions\Chat\FailedToCreateChat;
+use App\Infrastructure\Exceptions\Forbidden;
 
 interface IChatRepository
 {
@@ -22,4 +23,12 @@ interface IChatRepository
      * @throws FailedToCreateChat
      */
     public function create(CreateChatDto $createChatDto): ChatDto;
+
+    /**
+     * @param int $chatId
+     * @param int $userId
+     * @return ChatDto
+     * @throws Forbidden
+     */
+    public function getChat(int $chatId, int $userId): ChatDto;
 }

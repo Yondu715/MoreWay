@@ -7,11 +7,13 @@ use App\Application\Contracts\In\Services\Chat\Message\IMessageService;
 use App\Application\Exceptions\Chat\FailedToCreateChat;
 use App\Application\Exceptions\Chat\Message\FailedToCreateMessage;
 use App\Infrastructure\Exceptions\ApiException;
+use App\Infrastructure\Exceptions\Forbidden;
+use App\Infrastructure\Exceptions\InvalidToken;
 use App\Infrastructure\Http\Requests\Chat\CreateChatRequest;
 use App\Infrastructure\Http\Requests\Chat\GetUserChatsRequest;
 use App\Infrastructure\Http\Requests\Chat\Message\AddMessageRequest;
+use App\Infrastructure\Http\Resources\Chat\ChatResource;
 use App\Infrastructure\Http\Resources\Chat\ShortChatCursorResource;
-use App\Infrastructure\Http\Resources\Chat\ShortChatResource;
 use App\Infrastructure\Http\Resources\Chat\Message\MessageResource;
 use App\Utils\Mappers\In\Chat\CreateChatDtoMapper;
 use App\Utils\Mappers\In\Chat\GetUserChatsDtoMapper;
@@ -34,17 +36,33 @@ class ChatController
 
     /**
      * @param CreateChatRequest $createChatRequest
-     * @return ShortChatResource
+     * @return ChatResource
      * @throws ApiException
      */
-    public function createChat(CreateChatRequest $createChatRequest): ShortChatResource
+    public function createChat(CreateChatRequest $createChatRequest): ChatResource
     {
         try {
             $createChatDto = CreateChatDtoMapper::fromRequest($createChatRequest);
-            return ShortChatResource::make(
+            return ChatResource::make(
                 $this->chatService->createChat($createChatDto)
             );
         } catch (FailedToCreateChat $e) {
+            throw new ApiException($e->getMessage(), $e->getCode());
+        }
+    }
+
+    /**
+     * @param int $chatId
+     * @return ChatResource
+     * @throws ApiException
+     */
+    public function getChat(int $chatId): ChatResource
+    {
+        try {
+            return ChatResource::make(
+                $this->chatService->getChat($chatId)
+            );
+        } catch (Forbidden|InvalidToken $e) {
             throw new ApiException($e->getMessage(), $e->getCode());
         }
     }
