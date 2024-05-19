@@ -5,6 +5,7 @@ namespace App\Utils\Mappers\Out\Chat\Message;
 use App\Application\DTO\Out\Chat\Message\MessageDto;
 use App\Infrastructure\Database\Models\ChatMessage;
 use App\Utils\Mappers\Out\Auth\UserDtoMapper;
+use Illuminate\Support\Collection;
 
 class MessageDtoMapper
 {
@@ -20,5 +21,16 @@ class MessageDtoMapper
             createdAt: $message->created_at->format('Y-m-d H:i:s'),
             sender: UserDtoMapper::fromUserModelToNotify($message->sender),
         );
+    }
+
+    /**
+     * @param Collection $messages
+     * @return Collection
+     */
+    public static function fromChatMessageCollection(Collection $messages): Collection
+    {
+        return $messages->map(function (ChatMessage $message) {
+            return self::fromMessageModel($message);
+        });
     }
 }

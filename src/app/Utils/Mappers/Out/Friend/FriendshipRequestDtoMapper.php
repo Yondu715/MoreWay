@@ -16,9 +16,9 @@ class FriendshipRequestDtoMapper
     {
         return new FriendshipRequestDto(
             id: $friendship->id,
-            user: UserDtoMapper::fromUserModelToNotify($friendship->user),
             userId: $friendship->user_id,
             friendId: $friendship->friend_id,
+            user: UserDtoMapper::fromUserModelToNotify($friendship->user),
             friend: UserDtoMapper::fromUserModelToNotify($friendship->friend)
         );
     }

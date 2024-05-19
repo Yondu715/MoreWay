@@ -12,6 +12,7 @@ class ChatDto
     public readonly string $name;
     public readonly UserDto $creator;
     public readonly Collection $members;
+    public readonly Collection $messages;
     public readonly RouteDto $activity;
 
     public function __construct(
@@ -19,12 +20,14 @@ class ChatDto
         string     $name,
         UserDto    $creator,
         Collection $members,
+        Collection $messages,
         RouteDto   $activity,
     ) {
         $this->id = $id;
         $this->name = $name;
         $this->creator = $creator;
         $this->members = $members;
+        $this->messages = $messages;
         $this->activity = $activity;
     }
 }

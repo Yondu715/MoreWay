@@ -62,7 +62,7 @@ class RouteRepository implements IRouteRepository
                     $query->where('creator_id', $createRouteDto->userId);
                 })->get();
 
-            if($routePoints->count() < 2) {
+            if($routePoints->count() < 2 || $routePoints->count() > 15) {
                 throw new Exception();
             }
 

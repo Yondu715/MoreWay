@@ -3,7 +3,9 @@
 namespace App\Infrastructure\Database\Repositories\Chat;
 
 use App\Application\Contracts\Out\Repositories\Chat\IChatRepository;
+use App\Application\DTO\Collection\CursorDto;
 use App\Application\DTO\In\Chat\CreateChatDto;
+use App\Application\DTO\In\Chat\GetUserChatsDto;
 use App\Application\DTO\Out\Chat\ChatDto;
 use App\Application\Exceptions\Chat\FailedToCreateChat;
 use App\Infrastructure\Database\Models\Chat;
@@ -24,6 +26,19 @@ class ChatRepository implements IChatRepository
     )
     {
         $this->model = $chat;
+    }
+
+    /**
+     * @param GetUserChatsDto $getUserChatsDto
+     * @return CursorDto
+     */
+    public function getUserChats(GetUserChatsDto $getUserChatsDto): CursorDto
+    {
+        $paginator = $this->model::query()
+            ->whereHas('members', function ($query) use ($getUserChatsDto) {
+                $query->where('user_id', $getUserChatsDto->userId);
+            })->cursorPaginate(perPage: $getUserChatsDto->limit , cursor: $getUserChatsDto->cursor);
+        return ChatDtoMapper::fromPaginator($paginator);
     }
 
     /**
