@@ -7,6 +7,7 @@ use App\Application\Contracts\In\Services\Chat\Member\IMemberService;
 use App\Application\Contracts\In\Services\Chat\Message\IMessageService;
 use App\Application\Exceptions\Chat\FailedToCreateChat;
 use App\Application\Exceptions\Chat\Members\FailedToAddMembers;
+use App\Application\Exceptions\Chat\Members\FailedToDeleteMember;
 use App\Application\Exceptions\Chat\Message\FailedToCreateMessage;
 use App\Infrastructure\Exceptions\ApiException;
 use App\Infrastructure\Exceptions\Forbidden;
@@ -23,6 +24,7 @@ use App\Utils\Mappers\In\Chat\CreateChatDtoMapper;
 use App\Utils\Mappers\In\Chat\GetUserChatsDtoMapper;
 use App\Utils\Mappers\In\Chat\Member\AddMembersDtoMapper;
 use App\Utils\Mappers\In\Chat\Message\AddMessageDtoMapper;
+use Illuminate\Http\Response;
 
 class ChatController
 {
@@ -86,6 +88,22 @@ class ChatController
                 $this->memberService->addMembers($addMembersDto)
             );
         } catch (FailedToAddMembers|InvalidToken $e) {
+            throw new ApiException($e->getMessage(), $e->getCode());
+        }
+    }
+
+    /**
+     * @param int $chatId
+     * @param int $memberId
+     * @return Response
+     * @throws ApiException
+     */
+    public function deleteMember(int $chatId, int $memberId): Response
+    {
+        try {
+            $this->memberService->deleteMember($chatId, $memberId);
+            return response()->noContent();
+        } catch (FailedToDeleteMember|InvalidToken $e) {
             throw new ApiException($e->getMessage(), $e->getCode());
         }
     }

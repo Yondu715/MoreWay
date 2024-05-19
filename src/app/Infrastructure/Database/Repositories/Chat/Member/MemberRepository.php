@@ -6,6 +6,7 @@ use App\Application\Contracts\Out\Repositories\Chat\Member\IMemberRepository;
 use App\Application\DTO\In\Chat\Member\AddMembersDto;
 use App\Application\DTO\Out\User\UserDto;
 use App\Application\Exceptions\Chat\Members\FailedToAddMembers;
+use App\Application\Exceptions\Chat\Members\FailedToDeleteMember;
 use App\Infrastructure\Database\Models\Chat;
 use App\Infrastructure\Database\Models\ChatMember;
 use App\Infrastructure\Database\Transaction\Interface\ITransactionManager;
@@ -36,15 +37,15 @@ class MemberRepository implements IMemberRepository
     {
         try {
             $this->transactionManager->beginTransaction();
-            /** @var Chat $chat */
-            $chat = Chat::query()->where('id', $addMembersDto->chatId)
+
+            Chat::query()->where('id', $addMembersDto->chatId)
                 ->where('creator_id', $userId)->firstOrFail();
 
             $members = new Collection();
 
             foreach ($addMembersDto->members as $member) {
                 $members->add($this->model::query()->create([
-                    'chat_id' => $chat->id,
+                    'chat_id' => $addMembersDto->chatId,
                     'user_id' => $member,
                 ]));
             }
@@ -55,6 +56,26 @@ class MemberRepository implements IMemberRepository
         } catch (Throwable) {
             $this->transactionManager->rollBack();
             throw new FailedToAddMembers();
+        }
+    }
+
+    /**
+     * @param int $chatId
+     * @param int $memberId
+     * @param int $creatorId
+     * @return bool
+     * @throws FailedToDeleteMember
+     */
+    public function deleteMember(int $chatId, int $memberId, int $creatorId): bool
+    {
+        try {
+            Chat::query()->where('id', $chatId)
+                ->where('creator_id', $creatorId)->firstOrFail();
+
+            return $this->model->query()->where('user_id', $memberId)
+                ->where('chat_id', $chatId)->firstOrFail()->delete();
+        } catch (Throwable) {
+            throw new FailedToDeleteMember();
         }
     }
 }

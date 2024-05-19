@@ -8,6 +8,7 @@ use App\Application\Contracts\Out\Repositories\Chat\Member\IMemberRepository;
 use App\Application\DTO\In\Chat\Member\AddMembersDto;
 use App\Application\DTO\Out\User\UserDto;
 use App\Application\Exceptions\Chat\Members\FailedToAddMembers;
+use App\Application\Exceptions\Chat\Members\FailedToDeleteMember;
 use App\Infrastructure\Exceptions\InvalidToken;
 use Illuminate\Support\Collection;
 
@@ -27,5 +28,17 @@ class MemberService implements IMemberService
     public function addMembers(AddMembersDto $addMembersDto): Collection
     {
         return $this->memberRepository->createMembers($addMembersDto, $this->tokenManager->getAuthUser()->id);
+    }
+
+    /**
+     * @param int $chatId
+     * @param int $memberId
+     * @return bool
+     * @throws InvalidToken
+     * @throws FailedToDeleteMember
+     */
+    public function deleteMember(int $chatId, int $memberId): bool
+    {
+        return $this->memberRepository->deleteMember($chatId, $memberId, $this->tokenManager->getAuthUser()->id);
     }
 }
