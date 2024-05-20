@@ -21,7 +21,6 @@ use App\Infrastructure\Database\Models\ChatActiveRoute;
 use App\Infrastructure\Database\Models\ChatMember;
 use App\Infrastructure\Database\Transaction\Interface\ITransactionManager;
 use App\Infrastructure\Exceptions\Forbidden;
-use App\Infrastructure\Http\Requests\Chat\Activity\ChangeActivityRequest;
 use App\Utils\Mappers\Out\Chat\ChatDtoMapper;
 use App\Utils\Mappers\Out\Route\RouteDtoMapper;
 use App\Utils\Mappers\Out\User\UserDtoMapper;
@@ -74,6 +73,8 @@ class ChatRepository implements IChatRepository
                 'chat_id' => $chat->id,
                 'route_id' => $createChatDto->routeId,
             ]);
+
+            // $chat->users()->attach([...$createChatDto->members, $createChatDto->creatorId]);
 
             foreach ($createChatDto->members as $member) {
                 ChatMember::query()->create([
@@ -131,6 +132,11 @@ class ChatRepository implements IChatRepository
 
             $this->model->query()->where('id', $addMembersDto->chatId)
                 ->where('creator_id', $userId)->firstOrFail();
+
+            // $this->model->query()->where([
+            //     'id' => $addMembersDto->chatId,
+            //     'creator_id' => $userId
+            // ])->firstOrFail();
 
             $members = new Collection();
 
