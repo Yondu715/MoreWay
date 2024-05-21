@@ -36,16 +36,13 @@ class RouteConstructorRepository implements IRouteConstructorRepository
     public function update(InRouteConstructorDto $routeConstructorDto): OutRouteConstructorDto
     {
         try {
-            /** @var ?RouteConstructor $routeConstructor */
-            $routeConstructor = $this->model->query()
-                ->where('creator_id', $routeConstructorDto->userId)
-                ->first();
-
-            if (!$routeConstructor) {
-                throw new ConstructorNotFound();
-            }
-
             $this->transactionManager->beginTransaction();
+
+            /** @var ?RouteConstructor $routeConstructor */
+            $routeConstructor = $this->model->query()->firstOrCreate([
+                'creator_id' => $routeConstructorDto->userId
+            ]);
+
             $routePoints = collect($routeConstructorDto->routePoints)->sortBy('index')->values();
 
             $routePoints->each(function ($routePoint, $index) use ($routeConstructor) {
