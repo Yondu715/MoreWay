@@ -45,14 +45,16 @@ class RouteConstructorRepository implements IRouteConstructorRepository
 
             $routePoints = collect($routeConstructorDto->routePoints)->sortBy('index')->values();
 
+            RouteConstructorPoint::query()->where('constructor_id', $routeConstructor->id)->forceDelete();
+
             $routePoints->each(function ($routePoint, $index) use ($routeConstructor) {
                 if ($routePoint->index !== $index + 1) {
                     throw new InvalidRoutePointIndex();
                 }
-                RouteConstructorPoint::query()->updateOrCreate([
+
+                RouteConstructorPoint::query()->create([
                     'index' => $routePoint->index,
                     'constructor_id' => $routeConstructor->id,
-                ], [
                     'place_id' => $routePoint->placeId,
                 ]);
             });
