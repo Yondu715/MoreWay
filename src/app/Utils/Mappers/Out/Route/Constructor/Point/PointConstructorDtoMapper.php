@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Utils\Mappers\Out\Route\Point;
+namespace App\Utils\Mappers\Out\Route\Constructor\Point;
 
 use App\Application\DTO\Out\Route\Point\PointDto;
 use App\Infrastructure\Database\Models\RouteConstructorPoint;
@@ -9,19 +9,19 @@ use App\Utils\Mappers\Out\Place\PlaceDtoMapper;
 use Closure;
 use Illuminate\Support\Collection;
 
-class PointDtoMapper
+class PointConstructorDtoMapper
 {
     /**
      * @param Collection<int, RoutePoint|RouteConstructorPoint> $routePoints
      * @return Collection<int, PointDto>
      */
-    public static function fromPointCollection(Collection $routePoints): Collection
+    public static function fromPointCollection(Collection $routePoints, Closure $distanceCalculator): Collection
     {
-        return $routePoints->map(function (RoutePoint|RouteConstructorPoint $routePoint) {
+        return $routePoints->map(function (RoutePoint|RouteConstructorPoint $routePoint) use ($distanceCalculator) {
             return new PointDto(
                 id: $routePoint->id,
                 index: $routePoint->index,
-                place: PlaceDtoMapper::fromPlaceModel($routePoint->place),
+                place: PlaceDtoMapper::fromPlaceModel($routePoint->place, $distanceCalculator($routePoint->place->lat, $routePoint->place->lon)),
             );
         });
     }

@@ -3,6 +3,7 @@
 namespace App\Infrastructure\Http\Resources\Route\Constructor;
 
 use App\Application\DTO\Out\Route\Constructor\RouteConstructorDto;
+use App\Infrastructure\Http\Resources\Route\Constructor\Point\PointConstructorResource;
 use App\Infrastructure\Http\Resources\Route\Point\PointResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -22,7 +23,7 @@ class ConstructorResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'items' => PointResource::collection($this->points),
+            'items' => PointConstructorResource::collection($this->points),
         ];
     }
 }

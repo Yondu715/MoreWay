@@ -2,24 +2,28 @@
 
 namespace App\Application\Contracts\Out\Repositories\Route\Constructor;
 
-use App\Application\DTO\In\Route\Constructor\RouteConstructorDto as InRouteConstructorDto;
-use App\Application\DTO\Out\Route\Constructor\RouteConstructorDto as OutRouteConstructorDto;
+use App\Application\DTO\In\Route\Constructor\ChangeUserRouteConstructorDto;
+use App\Application\DTO\In\Route\Constructor\GetUserRouteConstructorDto;
+use App\Application\DTO\Out\Route\Constructor\RouteConstructorDto;
 use App\Application\Exceptions\Route\Constructor\InvalidRoutePointIndex;
+use Closure;
 use Throwable;
 
 interface IRouteConstructorRepository
 {
     /**
-     * @param RouteConstructorDto $routeConstructorDto
-     * @return OutRouteConstructorDto
+     * @param ChangeUserRouteConstructorDto $changeUserRouteConstructorDto
+     * @param Closure $distanceCalculator
+     * @return RouteConstructorDto
      * @throws InvalidRoutePointIndex
      * @throws Throwable
      */
-    public function update(InRouteConstructorDto $routeConstructorDto): OutRouteConstructorDto;
+    public function update(ChangeUserRouteConstructorDto $changeUserRouteConstructorDto, Closure $distanceCalculator): RouteConstructorDto;
 
     /**
-     * @param int $userId
-     * @return OutRouteConstructorDto
+     * @param GetUserRouteConstructorDto $getUserRouteConstructorDto
+     * @param Closure $distanceCalculator
+     * @return RouteConstructorDto
      */
-    public function findByUserId(int $userId): OutRouteConstructorDto;
+    public function findByUserId(GetUserRouteConstructorDto $getUserRouteConstructorDto, Closure $distanceCalculator): RouteConstructorDto;
 }

@@ -21,6 +21,7 @@ use App\Infrastructure\Http\Requests\Review\GetReviewsRequest;
 use App\Infrastructure\Http\Requests\Route\ChangeUserRouteRequest;
 use App\Infrastructure\Http\Requests\Route\CompletedRoutePointRequest;
 use App\Infrastructure\Http\Requests\Route\Constructor\ChangeUserRouteConstructorRequest;
+use App\Infrastructure\Http\Requests\Route\Constructor\GetUserRouteConstructorRequest;
 use App\Infrastructure\Http\Requests\Route\CreateRouteRequest;
 use App\Infrastructure\Http\Requests\Route\GetRoutesRequest;
 use App\Infrastructure\Http\Requests\Route\GetUserRoutesRequest;
@@ -33,7 +34,8 @@ use App\Infrastructure\Http\Resources\Route\RouteResource;
 use App\Infrastructure\Http\Resources\Route\UserActiveRouteResource;
 use App\Utils\Mappers\In\Route\ChangeUserRouteDtoMapper;
 use App\Utils\Mappers\In\Route\CompletedRoutePointDtoMapper;
-use App\Utils\Mappers\In\Route\Constructor\ConstructorDtoMapper;
+use App\Utils\Mappers\In\Route\Constructor\ChangeUserRouteConstructorDtoMapper;
+use App\Utils\Mappers\In\Route\Constructor\GetUserRouteConstructorDtoMapper;
 use App\Utils\Mappers\In\Route\CreateRouteDtoMapper;
 use App\Utils\Mappers\In\Route\GetRoutesDtoMapper;
 use App\Utils\Mappers\In\Route\GetUserRoutesDtoMapper;
@@ -143,7 +145,7 @@ class RouteController extends Controller
     public function changeUserRouteConstructor(ChangeUserRouteConstructorRequest $changeUserRouteConstructorRequest): ConstructorResource
     {
         try {
-            $changeUserRouteConstructorDto = ConstructorDtoMapper::fromRequest($changeUserRouteConstructorRequest);
+            $changeUserRouteConstructorDto = ChangeUserRouteConstructorDtoMapper::fromRequest($changeUserRouteConstructorRequest);
             return ConstructorResource::make(
                 $this->constructorService->change($changeUserRouteConstructorDto)
             );
@@ -153,13 +155,14 @@ class RouteController extends Controller
     }
 
     /**
-     * @param int $userId
+     * @param GetUserRouteConstructorRequest $getUserRouteConstructorRequest
      * @return ConstructorResource
      */
-    public function getUserRouteConstructor(int $userId): ConstructorResource
+    public function getUserRouteConstructor(GetUserRouteConstructorRequest $getUserRouteConstructorRequest): ConstructorResource
     {
+        $getUserRouteConstructorDto = GetUserRouteConstructorDtoMapper::fromRequest($getUserRouteConstructorRequest);
         return ConstructorResource::make(
-            $this->constructorService->get($userId)
+            $this->constructorService->get($getUserRouteConstructorDto)
         );
     }
 
