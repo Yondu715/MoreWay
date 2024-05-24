@@ -8,18 +8,19 @@ use App\Application\Contracts\In\Services\Chat\IChatService;
 use App\Application\Contracts\In\Services\Chat\Message\IMessageService;
 use App\Application\Contracts\In\Services\Friend\IFriendshipService;
 use App\Application\Contracts\In\Services\Place\Filter\IPlaceFilterService;
+use App\Application\Contracts\In\Services\Place\IPlaceService;
+use App\Application\Contracts\In\Services\Place\Review\IPlaceReviewService;
 use App\Application\Contracts\In\Services\Rating\IRatingService;
 use App\Application\Contracts\In\Services\Route\Constructor\IRouteConstructorService;
 use App\Application\Contracts\In\Services\Route\Filter\IRouteFilterService;
-use App\Application\Contracts\In\Services\Place\IPlaceService;
-use App\Application\Contracts\In\Services\Place\Review\IPlaceReviewService;
 use App\Application\Contracts\In\Services\Route\IRouteService;
 use App\Application\Contracts\In\Services\Route\Review\IRouteReviewService;
 use App\Application\Contracts\In\Services\User\IUserService;
 use App\Application\Contracts\Out\Managers\Cache\ICacheManager;
 use App\Application\Contracts\Out\Managers\Hash\IHashManager;
 use App\Application\Contracts\Out\Managers\Mail\IMailManager;
-use App\Application\Contracts\Out\Managers\Notifier\INotifierManager;
+use App\Application\Contracts\Out\Managers\Notifier\Chat\IChatNotifierManager;
+use App\Application\Contracts\Out\Managers\Notifier\Friend\IFriendNotifierManager;
 use App\Application\Contracts\Out\Managers\Storage\IStorageManager;
 use App\Application\Contracts\Out\Managers\Token\ITokenManager;
 use App\Application\Contracts\Out\Repositories\Achievement\IAchievementRepository;
@@ -71,7 +72,8 @@ use App\Infrastructure\Managers\Hash\HashManager;
 use App\Infrastructure\Managers\Mail\MailManager;
 use App\Infrastructure\Managers\Storage\StorageManager;
 use App\Infrastructure\Managers\Token\TokenManager;
-use App\Infrastructure\WebSocket\Notifiers\FriendNotifier;
+use App\Infrastructure\WebSocket\Notifiers\Notification\Chat\ChatNotifier;
+use App\Infrastructure\WebSocket\Notifiers\Notification\Friend\FriendNotifier;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -124,7 +126,10 @@ class AppServiceProvider extends ServiceProvider
     /** @var array<class-string, array<int, string>> */
     public array $whenBindings = [
         FriendshipService::class => [
-            INotifierManager::class => FriendNotifier::class,
+            IFriendNotifierManager::class => FriendNotifier::class,
+        ],
+        ChatService::class => [
+            IChatNotifierManager::class => ChatNotifier::class,
         ],
     ];
 

@@ -1,20 +1,25 @@
 <?php
 
-namespace App\Infrastructure\WebSocket\Notifiers;
+namespace App\Infrastructure\WebSocket\Notifiers\Notification;
 
-use App\Application\Contracts\Out\Managers\Notifier\INotifierManager;
 use App\Infrastructure\Broker\RabbitMqPublisher;
+use Illuminate\Http\Resources\Json\JsonResource;
 
-class FriendNotifier implements INotifierManager
+class BaseNotifier
 {
-
-    private string $queueName = 'notification:friends';
+    private string $queueName = 'notification';
     private readonly RabbitMqPublisher $publisher;
+    private string $resource;
+    private string $type;
 
     public function __construct(
-        RabbitMqPublisher $publisher
+        RabbitMqPublisher $publisher,
+        string $resource,
+        string $type,
     ) {
+        $this->type = $type;
         $this->publisher = $publisher;
+        $this->resource = $resource;
     }
 
     /**
@@ -24,9 +29,13 @@ class FriendNotifier implements INotifierManager
      */
     public function sendNotification(int $userId, mixed $notification): void
     {
+        /** @var JsonResource $resource  */
+        $resource = $this->resource;
+
         $message = [
             'to' => $userId,
-            'notification' => $notification
+            'type' => $this->type,
+            'notification' => $resource::make($notification)
         ];
         $this->publisher->publish(
             routingKey: $this->queueName,

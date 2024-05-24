@@ -3,12 +3,12 @@
 namespace App\Application\Services\Friend;
 
 use App\Application\Contracts\In\Services\Friend\IFriendshipService;
-use App\Application\Contracts\Out\Managers\Notifier\INotifierManager;
+use App\Application\Contracts\Out\Managers\Notifier\Friend\IFriendNotifierManager;
 use App\Application\Contracts\Out\Repositories\Friend\IFriendshipRepository;
 use App\Application\DTO\In\Friend\AcceptFriendDto;
 use App\Application\DTO\In\Friend\AddFriendDto;
-use App\Application\DTO\Out\User\UserDto;
 use App\Application\DTO\Out\Friend\FriendshipRequestDto;
+use App\Application\DTO\Out\User\UserDto;
 use App\Application\Enums\Friend\RelationshipType;
 use App\Application\Exceptions\Friend\FriendRequestConflict;
 use Illuminate\Support\Collection;
@@ -19,7 +19,7 @@ class FriendshipService implements IFriendshipService
 
     public function __construct(
         private readonly IFriendshipRepository $friendRepository,
-        private readonly INotifierManager $notifier
+        private readonly IFriendNotifierManager $notifier
     ) {
     }
 

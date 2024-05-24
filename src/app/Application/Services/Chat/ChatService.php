@@ -3,6 +3,7 @@
 namespace App\Application\Services\Chat;
 
 use App\Application\Contracts\In\Services\Chat\IChatService;
+use App\Application\Contracts\Out\Managers\Notifier\Chat\IChatNotifierManager;
 use App\Application\Contracts\Out\Managers\Token\ITokenManager;
 use App\Application\Contracts\Out\Repositories\Chat\IChatRepository;
 use App\Application\DTO\Collection\CursorDto;
@@ -27,7 +28,8 @@ class ChatService implements IChatService
 {
     public function __construct(
         private readonly IChatRepository $chatRepository,
-        private readonly ITokenManager $tokenManager
+        private readonly ITokenManager $tokenManager,
+        private readonly IChatNotifierManager $notifierManager
     ) {}
 
     /**
@@ -46,7 +48,13 @@ class ChatService implements IChatService
      */
     public function createChat(CreateChatDto $createChatDto): ChatDto
     {
-        return $this->chatRepository->create($createChatDto);
+        $chat = $this->chatRepository->create($createChatDto);
+
+        foreach ($chat->members as $member) {
+            $this->notifierManager->sendNotification($member->id, $chat);
+        }
+
+        return $chat;
     }
 
     /**

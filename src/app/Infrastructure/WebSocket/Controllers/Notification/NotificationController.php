@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Infrastructure\WebSocket\Broker;
+namespace App\Infrastructure\WebSocket\Controllers\Notification;
 
 use App\Application\Contracts\Out\Managers\Token\ITokenManager;
 use App\Infrastructure\Broker\RabbitMqConsumer;
@@ -10,23 +10,24 @@ use Bunny\Message;
 use Psr\Log\LoggerInterface;
 use Throwable;
 
-class BrokerWebSocket extends NotifierWebSocket
+class NotificationController extends NotifierWebSocket
 {
-    protected string $queueName;
+    private string $queueName = 'notification';
     private RabbitMqConsumer $consumer;
 
     public function __construct(
         ITokenManager $tokenManager,
         RabbitMqConsumer $rabbitMqConsumer,
-        string $queueName
     ) {
         parent::__construct($tokenManager);
-        $this->queueName = $queueName;
         $this->consumer = $rabbitMqConsumer;
         $this->consumer->consume($this->queueName, function (Message $message, Channel $channel) {
             try {
                 $msg = json_decode($message->content, true);
-                $this->sendNotification($msg['to'], json_encode($msg['notification']));
+                $this->sendNotification($msg['to'], json_encode([
+                    'data' => $msg['notification'],
+                    'type' => $msg['type'],
+                ]));
                 $channel->ack($message);
             } catch (Throwable $th) {
                 $logger = app(LoggerInterface::class);
