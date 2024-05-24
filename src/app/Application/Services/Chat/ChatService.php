@@ -3,7 +3,7 @@
 namespace App\Application\Services\Chat;
 
 use App\Application\Contracts\In\Services\Chat\IChatService;
-use App\Application\Contracts\Out\Managers\Notifier\Chat\IChatNotifierManager;
+use App\Application\Contracts\Out\Managers\Notifier\INotifierManager;
 use App\Application\Contracts\Out\Managers\Token\ITokenManager;
 use App\Application\Contracts\Out\Repositories\Chat\IChatRepository;
 use App\Application\DTO\Collection\CursorDto;
@@ -19,7 +19,6 @@ use App\Application\Exceptions\Chat\Activity\FailedToGetActivity;
 use App\Application\Exceptions\Chat\FailedToCreateChat;
 use App\Application\Exceptions\Chat\Members\FailedToAddMembers;
 use App\Application\Exceptions\Chat\Members\FailedToDeleteMember;
-use App\Infrastructure\Database\Models\Route;
 use App\Infrastructure\Exceptions\Forbidden;
 use App\Infrastructure\Exceptions\InvalidToken;
 use Illuminate\Support\Collection;
@@ -29,7 +28,7 @@ class ChatService implements IChatService
     public function __construct(
         private readonly IChatRepository $chatRepository,
         private readonly ITokenManager $tokenManager,
-        private readonly IChatNotifierManager $notifierManager
+        private readonly INotifierManager $notifier
     ) {}
 
     /**
@@ -51,7 +50,7 @@ class ChatService implements IChatService
         $chat = $this->chatRepository->create($createChatDto);
 
         foreach ($chat->members as $member) {
-            $this->notifierManager->sendNotification($member->id, $chat);
+            $this->notifier->sendNotification($member->id, $chat);
         }
 
         return $chat;

@@ -2,12 +2,12 @@
 
 namespace App\Infrastructure\WebSocket\Notifiers\Notification\Friend;
 
-use App\Application\Contracts\Out\Managers\Notifier\Friend\IFriendNotifierManager;
+use App\Application\Contracts\Out\Managers\Notifier\INotifierManager;
 use App\Infrastructure\Broker\RabbitMqPublisher;
 use App\Infrastructure\Http\Resources\Friend\FriendshipRequestResource;
 use App\Infrastructure\WebSocket\Notifiers\Notification\BaseNotifier;
 
-class FriendNotifier extends BaseNotifier implements IFriendNotifierManager
+class Notifier extends BaseNotifier implements INotifierManager
 {
     public function __construct(
         RabbitMqPublisher $publisher

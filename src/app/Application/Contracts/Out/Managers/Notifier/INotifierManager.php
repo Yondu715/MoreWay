@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Application\Contracts\Out\Managers\Notifier\Chat;
+namespace App\Application\Contracts\Out\Managers\Notifier;
 
-interface IChatNotifierManager
+interface INotifierManager
 {
     /**
      * @param int $userId
