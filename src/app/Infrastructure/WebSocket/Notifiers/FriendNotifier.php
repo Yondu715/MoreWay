@@ -29,8 +29,8 @@ class FriendNotifier implements INotifierManager
             'notification' => $notification
         ];
         $this->publisher->publish(
-            body: json_encode($message),
-            routingKey: $this->queueName
+            routingKey: $this->queueName,
+            body: json_encode($message)
         );
     }
 }
