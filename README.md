@@ -43,6 +43,10 @@ docker-compose up --build -d
 ```sh
 docker-compose exec app bash
 ```
+Сгенерировать ключ
+```sh
+php artisan key:generate
+```
 
 И установить зависимости
 ```sh
@@ -51,7 +55,9 @@ composer install
 
 Далее создаем файл .env и описываем окружение по примеру .env.example
 
-Главное указать следующие параметры
+Главное указать следующие параметры:
+
+База данных
 ```sh
 DB_CONNECTION=mysql
 DB_HOST=mysql
@@ -60,7 +66,7 @@ DB_DATABASE=database
 DB_USERNAME=root
 DB_PASSWORD=123
 ```
-Websockets
+Вебсокеты
 ```sh
 WS_HOST=localhost
 WS_PORT=8877
@@ -85,7 +91,7 @@ RABBITMQ_VHOST=rabbitmq
 php artisan migrate
 ```
 
-Далее инициализируем voyager
+Инициализируем voyager
 ```sh
 php artisan voyager:install
 ```
@@ -94,7 +100,7 @@ php artisan voyager:install
 php artian jwt:secret
 ```
 
-И запускаем сиды
+Запускаем сиды
 ```sh
 php artisan db:seed
 ```

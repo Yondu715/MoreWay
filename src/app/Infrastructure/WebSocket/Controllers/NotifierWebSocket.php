@@ -94,12 +94,4 @@ abstract class NotifierWebSocket implements MessageComponentInterface
         parse_str($request->getUri()->getQuery(), $params);
         return $params;
     }
-
-
-    /**
-     * @param int $userId
-     * @param string $msg
-     * @return void
-     */
-    abstract function sendNotification(int $userId, string $notification): void;
 }

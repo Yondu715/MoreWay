@@ -2,7 +2,9 @@
 
 namespace App\Infrastructure\Http\Controllers\Api\V1;
 
+use App\Application\Contracts\In\Services\Chat\Activity\IChatActivityService;
 use App\Application\Contracts\In\Services\Chat\IChatService;
+use App\Application\Contracts\In\Services\Chat\Member\IChatMemberService;
 use App\Application\Contracts\In\Services\Chat\Message\IMessageService;
 use App\Application\Exceptions\Chat\Activity\FailedToChangeActivity;
 use App\Application\Exceptions\Chat\Activity\FailedToGetActivity;
@@ -38,6 +40,8 @@ class ChatController
     public function __construct(
         private readonly IChatService $chatService,
         private readonly IMessageService $messageService,
+        private readonly IChatActivityService $activityService,
+        private readonly IChatMemberService $memberService
     ) {}
 
     public function getUserChats(GetUserChatsRequest $getUserChatsRequest): ShortChatCursorResource
@@ -91,7 +95,7 @@ class ChatController
         $addMembersDto = AddMembersDtoMapper::fromRequest($addMemberRequest);
         try {
             return UserCollectionResource::make(
-                $this->chatService->addMembers($addMembersDto)
+                $this->memberService->addMembers($addMembersDto)
             );
         } catch (FailedToAddMembers|InvalidToken $e) {
             throw new ApiException($e->getMessage(), $e->getCode());
@@ -107,7 +111,7 @@ class ChatController
     public function deleteMember(int $chatId, int $memberId): Response
     {
         try {
-            $this->chatService->deleteMember($chatId, $memberId);
+            $this->memberService->deleteMember($chatId, $memberId);
             return response()->noContent();
         } catch (FailedToDeleteMember|InvalidToken $e) {
             throw new ApiException($e->getMessage(), $e->getCode());
@@ -157,7 +161,7 @@ class ChatController
     {
         try {
             return RouteResource::make(
-                $this->chatService->getActivity($chatId)
+                $this->activityService->getActivity($chatId)
             );
         } catch (FailedToGetActivity|InvalidToken  $e) {
             throw new ApiException($e->getMessage(), $e->getCode());
@@ -174,7 +178,7 @@ class ChatController
         try {
             $changeActivityDto = ChangeActivityDtoMapper::fromRequest($changeActivityRequest);
             return RouteResource::make(
-                $this->chatService->changeActivity($changeActivityDto)
+                $this->activityService->changeActivity($changeActivityDto)
             );
         } catch (FailedToChangeActivity|InvalidToken  $e) {
             throw new ApiException($e->getMessage(), $e->getCode());

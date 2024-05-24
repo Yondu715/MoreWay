@@ -129,14 +129,10 @@ class ChatRepository implements IChatRepository
     public function createMembers(AddMembersDto $addMembersDto, int $userId): Collection
     {
         try {
-
-            $this->model->query()->where('id', $addMembersDto->chatId)
-                ->where('creator_id', $userId)->firstOrFail();
-
-            // $this->model->query()->where([
-            //     'id' => $addMembersDto->chatId,
-            //     'creator_id' => $userId
-            // ])->firstOrFail();
+             $this->model->query()->where([
+                 'id' => $addMembersDto->chatId,
+                 'creator_id' => $userId
+             ])->firstOrFail();
 
             $members = new Collection();
 
@@ -168,10 +164,14 @@ class ChatRepository implements IChatRepository
     public function deleteMember(int $chatId, int $memberId, int $creatorId): bool
     {
         try {
-             $chat = $this->model->query()->where('id', $chatId)
+             $this->model->query()->where('id', $chatId)
                 ->where('creator_id', $creatorId)->firstOrFail();
 
-            return $chat->where('user_id', $memberId)->firstOrFail()->delete();
+            return ChatMember::query()->where([
+                'chat_id' => $chatId,
+                'user_id'=> $memberId
+            ])->firstOrFail()->delete();
+
         } catch (Throwable) {
             throw new FailedToDeleteMember();
         }

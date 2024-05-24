@@ -7,7 +7,7 @@ interface INotifierManager
     /**
      * @param int $userId
      * @param mixed $notification
-     * @return mixed
+     * @return void
      */
-    public function sendNotification(int $userId, mixed $notification);
+    public function sendNotification(int $userId, mixed $notification): void;
 }
