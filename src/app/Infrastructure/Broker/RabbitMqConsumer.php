@@ -29,14 +29,16 @@ class RabbitMqConsumer
      */
     public function consume(string $routingKey, callable $callback): void
     {
-        $this->client->connect()->then(function (Client $client) {
-            return $client->channel();
-        })->then(function (Channel $channel) {
-            return $channel->qos()->then(function () use ($channel) {
-                return $channel;
-            });
-        })->then(function (Channel $channel) use ($routingKey, $callback) {
-            $channel->consume($callback, $routingKey);
-        });
+        $this->client->connect()->then(
+            fn (Client $client) => $client->channel()
+        )->then(
+            fn (Channel $channel) => $channel->qos()
+                ->then(fn () => $channel)
+        )->then(
+            fn (Channel $channel) => $channel->queueDeclare($routingKey, false, true)
+                ->then(fn () => $channel)
+        )->then(
+            fn (Channel $channel) => $channel->consume($callback, $routingKey)
+        );
     }
 }

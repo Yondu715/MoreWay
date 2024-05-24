@@ -23,6 +23,12 @@ class RabbitMqPublisher
         $this->channel = $this->client->channel();
     }
 
+    public function __destruct()
+    {
+        $this->channel->close();
+        $this->client->disconnect();
+    }
+
     /**
      * @param string $routingKey
      * @param string $body
@@ -30,6 +36,7 @@ class RabbitMqPublisher
      */
     public function publish(string $routingKey, string $body): void
     {
+        $this->channel->queueDeclare($routingKey, false, true);
         $this->channel->publish(
             body: $body,
             routingKey: $routingKey
