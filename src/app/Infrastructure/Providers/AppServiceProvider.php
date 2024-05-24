@@ -4,7 +4,9 @@ namespace App\Infrastructure\Providers;
 
 use App\Application\Contracts\In\Services\Achievement\IAchievementService;
 use App\Application\Contracts\In\Services\Auth\IAuthService;
+use App\Application\Contracts\In\Services\Chat\Activity\IChatActivityService;
 use App\Application\Contracts\In\Services\Chat\IChatService;
+use App\Application\Contracts\In\Services\Chat\Member\IChatMemberService;
 use App\Application\Contracts\In\Services\Chat\Message\IMessageService;
 use App\Application\Contracts\In\Services\Friend\IFriendshipService;
 use App\Application\Contracts\In\Services\Place\Filter\IPlaceFilterService;
@@ -38,7 +40,9 @@ use App\Application\Contracts\Out\Repositories\Route\Review\IRouteReviewReposito
 use App\Application\Contracts\Out\Repositories\User\IUserRepository;
 use App\Application\Services\Achievement\AchievementService;
 use App\Application\Services\Auth\AuthService;
+use App\Application\Services\Chat\Activity\ChatActivityService;
 use App\Application\Services\Chat\ChatService;
+use App\Application\Services\Chat\Member\ChatMemberService;
 use App\Application\Services\Chat\Message\MessageService;
 use App\Application\Services\Friend\FriendshipService;
 use App\Application\Services\Place\Filter\PlaceFilterService;
@@ -71,8 +75,11 @@ use App\Infrastructure\Managers\Hash\HashManager;
 use App\Infrastructure\Managers\Mail\MailManager;
 use App\Infrastructure\Managers\Storage\StorageManager;
 use App\Infrastructure\Managers\Token\TokenManager;
+use App\Infrastructure\WebSocket\Notifiers\Notification\Chat\Activity\ChatActivityNotifier;
 use App\Infrastructure\WebSocket\Notifiers\Notification\Chat\ChatNotifier;
-use App\Infrastructure\WebSocket\Notifiers\Notification\Friend\Notifier;
+use App\Infrastructure\WebSocket\Notifiers\Notification\Chat\Member\ChatMemberNotifier;
+use App\Infrastructure\WebSocket\Notifiers\Notification\Chat\Message\MessageNotifier;
+use App\Infrastructure\WebSocket\Notifiers\Notification\Friend\FriendNotifier;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -94,6 +101,8 @@ class AppServiceProvider extends ServiceProvider
         IRatingService::class => RatingService::class,
         IChatService::class => ChatService::class,
         IMessageService::class => MessageService::class,
+        IChatActivityService::class => ChatActivityService::class,
+        IChatMemberService::class => ChatMemberService::class,
 
         /** REPOSITORIES */
         IUserRepository::class => UserRepository::class,
@@ -125,10 +134,19 @@ class AppServiceProvider extends ServiceProvider
     /** @var array<class-string, array<int, string>> */
     public array $whenBindings = [
         FriendshipService::class => [
-            INotifierManager::class => Notifier::class,
+            INotifierManager::class => FriendNotifier::class,
         ],
         ChatService::class => [
             INotifierManager::class => ChatNotifier::class,
+        ],
+        MessageService::class => [
+            INotifierManager::class => MessageNotifier::class,
+        ],
+        ChatActivityService::class => [
+            INotifierManager::class => ChatActivityNotifier::class,
+        ],
+        ChatMemberService::class => [
+            INotifierManager::class => ChatMemberNotifier::class,
         ],
     ];
 

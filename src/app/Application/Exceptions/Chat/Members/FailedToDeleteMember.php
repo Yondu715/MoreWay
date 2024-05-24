@@ -10,5 +10,5 @@ class FailedToDeleteMember extends Exception
     protected $code = 400;
 
     /** @var string */
-    protected $message = "Не удалось удаить пользователя.";
+    protected $message = "Не удалось удалить пользователя.";
 }

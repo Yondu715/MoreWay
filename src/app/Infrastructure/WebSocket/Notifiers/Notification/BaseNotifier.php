@@ -5,7 +5,7 @@ namespace App\Infrastructure\WebSocket\Notifiers\Notification;
 use App\Infrastructure\Broker\RabbitMqPublisher;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class BaseNotifier
+abstract class BaseNotifier
 {
     private string $queueName = 'notification';
     private readonly RabbitMqPublisher $publisher;
