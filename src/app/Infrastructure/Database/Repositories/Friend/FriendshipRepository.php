@@ -5,6 +5,7 @@ namespace App\Infrastructure\Database\Repositories\Friend;
 use App\Application\Contracts\Out\Repositories\Friend\IFriendshipRepository;
 use App\Application\DTO\Out\Friend\FriendshipRequestDto;
 use App\Application\Enums\Friend\RelationshipType;
+use App\Application\Exceptions\Friend\FriendRequestNotFound;
 use App\Infrastructure\Database\Models\Friendship;
 use App\Utils\Mappers\Out\User\UserDtoMapper;
 use Illuminate\Database\Eloquent\Collection;
@@ -29,11 +30,10 @@ class FriendshipRepository implements IFriendshipRepository
     public function findById(int $id): FriendshipRequestDto
     {
         try {
-            /** @var Friendship $friendship */
             $friendship = $this->model->query()->findOrFail($id);
             return FriendshipRequestDtoMapper::fromFriendshipModel($friendship);
         } catch (Throwable) {
-            dd('abobaa');
+            throw new FriendRequestNotFound();
         }
     }
 
@@ -54,7 +54,6 @@ class FriendshipRepository implements IFriendshipRepository
      */
     public function create(array $data): FriendshipRequestDto
     {
-        /** @var Friendship $friendship */
         $friendship = $this->model->query()->create($data);
         return FriendshipRequestDtoMapper::fromFriendshipModel($friendship);
     }
@@ -66,7 +65,6 @@ class FriendshipRepository implements IFriendshipRepository
      */
     public function update(int $id, array $data): FriendshipRequestDto
     {
-        /** @var Friendship $friendship */
         $friendship = $this->model->query()->findOrFail($id);
         $friendship->update($data);
         return FriendshipRequestDtoMapper::fromFriendshipModel($friendship->refresh());
