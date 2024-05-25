@@ -15,9 +15,7 @@ class AddMembersDtoMapper
     {
         return new AddMembersDto(
             chatId: $addMembersRequest->route('chatId'),
-            members: array_map(function ($member) {
-                return $member['id'];
-            }, $addMembersRequest->members),
+            members: $addMembersRequest->members,
         );
     }
 }

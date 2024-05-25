@@ -9,7 +9,7 @@ use Illuminate\Foundation\Http\FormRequest;
  * @property string $name
  * @property int $userId
  * @property int $routeId
- * @property array{id: int} $members
+ * @property array<int, int> $members
  */
 class CreateChatRequest extends FormRequest
 {
@@ -25,7 +25,7 @@ class CreateChatRequest extends FormRequest
             'userId' => 'required|numeric',
             'routeId' => 'required|numeric',
             'members' => 'required|array',
-            'members.*' => 'required|array:id'
+            'members.*' => 'integer'
         ];
     }
 }

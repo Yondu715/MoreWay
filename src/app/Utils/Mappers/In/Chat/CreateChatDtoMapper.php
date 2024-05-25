@@ -17,9 +17,7 @@ class CreateChatDtoMapper
             name: $createChatRequest->name,
             creatorId: $createChatRequest->userId,
             routeId: $createChatRequest->routeId,
-            members: array_map(function ($member) {
-                return $member['id'];
-            }, $createChatRequest->members),
+            members: $createChatRequest->members,
         );
     }
 }

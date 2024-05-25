@@ -19,7 +19,7 @@ class AddMembersRequest extends FormRequest
     {
         return [
             'members' => 'required|array',
-            'members.*' => 'required|array:id'
+            'members.*' => 'integer'
         ];
     }
 }
