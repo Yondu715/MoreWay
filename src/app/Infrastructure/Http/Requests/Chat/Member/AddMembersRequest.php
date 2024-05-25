@@ -6,7 +6,7 @@ use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 /**
- * @property array{id: int} $members
+ * @property array<int, int> $members
  */
 class AddMembersRequest extends FormRequest
 {
