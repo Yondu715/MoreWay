@@ -6,7 +6,9 @@ use App\Application\Contracts\Out\Managers\Token\ITokenManager;
 use App\Application\DTO\In\Auth\LoginDto;
 use App\Application\DTO\Out\User\UserDto;
 use App\Infrastructure\Database\Models\User;
+use App\Infrastructure\Enums\Auth\AuthGuard;
 use App\Infrastructure\Exceptions\InvalidToken;
+use App\Infrastructure\Exceptions\RefreshTokenExpired;
 use App\Utils\Mappers\Out\User\UserDtoMapper;
 use Exception;
 use Illuminate\Support\Facades\Auth;
@@ -31,7 +33,11 @@ class TokenManager implements ITokenManager
      */
     public function refreshToken(): string
     {
-        return $this->getAuth()->refresh();
+        try {
+            return $this->getAuth()->refresh();
+        } catch (\Throwable) {
+            throw new RefreshTokenExpired();
+        }
     }
 
     /**
@@ -95,6 +101,6 @@ class TokenManager implements ITokenManager
     private function getAuth(): JWTGuard
     {
         /** @var JWTGuard */
-        return Auth::guard('api');
+        return Auth::guard(AuthGuard::API);
     }
 }
