@@ -2,17 +2,17 @@
 
 namespace App\Application\Services\Chat;
 
-use App\Application\Contracts\In\Services\Chat\IChatService;
-use App\Application\Contracts\Out\Managers\Notifier\INotifierManager;
-use App\Application\Contracts\Out\Managers\Token\ITokenManager;
-use App\Application\Contracts\Out\Repositories\Chat\IChatRepository;
+use App\Application\DTO\Out\Chat\ChatDto;
 use App\Application\DTO\Collection\CursorDto;
 use App\Application\DTO\In\Chat\CreateChatDto;
-use App\Application\DTO\In\Chat\GetUserChatsDto;
-use App\Application\DTO\Out\Chat\ChatDto;
-use App\Application\Exceptions\Chat\FailedToCreateChat;
-use App\Infrastructure\Exceptions\Forbidden;
 use App\Infrastructure\Exceptions\InvalidToken;
+use App\Application\DTO\In\Chat\GetUserChatsDto;
+use App\Application\Exceptions\Chat\FailedToCreateChat;
+use App\Application\Contracts\In\Services\Chat\IChatService;
+use App\Application\Contracts\Out\Managers\Token\ITokenManager;
+use App\Application\Exceptions\Chat\Members\UserIsNotChatMember;
+use App\Application\Contracts\Out\Repositories\Chat\IChatRepository;
+use App\Application\Contracts\Out\Managers\Notifier\INotifierManager;
 
 class ChatService implements IChatService
 {
@@ -52,11 +52,17 @@ class ChatService implements IChatService
     /**
      * @param int $chatId
      * @return ChatDto
-     * @throws Forbidden
+     * @throws UserIsNotChatMember
      * @throws InvalidToken
      */
     public function getChat(int $chatId): ChatDto
     {
-        return $this->chatRepository->getChat($chatId, $this->tokenManager->getAuthUser()->id);
+        $chat = $this->chatRepository->findById($chatId);
+        $member = $chat->members->first(fn ($value) => $value->id === $this->tokenManager->getAuthUser()->id);
+
+        if (!$member) {
+            throw new UserIsNotChatMember();
+        }
+        return $chat;
     }
 }

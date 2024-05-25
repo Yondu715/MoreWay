@@ -12,6 +12,7 @@ use App\Application\DTO\Out\Route\RouteDto;
 use App\Application\DTO\Out\User\UserDto;
 use App\Application\Exceptions\Chat\Activity\FailedToChangeActivity;
 use App\Application\Exceptions\Chat\Activity\FailedToGetActivity;
+use App\Application\Exceptions\Chat\ChatNotFound;
 use App\Application\Exceptions\Chat\FailedToCreateChat;
 use App\Application\Exceptions\Chat\Members\FailedToAddMembers;
 use App\Application\Exceptions\Chat\Members\FailedToDeleteMember;
@@ -41,22 +42,29 @@ interface IChatRepository
      */
     public function getChat(int $chatId, int $userId): ChatDto;
 
+
+    /**
+     * @param int $chatId
+     * @return ChatDto
+     * @throws ChatNotFound
+     */
+    public function findById(int $chatId): ChatDto;
+
     /**
      * @param AddMembersDto $addMembersDto
      * @param int $userId
      * @return Collection<int, UserDto>
      * @throws FailedToAddMembers
      */
-    public function createMembers(AddMembersDto $addMembersDto, int $userId): Collection;
+    public function createMembers(AddMembersDto $addMembersDto): Collection;
 
     /**
      * @param int $chatId
      * @param int $memberId
-     * @param int $creatorId
      * @return bool
      * @throws FailedToDeleteMember
      */
-    public function deleteMember(int $chatId, int $memberId, int $creatorId): bool;
+    public function deleteMember(int $chatId, int $memberId): bool;
 
     /**
      * @param int $chatId
@@ -64,13 +72,12 @@ interface IChatRepository
      * @return RouteDto
      * @throws FailedToGetActivity
      */
-    public function getActivity(int $chatId, int $userId): RouteDto;
+    public function getActivity(int $chatId): RouteDto;
 
     /**
      * @param ChangeActivityDto $changeActivityDto
-     * @param int $creatorId
      * @return RouteDto
      * @throws FailedToChangeActivity
      */
-    public function changeActivity(ChangeActivityDto $changeActivityDto, int $creatorId): RouteDto;
+    public function changeActivity(ChangeActivityDto $changeActivityDto): RouteDto;
 }

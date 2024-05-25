@@ -19,9 +19,8 @@ interface IMessageRepository
 
     /**
      * @param GetMessagesDto $getMessagesDto
-     * @param int $userId
      * @return CursorDto
      * @throws FailedToGetMessages
      */
-    public function getMessages(GetMessagesDto $getMessagesDto, int $userId): CursorDto;
+    public function getMessages(GetMessagesDto $getMessagesDto): CursorDto;
 }

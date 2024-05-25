@@ -2,31 +2,32 @@
 
 namespace App\Infrastructure\Database\Repositories\Chat;
 
-use App\Application\Contracts\Out\Repositories\Chat\IChatRepository;
-use App\Application\DTO\Collection\CursorDto;
-use App\Application\DTO\In\Chat\Activity\ChangeActivityDto;
-use App\Application\DTO\In\Chat\CreateChatDto;
-use App\Application\DTO\In\Chat\GetUserChatsDto;
-use App\Application\DTO\In\Chat\Member\AddMembersDto;
-use App\Application\DTO\Out\Chat\ChatDto;
-use App\Application\DTO\Out\Route\RouteDto;
-use App\Application\DTO\Out\User\UserDto;
-use App\Application\Exceptions\Chat\Activity\FailedToChangeActivity;
-use App\Application\Exceptions\Chat\Activity\FailedToGetActivity;
-use App\Application\Exceptions\Chat\FailedToCreateChat;
-use App\Application\Exceptions\Chat\Members\FailedToAddMembers;
-use App\Application\Exceptions\Chat\Members\FailedToDeleteMember;
-use App\Infrastructure\Database\Models\Chat;
-use App\Infrastructure\Database\Models\ChatActiveRoute;
-use App\Infrastructure\Database\Models\ChatMember;
-use App\Infrastructure\Database\Transaction\Interface\ITransactionManager;
-use App\Infrastructure\Exceptions\Forbidden;
-use App\Utils\Mappers\Out\Chat\ChatDtoMapper;
-use App\Utils\Mappers\Out\Route\RouteDtoMapper;
-use App\Utils\Mappers\Out\User\UserDtoMapper;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Collection;
 use Throwable;
+use Illuminate\Support\Collection;
+use Illuminate\Database\Eloquent\Model;
+use App\Application\DTO\Out\Chat\ChatDto;
+use App\Application\DTO\Out\User\UserDto;
+use App\Application\DTO\Out\Route\RouteDto;
+use App\Infrastructure\Database\Models\Chat;
+use App\Infrastructure\Exceptions\Forbidden;
+use App\Application\DTO\Collection\CursorDto;
+use App\Utils\Mappers\Out\Chat\ChatDtoMapper;
+use App\Utils\Mappers\Out\User\UserDtoMapper;
+use App\Application\DTO\In\Chat\CreateChatDto;
+use App\Utils\Mappers\Out\Route\RouteDtoMapper;
+use App\Application\DTO\In\Chat\GetUserChatsDto;
+use App\Application\Exceptions\Chat\ChatNotFound;
+use App\Infrastructure\Database\Models\ChatMember;
+use App\Application\DTO\In\Chat\Member\AddMembersDto;
+use App\Application\Exceptions\Chat\FailedToCreateChat;
+use App\Infrastructure\Database\Models\ChatActiveRoute;
+use App\Application\DTO\In\Chat\Activity\ChangeActivityDto;
+use App\Application\Exceptions\Chat\Members\FailedToAddMembers;
+use App\Application\Exceptions\Chat\Activity\FailedToGetActivity;
+use App\Application\Exceptions\Chat\Members\FailedToDeleteMember;
+use App\Application\Contracts\Out\Repositories\Chat\IChatRepository;
+use App\Application\Exceptions\Chat\Activity\FailedToChangeActivity;
+use App\Infrastructure\Database\Transaction\Interface\ITransactionManager;
 
 class ChatRepository implements IChatRepository
 {
@@ -68,24 +69,11 @@ class ChatRepository implements IChatRepository
                 'creator_id' => $createChatDto->creatorId,
             ]);
 
-            ChatActiveRoute::query()->create([
-                'chat_id' => $chat->id,
-                'route_id' => $createChatDto->routeId,
+            $chat->activeRoute()->create([
+                'route_id' => $createChatDto->routeId
             ]);
 
-            // $chat->users()->attach([...$createChatDto->members, $createChatDto->creatorId]);
-
-            foreach ($createChatDto->members as $member) {
-                ChatMember::query()->create([
-                    'chat_id' => $chat->id,
-                    'user_id' => $member,
-                ]);
-            }
-
-            ChatMember::query()->create([
-                'chat_id' => $chat->id,
-                'user_id' => $createChatDto->creatorId,
-            ]);
+            $chat->users()->attach([...$createChatDto->members, $createChatDto->creatorId]);
 
             $chatDto = ChatDtoMapper::fromChatModel($chat);
 
@@ -120,18 +108,27 @@ class ChatRepository implements IChatRepository
     }
 
     /**
+     * @param int $chatId
+     * @return ChatDto
+     */
+    public function findById(int $chatId): ChatDto
+    {
+        try {
+            $chat = $this->model->query()->findOrFail($chatId);
+            return ChatDtoMapper::fromChatModel($chat);
+        } catch (\Throwable $th) {
+            throw new ChatNotFound();
+        }
+    }
+
+    /**
      * @param AddMembersDto $addMembersDto
-     * @param int $userId
      * @return Collection<int, UserDto>
      * @throws FailedToAddMembers
      */
-    public function createMembers(AddMembersDto $addMembersDto, int $userId): Collection
+    public function createMembers(AddMembersDto $addMembersDto): Collection
     {
         try {
-            $this->model->query()->where([
-                'id' => $addMembersDto->chatId,
-                'creator_id' => $userId
-            ])->firstOrFail();
 
             $members = new Collection();
 
@@ -160,14 +157,9 @@ class ChatRepository implements IChatRepository
      * @return bool
      * @throws FailedToDeleteMember
      */
-    public function deleteMember(int $chatId, int $memberId, int $creatorId): bool
+    public function deleteMember(int $chatId, int $memberId): bool
     {
         try {
-            $this->model->query()->where([
-                'id' => $chatId,
-                'creator_id' => $creatorId
-            ])->firstOrFail();
-
             return ChatMember::query()->where([
                 'chat_id' => $chatId,
                 'user_id' => $memberId
@@ -183,14 +175,11 @@ class ChatRepository implements IChatRepository
      * @return RouteDto
      * @throws FailedToGetActivity
      */
-    public function getActivity(int $chatId, int $userId): RouteDto
+    public function getActivity(int $chatId): RouteDto
     {
         try {
             /** @var Chat $chat */
-            $chat = $this->model->query()->whereHas('members', function ($query) use ($userId) {
-                $query->where('user_id', $userId);
-            })->where('id', $chatId)->firstOrFail();
-
+            $chat = $this->model->query()->with(['activeRoute, activeRoute.route'])->findOrFail($chatId);
             return RouteDtoMapper::fromRouteModel($chat->activeRoute->route);
         } catch (Throwable) {
             throw new FailedToGetActivity();
@@ -199,18 +188,12 @@ class ChatRepository implements IChatRepository
 
     /**
      * @param ChangeActivityDto $changeActivityDto
-     * @param int $creatorId
      * @return RouteDto
      * @throws FailedToChangeActivity
      */
-    public function changeActivity(ChangeActivityDto $changeActivityDto, int $creatorId): RouteDto
+    public function changeActivity(ChangeActivityDto $changeActivityDto): RouteDto
     {
         try {
-            $this->model->query()->where([
-                'id' => $changeActivityDto->chatId,
-                'creator_id' => $creatorId
-            ])->firstOrFail();
-
             /** @var ChatActiveRoute $activity */
             $activity = ChatActiveRoute::query()->where('chat_id', $changeActivityDto->chatId)->first();
 

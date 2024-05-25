@@ -2,17 +2,18 @@
 
 namespace App\Application\Services\Chat\Member;
 
-use App\Application\Contracts\In\Services\Chat\Member\IChatMemberService;
-use App\Application\Contracts\Out\Managers\Notifier\INotifierManager;
-use App\Application\Contracts\Out\Managers\Token\ITokenManager;
-use App\Application\Contracts\Out\Repositories\Chat\IChatRepository;
-use App\Application\DTO\In\Chat\Member\AddMembersDto;
+use Illuminate\Support\Collection;
 use App\Application\DTO\Out\User\UserDto;
-use App\Application\Exceptions\Chat\Members\FailedToAddMembers;
-use App\Application\Exceptions\Chat\Members\FailedToDeleteMember;
 use App\Infrastructure\Exceptions\Forbidden;
 use App\Infrastructure\Exceptions\InvalidToken;
-use Illuminate\Support\Collection;
+use App\Application\DTO\In\Chat\Member\AddMembersDto;
+use App\Application\Exceptions\Chat\Members\UserIsNotCreator;
+use App\Application\Contracts\Out\Managers\Token\ITokenManager;
+use App\Application\Exceptions\Chat\Members\FailedToAddMembers;
+use App\Application\Exceptions\Chat\Members\FailedToDeleteMember;
+use App\Application\Contracts\Out\Repositories\Chat\IChatRepository;
+use App\Application\Contracts\Out\Managers\Notifier\INotifierManager;
+use App\Application\Contracts\In\Services\Chat\Member\IChatMemberService;
 
 class ChatMemberService implements IChatMemberService
 {
@@ -20,21 +21,30 @@ class ChatMemberService implements IChatMemberService
         private readonly IChatRepository $chatRepository,
         private readonly ITokenManager $tokenManager,
         private readonly INotifierManager $notifier
-    ) {}
+    ) {
+    }
 
     /**
      * @param AddMembersDto $addMembersDto
      * @return Collection<int, UserDto>
      * @throws InvalidToken
      * @throws FailedToAddMembers
-     * @throws Forbidden
+     * @throws UserIsNotCreator
      */
     public function addMembers(AddMembersDto $addMembersDto): Collection
     {
-        $members = $this->chatRepository->createMembers($addMembersDto, $this->tokenManager->getAuthUser()->id);
+        $chat = $this->chatRepository->findById($addMembersDto->chatId);
 
-        foreach ($this->chatRepository->getChat($addMembersDto->chatId, $this->tokenManager->getAuthUser()->id)->members as $member) {
-            if($member->id !== $this->tokenManager->getAuthUser()->id) {
+        $creator = $chat->members->first(fn ($value) => $value->id === $this->tokenManager->getAuthUser()->id);
+
+        if (!$creator || $chat->creator->id !== $creator->id) {
+            throw new UserIsNotCreator();
+        }
+
+        $members = $this->chatRepository->createMembers($addMembersDto);
+
+        foreach ($this->chatRepository->findById($addMembersDto->chatId)->members as $member) {
+            if ($member->id !== $this->tokenManager->getAuthUser()->id) {
                 $this->notifier->sendNotification($member->id, $members);
             }
         }
@@ -52,9 +62,17 @@ class ChatMemberService implements IChatMemberService
      */
     public function deleteMember(int $chatId, int $memberId): bool
     {
-        $isDeleted = $this->chatRepository->deleteMember($chatId, $memberId, $this->tokenManager->getAuthUser()->id);
+        $chat = $this->chatRepository->findById($chatId);
 
-        $members = $this->chatRepository->getChat($chatId, $this->tokenManager->getAuthUser()->id)->members;
+        $creator = $chat->members->first(fn ($value) => $value->id === $this->tokenManager->getAuthUser()->id);
+
+        if (!$creator || $chat->creator->id !== $creator->id) {
+            throw new UserIsNotCreator();
+        }
+
+        $isDeleted = $this->chatRepository->deleteMember($chatId, $memberId);
+
+        $members = $this->chatRepository->findById($chatId)->members;
 
         foreach ($members as $member) {
             if ($member->id !== $this->tokenManager->getAuthUser()->id) {

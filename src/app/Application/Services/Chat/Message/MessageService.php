@@ -11,6 +11,7 @@ use App\Application\DTO\Collection\CursorDto;
 use App\Application\DTO\In\Chat\Message\AddMessageDto;
 use App\Application\DTO\In\Chat\Message\GetMessagesDto;
 use App\Application\DTO\Out\Chat\Message\MessageDto;
+use App\Application\Exceptions\Chat\Members\UserIsNotChatMember;
 use App\Application\Exceptions\Chat\Message\FailedToGetMessages;
 use App\Infrastructure\Exceptions\Forbidden;
 use App\Infrastructure\Exceptions\InvalidToken;
@@ -32,9 +33,16 @@ class MessageService implements IMessageService
      */
     public function createMessage(AddMessageDto $addMessageDto): MessageDto
     {
+        $chat = $this->chatRepository->findById($addMessageDto->chatId);
+        $member = $chat->members->first(fn ($value) => $value->id === $this->tokenManager->getAuthUser()->id);
+
+        if (!$member) {
+            throw new UserIsNotChatMember();
+        }
+
         $message = $this->messageRepository->create($addMessageDto);
 
-        foreach ($this->chatRepository->getChat($addMessageDto->chatId, $addMessageDto->senderId)->members as $member) {
+        foreach ($chat->members as $member) {
             if($member->id !== $addMessageDto->senderId) {
                 $this->notifier->sendNotification($member->id, $message);
             }
@@ -51,6 +59,13 @@ class MessageService implements IMessageService
      */
     public function getMessages(GetMessagesDto $getMessagesDto): CursorDto
     {
-        return $this->messageRepository->getMessages($getMessagesDto, $this->tokenManager->getAuthUser()->id);
+        $chat = $this->chatRepository->findById($getMessagesDto->chatId);
+        $member = $chat->members->first(fn ($value) => $value->id === $this->tokenManager->getAuthUser()->id);
+
+        if (!$member) {
+            throw new UserIsNotChatMember();
+        }
+
+        return $this->messageRepository->getMessages($getMessagesDto);
     }
 }
