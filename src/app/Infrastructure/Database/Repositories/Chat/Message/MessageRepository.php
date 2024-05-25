@@ -7,6 +7,7 @@ use App\Application\DTO\Collection\CursorDto;
 use App\Application\DTO\In\Chat\Message\AddMessageDto;
 use App\Application\DTO\In\Chat\Message\GetMessagesDto;
 use App\Application\DTO\Out\Chat\Message\MessageDto;
+use App\Application\Exceptions\Chat\Message\FailedToCreateMessage;
 use App\Application\Exceptions\Chat\Message\FailedToGetMessages;
 use App\Infrastructure\Database\Models\Chat;
 use App\Infrastructure\Database\Models\ChatMessage;
@@ -46,7 +47,7 @@ class MessageRepository implements IMessageRepository
 
             return MessageDtoMapper::fromMessageModel($message);
         } catch (Throwable) {
-            throw new FailedToGetMessages();
+            throw new FailedToCreateMessage();
         }
     }
 
