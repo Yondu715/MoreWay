@@ -101,6 +101,6 @@ class TokenManager implements ITokenManager
     private function getAuth(): JWTGuard
     {
         /** @var JWTGuard */
-        return Auth::guard(AuthGuard::API);
+        return Auth::guard(AuthGuard::API->value);
     }
 }
