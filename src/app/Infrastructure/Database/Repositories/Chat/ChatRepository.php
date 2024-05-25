@@ -35,8 +35,7 @@ class ChatRepository implements IChatRepository
     public function __construct(
         private readonly ITransactionManager $transactionManager,
         Chat $chat
-    )
-    {
+    ) {
         $this->model = $chat;
     }
 
@@ -49,7 +48,7 @@ class ChatRepository implements IChatRepository
         $paginator = $this->model::query()
             ->whereHas('members', function ($query) use ($getUserChatsDto) {
                 $query->where('user_id', $getUserChatsDto->userId);
-            })->cursorPaginate(perPage: $getUserChatsDto->limit , cursor: $getUserChatsDto->cursor);
+            })->cursorPaginate(perPage: $getUserChatsDto->limit, cursor: $getUserChatsDto->cursor);
         return ChatDtoMapper::fromPaginator($paginator);
     }
 
@@ -107,12 +106,12 @@ class ChatRepository implements IChatRepository
      */
     public function getChat(int $chatId, int $userId): ChatDto
     {
-        try{
+        try {
             /** @var Chat $chat */
             $chat = $this->model::query()->where('id', $chatId)
                 ->whereHas('members', function ($query) use ($userId) {
-                $query->where('user_id', $userId);
-            })->firstOrFail();
+                    $query->where('user_id', $userId);
+                })->firstOrFail();
 
             return ChatDtoMapper::fromChatModel($chat);
         } catch (Throwable) {
@@ -129,10 +128,10 @@ class ChatRepository implements IChatRepository
     public function createMembers(AddMembersDto $addMembersDto, int $userId): Collection
     {
         try {
-             $this->model->query()->where([
-                 'id' => $addMembersDto->chatId,
-                 'creator_id' => $userId
-             ])->firstOrFail();
+            $this->model->query()->where([
+                'id' => $addMembersDto->chatId,
+                'creator_id' => $userId
+            ])->firstOrFail();
 
             $members = new Collection();
 
@@ -164,14 +163,15 @@ class ChatRepository implements IChatRepository
     public function deleteMember(int $chatId, int $memberId, int $creatorId): bool
     {
         try {
-             $this->model->query()->where('id', $chatId)
-                ->where('creator_id', $creatorId)->firstOrFail();
+            $this->model->query()->where([
+                'id' => $chatId,
+                'creator_id' => $creatorId
+            ])->firstOrFail();
 
             return ChatMember::query()->where([
                 'chat_id' => $chatId,
-                'user_id'=> $memberId
+                'user_id' => $memberId
             ])->firstOrFail()->delete();
-
         } catch (Throwable) {
             throw new FailedToDeleteMember();
         }
@@ -185,7 +185,7 @@ class ChatRepository implements IChatRepository
      */
     public function getActivity(int $chatId, int $userId): RouteDto
     {
-        try{
+        try {
             /** @var Chat $chat */
             $chat = $this->model->query()->whereHas('members', function ($query) use ($userId) {
                 $query->where('user_id', $userId);
@@ -206,8 +206,10 @@ class ChatRepository implements IChatRepository
     public function changeActivity(ChangeActivityDto $changeActivityDto, int $creatorId): RouteDto
     {
         try {
-            $this->model->query()->where('id', $changeActivityDto->chatId)
-                ->where('creator_id', $creatorId)->firstOrFail();
+            $this->model->query()->where([
+                'id' => $changeActivityDto->chatId,
+                'creator_id' => $creatorId
+            ])->firstOrFail();
 
             /** @var ChatActiveRoute $activity */
             $activity = ChatActiveRoute::query()->where('chat_id', $changeActivityDto->chatId)->first();

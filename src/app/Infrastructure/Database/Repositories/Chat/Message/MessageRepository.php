@@ -10,10 +10,8 @@ use App\Application\DTO\Out\Chat\Message\MessageDto;
 use App\Application\Exceptions\Chat\Message\FailedToGetMessages;
 use App\Infrastructure\Database\Models\Chat;
 use App\Infrastructure\Database\Models\ChatMessage;
-use App\Utils\Mappers\Collection\CursorDtoMapper;
 use App\Utils\Mappers\Out\Chat\Message\MessageDtoMapper;
 use Illuminate\Database\Eloquent\Model;
-use Exception;
 use Throwable;
 
 class MessageRepository implements IMessageRepository
