@@ -2,41 +2,41 @@
 
 namespace App\Infrastructure\Database\Repositories\Route;
 
-use App\Application\Contracts\Out\Repositories\Route\IRouteRepository;
-use App\Application\DTO\Collection\CursorDto;
-use App\Application\DTO\In\Route\ChangeUserRouteDto;
-use App\Application\DTO\In\Route\CompletedRoutePointDto;
-use App\Application\DTO\In\Route\CreateRouteDto;
-use App\Application\DTO\In\Route\GetRoutesDto;
-use App\Application\DTO\In\Route\GetUserRoutesDto;
-use App\Application\DTO\Out\Route\ActiveRouteDto;
+use Exception;
+use Throwable;
+use Illuminate\Database\Eloquent\Model;
 use App\Application\DTO\Out\Route\RouteDto;
-use App\Application\Exceptions\Route\FailedToCreateRoute;
-use App\Application\Exceptions\Route\IncorrectOrderRoutePoints;
-use App\Application\Exceptions\Route\RouteIsCompleted;
-use App\Application\Exceptions\Route\RouteNotFound;
-use App\Application\Exceptions\Route\UserHaveNotActiveRoute;
-use App\Application\Exceptions\Route\UserRouteProgressNotFound;
-use App\Infrastructure\Database\Models\Filters\Route\RouteFilterFactory;
+use App\Application\DTO\Collection\CursorDto;
 use App\Infrastructure\Database\Models\Route;
-use App\Infrastructure\Database\Models\RouteConstructorPoint;
+use App\Application\DTO\In\Route\GetRoutesDto;
+use App\Utils\Mappers\Out\Route\RouteDtoMapper;
+use App\Application\DTO\In\Route\CreateRouteDto;
+use App\Application\DTO\Out\Route\ActiveRouteDto;
+use App\Application\DTO\In\Route\GetUserRoutesDto;
 use App\Infrastructure\Database\Models\RoutePoint;
+use App\Application\Exceptions\Route\RouteNotFound;
+use App\Application\DTO\In\Route\ChangeUserRouteDto;
+use App\Application\Exceptions\Route\RouteIsCompleted;
 use App\Infrastructure\Database\Models\UserActiveRoute;
+use App\Application\DTO\In\Route\CompletedRoutePointDto;
+use App\Application\Exceptions\Route\FailedToCreateRoute;
 use App\Infrastructure\Database\Models\UserFavoriteRoute;
 use App\Infrastructure\Database\Models\UserRouteProgress;
+use App\Application\Exceptions\Route\UserHaveNotActiveRoute;
+use App\Infrastructure\Database\Models\RouteConstructorPoint;
+use App\Application\Exceptions\Route\IncorrectOrderRoutePoints;
+use App\Application\Exceptions\Route\UserRouteProgressNotFound;
+use App\Application\Contracts\Out\Repositories\Route\IRouteRepository;
+use App\Infrastructure\Database\Models\Filters\Route\RouteFilterFactory;
 use App\Infrastructure\Database\Transaction\Interface\ITransactionManager;
-use App\Utils\Mappers\Out\Route\RouteDtoMapper;
-use Exception;
-use Illuminate\Database\Eloquent\Model;
-use Throwable;
 
 class RouteRepository implements IRouteRepository
 {
     private readonly Model $model;
     public function __construct(
-      private readonly ITransactionManager $transactionManager,
-      private readonly RouteFilterFactory $routeFilterFactory,
-      Route $route
+        private readonly ITransactionManager $transactionManager,
+        private readonly RouteFilterFactory $routeFilterFactory,
+        Route $route
     ) {
         $this->model = $route;
     }
@@ -62,11 +62,11 @@ class RouteRepository implements IRouteRepository
                     $query->where('creator_id', $createRouteDto->userId);
                 })->get();
 
-            if($routePoints->count() < 2 || $routePoints->count() > 15) {
+            if ($routePoints->count() < 2 || $routePoints->count() > 15) {
                 throw new Exception();
             }
 
-            $routePoints->each(function ($routePoint) use ($route){
+            $routePoints->each(function ($routePoint) use ($route) {
                 RoutePoint::query()->create([
                     'index' => $routePoint->index,
                     'place_id' => $routePoint->place_id,
@@ -146,9 +146,11 @@ class RouteRepository implements IRouteRepository
         if ($route->routePoints->pluck('id')->min() !== $completedRoutePointDto->routePointId) {
             /** @var UserRouteProgress $prevRoutePoint */
             $prevRoutePoint = UserRouteProgress::query()
-                ->where('user_id', $completedRoutePointDto->userId)
-                ->where('route_point_id', $completedRoutePointDto->routePointId - 1)
-                ->where('is_completed', true)
+                ->where([
+                    'user_id' => $completedRoutePointDto->userId,
+                    'route_point_id' => $completedRoutePointDto->routePointId - 1,
+                    'is_completed' => true
+                ])
                 ->first();
 
             if (!$prevRoutePoint) {
@@ -158,8 +160,10 @@ class RouteRepository implements IRouteRepository
 
         /** @var UserRouteProgress $routePointProgress */
         $routePointProgress = UserRouteProgress::query()
-            ->where('user_id', $completedRoutePointDto->userId)
-            ->where('route_point_id', $completedRoutePointDto->routePointId)
+            ->where([
+                'user_id' => $completedRoutePointDto->userId,
+                'route_point_id' => $completedRoutePointDto->routePointId
+            ])
             ->first();
 
         if (!$routePointProgress) {
@@ -169,9 +173,11 @@ class RouteRepository implements IRouteRepository
         $routePointProgress->update(['is_completed' => true]);
 
         $userProgresses = UserRouteProgress::query()
-            ->where('user_id', $completedRoutePointDto->userId)
+            ->where([
+                'user_id' => $completedRoutePointDto->userId,
+                'route_point_id' => $route->routePoints->pluck('id')
+            ])
             ->whereIn('route_point_id', $route->routePoints->pluck('id'))
-            ->where('is_completed', true)
             ->count();
 
         if ($userProgresses === $route->routePoints->count()) {
@@ -200,10 +206,12 @@ class RouteRepository implements IRouteRepository
     public function deleteUserRoute(int $userId, int $routeId): void
     {
         $route = $this->model->query()
-            ->where('id', $routeId)
-            ->where('creator_id', $userId);
+            ->where([
+                'id' => $routeId,
+                'creator_id' => $userId
+            ]);
 
-        if($route->get()->isEmpty()){
+        if ($route->get()->isEmpty()) {
             throw new RouteNotFound();
         }
 
@@ -220,10 +228,9 @@ class RouteRepository implements IRouteRepository
         /** @var UserActiveRoute $userActiveRoute */
         $userActiveRoute = UserActiveRoute::query()
             ->where('user_id', $userId)
-            ->get()
             ->first();
 
-        if(!$userActiveRoute){
+        if (!$userActiveRoute) {
             throw new UserHaveNotActiveRoute();
         }
 
@@ -239,7 +246,6 @@ class RouteRepository implements IRouteRepository
     {
         $route = $this->model->query()
             ->where('id', $changeActiveUserRouteDto->routeId)
-            ->get()
             ->first();
 
         $userActiveRoute = UserRouteProgress::query()
@@ -247,15 +253,19 @@ class RouteRepository implements IRouteRepository
             ->whereIn('route_point_id', $route->routePoints->pluck('id'))
             ->get();
 
-        if($userActiveRoute->where("is_completed", true)
-                ->count() === $route->routePoints->count()){
+        if (
+            $userActiveRoute
+            ->where("is_completed", true)
+            ->count() === $route->routePoints->count()
+        ) {
             throw new RouteIsCompleted();
         }
 
-        if(UserRouteProgress::query()
+        if (UserRouteProgress::query()
             ->where('user_id', $changeActiveUserRouteDto->userId)
             ->whereIn('route_point_id', $route->routePoints->pluck('id'))
-            ->get()->isEmpty()) {
+            ->get()->isEmpty()
+        ) {
             $route->routePoints()->each(function ($routePoint) use ($changeActiveUserRouteDto) {
                 UserRouteProgress::query()->create([
                     'user_id' => $changeActiveUserRouteDto->userId,
@@ -269,7 +279,7 @@ class RouteRepository implements IRouteRepository
                 'user_id' => $changeActiveUserRouteDto->userId,
             ], [
                 'route_id' =>  $changeActiveUserRouteDto->routeId,
-            ])->get()->first();
+            ])->first();
         return RouteDtoMapper::fromActiveRouteModel($route);
     }
 
@@ -309,10 +319,12 @@ class RouteRepository implements IRouteRepository
     public function deleteRouteFromUserFavorite(int $userId, int $routeId): void
     {
         $route = UserFavoriteRoute::query()
-            ->where('route_id', $routeId)
-            ->where('user_id', $userId);
+            ->where([
+                'route_id' => $routeId,
+                'user_id' => $userId
+            ]);
 
-        if($route->get()->isEmpty()){
+        if ($route->get()->isEmpty()) {
             throw new RouteNotFound();
         }
 
