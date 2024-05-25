@@ -26,6 +26,7 @@ use App\Application\Contracts\Out\Managers\Storage\IStorageManager;
 use App\Application\Contracts\Out\Managers\Token\ITokenManager;
 use App\Application\Contracts\Out\Repositories\Achievement\IAchievementRepository;
 use App\Application\Contracts\Out\Repositories\Achievement\Type\IAchievementTypeRepository;
+use App\Application\Contracts\Out\Repositories\Achievement\UserAchievement\IUserAchievementRepository;
 use App\Application\Contracts\Out\Repositories\Chat\IChatRepository;
 use App\Application\Contracts\Out\Repositories\Chat\Message\IMessageRepository;
 use App\Application\Contracts\Out\Repositories\Friend\IFriendshipRepository;
@@ -56,6 +57,7 @@ use App\Application\Services\Route\RouteService;
 use App\Application\Services\User\UserService;
 use App\Infrastructure\Database\Repositories\Achievement\AchievementRepository;
 use App\Infrastructure\Database\Repositories\Achievement\Type\AchievementTypeRepository;
+use App\Infrastructure\Database\Repositories\Achievement\UserAchievement\UserAchievementRepository;
 use App\Infrastructure\Database\Repositories\Chat\ChatRepository;
 use App\Infrastructure\Database\Repositories\Chat\Message\MessageRepository;
 use App\Infrastructure\Database\Repositories\Friend\FriendshipRepository;
@@ -115,6 +117,7 @@ class AppServiceProvider extends ServiceProvider
         IPlaceTypeRepository::class => PlaceTypeRepository::class,
         IRouteConstructorRepository::class => RouteConstructorRepository::class,
         IAchievementRepository::class => AchievementRepository::class,
+        IUserAchievementRepository::class => UserAchievementRepository::class,
         IAchievementTypeRepository::class => AchievementTypeRepository::class,
         IRatingRepository::class => RatingRepository::class,
         IChatRepository::class => ChatRepository::class,

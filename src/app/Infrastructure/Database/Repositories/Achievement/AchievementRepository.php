@@ -5,11 +5,8 @@ namespace App\Infrastructure\Database\Repositories\Achievement;
 use App\Application\Contracts\Out\Repositories\Achievement\IAchievementRepository;
 use App\Application\DTO\Collection\CursorDto;
 use App\Application\DTO\In\Achievements\GetAchievementsDto;
-use App\Application\DTO\In\Achievements\GetUserAchievementsDto;
 use App\Infrastructure\Database\Models\Achievement;
-use App\Infrastructure\Database\Models\UserAchievementProgress;
 use App\Utils\Mappers\Out\Achievement\AchievementDtoMapper;
-use App\Utils\Mappers\Out\Achievement\UserAchievementDtoMapper;
 use Illuminate\Database\Eloquent\Model;
 
 class AchievementRepository implements IAchievementRepository
@@ -32,16 +29,4 @@ class AchievementRepository implements IAchievementRepository
         return AchievementDtoMapper::fromPaginator($paginator);
     }
 
-    /**
-     * @param GetUserAchievementsDto $getUserAchievementsDto
-     * @return CursorDto
-     */
-    public function getAllForUser(GetUserAchievementsDto $getUserAchievementsDto): CursorDto
-    {
-        //!!! and etc.
-        $paginator = UserAchievementProgress::query()
-            ->where('user_id', $getUserAchievementsDto->userId)
-            ->cursorPaginate(perPage: $getUserAchievementsDto->limit , cursor: $getUserAchievementsDto->cursor);
-        return UserAchievementDtoMapper::fromPaginator($paginator);
-    }
 }

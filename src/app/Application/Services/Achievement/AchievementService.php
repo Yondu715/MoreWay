@@ -5,6 +5,7 @@ namespace App\Application\Services\Achievement;
 use App\Application\Contracts\In\Services\Achievement\IAchievementService;
 use App\Application\Contracts\Out\Repositories\Achievement\IAchievementRepository;
 use App\Application\Contracts\Out\Repositories\Achievement\Type\IAchievementTypeRepository;
+use App\Application\Contracts\Out\Repositories\Achievement\UserAchievement\IUserAchievementRepository;
 use App\Application\DTO\Collection\CursorDto;
 use App\Application\DTO\In\Achievements\GetAchievementsDto;
 use App\Application\DTO\In\Achievements\GetUserAchievementsDto;
@@ -15,7 +16,9 @@ class AchievementService implements IAchievementService
     public function __construct(
         private readonly IAchievementRepository $achievementRepository,
         private readonly IAchievementTypeRepository $achievementTypeRepository,
-    ) {}
+        private readonly IUserAchievementRepository $userAchievementRepository
+    ) {
+    }
 
     /**
      * @param GetAchievementsDto $getAchievementsDto
@@ -32,7 +35,7 @@ class AchievementService implements IAchievementService
      */
     public function getUserAchievements(GetUserAchievementsDto $getUserAchievementsDto): CursorDto
     {
-        return $this->achievementRepository->getAllForUser($getUserAchievementsDto);
+        return $this->userAchievementRepository->getAll($getUserAchievementsDto);
     }
 
     /**
