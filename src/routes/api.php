@@ -13,7 +13,10 @@ use Illuminate\Support\Facades\Route;
 Route::patterns([
     'userId' => '[0-9]+',
     'requestId' => '[0-9]+',
-    'placeId' => '[0-9]+'
+    'placeId' => '[0-9]+',
+    'chatId' => '[0-9]+',
+    'chatId' => '[0-9]+',
+    'memberId' => '[0-9]+',
 ]);
 
 Route::prefix('auth')
@@ -136,7 +139,7 @@ Route::prefix('routes')
     });
 
 Route::prefix('chats')
-    ->middleware('auth:api', 'role:user')
+    ->middleware(['auth:api', 'role:user'])
     ->group(function () {
         Route::middleware('owner')
             ->post('/', [ChatController::class, 'createChat']);
