@@ -8,9 +8,9 @@ use App\Application\Enums\Friend\RelationshipType;
 use App\Application\Exceptions\Friend\FriendRequestNotFound;
 use App\Infrastructure\Database\Models\Friendship;
 use App\Utils\Mappers\Out\User\UserDtoMapper;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use App\Utils\Mappers\Out\Friend\FriendshipRequestDtoMapper;
+use Illuminate\Support\Collection;
 use Throwable;
 
 class FriendshipRepository implements IFriendshipRepository

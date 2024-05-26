@@ -3,7 +3,7 @@
 namespace App\Application\Contracts\Out\Repositories\Friend;
 
 use App\Application\DTO\Out\Friend\FriendshipRequestDto;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Collection;
 
 interface IFriendshipRepository
 {
