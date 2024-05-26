@@ -106,7 +106,7 @@ Route::prefix('friends')
     });
 
 Route::prefix('places')
-    ->middleware('auth:api', 'role:user', 'content.type')
+    ->middleware('auth:api', 'role:user')
     ->group(function () {
         Route::get('/', [PlaceController::class, 'getPlaces']);
         Route::get('/filters', [PlaceController::class, 'getFilters']);
