@@ -48,7 +48,7 @@ Route::prefix('users')
                     ->group(function (){
                         Route::patch('/', [UserController::class, 'changeData']);
                         Route::delete('/', [UserController::class, 'delete']);
-                        Route::put('/avatar', [UserController::class, 'changeAvatar']);
+                        Route::post('/avatar', [UserController::class, 'changeAvatar']);
                         Route::put('/password', [UserController::class, 'changePassword']);
                         Route::prefix('/friends')
                             ->group(function (){

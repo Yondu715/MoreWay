@@ -14,10 +14,11 @@ class StorageManager implements IStorageManager
      * @return void
      */
     public function store(string $path, UploadedFile $uploadedFile): void
-    {
-        if (Storage::exists($path)) {
-            Storage::delete($path);
-        }
-        Storage::put($path, $uploadedFile);
+    {   
+        $parts = explode('/', $path);
+        $fileName = end($parts);
+        $directory = implode('/', array_slice($parts, 0, -1));
+
+        Storage::putFileAs($directory, $uploadedFile, $fileName);
     }
 }

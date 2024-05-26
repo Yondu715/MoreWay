@@ -88,6 +88,7 @@ class User extends \TCG\Voyager\Models\User implements JWTSubject
         'name',
         'email',
         'password',
+        'avatar'
     ];
 
     /**

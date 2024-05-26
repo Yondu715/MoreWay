@@ -19,7 +19,7 @@ class ChangeUserAvatarRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'avatar' => 'required|image'
+            'avatar' => 'required|file'
         ];
     }
 }

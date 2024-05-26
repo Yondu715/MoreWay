@@ -12,7 +12,7 @@ use App\Application\DTO\In\User\ChangeUserDataDto;
 use App\Application\DTO\In\User\ChangeUserPasswordDto;
 use App\Application\DTO\In\User\GetUsersDto;
 use App\Application\DTO\Out\User\UserDto;
-use App\Application\Enums\Storage\StoragePaths;
+use App\Application\Enums\Storage\StoragePath;
 use App\Application\Exceptions\User\InvalidOldPassword;
 
 class UserService implements IUserService
@@ -77,14 +77,11 @@ class UserService implements IUserService
     public function changeAvatar(ChangeUserAvatarDto $changeUserAvatarDto): UserDto
     {
         $user = $this->userRepository->findById($changeUserAvatarDto->userId);
+        $path = StoragePath::UserAvatar->value . "/$user->id." . $changeUserAvatarDto->avatar->getClientOriginalExtension();
 
-        $path = StoragePaths::UserAvatar->value . "/$user->id.jpg";
         $this->storageManager->store($path, $changeUserAvatarDto->avatar);
 
-        return $this->userRepository->update(new UserDto(
-            id: $changeUserAvatarDto->userId,
-            avatar: $changeUserAvatarDto->avatar
-        ));
+        return $this->userRepository->updateAvatar($user->id, $path);
     }
 
     /**
