@@ -12,6 +12,7 @@ class RatingController
     public function __construct(
         private readonly IRatingService $ratingService,
     ) {}
+
     /**
      * @param GetRatingRequest $getRatingRequest
      * @return RatingCursorResource

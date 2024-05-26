@@ -140,12 +140,13 @@ class RouteController extends Controller
 
     /**
      * @param CompletedRoutePointRequest $completedRoutePointRequest
-     * @return void
+     * @return Response
      */
-    public function completedRoutePoint(CompletedRoutePointRequest $completedRoutePointRequest): void
+    public function completedRoutePoint(CompletedRoutePointRequest $completedRoutePointRequest): Response
     {
         $completedRoutePointDto = CompletedRoutePointDtoMapper::fromRequest($completedRoutePointRequest);
         $this->routeService->completedRoutePoint($completedRoutePointDto);
+        return response()->noContent();
     }
 
     /**
@@ -163,6 +164,7 @@ class RouteController extends Controller
     /**
      * @param int $userId
      * @param int $routeId
+     * @return Response
      */
     public function deleteUserRoute(int $userId, int $routeId): Response
     {
@@ -220,7 +222,7 @@ class RouteController extends Controller
     /**
      * @param int $userId
      * @param int $routeId
-     * @return void
+     * @return Response
      */
     public function deleteRouteFromUserFavorite(int $userId, int $routeId): Response
     {

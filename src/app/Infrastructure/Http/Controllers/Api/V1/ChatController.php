@@ -36,6 +36,10 @@ class ChatController
     ) {
     }
 
+    /**
+     * @param GetUserChatsRequest $getUserChatsRequest
+     * @return ShortChatCursorResource
+     */
     public function getUserChats(GetUserChatsRequest $getUserChatsRequest): ShortChatCursorResource
     {
         $getUserChatsDto = GetUserChatsDtoMapper::fromRequest($getUserChatsRequest);

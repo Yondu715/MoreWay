@@ -18,6 +18,7 @@ use App\Utils\Mappers\In\Auth\Password\VerifyPasswordCodeDtoMapper;
 use App\Infrastructure\Http\Requests\Auth\Password\ResetPasswordRequest;
 use App\Infrastructure\Http\Requests\Auth\Password\ForgotPasswordRequest;
 use App\Infrastructure\Http\Requests\Auth\Password\VerifyPasswordCodeRequest;
+use Illuminate\Http\Response;
 
 class AuthController extends Controller
 {
@@ -30,7 +31,6 @@ class AuthController extends Controller
     /**
      * @param LoginRequest $loginRequest
      * @return JsonResponse
-     * @throws ApiException
      */
     public function login(LoginRequest $loginRequest): JsonResponse
     {
@@ -46,7 +46,6 @@ class AuthController extends Controller
     /**
      * @param RegisterRequest $registerRequest
      * @return JsonResponse
-     * @throws ApiException
      */
     public function register(RegisterRequest $registerRequest): JsonResponse
     {
@@ -57,7 +56,6 @@ class AuthController extends Controller
 
     /**
      * @return UserResource
-     * @throws ApiException
      */
     public function me(): UserResource
     {
@@ -88,19 +86,18 @@ class AuthController extends Controller
 
     /**
      * @param ForgotPasswordRequest $forgotPasswordRequest
-     * @return void
-     * @throws ApiException
+     * @return Response
      */
-    public function forgotPassword(ForgotPasswordRequest $forgotPasswordRequest): void
+    public function forgotPassword(ForgotPasswordRequest $forgotPasswordRequest): Response
     {
         $forgotPasswordDto = ForgotPasswordDtoMapper::fromRequest($forgotPasswordRequest);
         $this->authService->forgotPassword($forgotPasswordDto);
+        return response()->noContent();
     }
 
     /**
      * @param VerifyPasswordCodeRequest $verifyPasswordCodeRequest
      * @return JsonResponse
-     * @throws ApiException
      * @throws UserNotFound
      */
     public function verifyPasswordCode(VerifyPasswordCodeRequest $verifyPasswordCodeRequest): JsonResponse
@@ -115,13 +112,13 @@ class AuthController extends Controller
 
     /**
      * @param ResetPasswordRequest $resetPasswordRequest
-     * @return void
-     * @throws ApiException
+     * @return Response
      * @throws UserNotFound
      */
-    public function resetPassword(ResetPasswordRequest $resetPasswordRequest): void
+    public function resetPassword(ResetPasswordRequest $resetPasswordRequest): Response
     {
         $resetPasswordDto = ResetPasswordDtoMapper::fromRequest($resetPasswordRequest);
         $this->authService->resetPassword($resetPasswordDto);
+        return response()->noContent();
     }
 }
