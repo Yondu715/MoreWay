@@ -4,6 +4,7 @@ namespace App\Infrastructure\Database\Repositories\User;
 
 use App\Application\Contracts\Out\Repositories\User\IUserRepository;
 use App\Application\DTO\Collection\CursorDto;
+use App\Application\DTO\In\User\ChangeUserAvatarDto;
 use App\Application\DTO\In\User\GetUsersDto;
 use App\Application\DTO\Out\User\UserDto;
 use App\Application\Enums\Role\RoleType;
@@ -107,4 +108,18 @@ class UserRepository implements IUserRepository
         return UserDtoMapper::fromUserModel($user->refresh());
     }
 
+    /**
+     * @param int $userId
+     * @param string $path
+     * @return UserDto
+     */
+    public function updateAvatar(int $userId, string $path): UserDto
+    {
+        /** @var User $user */
+        $user = $this->model->query()->find($userId);
+        $user->update([
+            'avatar' => $path
+        ]);
+        return UserDtoMapper::fromUserModel($user->refresh());
+    }
 }

@@ -41,6 +41,13 @@ interface IUserRepository
     public function update(UserDto $userDto): UserDto;
 
     /**
+     * @param int $userId
+     * @param string $path
+     * @return UserDto
+     */
+    public function updateAvatar(int $userId, string $path): UserDto;
+
+    /**
      * @param int $id
      * @return bool
      */
