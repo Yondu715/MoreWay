@@ -2,9 +2,9 @@
 
 namespace App\Application\Services\Chat\Member;
 
+use App\Application\Exceptions\Chat\ChatNotFound;
 use Illuminate\Support\Collection;
 use App\Application\DTO\Out\User\UserDto;
-use App\Infrastructure\Exceptions\Forbidden;
 use App\Infrastructure\Exceptions\InvalidToken;
 use App\Application\DTO\In\Chat\Member\AddMembersDto;
 use App\Application\Exceptions\Chat\Members\UserIsNotCreator;
@@ -30,6 +30,7 @@ class ChatMemberService implements IChatMemberService
      * @throws InvalidToken
      * @throws FailedToAddMembers
      * @throws UserIsNotCreator
+     * @throws ChatNotFound
      */
     public function addMembers(AddMembersDto $addMembersDto): Collection
     {
@@ -56,9 +57,10 @@ class ChatMemberService implements IChatMemberService
      * @param int $chatId
      * @param int $memberId
      * @return bool
-     * @throws InvalidToken
+     * @throws ChatNotFound
      * @throws FailedToDeleteMember
-     * @throws Forbidden
+     * @throws InvalidToken
+     * @throws UserIsNotCreator
      */
     public function deleteMember(int $chatId, int $memberId): bool
     {

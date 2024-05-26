@@ -244,6 +244,7 @@ class RouteRepository implements IRouteRepository
      */
     public function changeActiveUserRoute(ChangeUserRouteDto $changeActiveUserRouteDto): ActiveRouteDto
     {
+        /** @var Route $route */
         $route = $this->model->query()
             ->where('id', $changeActiveUserRouteDto->routeId)
             ->first();
@@ -274,6 +275,7 @@ class RouteRepository implements IRouteRepository
             });
         }
 
+        /** @var UserActiveRoute $route */
         $route = UserActiveRoute::query()
             ->updateOrCreate([
                 'user_id' => $changeActiveUserRouteDto->userId,

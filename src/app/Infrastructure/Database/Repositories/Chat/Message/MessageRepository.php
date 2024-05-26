@@ -27,7 +27,7 @@ class MessageRepository implements IMessageRepository
     /**
      * @param AddMessageDto $addMessageDto
      * @return MessageDto
-     * @throws FailedToGetMessages
+     * @throws FailedToCreateMessage
      */
     public function create(AddMessageDto $addMessageDto): MessageDto
     {
