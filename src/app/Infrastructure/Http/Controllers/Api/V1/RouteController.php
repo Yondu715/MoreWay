@@ -2,46 +2,38 @@
 
 namespace App\Infrastructure\Http\Controllers\Api\V1;
 
-use App\Application\Contracts\In\Services\Route\Constructor\IRouteConstructorService;
-use App\Application\Contracts\In\Services\Route\Filter\IRouteFilterService;
-use App\Application\Contracts\In\Services\Route\IRouteService;
-use App\Application\Contracts\In\Services\Route\Review\IRouteReviewService;
-use App\Application\Exceptions\Filter\FilterOutOfRange;
-use App\Application\Exceptions\Route\Constructor\InvalidRoutePointIndex;
-use App\Application\Exceptions\Route\FailedToCreateRoute;
-use App\Application\Exceptions\Route\IncorrectOrderRoutePoints;
-use App\Application\Exceptions\Route\RouteIsCompleted;
-use App\Application\Exceptions\Route\RouteNotFound;
-use App\Application\Exceptions\Route\UserHaveNotActiveRoute;
-use App\Application\Exceptions\Route\UserRouteProgressNotFound;
-use App\Infrastructure\Exceptions\ApiException;
-use App\Infrastructure\Http\Controllers\Controller;
-use App\Infrastructure\Http\Requests\Review\CreateReviewRequest;
-use App\Infrastructure\Http\Requests\Review\GetReviewsRequest;
-use App\Infrastructure\Http\Requests\Route\ChangeUserRouteRequest;
-use App\Infrastructure\Http\Requests\Route\CompletedRoutePointRequest;
-use App\Infrastructure\Http\Requests\Route\Constructor\ChangeUserRouteConstructorRequest;
-use App\Infrastructure\Http\Requests\Route\Constructor\GetUserRouteConstructorRequest;
-use App\Infrastructure\Http\Requests\Route\CreateRouteRequest;
-use App\Infrastructure\Http\Requests\Route\GetRoutesRequest;
-use App\Infrastructure\Http\Requests\Route\GetUserRoutesRequest;
-use App\Infrastructure\Http\Resources\Review\ReviewCursorResource;
-use App\Infrastructure\Http\Resources\Review\ReviewResource;
-use App\Infrastructure\Http\Resources\Route\Constructor\ConstructorResource;
-use App\Infrastructure\Http\Resources\Route\Filter\RouteFilterResource;
-use App\Infrastructure\Http\Resources\Route\RouteCursorResource;
-use App\Infrastructure\Http\Resources\Route\RouteResource;
-use App\Infrastructure\Http\Resources\Route\UserActiveRouteResource;
-use App\Utils\Mappers\In\Route\ChangeUserRouteDtoMapper;
-use App\Utils\Mappers\In\Route\CompletedRoutePointDtoMapper;
-use App\Utils\Mappers\In\Route\Constructor\ChangeUserRouteConstructorDtoMapper;
-use App\Utils\Mappers\In\Route\Constructor\GetUserRouteConstructorDtoMapper;
-use App\Utils\Mappers\In\Route\CreateRouteDtoMapper;
-use App\Utils\Mappers\In\Route\GetRoutesDtoMapper;
-use App\Utils\Mappers\In\Route\GetUserRoutesDtoMapper;
-use App\Utils\Mappers\In\Route\Review\CreateRouteReviewDtoMapper;
-use App\Utils\Mappers\In\Route\Review\GetRouteReviewsDtoMapper;
 use Throwable;
+use Illuminate\Http\Response;
+use App\Utils\Mappers\In\Route\GetRoutesDtoMapper;
+use App\Infrastructure\Http\Controllers\Controller;
+use App\Utils\Mappers\In\Route\CreateRouteDtoMapper;
+use App\Utils\Mappers\In\Route\GetUserRoutesDtoMapper;
+use App\Utils\Mappers\In\Route\ChangeUserRouteDtoMapper;
+use App\Infrastructure\Http\Resources\Route\RouteResource;
+use App\Infrastructure\Http\Requests\Route\GetRoutesRequest;
+use App\Infrastructure\Http\Resources\Review\ReviewResource;
+use App\Utils\Mappers\In\Route\CompletedRoutePointDtoMapper;
+use App\Application\Contracts\In\Services\Route\IRouteService;
+use App\Infrastructure\Http\Requests\Review\GetReviewsRequest;
+use App\Infrastructure\Http\Requests\Route\CreateRouteRequest;
+use App\Utils\Mappers\In\Route\Review\GetRouteReviewsDtoMapper;
+use App\Infrastructure\Http\Requests\Review\CreateReviewRequest;
+use App\Infrastructure\Http\Requests\Route\GetUserRoutesRequest;
+use App\Infrastructure\Http\Resources\Route\RouteCursorResource;
+use App\Utils\Mappers\In\Route\Review\CreateRouteReviewDtoMapper;
+use App\Infrastructure\Http\Requests\Route\ChangeUserRouteRequest;
+use App\Infrastructure\Http\Resources\Review\ReviewCursorResource;
+use App\Infrastructure\Http\Resources\Route\UserActiveRouteResource;
+use App\Infrastructure\Http\Requests\Route\CompletedRoutePointRequest;
+use App\Infrastructure\Http\Resources\Route\Filter\RouteFilterResource;
+use App\Application\Contracts\In\Services\Route\Filter\IRouteFilterService;
+use App\Application\Contracts\In\Services\Route\Review\IRouteReviewService;
+use App\Infrastructure\Http\Resources\Route\Constructor\ConstructorResource;
+use App\Utils\Mappers\In\Route\Constructor\GetUserRouteConstructorDtoMapper;
+use App\Utils\Mappers\In\Route\Constructor\ChangeUserRouteConstructorDtoMapper;
+use App\Application\Contracts\In\Services\Route\Constructor\IRouteConstructorService;
+use App\Infrastructure\Http\Requests\Route\Constructor\GetUserRouteConstructorRequest;
+use App\Infrastructure\Http\Requests\Route\Constructor\ChangeUserRouteConstructorRequest;
 
 class RouteController extends Controller
 {
@@ -56,51 +48,36 @@ class RouteController extends Controller
     /**
      * @param CreateRouteRequest $createRouteRequest
      * @return RouteResource
-     * @throws ApiException
      */
     public function createRoute(CreateRouteRequest $createRouteRequest): RouteResource
     {
-        try {
-            $createRouteDto = CreateRouteDtoMapper::fromRequest($createRouteRequest);
-            return RouteResource::make(
-                $this->routeService->createRoute($createRouteDto)
-            );
-        } catch (FailedToCreateRoute $e) {
-            throw new ApiException($e->getMessage(), $e->getCode());
-        }
+        $createRouteDto = CreateRouteDtoMapper::fromRequest($createRouteRequest);
+        return RouteResource::make(
+            $this->routeService->createRoute($createRouteDto)
+        );
     }
 
     /**
      * @param int $routeId
      * @return RouteResource
-     * @throws ApiException
      */
     public function getRoute(int $routeId): RouteResource
     {
-        try {
-            return RouteResource::make(
-                $this->routeService->getRouteById($routeId)
-            );
-        } catch (RouteNotFound $e) {
-            throw new ApiException($e->getMessage(), $e->getCode());
-        }
+        return RouteResource::make(
+            $this->routeService->getRouteById($routeId)
+        );
     }
 
     /**
      * @param GetRoutesRequest $getRoutesRequest
      * @return RouteCursorResource
-     * @throws ApiException
      */
     public function getRoutes(GetRoutesRequest $getRoutesRequest): RouteCursorResource
     {
-        try {
-            $getRoutesDto = GetRoutesDtoMapper::fromRequest($getRoutesRequest);
-            return RouteCursorResource::make(
-                $this->routeService->getRoutes($getRoutesDto)
-            );
-        } catch (RouteNotFound|FilterOutOfRange $e) {
-            throw new ApiException($e->getMessage(), $e->getCode());
-        }
+        $getRoutesDto = GetRoutesDtoMapper::fromRequest($getRoutesRequest);
+        return RouteCursorResource::make(
+            $this->routeService->getRoutes($getRoutesDto)
+        );
     }
 
     /**
@@ -140,18 +117,13 @@ class RouteController extends Controller
     /**
      * @param ChangeUserRouteConstructorRequest $changeUserRouteConstructorRequest
      * @return ConstructorResource
-     * @throws ApiException
      */
     public function changeUserRouteConstructor(ChangeUserRouteConstructorRequest $changeUserRouteConstructorRequest): ConstructorResource
     {
-        try {
-            $changeUserRouteConstructorDto = ChangeUserRouteConstructorDtoMapper::fromRequest($changeUserRouteConstructorRequest);
-            return ConstructorResource::make(
-                $this->constructorService->change($changeUserRouteConstructorDto)
-            );
-        } catch (InvalidRoutePointIndex|Throwable $e) {
-            throw new ApiException($e->getMessage(), $e->getCode());
-        }
+        $changeUserRouteConstructorDto = ChangeUserRouteConstructorDtoMapper::fromRequest($changeUserRouteConstructorRequest);
+        return ConstructorResource::make(
+            $this->constructorService->change($changeUserRouteConstructorDto)
+        );
     }
 
     /**
@@ -169,16 +141,11 @@ class RouteController extends Controller
     /**
      * @param CompletedRoutePointRequest $completedRoutePointRequest
      * @return void
-     * @throws ApiException
      */
     public function completedRoutePoint(CompletedRoutePointRequest $completedRoutePointRequest): void
     {
-        try {
-            $completedRoutePointDto = CompletedRoutePointDtoMapper::fromRequest($completedRoutePointRequest);
-            $this->routeService->completedRoutePoint($completedRoutePointDto);
-        } catch (RouteNotFound|IncorrectOrderRoutePoints|UserRouteProgressNotFound $e) {
-            throw new ApiException($e->getMessage(), $e->getCode());
-        }
+        $completedRoutePointDto = CompletedRoutePointDtoMapper::fromRequest($completedRoutePointRequest);
+        $this->routeService->completedRoutePoint($completedRoutePointDto);
     }
 
     /**
@@ -196,49 +163,34 @@ class RouteController extends Controller
     /**
      * @param int $userId
      * @param int $routeId
-     * @return void
-     * @throws ApiException
      */
-    public function deleteUserRoute(int $userId, int $routeId): void
+    public function deleteUserRoute(int $userId, int $routeId): Response
     {
-        try {
-            $this->routeService->deleteUserRoute($userId, $routeId);
-        } catch (RouteNotFound $e) {
-            throw new ApiException($e->getMessage(), $e->getCode());
-        }
+        $this->routeService->deleteUserRoute($userId, $routeId);
+        return response()->noContent();
     }
 
     /**
      * @param int $userId
      * @return UserActiveRouteResource
-     * @throws ApiException
      */
     public function getActiveUserRoute(int $userId): UserActiveRouteResource
     {
-        try {
-            return UserActiveRouteResource::make(
-                $this->routeService->getActiveUserRoute($userId)
-            );
-        } catch (UserHaveNotActiveRoute $e) {
-            throw new ApiException($e->getMessage(), $e->getCode());
-        }
+        return UserActiveRouteResource::make(
+            $this->routeService->getActiveUserRoute($userId)
+        );
     }
 
     /**
      * @param ChangeUserRouteRequest $changeActiveUserRouteRequest
      * @return UserActiveRouteResource
-     * @throws ApiException
      */
     public function changeActiveUserRoute(ChangeUserRouteRequest $changeActiveUserRouteRequest): UserActiveRouteResource
     {
-        try {
-            $changeActiveUserRouteDto = ChangeUserRouteDtoMapper::fromRequest($changeActiveUserRouteRequest);
-            return UserActiveRouteResource::make(
-                $this->routeService->changeActiveUserRoute($changeActiveUserRouteDto)
-            );
-        } catch (RouteIsCompleted $e) {
-            throw new ApiException($e->getMessage(), $e->getCode());
-        }
+        $changeActiveUserRouteDto = ChangeUserRouteDtoMapper::fromRequest($changeActiveUserRouteRequest);
+        return UserActiveRouteResource::make(
+            $this->routeService->changeActiveUserRoute($changeActiveUserRouteDto)
+        );
     }
 
     /**
@@ -269,14 +221,10 @@ class RouteController extends Controller
      * @param int $userId
      * @param int $routeId
      * @return void
-     * @throws ApiException
      */
-    public function deleteRouteFromUserFavorite(int $userId, int $routeId): void
+    public function deleteRouteFromUserFavorite(int $userId, int $routeId): Response
     {
-        try {
-            $this->routeService->deleteRouteFromUserFavorite($userId, $routeId);
-        } catch (RouteNotFound $e) {
-            throw new ApiException($e->getMessage(), $e->getCode());
-        }
+        $this->routeService->deleteRouteFromUserFavorite($userId, $routeId);
+        return response()->noContent();
     }
 }

@@ -2,18 +2,16 @@
 
 namespace App\Infrastructure\Http\Controllers\Api\V1;
 
-use App\Application\Contracts\In\Services\Friend\IFriendshipService;
-use App\Application\Exceptions\Friend\FriendRequestConflict;
-use App\Infrastructure\Exceptions\ApiException;
-use App\Infrastructure\Http\Controllers\Controller;
-use App\Infrastructure\Http\Requests\Friend\AcceptFriendRequest;
-use App\Infrastructure\Http\Requests\Friend\AddFriendRequest;
-use App\Infrastructure\Http\Resources\User\UserResource;
-use App\Infrastructure\Http\Resources\Friend\FriendshipRequestResource;
-use App\Utils\Mappers\In\Friend\AcceptFriendDtoMapper;
-use App\Utils\Mappers\In\Friend\AddFriendDtoMapper;
-use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Response;
+use App\Infrastructure\Http\Controllers\Controller;
+use App\Utils\Mappers\In\Friend\AddFriendDtoMapper;
+use App\Utils\Mappers\In\Friend\AcceptFriendDtoMapper;
+use App\Infrastructure\Http\Resources\User\UserResource;
+use App\Infrastructure\Http\Requests\Friend\AddFriendRequest;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use App\Infrastructure\Http\Requests\Friend\AcceptFriendRequest;
+use App\Application\Contracts\In\Services\Friend\IFriendshipService;
+use App\Infrastructure\Http\Resources\Friend\FriendshipRequestResource;
 
 
 class FriendController extends Controller
@@ -60,18 +58,13 @@ class FriendController extends Controller
     /**
      * @param AddFriendRequest $addFriendRequest
      * @return FriendshipRequestResource
-     * @throws ApiException
      */
     public function addFriendRequest(AddFriendRequest $addFriendRequest): FriendshipRequestResource
     {
-        try {
-            $addFriendDto = AddFriendDtoMapper::fromRequest($addFriendRequest);
-            return FriendshipRequestResource::make(
-                $this->friendService->addFriendRequest($addFriendDto)
-            );
-        } catch (FriendRequestConflict $e) {
-            throw new ApiException($e->getMessage(), $e->getCode());
-        }
+        $addFriendDto = AddFriendDtoMapper::fromRequest($addFriendRequest);
+        return FriendshipRequestResource::make(
+            $this->friendService->addFriendRequest($addFriendDto)
+        );
     }
 
     /**

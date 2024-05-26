@@ -2,30 +2,27 @@
 
 namespace App\Infrastructure\Http\Controllers\Api\V1;
 
-use App\Application\Contracts\In\Services\User\IUserService;
-use App\Application\Exceptions\User\InvalidOldPassword;
-use App\Application\Exceptions\User\UserNotFound;
-use App\Infrastructure\Exceptions\ApiException;
-use App\Infrastructure\Http\Controllers\Controller;
-use App\Infrastructure\Http\Requests\User\ChangeUserAvatarRequest;
-use App\Infrastructure\Http\Requests\User\ChangeUserDataRequest;
-use App\Infrastructure\Http\Requests\User\ChangeUserPasswordRequest;
-use App\Infrastructure\Http\Requests\User\GetUsersRequest;
-use App\Infrastructure\Http\Resources\User\UserCursorResource;
-use App\Infrastructure\Http\Resources\User\UserResource;
-use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Response;
-use App\Utils\Mappers\In\User\ChangeUserAvatarDtoMapper;
-use App\Utils\Mappers\In\User\ChangeUserDataDtoMapper;
-use App\Utils\Mappers\In\User\ChangeUserPasswordDtoMapper;
 use App\Utils\Mappers\In\User\GetUsersDtoMapper;
+use App\Infrastructure\Http\Controllers\Controller;
+use App\Utils\Mappers\In\User\ChangeUserDataDtoMapper;
+use App\Infrastructure\Http\Resources\User\UserResource;
+use App\Utils\Mappers\In\User\ChangeUserAvatarDtoMapper;
+use App\Infrastructure\Http\Requests\User\GetUsersRequest;
+use App\Utils\Mappers\In\User\ChangeUserPasswordDtoMapper;
+use App\Application\Contracts\In\Services\User\IUserService;
+use App\Infrastructure\Http\Resources\User\UserCursorResource;
+use App\Infrastructure\Http\Requests\User\ChangeUserDataRequest;
+use App\Infrastructure\Http\Requests\User\ChangeUserAvatarRequest;
+use App\Infrastructure\Http\Requests\User\ChangeUserPasswordRequest;
 
 class UserController extends Controller
 {
 
     public function __construct(
         private readonly IUserService $userService
-    ) {}
+    ) {
+    }
 
     /**
      * @param GetUsersRequest $getUsersRequest
@@ -42,35 +39,25 @@ class UserController extends Controller
     /**
      * @param int $userId
      * @return UserResource
-     * @throws ApiException
      */
     public function getUser(int $userId): UserResource
     {
-        try {
-            return UserResource::make(
-                $this->userService->getUserById($userId)
-            );
-        } catch (UserNotFound $e) {
-            throw new ApiException($e->getMessage(), $e->getCode());
-        }
+        return UserResource::make(
+            $this->userService->getUserById($userId)
+        );
     }
 
     /**
      * @param ChangeUserDataRequest $changeUserDataRequest
      * @return UserResource
-     * @throws ApiException
      */
     public function changeData(ChangeUserDataRequest $changeUserDataRequest): UserResource
     {
-        try {
-            $changeUserDataDto = ChangeUserDataDtoMapper::fromRequest($changeUserDataRequest);
-            $this->userService->changeData($changeUserDataDto);
-            return UserResource::make(
-                $this->userService->changeData($changeUserDataDto)
-            );
-        } catch (UserNotFound $e) {
-            throw new ApiException($e->getMessage(), $e->getCode());
-        }
+        $changeUserDataDto = ChangeUserDataDtoMapper::fromRequest($changeUserDataRequest);
+        $this->userService->changeData($changeUserDataDto);
+        return UserResource::make(
+            $this->userService->changeData($changeUserDataDto)
+        );
     }
 
     /**
@@ -86,34 +73,24 @@ class UserController extends Controller
     /**
      * @param ChangeUserAvatarRequest $changeUserAvatarRequest
      * @return UserResource
-     * @throws ApiException
      */
     public function changeAvatar(ChangeUserAvatarRequest $changeUserAvatarRequest): UserResource
     {
-        try {
-            $changeUserAvatarDto = ChangeUserAvatarDtoMapper::fromRequest($changeUserAvatarRequest);
-            return UserResource::make(
-                $this->userService->changeAvatar($changeUserAvatarDto)
-            );
-        } catch (UserNotFound $e) {
-            throw new ApiException($e->getMessage(), $e->getCode());
-        }
+        $changeUserAvatarDto = ChangeUserAvatarDtoMapper::fromRequest($changeUserAvatarRequest);
+        return UserResource::make(
+            $this->userService->changeAvatar($changeUserAvatarDto)
+        );
     }
 
     /**
      * @param ChangeUserPasswordRequest $changeUserPasswordRequest
      * @return UserResource
-     * @throws ApiException
      */
     public function changePassword(ChangeUserPasswordRequest $changeUserPasswordRequest): UserResource
     {
-        try {
-            $changeUserPasswordDto = ChangeUserPasswordDtoMapper::fromRequest($changeUserPasswordRequest);
-            return UserResource::make(
-                $this->userService->changePassword($changeUserPasswordDto)
-            );
-        } catch (UserNotFound | InvalidOldPassword $e) {
-            throw new ApiException($e->getMessage(), $e->getCode());
-        }
+        $changeUserPasswordDto = ChangeUserPasswordDtoMapper::fromRequest($changeUserPasswordRequest);
+        return UserResource::make(
+            $this->userService->changePassword($changeUserPasswordDto)
+        );
     }
 }

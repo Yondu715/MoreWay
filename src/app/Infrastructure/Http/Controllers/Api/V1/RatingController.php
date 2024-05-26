@@ -2,10 +2,10 @@
 
 namespace App\Infrastructure\Http\Controllers\Api\V1;
 
-use App\Application\Contracts\In\Services\Rating\IRatingService;
-use App\Infrastructure\Http\Requests\Rating\GetRatingRequest;
-use App\Infrastructure\Http\Resources\Rating\RatingCursorResource;
 use App\Utils\Mappers\In\Rating\GetRatingDtoMapper;
+use App\Infrastructure\Http\Requests\Rating\GetRatingRequest;
+use App\Application\Contracts\In\Services\Rating\IRatingService;
+use App\Infrastructure\Http\Resources\Rating\RatingCursorResource;
 
 class RatingController
 {

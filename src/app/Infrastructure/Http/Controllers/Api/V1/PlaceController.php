@@ -2,26 +2,24 @@
 
 namespace App\Infrastructure\Http\Controllers\Api\V1;
 
-use App\Application\Contracts\In\Services\Place\Filter\IPlaceFilterService;
-use App\Application\Contracts\In\Services\Place\IPlaceService;
-use App\Application\Contracts\In\Services\Place\Review\IPlaceReviewService;
-use App\Application\Exceptions\Filter\FilterOutOfRange;
-use App\Application\Exceptions\Place\PlaceNotFound;
-use App\Infrastructure\Exceptions\ApiException;
+use App\Utils\Mappers\In\Place\GetPlaceDtoMapper;
+use App\Utils\Mappers\In\Place\GetPlacesDtoMapper;
 use App\Infrastructure\Http\Controllers\Controller;
+use App\Application\Exceptions\Filter\FilterOutOfRange;
+use App\Infrastructure\Http\Resources\Place\PlaceResource;
 use App\Infrastructure\Http\Requests\Place\GetPlaceRequest;
 use App\Infrastructure\Http\Requests\Place\GetPlacesRequest;
-use App\Infrastructure\Http\Requests\Review\CreateReviewRequest;
-use App\Infrastructure\Http\Requests\Review\GetReviewsRequest;
-use App\Infrastructure\Http\Resources\Place\Filter\PlaceFilterResource;
-use App\Infrastructure\Http\Resources\Place\PlaceCursorResource;
-use App\Infrastructure\Http\Resources\Place\PlaceResource;
-use App\Infrastructure\Http\Resources\Review\ReviewCursorResource;
 use App\Infrastructure\Http\Resources\Review\ReviewResource;
-use App\Utils\Mappers\In\Place\GetPlaceDtoMapper;
+use App\Application\Contracts\In\Services\Place\IPlaceService;
+use App\Infrastructure\Http\Requests\Review\GetReviewsRequest;
 use App\Utils\Mappers\In\Place\Review\GetPlaceReviewsDtoMapper;
-use App\Utils\Mappers\In\Place\GetPlacesDtoMapper;
+use App\Infrastructure\Http\Requests\Review\CreateReviewRequest;
+use App\Infrastructure\Http\Resources\Place\PlaceCursorResource;
 use App\Utils\Mappers\In\Place\Review\CreatePlaceReviewDtoMapper;
+use App\Infrastructure\Http\Resources\Review\ReviewCursorResource;
+use App\Infrastructure\Http\Resources\Place\Filter\PlaceFilterResource;
+use App\Application\Contracts\In\Services\Place\Filter\IPlaceFilterService;
+use App\Application\Contracts\In\Services\Place\Review\IPlaceReviewService;
 
 class PlaceController extends Controller
 {
@@ -48,18 +46,13 @@ class PlaceController extends Controller
     /**
      * @param GetPlaceRequest $getPlaceRequest
      * @return PlaceResource
-     * @throws ApiException
      */
     public function getPlace(GetPlaceRequest $getPlaceRequest): PlaceResource
     {
-        try {
-            $getPlaceDto = GetPlaceDtoMapper::fromRequest($getPlaceRequest);
-            return PlaceResource::make(
-                $this->placeService->getPlaceById($getPlaceDto)
-            );
-        } catch (PlaceNotFound $e) {
-            throw new ApiException($e->getMessage(), $e->getCode());
-        }
+        $getPlaceDto = GetPlaceDtoMapper::fromRequest($getPlaceRequest);
+        return PlaceResource::make(
+            $this->placeService->getPlaceById($getPlaceDto)
+        );
     }
 
     /**
