@@ -2,9 +2,9 @@
 
 namespace App\Application\Exceptions\Review;
 
-use Exception;
+use App\Application\Exceptions\InternalException;
 
-class FailedToCreateReview extends Exception
+class FailedToCreateReview extends InternalException
 {
     /** @var int */
     protected $code = 400;

@@ -2,9 +2,9 @@
 
 namespace App\Application\Exceptions\Chat\Members;
 
-use Exception;
+use App\Application\Exceptions\InternalException;
 
-class FailedToDeleteMember extends Exception
+class FailedToDeleteMember extends InternalException
 {
     /** @var int */
     protected $code = 400;

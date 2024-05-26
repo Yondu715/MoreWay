@@ -2,9 +2,9 @@
 
 namespace App\Application\Exceptions\Friend;
 
-use Exception;
+use App\Application\Exceptions\InternalException;
 
-class FriendRequestNotFound extends Exception
+class FriendRequestNotFound extends InternalException
 {
     /** @var int */
     protected $code = 404;

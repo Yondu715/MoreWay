@@ -2,9 +2,9 @@
 
 namespace App\Application\Exceptions\Chat\Members;
 
-use Exception;
+use App\Application\Exceptions\InternalException;
 
-class UserIsNotCreator extends Exception
+class UserIsNotCreator extends InternalException
 {
     protected $code = 403;
     protected $message = "Данный пользователь не является создателем чата";

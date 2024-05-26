@@ -2,9 +2,9 @@
 
 namespace App\Application\Exceptions\Route;
 
-use Exception;
+use App\Application\Exceptions\InternalException;
 
-class FailedToCreateRoute extends Exception
+class FailedToCreateRoute extends InternalException
 {
     /** @var int */
     protected $code = 400;

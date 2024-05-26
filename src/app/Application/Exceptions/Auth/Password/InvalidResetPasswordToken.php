@@ -2,9 +2,9 @@
 
 namespace App\Application\Exceptions\Auth\Password;
 
-use Exception;
+use App\Application\Exceptions\InternalException;
 
-class InvalidResetPasswordToken extends Exception
+class InvalidResetPasswordToken extends InternalException
 {
     /** @var int */
     protected $code = 400;

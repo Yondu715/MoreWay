@@ -2,9 +2,9 @@
 
 namespace App\Application\Exceptions\Friend;
 
-use Exception;
+use App\Application\Exceptions\InternalException;
 
-class FriendRequestConflict extends Exception
+class FriendRequestConflict extends InternalException
 {
     /** @var int */
     protected $code = 409;

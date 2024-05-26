@@ -2,9 +2,9 @@
 
 namespace App\Application\Exceptions\Auth\Password;
 
-use Exception;
+use App\Application\Exceptions\InternalException;
 
-class ExpiredVerifyPasswordCode extends Exception
+class ExpiredVerifyPasswordCode extends InternalException
 {
     /** @var int */
     protected $code = 401;

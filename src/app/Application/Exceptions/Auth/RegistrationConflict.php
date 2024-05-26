@@ -2,9 +2,9 @@
 
 namespace App\Application\Exceptions\Auth;
 
-use Exception;
+use App\Application\Exceptions\InternalException;
 
-class RegistrationConflict extends Exception
+class RegistrationConflict extends InternalException
 {
     /** @var int */
     protected $code = 409;

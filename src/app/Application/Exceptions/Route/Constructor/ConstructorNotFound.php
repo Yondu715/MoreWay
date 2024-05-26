@@ -2,9 +2,9 @@
 
 namespace App\Application\Exceptions\Route\Constructor;
 
-use Exception;
+use App\Application\Exceptions\InternalException;
 
-class ConstructorNotFound extends Exception
+class ConstructorNotFound extends InternalException
 {
     /** @var int */
     protected $code = 404;

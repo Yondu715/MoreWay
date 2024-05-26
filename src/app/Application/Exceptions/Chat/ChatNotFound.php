@@ -2,9 +2,9 @@
 
 namespace App\Application\Exceptions\Chat;
 
-use Exception;
+use App\Application\Exceptions\InternalException;
 
-class ChatNotFound extends Exception
+class ChatNotFound extends InternalException
 {
     protected $code = 404;
     protected $message = "Не удалось найти чат";

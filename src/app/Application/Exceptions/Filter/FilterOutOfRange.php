@@ -2,9 +2,9 @@
 
 namespace App\Application\Exceptions\Filter;
 
-use Exception;
+use App\Application\Exceptions\InternalException;
 
-class FilterOutOfRange extends Exception
+class FilterOutOfRange extends InternalException
 {
     /** @var int */
     protected $code = 400;

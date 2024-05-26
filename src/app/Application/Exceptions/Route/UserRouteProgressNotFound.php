@@ -2,9 +2,9 @@
 
 namespace App\Application\Exceptions\Route;
 
-use Exception;
+use App\Application\Exceptions\InternalException;
 
-class UserRouteProgressNotFound extends Exception
+class UserRouteProgressNotFound extends InternalException
 {
     /** @var int */
     protected $code = 404;

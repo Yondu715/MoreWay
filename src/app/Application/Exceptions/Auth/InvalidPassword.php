@@ -2,9 +2,9 @@
 
 namespace App\Application\Exceptions\Auth;
 
-use Exception;
+use App\Application\Exceptions\InternalException;
 
-class InvalidPassword extends Exception
+class InvalidPassword extends InternalException
 {
     /** @var int */
     protected $code = 401;

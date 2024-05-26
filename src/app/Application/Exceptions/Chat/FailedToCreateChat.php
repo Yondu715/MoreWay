@@ -2,9 +2,9 @@
 
 namespace App\Application\Exceptions\Chat;
 
-use Exception;
+use App\Application\Exceptions\InternalException;
 
-class FailedToCreateChat extends Exception
+class FailedToCreateChat extends InternalException
 {
     /** @var int */
     protected $code = 400;

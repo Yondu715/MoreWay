@@ -2,9 +2,9 @@
 
 namespace App\Application\Exceptions\Chat\Message;
 
-use Exception;
+use App\Application\Exceptions\InternalException;
 
-class FailedToGetMessages extends Exception
+class FailedToGetMessages extends InternalException
 {
     /** @var int */
     protected $code = 400;

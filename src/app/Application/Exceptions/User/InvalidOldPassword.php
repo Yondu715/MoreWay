@@ -2,9 +2,9 @@
 
 namespace App\Application\Exceptions\User;
 
-use Exception;
+use App\Application\Exceptions\InternalException;
 
-class InvalidOldPassword extends Exception
+class InvalidOldPassword extends InternalException
 {
     /** @var int */
     protected $code = 405;

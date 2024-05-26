@@ -2,9 +2,9 @@
 
 namespace App\Application\Exceptions\Route\Constructor;
 
-use Exception;
+use App\Application\Exceptions\InternalException;
 
-class InvalidRoutePointIndex extends Exception
+class InvalidRoutePointIndex extends InternalException
 {
     /** @var int */
     protected $code = 400;

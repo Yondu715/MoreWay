@@ -2,9 +2,9 @@
 
 namespace App\Application\Exceptions\Chat\Activity;
 
-use Exception;
+use App\Application\Exceptions\InternalException;
 
-class FailedToGetActivity extends Exception
+class FailedToGetActivity extends InternalException
 {
     /** @var int */
     protected $code = 400;

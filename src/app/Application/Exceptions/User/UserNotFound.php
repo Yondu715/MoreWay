@@ -2,9 +2,9 @@
 
 namespace App\Application\Exceptions\User;
 
-use Exception;
+use App\Application\Exceptions\InternalException;
 
-class UserNotFound extends Exception
+class UserNotFound extends InternalException
 {
     /** @var int */
     protected $code = 404;

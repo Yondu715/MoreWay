@@ -2,9 +2,9 @@
 
 namespace App\Application\Exceptions\Route;
 
-use Exception;
+use App\Application\Exceptions\InternalException;
 
-class UserHaveNotActiveRoute  extends Exception
+class UserHaveNotActiveRoute  extends InternalException
 {
     /** @var int */
     protected $code = 404;

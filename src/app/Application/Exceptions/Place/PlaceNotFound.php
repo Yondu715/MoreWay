@@ -2,9 +2,9 @@
 
 namespace App\Application\Exceptions\Place;
 
-use Exception;
+use App\Application\Exceptions\InternalException;
 
-class PlaceNotFound extends Exception
+class PlaceNotFound extends InternalException
 {
     /** @var int */
     protected $code = 404;

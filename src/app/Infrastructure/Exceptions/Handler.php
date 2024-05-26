@@ -2,8 +2,8 @@
 
 namespace App\Infrastructure\Exceptions;
 
+use App\Application\Exceptions\InternalException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
-use Throwable;
 
 class Handler extends ExceptionHandler
 {
@@ -23,8 +23,16 @@ class Handler extends ExceptionHandler
      */
     public function register(): void
     {
-        $this->reportable(function (Throwable $e) {
-            //
+        $this->renderable(function (ApiException $apiException) {
+            return response()->json([
+                'message' => $apiException->getMessage()
+            ], $apiException->getCode());
+        });
+
+        $this->renderable(function (InternalException $internalException) {
+            return response()->json([
+                'message' => $internalException->getMessage()
+            ], $internalException->getCode());
         });
     }
 }
