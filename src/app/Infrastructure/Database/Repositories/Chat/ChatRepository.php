@@ -110,13 +110,15 @@ class ChatRepository implements IChatRepository
     /**
      * @param int $chatId
      * @return ChatDto
+     * @throws ChatNotFound
      */
     public function findById(int $chatId): ChatDto
     {
         try {
+            /** @var Chat $chat */
             $chat = $this->model->query()->findOrFail($chatId);
             return ChatDtoMapper::fromChatModel($chat);
-        } catch (\Throwable $th) {
+        } catch (Throwable) {
             throw new ChatNotFound();
         }
     }
@@ -153,7 +155,6 @@ class ChatRepository implements IChatRepository
     /**
      * @param int $chatId
      * @param int $memberId
-     * @param int $creatorId
      * @return bool
      * @throws FailedToDeleteMember
      */
@@ -171,7 +172,6 @@ class ChatRepository implements IChatRepository
 
     /**
      * @param int $chatId
-     * @param int $userId
      * @return RouteDto
      * @throws FailedToGetActivity
      */

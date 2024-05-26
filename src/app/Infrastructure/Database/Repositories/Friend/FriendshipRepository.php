@@ -26,10 +26,12 @@ class FriendshipRepository implements IFriendshipRepository
     /**
      * @param int $id
      * @return FriendshipRequestDto
+     * @throws FriendRequestNotFound
      */
     public function findById(int $id): FriendshipRequestDto
     {
         try {
+            /** @var Friendship $friendship */
             $friendship = $this->model->query()->findOrFail($id);
             return FriendshipRequestDtoMapper::fromFriendshipModel($friendship);
         } catch (Throwable) {
@@ -54,6 +56,7 @@ class FriendshipRepository implements IFriendshipRepository
      */
     public function create(array $data): FriendshipRequestDto
     {
+        /** @var Friendship $friendship */
         $friendship = $this->model->query()->create($data);
         return FriendshipRequestDtoMapper::fromFriendshipModel($friendship);
     }
@@ -65,6 +68,7 @@ class FriendshipRepository implements IFriendshipRepository
      */
     public function update(int $id, array $data): FriendshipRequestDto
     {
+        /** @var Friendship $friendship */
         $friendship = $this->model->query()->findOrFail($id);
         $friendship->update($data);
         return FriendshipRequestDtoMapper::fromFriendshipModel($friendship->refresh());

@@ -3,7 +3,7 @@
 namespace App\Application\Services\Chat\Activity;
 
 use App\Application\DTO\Out\Route\RouteDto;
-use App\Infrastructure\Exceptions\Forbidden;
+use App\Application\Exceptions\Chat\ChatNotFound;
 use App\Infrastructure\Exceptions\InvalidToken;
 use App\Application\DTO\In\Chat\Activity\ChangeActivityDto;
 use App\Application\Exceptions\Chat\Members\UserIsNotCreator;
@@ -27,9 +27,8 @@ class ChatActivityService implements IChatActivityService
     /**
      * @param int $chatId
      * @return RouteDto
-     * @throws InvalidToken
      * @throws UserIsNotChatMember
-     * @throws FailedToGetActivity
+     * @throws FailedToGetActivity|ChatNotFound|ChatNotFound
      */
     public function getActivity(int $chatId): RouteDto
     {
@@ -47,7 +46,8 @@ class ChatActivityService implements IChatActivityService
      * @return RouteDto
      * @throws InvalidToken
      * @throws FailedToChangeActivity
-     * @throws Forbidden
+     * @throws UserIsNotCreator
+     * @throws ChatNotFound
      */
     public function changeActivity(changeActivityDto $changeActivityDto): RouteDto
     {
