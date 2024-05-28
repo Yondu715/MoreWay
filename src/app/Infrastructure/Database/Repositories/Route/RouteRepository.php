@@ -14,7 +14,7 @@ use App\Application\DTO\In\Route\CreateRouteDto;
 use App\Application\DTO\Out\Route\ActiveRouteDto;
 use App\Application\DTO\In\Route\GetUserRoutesDto;
 use App\Infrastructure\Database\Models\RoutePoint;
-use App\Application\Exceptions\Route\RouteNotFound;
+use App\Application\Exceptions\Route\RouteNameIsTaken;
 use App\Application\DTO\In\Route\ChangeUserRouteDto;
 use App\Application\Exceptions\Route\RouteIsCompleted;
 use App\Infrastructure\Database\Models\UserActiveRoute;
@@ -45,11 +45,16 @@ class RouteRepository implements IRouteRepository
      * @param CreateRouteDto $createRouteDto
      * @return RouteDto
      * @throws FailedToCreateRoute
+     * @throws RouteNameIsTaken
      */
     public function create(CreateRouteDto $createRouteDto): RouteDto
     {
         try {
             $this->transactionManager->beginTransaction();
+
+            if($this->model->query()->where('name', $createRouteDto->name)->first()){
+                throw new RouteNameIsTaken();
+            }
 
             /** @var Route $route */
             $route = $this->model->query()->create([
@@ -63,7 +68,7 @@ class RouteRepository implements IRouteRepository
                 })->get();
 
             if ($routePoints->count() < 2 || $routePoints->count() > 15) {
-                throw new Exception();
+                throw new FailedToCreateRoute();
             }
 
             $routePoints->each(function ($routePoint) use ($route) {
@@ -79,16 +84,16 @@ class RouteRepository implements IRouteRepository
             $this->transactionManager->commit();
 
             return RouteDtoMapper::fromRouteModel($route);
-        } catch (Throwable) {
+        } catch (Exception $exception) {
             $this->transactionManager->rollback();
-            throw new FailedToCreateRoute();
+            throw $exception;
         }
     }
 
     /**
      * @param int $routeId
      * @return RouteDto
-     * @throws RouteNotFound
+     * @throws RouteNameIsTaken
      */
     public function getRouteById(int $routeId): RouteDto
     {
@@ -97,7 +102,7 @@ class RouteRepository implements IRouteRepository
             $route = $this->model->query()->findOrFail($routeId);
             return RouteDtoMapper::fromRouteModel($route);
         } catch (Throwable) {
-            throw new RouteNotFound();
+            throw new RouteNameIsTaken();
         }
     }
 
@@ -118,7 +123,7 @@ class RouteRepository implements IRouteRepository
      * @return void
      * @throws UserRouteProgressNotFound
      * @throws IncorrectOrderRoutePoints
-     * @throws RouteNotFound
+     * @throws RouteNameIsTaken
      */
     public function changeUserRouteProgress(CompletedRoutePointDto $completedRoutePointDto): void
     {
@@ -138,7 +143,7 @@ class RouteRepository implements IRouteRepository
             ->first();
 
         if (!$routePoint) {
-            throw new RouteNotFound();
+            throw new RouteNameIsTaken();
         }
 
         $route = $routePoint->route;
@@ -201,7 +206,7 @@ class RouteRepository implements IRouteRepository
      * @param int $userId
      * @param int $routeId
      * @return void
-     * @throws RouteNotFound
+     * @throws RouteNameIsTaken
      */
     public function deleteUserRoute(int $userId, int $routeId): void
     {
@@ -212,7 +217,7 @@ class RouteRepository implements IRouteRepository
             ]);
 
         if ($route->get()->isEmpty()) {
-            throw new RouteNotFound();
+            throw new RouteNameIsTaken();
         }
 
         $route->delete();
@@ -316,7 +321,7 @@ class RouteRepository implements IRouteRepository
      * @param int $userId
      * @param int $routeId
      * @return void
-     * @throws RouteNotFound
+     * @throws RouteNameIsTaken
      */
     public function deleteRouteFromUserFavorite(int $userId, int $routeId): void
     {
@@ -327,7 +332,7 @@ class RouteRepository implements IRouteRepository
             ]);
 
         if ($route->get()->isEmpty()) {
-            throw new RouteNotFound();
+            throw new RouteNameIsTaken();
         }
 
         $route->delete();

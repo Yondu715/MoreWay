@@ -13,7 +13,7 @@ use App\Application\DTO\Out\Route\RouteDto;
 use App\Application\Exceptions\Route\FailedToCreateRoute;
 use App\Application\Exceptions\Route\IncorrectOrderRoutePoints;
 use App\Application\Exceptions\Route\RouteIsCompleted;
-use App\Application\Exceptions\Route\RouteNotFound;
+use App\Application\Exceptions\Route\RouteNameIsTaken;
 use App\Application\Exceptions\Route\UserHaveNotActiveRoute;
 use App\Application\Exceptions\Route\UserRouteProgressNotFound;
 
@@ -29,14 +29,14 @@ interface IRouteService
     /**
      * @param int $routeId
      * @return RouteDto
-     * @throws RouteNotFound
+     * @throws RouteNameIsTaken
      */
     public function getRouteById(int $routeId): RouteDto;
 
     /**
      * @param GetRoutesDto $getRoutesDto
      * @return CursorDto
-     * @throws RouteNotFound
+     * @throws RouteNameIsTaken
      */
     public function getRoutes(GetRoutesDto $getRoutesDto): CursorDto;
 
@@ -45,7 +45,7 @@ interface IRouteService
      * @return void
      * @throws UserRouteProgressNotFound
      * @throws IncorrectOrderRoutePoints
-     * @throws RouteNotFound
+     * @throws RouteNameIsTaken
      */
     public function completedRoutePoint(CompletedRoutePointDto $completedRoutePointDto): void;
 
@@ -59,7 +59,7 @@ interface IRouteService
      * @param int $userId
      * @param int $routeId
      * @return void
-     * @throws RouteNotFound
+     * @throws RouteNameIsTaken
      */
     public function deleteUserRoute(int $userId, int $routeId): void;
 
@@ -93,7 +93,7 @@ interface IRouteService
      * @param int $userId
      * @param int $routeId
      * @return void
-     * @throws RouteNotFound
+     * @throws RouteNameIsTaken
      */
     public function deleteRouteFromUserFavorite(int $userId, int $routeId): void;
 }
