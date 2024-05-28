@@ -12,6 +12,6 @@ class ActivityNotifier extends BaseNotifier implements INotifierManager
     public function __construct(
         RabbitMqPublisher $publisher
     ) {
-        parent::__construct($publisher, ChatResource::class, "votes/route");
+        parent::__construct($publisher, ChatResource::class, "chats/votes/route");
     }
 }

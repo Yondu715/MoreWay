@@ -7,7 +7,6 @@ use App\Application\DTO\In\Route\Constructor\GetUserRouteConstructorDto;
 use App\Application\DTO\Out\Route\Constructor\RouteConstructorDto;
 use App\Application\Exceptions\Route\Constructor\InvalidRoutePointIndex;
 use Closure;
-use Throwable;
 
 interface IRouteConstructorRepository
 {
@@ -16,7 +15,6 @@ interface IRouteConstructorRepository
      * @param Closure $distanceCalculator
      * @return RouteConstructorDto
      * @throws InvalidRoutePointIndex
-     * @throws Throwable
      */
     public function update(ChangeUserRouteConstructorDto $changeUserRouteConstructorDto, Closure $distanceCalculator): RouteConstructorDto;
 

@@ -29,14 +29,12 @@ interface IRouteService
     /**
      * @param int $routeId
      * @return RouteDto
-     * @throws RouteNameIsTaken
      */
     public function getRouteById(int $routeId): RouteDto;
 
     /**
      * @param GetRoutesDto $getRoutesDto
      * @return CursorDto
-     * @throws RouteNameIsTaken
      */
     public function getRoutes(GetRoutesDto $getRoutesDto): CursorDto;
 
@@ -45,7 +43,6 @@ interface IRouteService
      * @return void
      * @throws UserRouteProgressNotFound
      * @throws IncorrectOrderRoutePoints
-     * @throws RouteNameIsTaken
      */
     public function completedRoutePoint(CompletedRoutePointDto $completedRoutePointDto): void;
 
@@ -59,7 +56,6 @@ interface IRouteService
      * @param int $userId
      * @param int $routeId
      * @return void
-     * @throws RouteNameIsTaken
      */
     public function deleteUserRoute(int $userId, int $routeId): void;
 
@@ -93,7 +89,6 @@ interface IRouteService
      * @param int $userId
      * @param int $routeId
      * @return void
-     * @throws RouteNameIsTaken
      */
     public function deleteRouteFromUserFavorite(int $userId, int $routeId): void;
 }

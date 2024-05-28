@@ -13,6 +13,6 @@ class ActivityPointNotifier extends BaseNotifier implements INotifierManager
     public function __construct(
         RabbitMqPublisher $publisher
     ) {
-        parent::__construct($publisher, PointResource::class, "votes/routePoint");
+        parent::__construct($publisher, PointResource::class, "chats/votes/routePoint");
     }
 }
