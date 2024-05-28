@@ -20,7 +20,7 @@ class PlaceCursorResource extends JsonResource
         return [
             'data' => ShortPlaceResource::collection($this->data),
             'meta' => [
-                'next_cursor' => $this->next_cursor
+                'cursor' => $this->cursor
             ]
         ];
     }

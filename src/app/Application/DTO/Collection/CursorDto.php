@@ -7,14 +7,14 @@ use Illuminate\Support\Collection;
 class CursorDto
 {
     public readonly Collection $data;
-    public readonly ?string $next_cursor;
+    public readonly ?string $cursor;
 
     public function __construct(
         Collection $data,
-        ?string $next_cursor,
+        ?string $cursor,
     ) {
         $this->data = $data;
-        $this->next_cursor = $next_cursor;
+        $this->cursor = $cursor;
     }
 
 }

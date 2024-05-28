@@ -20,7 +20,7 @@ class RatingCursorResource extends JsonResource
         return [
             'data' => RatingResource::collection($this->data),
             'meta' => [
-                'next_cursor' => $this->next_cursor
+                'cursor' => $this->cursor
             ]
         ];
     }

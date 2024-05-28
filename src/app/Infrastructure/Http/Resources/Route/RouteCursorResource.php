@@ -20,7 +20,7 @@ class RouteCursorResource extends JsonResource
         return [
             'data' => ShortRouteResource::collection($this->data),
             'meta' => [
-                'next_cursor' => $this->next_cursor
+                'cursor' => $this->cursor
             ]
         ];
     }

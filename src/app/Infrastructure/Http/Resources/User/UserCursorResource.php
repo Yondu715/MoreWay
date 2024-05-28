@@ -20,7 +20,7 @@ class UserCursorResource extends JsonResource
         return [
             'data' => ShortUserResource::collection($this->data),
             'meta' => [
-                'next_cursor' => $this->next_cursor
+                'cursor' => $this->cursor
             ]
         ];
     }

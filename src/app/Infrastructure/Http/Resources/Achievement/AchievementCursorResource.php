@@ -20,7 +20,7 @@ class AchievementCursorResource extends JsonResource
         return [
             'data' => AchievementResource::collection($this->data),
             'meta' => [
-                'next_cursor' => $this->next_cursor
+                'cursor' => $this->cursor
             ]
         ];
     }

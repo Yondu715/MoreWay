@@ -22,7 +22,7 @@ class ReviewCursorResource extends JsonResource
         return [
             'data' => ReviewResource::collection($this->data),
             'meta' => [
-                'next_cursor' => $this->next_cursor
+                'cursor' => $this->cursor
             ]
         ];
     }

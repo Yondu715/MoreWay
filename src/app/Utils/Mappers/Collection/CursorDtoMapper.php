@@ -16,7 +16,7 @@ class CursorDtoMapper
     {
         return new CursorDto(
             data: collect($paginator->items())->map($dtoMapper),
-            next_cursor: $paginator->nextCursor() ? $paginator->nextCursor()->encode() : null
+            cursor: $paginator->nextCursor() ? $paginator->nextCursor()->encode() : null
         );
     }
 
