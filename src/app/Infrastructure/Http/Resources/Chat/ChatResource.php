@@ -23,6 +23,7 @@ class ChatResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'isActive' => $this->isActive,
             'creator' => ShortUserResource::make($this->creator),
             'members' => ShortUserResource::collection($this->members),
             'activity' => ShortRouteResource::make($this->activity),

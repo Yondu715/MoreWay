@@ -10,6 +10,7 @@ class ChatDto
 {
     public readonly int $id;
     public readonly string $name;
+    public readonly bool $isActive;
     public readonly UserDto $creator;
     public readonly Collection $members;
     public readonly Collection $messages;
@@ -18,6 +19,7 @@ class ChatDto
     public function __construct(
         int        $id,
         string     $name,
+        bool       $isActive,
         UserDto    $creator,
         Collection $members,
         Collection $messages,
@@ -25,6 +27,7 @@ class ChatDto
     ) {
         $this->id = $id;
         $this->name = $name;
+        $this->isActive = $isActive;
         $this->creator = $creator;
         $this->members = $members;
         $this->messages = $messages;
