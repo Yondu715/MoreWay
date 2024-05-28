@@ -15,7 +15,6 @@ Route::patterns([
     'requestId' => '[0-9]+',
     'placeId' => '[0-9]+',
     'chatId' => '[0-9]+',
-    'chatId' => '[0-9]+',
     'memberId' => '[0-9]+',
 ]);
 
@@ -64,7 +63,7 @@ Route::prefix('users')
                         Route::prefix('/active-route')
                             ->group(function (){
                                 Route::get('/', [RouteController::class, 'getActiveUserRoute']);
-                                Route::patch('/', [RouteController::class, 'changeActiveUserRoute']);
+                                Route::put('/', [RouteController::class, 'changeActiveUserRoute']);
                             });
                         Route::prefix('/favorite-routes')
                             ->group(function (){
