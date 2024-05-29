@@ -14,6 +14,19 @@ use Illuminate\Pagination\CursorPaginator;
 
 class RouteDtoMapper
 {
+    public static function fromRouteModelAndActiveFavorite(Route $route, bool $isActive, bool $isFavorite): RouteDto
+    {
+        return new RouteDto(
+            id: $route->id,
+            name: $route->name,
+            points: PointDtoMapper::fromPointCollection($route->routePoints),
+            creator: UserDtoMapper::fromUserModel($route->creator),
+            rating: $route->rating(),
+            isActive: $isActive,
+            isFavorite: $isFavorite
+        );
+    }
+
     /**
      * @param Route $route
      * @return RouteDto
@@ -30,6 +43,22 @@ class RouteDtoMapper
     }
 
     /**
+     * @param Route $route
+     * @param int $userId
+     * @return RouteDto
+     */
+    public static function fromRouteModelAndUserId(Route $route, int $userId): RouteDto
+    {
+        return new RouteDto(
+            id: $route->id,
+            name: $route->name,
+            points: PointDtoMapper::fromPointCollection($route->routePoints, $userId),
+            creator: UserDtoMapper::fromUserModel($route->creator),
+            rating: $route->rating()
+        );
+    }
+
+    /**
      * @param UserActiveRoute $userActiveRoute
      * @return ActiveRouteDto
      */
@@ -37,7 +66,7 @@ class RouteDtoMapper
     {
         return new ActiveRouteDto(
             isGroup: $userActiveRoute->is_group,
-            route: RouteDtoMapper::fromRouteModel($userActiveRoute->route),
+            route: RouteDtoMapper::fromRouteModelAndUserId($userActiveRoute->route, $userActiveRoute->user_id),
         );
     }
 

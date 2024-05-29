@@ -3,6 +3,7 @@
 namespace App\Application\Services\Route;
 
 use App\Application\Contracts\In\Services\Route\IRouteService;
+use App\Application\Contracts\Out\Managers\Token\ITokenManager;
 use App\Application\Contracts\Out\Repositories\Route\IRouteRepository;
 use App\Application\DTO\Collection\CursorDto;
 use App\Application\DTO\In\Route\ChangeUserRouteDto;
@@ -18,38 +19,44 @@ use App\Application\Exceptions\Route\RouteIsCompleted;
 use App\Application\Exceptions\Route\RouteNameIsTaken;
 use App\Application\Exceptions\Route\UserHaveNotActiveRoute;
 use App\Application\Exceptions\Route\UserRouteProgressNotFound;
+use App\Infrastructure\Exceptions\InvalidToken;
 
 
 class RouteService implements IRouteService
 {
     public function __construct(
-        private readonly IRouteRepository $routeRepository
+        private readonly IRouteRepository $routeRepository,
+        private readonly ITokenManager $tokenManager
     ) {}
 
     /**
      * @param CreateRouteDto $createRouteDto
      * @return RouteDto
+     * @throws RouteNameIsTaken
      * @throws FailedToCreateRoute
      */
     public function createRoute(CreateRouteDto $createRouteDto): RouteDto
     {
+        if($this->routeRepository->isExistByName($createRouteDto->name)) {
+            throw new RouteNameIsTaken();
+        }
         return $this->routeRepository->create($createRouteDto);
     }
 
     /**
      * @param int $routeId
      * @return RouteDto
-     * @throws RouteNameIsTaken
+     * @throws InvalidToken
      */
     public function getRouteById(int $routeId): RouteDto
     {
-        return $this->routeRepository->getRouteById($routeId);
+
+        return $this->routeRepository->getRouteById($routeId, $this->tokenManager->getAuthUser()->id);
     }
 
     /**
      * @param GetRoutesDto $getRoutesDto
      * @return CursorDto
-     * @throws RouteNameIsTaken
      */
     public function getRoutes(GetRoutesDto $getRoutesDto): CursorDto
     {
@@ -81,7 +88,6 @@ class RouteService implements IRouteService
      * @param int $userId
      * @param int $routeId
      * @return void
-     * @throws RouteNameIsTaken
      */
     public function deleteUserRoute(int $userId, int $routeId): void
     {
@@ -130,7 +136,6 @@ class RouteService implements IRouteService
      * @param int $userId
      * @param int $routeId
      * @return void
-     * @throws RouteNameIsTaken
      */
     public function deleteRouteFromUserFavorite(int $userId, int $routeId): void
     {

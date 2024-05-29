@@ -2,6 +2,8 @@
 
 namespace App\Infrastructure\Http\Controllers\Api\V1;
 
+use App\Application\Exceptions\User\InvalidOldPassword;
+use App\Application\Exceptions\User\UserNotFound;
 use Illuminate\Http\Response;
 use App\Utils\Mappers\In\User\GetUsersDtoMapper;
 use App\Infrastructure\Http\Controllers\Controller;
@@ -39,6 +41,7 @@ class UserController extends Controller
     /**
      * @param int $userId
      * @return UserResource
+     * @throws UserNotFound
      */
     public function getUser(int $userId): UserResource
     {
@@ -50,6 +53,7 @@ class UserController extends Controller
     /**
      * @param ChangeUserDataRequest $changeUserDataRequest
      * @return UserResource
+     * @throws UserNotFound
      */
     public function changeData(ChangeUserDataRequest $changeUserDataRequest): UserResource
     {
@@ -73,6 +77,7 @@ class UserController extends Controller
     /**
      * @param ChangeUserAvatarRequest $changeUserAvatarRequest
      * @return UserResource
+     * @throws UserNotFound
      */
     public function changeAvatar(ChangeUserAvatarRequest $changeUserAvatarRequest): UserResource
     {
@@ -85,6 +90,8 @@ class UserController extends Controller
     /**
      * @param ChangeUserPasswordRequest $changeUserPasswordRequest
      * @return UserResource
+     * @throws UserNotFound
+     * @throws InvalidOldPassword
      */
     public function changePassword(ChangeUserPasswordRequest $changeUserPasswordRequest): UserResource
     {

@@ -113,7 +113,8 @@ class AuthService implements IAuthService
 
         $this->cacheManager->put(
             'password_reset_' . $forgotPasswordDto->email,
-            $resetCode
+            $resetCode,
+            300
         );
 
         $this->mailManager->sendResetCode($forgotPasswordDto->email, $resetCode);
@@ -148,7 +149,8 @@ class AuthService implements IAuthService
         $resetToken = $this->hashManager->make($verifyPasswordCodeDto->code);
         $this->cacheManager->put(
             'password_reset_' . $verifyPasswordCodeDto->email,
-            $resetToken
+            $resetToken,
+            300
         );
         return $resetToken;
     }

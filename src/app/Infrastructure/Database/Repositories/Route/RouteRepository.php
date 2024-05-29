@@ -2,6 +2,7 @@
 
 namespace App\Infrastructure\Database\Repositories\Route;
 
+use App\Application\Exceptions\Route\RouteNotFound;
 use Exception;
 use Throwable;
 use Illuminate\Database\Eloquent\Model;
@@ -52,10 +53,6 @@ class RouteRepository implements IRouteRepository
         try {
             $this->transactionManager->beginTransaction();
 
-            if($this->model->query()->where('name', $createRouteDto->name)->first()){
-                throw new RouteNameIsTaken();
-            }
-
             /** @var Route $route */
             $route = $this->model->query()->create([
                 'name' => $createRouteDto->name,
@@ -92,17 +89,24 @@ class RouteRepository implements IRouteRepository
 
     /**
      * @param int $routeId
+     * @param int $userId
      * @return RouteDto
-     * @throws RouteNameIsTaken
+     * @throws RouteNotFound
      */
-    public function getRouteById(int $routeId): RouteDto
+    public function getRouteById(int $routeId, int $userId): RouteDto
     {
         try {
             /** @var Route $route */
             $route = $this->model->query()->findOrFail($routeId);
-            return RouteDtoMapper::fromRouteModel($route);
+            return RouteDtoMapper::fromRouteModelAndActiveFavorite($route, (boolean) UserActiveRoute::query()->where([
+                'route_id' => $route->id,
+                'user_id' => $userId
+                ])->first(), (boolean) UserFavoriteRoute::query()->where([
+                'route_id' => $route->id,
+                'user_id' => $userId
+            ])->first());
         } catch (Throwable) {
-            throw new RouteNameIsTaken();
+            throw new RouteNotFound();
         }
     }
 
@@ -123,7 +127,7 @@ class RouteRepository implements IRouteRepository
      * @return void
      * @throws UserRouteProgressNotFound
      * @throws IncorrectOrderRoutePoints
-     * @throws RouteNameIsTaken
+     * @throws RouteNotFound
      */
     public function changeUserRouteProgress(CompletedRoutePointDto $completedRoutePointDto): void
     {
@@ -143,7 +147,7 @@ class RouteRepository implements IRouteRepository
             ->first();
 
         if (!$routePoint) {
-            throw new RouteNameIsTaken();
+            throw new RouteNotFound();
         }
 
         $route = $routePoint->route;
@@ -206,7 +210,7 @@ class RouteRepository implements IRouteRepository
      * @param int $userId
      * @param int $routeId
      * @return void
-     * @throws RouteNameIsTaken
+     * @throws RouteNotFound
      */
     public function deleteUserRoute(int $userId, int $routeId): void
     {
@@ -217,7 +221,7 @@ class RouteRepository implements IRouteRepository
             ]);
 
         if ($route->get()->isEmpty()) {
-            throw new RouteNameIsTaken();
+            throw new RouteNotFound();
         }
 
         $route->delete();
@@ -321,7 +325,7 @@ class RouteRepository implements IRouteRepository
      * @param int $userId
      * @param int $routeId
      * @return void
-     * @throws RouteNameIsTaken
+     * @throws RouteNotFound
      */
     public function deleteRouteFromUserFavorite(int $userId, int $routeId): void
     {
@@ -332,9 +336,18 @@ class RouteRepository implements IRouteRepository
             ]);
 
         if ($route->get()->isEmpty()) {
-            throw new RouteNameIsTaken();
+            throw new RouteNotFound();
         }
 
         $route->delete();
+    }
+
+    /**
+     * @param string $routeName
+     * @return bool
+     */
+    public function isExistByName(string $routeName): bool
+    {
+        return (boolean) $this->model->query()->where('name', $routeName)->first();
     }
 }

@@ -12,6 +12,6 @@ class ChatMemberNotifier extends BaseNotifier implements INotifierManager
     public function __construct(
         RabbitMqPublisher $publisher
     ) {
-        parent::__construct($publisher, UserCollectionResource::class, "chatMember");
+        parent::__construct($publisher, UserCollectionResource::class, "chats/member");
     }
 }

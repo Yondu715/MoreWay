@@ -22,6 +22,7 @@ class ShortChatResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'isActive' => $this->isActive,
             'lastMessage' => count($this->messages) ? MessageResource::make($this->messages->last()) : null,
         ];
     }

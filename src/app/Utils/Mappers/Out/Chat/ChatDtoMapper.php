@@ -22,6 +22,7 @@ class ChatDtoMapper
         return new ChatDto(
             id: $chat->id,
             name: $chat->name,
+            isActive: $chat->is_active,
             creator: UserDtoMapper::fromUserModelToNotify($chat->creator),
             members: UserDtoMapper::fromChatMemberCollection($chat->members),
             messages: MessageDtoMapper::fromChatMessageCollection($chat->messages),

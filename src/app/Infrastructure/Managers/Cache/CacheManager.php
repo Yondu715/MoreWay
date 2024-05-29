@@ -10,11 +10,12 @@ class CacheManager implements ICacheManager
     /**
      * @param string $key
      * @param string $value
+     * @param int $seconds
      * @return void
      */
-    public function put(string $key, string $value): void
+    public function put(string $key, string $value, int $seconds): void
     {
-        Cache::put($key, $value, now()->addMinutes(5));
+        Cache::add($key, $value, $seconds);
     }
 
     /**

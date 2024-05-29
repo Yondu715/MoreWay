@@ -2,7 +2,13 @@
 
 namespace App\Infrastructure\Http\Controllers\Api\V1;
 
-use Throwable;
+use App\Application\Exceptions\Filter\FilterOutOfRange;
+use App\Application\Exceptions\Route\Constructor\InvalidRoutePointIndex;
+use App\Application\Exceptions\Route\FailedToCreateRoute;
+use App\Application\Exceptions\Route\IncorrectOrderRoutePoints;
+use App\Application\Exceptions\Route\RouteIsCompleted;
+use App\Application\Exceptions\Route\UserHaveNotActiveRoute;
+use App\Application\Exceptions\Route\UserRouteProgressNotFound;
 use Illuminate\Http\Response;
 use App\Utils\Mappers\In\Route\GetRoutesDtoMapper;
 use App\Infrastructure\Http\Controllers\Controller;
@@ -48,6 +54,7 @@ class RouteController extends Controller
     /**
      * @param CreateRouteRequest $createRouteRequest
      * @return RouteResource
+     * @throws FailedToCreateRoute
      */
     public function createRoute(CreateRouteRequest $createRouteRequest): RouteResource
     {
@@ -71,6 +78,7 @@ class RouteController extends Controller
     /**
      * @param GetRoutesRequest $getRoutesRequest
      * @return RouteCursorResource
+     * @throws FilterOutOfRange
      */
     public function getRoutes(GetRoutesRequest $getRoutesRequest): RouteCursorResource
     {
@@ -117,6 +125,7 @@ class RouteController extends Controller
     /**
      * @param ChangeUserRouteConstructorRequest $changeUserRouteConstructorRequest
      * @return ConstructorResource
+     * @throws InvalidRoutePointIndex
      */
     public function changeUserRouteConstructor(ChangeUserRouteConstructorRequest $changeUserRouteConstructorRequest): ConstructorResource
     {
@@ -141,6 +150,8 @@ class RouteController extends Controller
     /**
      * @param CompletedRoutePointRequest $completedRoutePointRequest
      * @return Response
+     * @throws IncorrectOrderRoutePoints
+     * @throws UserRouteProgressNotFound
      */
     public function completedRoutePoint(CompletedRoutePointRequest $completedRoutePointRequest): Response
     {
@@ -175,6 +186,7 @@ class RouteController extends Controller
     /**
      * @param int $userId
      * @return UserActiveRouteResource
+     * @throws UserHaveNotActiveRoute
      */
     public function getActiveUserRoute(int $userId): UserActiveRouteResource
     {
@@ -186,6 +198,7 @@ class RouteController extends Controller
     /**
      * @param ChangeUserRouteRequest $changeActiveUserRouteRequest
      * @return UserActiveRouteResource
+     * @throws RouteIsCompleted
      */
     public function changeActiveUserRoute(ChangeUserRouteRequest $changeActiveUserRouteRequest): UserActiveRouteResource
     {
