@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('chats', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->boolean('is_active')->default(false);
             $table->unsignedBigInteger('creator_id');
             $table->timestamps();
 
