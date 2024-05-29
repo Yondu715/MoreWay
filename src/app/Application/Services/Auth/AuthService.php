@@ -6,7 +6,6 @@ use Exception;
 use App\Application\DTO\In\Auth\LoginDto;
 use App\Application\DTO\Out\User\UserDto;
 use App\Application\DTO\In\Auth\RegisterDto;
-use App\Infrastructure\Database\Models\User;
 use App\Application\Exceptions\User\UserNotFound;
 use App\Application\Exceptions\Auth\InvalidPassword;
 use App\Application\Exceptions\Auth\RegistrationConflict;
@@ -46,10 +45,6 @@ class AuthService implements IAuthService
     {
         $user = $this->userRepository->findByEmail($loginDto->email);
 
-        if (!$user) {
-            throw new UserNotFound();
-        }
-
         if (!$this->hashManager->check($loginDto->password, $user->password)) {
             throw new InvalidPassword();
         }
@@ -64,7 +59,9 @@ class AuthService implements IAuthService
      */
     public function register(RegisterDto $registerDto): void
     {
-        if ($this->userRepository->findByEmail($registerDto->email)) {
+        try {
+            $this->userRepository->findByEmail($registerDto->email);
+        } catch (\Throwable $th) {
             throw new RegistrationConflict();
         }
 
@@ -105,19 +102,15 @@ class AuthService implements IAuthService
     {
         $user = $this->userRepository->findByEmail($forgotPasswordDto->email);
 
-        if (!$user) {
-            throw new UserNotFound();
-        }
-
         $resetCode = str_pad(mt_rand(0, 9999), 4, 0, STR_PAD_LEFT);
 
         $this->cacheManager->put(
-            'password_reset_' . $forgotPasswordDto->email,
+            'password_reset_' . $user->email,
             $resetCode,
             300
         );
 
-        $this->mailManager->sendResetCode($forgotPasswordDto->email, $resetCode);
+        $this->mailManager->sendResetCode($user->email, $resetCode);
     }
 
     /**
@@ -129,13 +122,6 @@ class AuthService implements IAuthService
      */
     public function verifyPasswordCode(VerifyPasswordCodeDto $verifyPasswordCodeDto): string
     {
-        /** @var ?User $user */
-        $user = $this->userRepository->findByEmail($verifyPasswordCodeDto->email);
-
-        if (!$user) {
-            throw new UserNotFound();
-        }
-
         $resetCode = $this->cacheManager->get('password_reset_' . $verifyPasswordCodeDto->email);
 
         if (!$resetCode) {
@@ -164,12 +150,7 @@ class AuthService implements IAuthService
      */
     public function resetPassword(ResetPasswordDto $resetPasswordDto): void
     {
-        /** @var ?User $user */
         $user = $this->userRepository->findByEmail($resetPasswordDto->email);
-
-        if (!$user) {
-            throw new UserNotFound();
-        }
 
         $resetToken = $this->cacheManager->get('password_reset_' . $resetPasswordDto->email);
 

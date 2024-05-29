@@ -59,15 +59,19 @@ class UserRepository implements IUserRepository
 
     /**
      * @param string $email
-     * @return UserDto|null
+     * @return UserDto
      */
-    public function findByEmail(string $email): ?UserDto
+    public function findByEmail(string $email): UserDto
     {
         /** @var User $user */
         $user = $this->model->query()->firstWhere([
             'email'  => $email
         ]);
-        return $user ? UserDtoMapper::fromUserModel($user) : null;
+
+        if (!$user) {
+            throw new UserNotFound();
+        }
+        return UserDtoMapper::fromUserModel($user);
     }
 
     /**

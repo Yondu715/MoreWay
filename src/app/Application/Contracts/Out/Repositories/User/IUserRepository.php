@@ -25,9 +25,9 @@ interface IUserRepository
 
     /**
      * @param string $email
-     * @return UserDto|null
+     * @return UserDto
      */
-    public function findByEmail(string $email): ?UserDto;
+    public function findByEmail(string $email): UserDto;
 
     /**
      * @param RegisterDto $registerDto
