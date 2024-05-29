@@ -29,17 +29,20 @@ class RouteService implements IRouteService
     /**
      * @param CreateRouteDto $createRouteDto
      * @return RouteDto
+     * @throws RouteNameIsTaken
      * @throws FailedToCreateRoute
      */
     public function createRoute(CreateRouteDto $createRouteDto): RouteDto
     {
+        if($this->routeRepository->isExistByName($createRouteDto->name)) {
+            throw new RouteNameIsTaken();
+        }
         return $this->routeRepository->create($createRouteDto);
     }
 
     /**
      * @param int $routeId
      * @return RouteDto
-     * @throws RouteNameIsTaken
      */
     public function getRouteById(int $routeId): RouteDto
     {
@@ -49,7 +52,6 @@ class RouteService implements IRouteService
     /**
      * @param GetRoutesDto $getRoutesDto
      * @return CursorDto
-     * @throws RouteNameIsTaken
      */
     public function getRoutes(GetRoutesDto $getRoutesDto): CursorDto
     {
@@ -81,7 +83,6 @@ class RouteService implements IRouteService
      * @param int $userId
      * @param int $routeId
      * @return void
-     * @throws RouteNameIsTaken
      */
     public function deleteUserRoute(int $userId, int $routeId): void
     {
@@ -130,7 +131,6 @@ class RouteService implements IRouteService
      * @param int $userId
      * @param int $routeId
      * @return void
-     * @throws RouteNameIsTaken
      */
     public function deleteRouteFromUserFavorite(int $userId, int $routeId): void
     {

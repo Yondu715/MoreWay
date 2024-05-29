@@ -12,6 +12,6 @@ class MessageNotifier extends BaseNotifier implements INotifierManager
     public function __construct(
         RabbitMqPublisher $publisher
     ) {
-        parent::__construct($publisher, MessageResource::class, "message");
+        parent::__construct($publisher, MessageResource::class, "chats/message");
     }
 }

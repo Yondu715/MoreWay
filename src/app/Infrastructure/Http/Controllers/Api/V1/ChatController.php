@@ -2,6 +2,14 @@
 
 namespace App\Infrastructure\Http\Controllers\Api\V1;
 
+use App\Application\Exceptions\Chat\Activity\FailedToChangeActivity;
+use App\Application\Exceptions\Chat\Activity\FailedToGetActivity;
+use App\Application\Exceptions\Chat\FailedToCreateChat;
+use App\Application\Exceptions\Chat\Members\FailedToAddMembers;
+use App\Application\Exceptions\Chat\Members\FailedToDeleteMember;
+use App\Application\Exceptions\Chat\Message\FailedToGetMessages;
+use App\Infrastructure\Exceptions\Forbidden;
+use App\Infrastructure\Exceptions\InvalidToken;
 use Illuminate\Http\Response;
 use App\Utils\Mappers\In\Chat\CreateChatDtoMapper;
 use App\Utils\Mappers\In\Chat\GetUserChatsDtoMapper;
@@ -51,6 +59,7 @@ class ChatController
     /**
      * @param CreateChatRequest $createChatRequest
      * @return ChatResource
+     * @throws FailedToCreateChat
      */
     public function createChat(CreateChatRequest $createChatRequest): ChatResource
     {
@@ -63,6 +72,8 @@ class ChatController
     /**
      * @param int $chatId
      * @return ChatResource
+     * @throws Forbidden
+     * @throws InvalidToken
      */
     public function getChat(int $chatId): ChatResource
     {
@@ -74,6 +85,8 @@ class ChatController
     /**
      * @param AddMembersRequest $addMemberRequest
      * @return UserCollectionResource
+     * @throws InvalidToken
+     * @throws FailedToAddMembers
      */
     public function addMembers(AddMembersRequest $addMemberRequest): UserCollectionResource
     {
@@ -87,6 +100,8 @@ class ChatController
      * @param int $chatId
      * @param int $memberId
      * @return Response
+     * @throws InvalidToken
+     * @throws FailedToDeleteMember
      */
     public function deleteMember(int $chatId, int $memberId): Response
     {
@@ -97,6 +112,8 @@ class ChatController
     /**
      * @param GetMessagesRequest $getMessagesRequest
      * @return MessageCursorResource
+     * @throws InvalidToken
+     * @throws FailedToGetMessages
      */
     public function getMessages(GetMessagesRequest $getMessagesRequest): MessageCursorResource
     {
@@ -109,6 +126,7 @@ class ChatController
     /**
      * @param AddMessageRequest $addMessageRequest
      * @return MessageResource
+     * @throws FailedToGetMessages
      */
     public function addMessage(AddMessageRequest $addMessageRequest): MessageResource
     {
@@ -121,6 +139,8 @@ class ChatController
     /**
      * @param int $chatId
      * @return RouteResource
+     * @throws InvalidToken
+     * @throws FailedToGetActivity
      */
     public function getActivity(int $chatId): RouteResource
     {
@@ -132,6 +152,8 @@ class ChatController
     /**
      * @param ChangeActivityRequest $changeActivityRequest
      * @return RouteResource
+     * @throws InvalidToken
+     * @throws FailedToChangeActivity
      */
     public function changeActivity(ChangeActivityRequest $changeActivityRequest): RouteResource
     {

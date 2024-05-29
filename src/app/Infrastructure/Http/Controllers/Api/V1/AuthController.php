@@ -2,9 +2,14 @@
 
 namespace App\Infrastructure\Http\Controllers\Api\V1;
 
+use App\Application\Exceptions\Auth\InvalidPassword;
+use App\Application\Exceptions\Auth\Password\ExpiredResetPasswordToken;
+use App\Application\Exceptions\Auth\Password\ExpiredVerifyPasswordCode;
+use App\Application\Exceptions\Auth\Password\InvalidResetPasswordToken;
+use App\Application\Exceptions\Auth\Password\InvalidVerifyPasswordCode;
+use App\Application\Exceptions\Auth\RegistrationConflict;
 use Illuminate\Http\JsonResponse;
 use App\Utils\Mappers\In\Auth\LoginDtoMapper;
-use App\Infrastructure\Exceptions\ApiException;
 use App\Utils\Mappers\In\Auth\RegisterDtoMapper;
 use App\Application\Exceptions\User\UserNotFound;
 use App\Infrastructure\Http\Controllers\Controller;
@@ -31,6 +36,8 @@ class AuthController extends Controller
     /**
      * @param LoginRequest $loginRequest
      * @return JsonResponse
+     * @throws UserNotFound
+     * @throws InvalidPassword
      */
     public function login(LoginRequest $loginRequest): JsonResponse
     {
@@ -46,6 +53,7 @@ class AuthController extends Controller
     /**
      * @param RegisterRequest $registerRequest
      * @return JsonResponse
+     * @throws RegistrationConflict
      */
     public function register(RegisterRequest $registerRequest): JsonResponse
     {
@@ -87,6 +95,7 @@ class AuthController extends Controller
     /**
      * @param ForgotPasswordRequest $forgotPasswordRequest
      * @return Response
+     * @throws UserNotFound
      */
     public function forgotPassword(ForgotPasswordRequest $forgotPasswordRequest): Response
     {
@@ -99,6 +108,8 @@ class AuthController extends Controller
      * @param VerifyPasswordCodeRequest $verifyPasswordCodeRequest
      * @return JsonResponse
      * @throws UserNotFound
+     * @throws ExpiredVerifyPasswordCode
+     * @throws InvalidVerifyPasswordCode
      */
     public function verifyPasswordCode(VerifyPasswordCodeRequest $verifyPasswordCodeRequest): JsonResponse
     {
@@ -114,6 +125,8 @@ class AuthController extends Controller
      * @param ResetPasswordRequest $resetPasswordRequest
      * @return Response
      * @throws UserNotFound
+     * @throws ExpiredResetPasswordToken
+     * @throws InvalidResetPasswordToken
      */
     public function resetPassword(ResetPasswordRequest $resetPasswordRequest): Response
     {

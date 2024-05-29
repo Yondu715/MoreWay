@@ -16,6 +16,7 @@ use Illuminate\Support\Carbon;
  * @property int $id
  * @property string $name
  * @property int $creator_id
+ * @property boolean $is_active
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property Carbon|null $deleted_at
@@ -38,6 +39,7 @@ class Chat extends Model
      */
     protected $fillable = [
         'name',
+        'is_active',
         'creator_id'
     ];
 
