@@ -28,9 +28,10 @@ interface IRouteRepository
 
     /**
      * @param int $routeId
+     * @param int $userId
      * @return RouteDto
      */
-    public function getRouteById(int $routeId): RouteDto;
+    public function getRouteById(int $routeId, int $userId): RouteDto;
 
     /**
      * @param GetRoutesDto $getRoutesDto

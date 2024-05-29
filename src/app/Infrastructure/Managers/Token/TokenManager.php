@@ -12,6 +12,7 @@ use App\Infrastructure\Exceptions\RefreshTokenExpired;
 use App\Utils\Mappers\Out\User\UserDtoMapper;
 use Exception;
 use Illuminate\Support\Facades\Auth;
+use Throwable;
 use Tymon\JWTAuth\JWTGuard;
 
 class TokenManager implements ITokenManager
@@ -30,12 +31,13 @@ class TokenManager implements ITokenManager
 
     /**
      * @return string
+     * @throws RefreshTokenExpired
      */
     public function refreshToken(): string
     {
         try {
             return $this->getAuth()->refresh();
-        } catch (\Throwable) {
+        } catch (Throwable) {
             throw new RefreshTokenExpired();
         }
     }

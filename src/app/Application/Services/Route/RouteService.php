@@ -3,6 +3,7 @@
 namespace App\Application\Services\Route;
 
 use App\Application\Contracts\In\Services\Route\IRouteService;
+use App\Application\Contracts\Out\Managers\Token\ITokenManager;
 use App\Application\Contracts\Out\Repositories\Route\IRouteRepository;
 use App\Application\DTO\Collection\CursorDto;
 use App\Application\DTO\In\Route\ChangeUserRouteDto;
@@ -18,12 +19,14 @@ use App\Application\Exceptions\Route\RouteIsCompleted;
 use App\Application\Exceptions\Route\RouteNameIsTaken;
 use App\Application\Exceptions\Route\UserHaveNotActiveRoute;
 use App\Application\Exceptions\Route\UserRouteProgressNotFound;
+use App\Infrastructure\Exceptions\InvalidToken;
 
 
 class RouteService implements IRouteService
 {
     public function __construct(
-        private readonly IRouteRepository $routeRepository
+        private readonly IRouteRepository $routeRepository,
+        private readonly ITokenManager $tokenManager
     ) {}
 
     /**
@@ -43,10 +46,12 @@ class RouteService implements IRouteService
     /**
      * @param int $routeId
      * @return RouteDto
+     * @throws InvalidToken
      */
     public function getRouteById(int $routeId): RouteDto
     {
-        return $this->routeRepository->getRouteById($routeId);
+
+        return $this->routeRepository->getRouteById($routeId, $this->tokenManager->getAuthUser()->id);
     }
 
     /**

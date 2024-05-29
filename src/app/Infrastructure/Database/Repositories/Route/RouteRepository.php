@@ -89,15 +89,22 @@ class RouteRepository implements IRouteRepository
 
     /**
      * @param int $routeId
+     * @param int $userId
      * @return RouteDto
      * @throws RouteNotFound
      */
-    public function getRouteById(int $routeId): RouteDto
+    public function getRouteById(int $routeId, int $userId): RouteDto
     {
         try {
             /** @var Route $route */
             $route = $this->model->query()->findOrFail($routeId);
-            return RouteDtoMapper::fromRouteModel($route);
+            return RouteDtoMapper::fromRouteModelAndActiveFavorite($route, (boolean) UserActiveRoute::query()->where([
+                'route_id' => $route->id,
+                'user_id' => $userId
+                ])->first(), (boolean) UserFavoriteRoute::query()->where([
+                'route_id' => $route->id,
+                'user_id' => $userId
+            ])->first());
         } catch (Throwable) {
             throw new RouteNotFound();
         }
