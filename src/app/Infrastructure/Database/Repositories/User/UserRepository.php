@@ -2,20 +2,19 @@
 
 namespace App\Infrastructure\Database\Repositories\User;
 
-use App\Application\Contracts\Out\Repositories\User\IUserRepository;
-use App\Application\DTO\Collection\CursorDto;
-use App\Application\DTO\In\Auth\RegisterDto;
-use App\Application\DTO\In\User\ChangeUserAvatarDto;
-use App\Application\DTO\In\User\ChangeUserDataDto;
-use App\Application\DTO\In\User\GetUsersDto;
-use App\Application\DTO\Out\User\UserDto;
-use App\Application\Enums\Role\RoleType;
-use App\Application\Exceptions\User\UserNotFound;
-use App\Infrastructure\Database\Models\Filters\User\UserFilterFactory;
-use App\Infrastructure\Database\Models\User;
-use App\Utils\Mappers\Out\User\UserDtoMapper;
-use Illuminate\Database\Eloquent\Model;
 use Throwable;
+use Illuminate\Database\Eloquent\Model;
+use App\Application\Enums\Role\RoleType;
+use App\Application\DTO\Out\User\UserDto;
+use App\Application\DTO\In\Auth\RegisterDto;
+use App\Application\DTO\In\User\GetUsersDto;
+use App\Infrastructure\Database\Models\User;
+use App\Application\DTO\Collection\CursorDto;
+use App\Utils\Mappers\Out\User\UserDtoMapper;
+use App\Application\Exceptions\User\UserNotFound;
+use App\Application\DTO\In\User\ChangeUserDataDto;
+use App\Application\Contracts\Out\Repositories\User\IUserRepository;
+use App\Infrastructure\Database\Models\Filters\User\UserFilterFactory;
 
 class UserRepository implements IUserRepository
 {
@@ -96,6 +95,10 @@ class UserRepository implements IUserRepository
             'name' => $registerDto->name,
             'email' => $registerDto->email,
             'password' => $registerDto->password
+        ]);
+
+        $user->score()->create([
+            'score' => 0
         ]);
         return UserDtoMapper::fromUserModel($user);
     }
