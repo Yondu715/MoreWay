@@ -36,7 +36,7 @@ class ChatMemberService implements IChatMemberService
     {
         $chat = $this->chatRepository->findById($addMembersDto->chatId);
 
-        $creator = $chat->members->first(fn ($value) => $value->id === $this->tokenManager->getAuthUser()->id);
+        $creator = $chat->members->first(fn ($value) => $value->id === $this->tokenManager->getAuthUser()->user->id);
 
         if (!$creator || $chat->creator->id !== $creator->id) {
             throw new UserIsNotCreator();
@@ -45,7 +45,7 @@ class ChatMemberService implements IChatMemberService
         $members = $this->chatRepository->createMembers($addMembersDto);
 
         foreach ($this->chatRepository->findById($addMembersDto->chatId)->members as $member) {
-            if ($member->id !== $this->tokenManager->getAuthUser()->id) {
+            if ($member->id !== $this->tokenManager->getAuthUser()->user->id) {
                 $this->notifier->sendNotification($member->id, $members);
             }
         }
@@ -66,7 +66,7 @@ class ChatMemberService implements IChatMemberService
     {
         $chat = $this->chatRepository->findById($chatId);
 
-        $creator = $chat->members->first(fn ($value) => $value->id === $this->tokenManager->getAuthUser()->id);
+        $creator = $chat->members->first(fn ($value) => $value->id === $this->tokenManager->getAuthUser()->user->id);
 
         if (!$creator || $chat->creator->id !== $creator->id) {
             throw new UserIsNotCreator();
@@ -77,7 +77,7 @@ class ChatMemberService implements IChatMemberService
         $members = $this->chatRepository->findById($chatId)->members;
 
         foreach ($members as $member) {
-            if ($member->id !== $this->tokenManager->getAuthUser()->id) {
+            if ($member->id !== $this->tokenManager->getAuthUser()->user->id) {
                 $this->notifier->sendNotification($member->id, $members);
             }
         }

@@ -3,18 +3,18 @@
 namespace App\Application\Contracts\In\Services\Auth;
 
 use App\Application\DTO\In\Auth\LoginDto;
-use App\Application\DTO\In\Auth\Password\ForgotPasswordDto;
-use App\Application\DTO\In\Auth\Password\ResetPasswordDto;
-use App\Application\DTO\In\Auth\Password\VerifyPasswordCodeDto;
 use App\Application\DTO\In\Auth\RegisterDto;
-use App\Application\DTO\Out\User\UserDto;
+use App\Application\Dto\Out\User\ExtendedUserDto;
+use App\Application\Exceptions\User\UserNotFound;
 use App\Application\Exceptions\Auth\InvalidPassword;
+use App\Application\Exceptions\Auth\RegistrationConflict;
+use App\Application\DTO\In\Auth\Password\ResetPasswordDto;
+use App\Application\DTO\In\Auth\Password\ForgotPasswordDto;
+use App\Application\DTO\In\Auth\Password\VerifyPasswordCodeDto;
 use App\Application\Exceptions\Auth\Password\ExpiredResetPasswordToken;
 use App\Application\Exceptions\Auth\Password\ExpiredVerifyPasswordCode;
 use App\Application\Exceptions\Auth\Password\InvalidResetPasswordToken;
 use App\Application\Exceptions\Auth\Password\InvalidVerifyPasswordCode;
-use App\Application\Exceptions\Auth\RegistrationConflict;
-use App\Application\Exceptions\User\UserNotFound;
 
 interface IAuthService
 {
@@ -34,9 +34,9 @@ interface IAuthService
     public function register(RegisterDto $registerDto): void;
 
     /**
-     * @return UserDto
+     * @return ExtendedUserDto
      */
-    public function getAuthUser(): UserDto;
+    public function getAuthUser(): ExtendedUserDto;
 
     /**
      * @return void

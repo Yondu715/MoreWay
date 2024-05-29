@@ -36,7 +36,7 @@ class RatingService implements IRatingService
             $extendedRatings->take(5),
             $extendedRatings->first(
                 fn (ExtendedRatingDto $extendedRatingDto) =>
-                $extendedRatingDto->user->id === $this->tokenManager->getAuthUser()->id
+                $extendedRatingDto->user->id === $this->tokenManager->getAuthUser()->user->id
             )
         );
     }

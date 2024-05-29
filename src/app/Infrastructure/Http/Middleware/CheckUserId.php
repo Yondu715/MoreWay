@@ -25,7 +25,7 @@ class CheckUserId
     public function handle(Request $request, Closure $next): Response
     {
         $userId = $request->userId ?? $request->route('userId');
-        if ($this->tokenManager->getAuthUser()->id !== (int)$userId) {
+        if ($this->tokenManager->getAuthUser()->user->id !== (int)$userId) {
             throw new Forbidden();
         }
         return $next($request);

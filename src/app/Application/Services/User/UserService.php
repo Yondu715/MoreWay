@@ -37,7 +37,7 @@ class UserService implements IUserService
     public function getUsers(GetUsersDto $getUsersDto): CursorDto
     {
         $users = $this->userRepository->getAll($getUsersDto);
-        $friendShips = $this->friendshipRepository->getUserFriendships($this->tokenManager->getAuthUser()->id);
+        $friendShips = $this->friendshipRepository->getUserFriendships($this->tokenManager->getAuthUser()->user->id);
 
         $extendedUsers = $users->data->map(function (UserDto $userDto) use ($friendShips) {
             $friend = $friendShips->first(fn (UserDto $friend) => $friend->id === $userDto->id);

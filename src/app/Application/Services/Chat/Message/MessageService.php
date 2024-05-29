@@ -34,7 +34,7 @@ class MessageService implements IMessageService
     public function createMessage(AddMessageDto $addMessageDto): MessageDto
     {
         $chat = $this->chatRepository->findById($addMessageDto->chatId);
-        $member = $chat->members->first(fn ($value) => $value->id === $this->tokenManager->getAuthUser()->id);
+        $member = $chat->members->first(fn ($value) => $value->id === $this->tokenManager->getAuthUser()->user->id);
 
         if (!$member) {
             throw new UserIsNotChatMember();
@@ -61,7 +61,7 @@ class MessageService implements IMessageService
     public function getMessages(GetMessagesDto $getMessagesDto): CursorDto
     {
         $chat = $this->chatRepository->findById($getMessagesDto->chatId);
-        $member = $chat->members->first(fn ($value) => $value->id === $this->tokenManager->getAuthUser()->id);
+        $member = $chat->members->first(fn ($value) => $value->id === $this->tokenManager->getAuthUser()->user->id);
 
         if (!$member) {
             throw new UserIsNotChatMember();

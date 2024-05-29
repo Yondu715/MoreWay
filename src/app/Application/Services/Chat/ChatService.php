@@ -59,7 +59,7 @@ class ChatService implements IChatService
     public function getChat(int $chatId): ChatDto
     {
         $chat = $this->chatRepository->findById($chatId);
-        $member = $chat->members->first(fn ($value) => $value->id === $this->tokenManager->getAuthUser()->id);
+        $member = $chat->members->first(fn ($value) => $value->id === $this->tokenManager->getAuthUser()->user->id);
 
         if (!$member) {
             throw new UserIsNotChatMember();

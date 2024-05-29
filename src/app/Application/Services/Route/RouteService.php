@@ -50,8 +50,7 @@ class RouteService implements IRouteService
      */
     public function getRouteById(int $routeId): RouteDto
     {
-
-        return $this->routeRepository->getRouteById($routeId, $this->tokenManager->getAuthUser()->id);
+        return $this->routeRepository->getRouteById($routeId, $this->tokenManager->getAuthUser()->user->id);
     }
 
     /**

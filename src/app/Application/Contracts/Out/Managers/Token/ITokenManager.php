@@ -5,6 +5,7 @@ namespace App\Application\Contracts\Out\Managers\Token;
 use App\Application\DTO\In\Auth\LoginDto;
 use App\Application\DTO\Out\User\UserDto;
 use App\Infrastructure\Exceptions\InvalidToken;
+use App\Application\Dto\Out\User\ExtendedUserDto;
 
 interface ITokenManager
 {
@@ -25,10 +26,10 @@ interface ITokenManager
     public function destroyToken(): void;
 
     /**
-     * @return UserDto
+     * @return ExtendedUserDto
      * @throws InvalidToken
      */
-    public function getAuthUser(): UserDto;
+    public function getAuthUser(): ExtendedUserDto;
 
     /**
      * @param string $role

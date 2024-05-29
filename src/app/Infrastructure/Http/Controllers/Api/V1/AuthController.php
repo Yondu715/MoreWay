@@ -23,6 +23,7 @@ use App\Utils\Mappers\In\Auth\Password\VerifyPasswordCodeDtoMapper;
 use App\Infrastructure\Http\Requests\Auth\Password\ResetPasswordRequest;
 use App\Infrastructure\Http\Requests\Auth\Password\ForgotPasswordRequest;
 use App\Infrastructure\Http\Requests\Auth\Password\VerifyPasswordCodeRequest;
+use App\Infrastructure\Http\Resources\User\AuthUserResource;
 use Illuminate\Http\Response;
 
 class AuthController extends Controller
@@ -65,9 +66,9 @@ class AuthController extends Controller
     /**
      * @return UserResource
      */
-    public function me(): UserResource
+    public function me(): AuthUserResource
     {
-        return UserResource::make(
+        return AuthUserResource::make(
             $this->authService->getAuthUser()
         );
     }

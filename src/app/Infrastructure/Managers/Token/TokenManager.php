@@ -2,18 +2,19 @@
 
 namespace App\Infrastructure\Managers\Token;
 
-use App\Application\Contracts\Out\Managers\Token\ITokenManager;
+use Exception;
+use Throwable;
+use Tymon\JWTAuth\JWTGuard;
+use Illuminate\Support\Facades\Auth;
 use App\Application\DTO\In\Auth\LoginDto;
 use App\Application\DTO\Out\User\UserDto;
 use App\Infrastructure\Database\Models\User;
 use App\Infrastructure\Enums\Auth\AuthGuard;
-use App\Infrastructure\Exceptions\InvalidToken;
-use App\Infrastructure\Exceptions\RefreshTokenExpired;
 use App\Utils\Mappers\Out\User\UserDtoMapper;
-use Exception;
-use Illuminate\Support\Facades\Auth;
-use Throwable;
-use Tymon\JWTAuth\JWTGuard;
+use App\Infrastructure\Exceptions\InvalidToken;
+use App\Application\DTO\Out\User\ExtendedUserDto;
+use App\Infrastructure\Exceptions\RefreshTokenExpired;
+use App\Application\Contracts\Out\Managers\Token\ITokenManager;
 
 class TokenManager implements ITokenManager
 {
@@ -51,10 +52,10 @@ class TokenManager implements ITokenManager
     }
 
     /**
-     * @return UserDto
+     * @return ExtendedUserDto
      * @throws Exception
      */
-    public function getAuthUser(): UserDto
+    public function getAuthUser(): ExtendedUserDto
     {
         /** @var ?User $user */
         $user = $this->getAuth()->user();
@@ -63,7 +64,10 @@ class TokenManager implements ITokenManager
             throw new InvalidToken();
         }
 
-        return UserDtoMapper::fromUserModel($user);
+        return new ExtendedUserDto(
+            user: UserDtoMapper::fromUserModel($user),
+            score: $user->score->score
+        );
     }
 
     /**

@@ -33,7 +33,7 @@ class ChatActivityService implements IChatActivityService
     public function getActivity(int $chatId): RouteDto
     {
         $chat = $this->chatRepository->findById($chatId);
-        $member = $chat->members->first(fn ($value) => $value->id === $this->tokenManager->getAuthUser()->id);
+        $member = $chat->members->first(fn ($value) => $value->id === $this->tokenManager->getAuthUser()->user->id);
 
         if (!$member) {
             throw new UserIsNotChatMember();
@@ -52,7 +52,7 @@ class ChatActivityService implements IChatActivityService
     public function changeActivity(changeActivityDto $changeActivityDto): RouteDto
     {
         $chat = $this->chatRepository->findById($changeActivityDto->chatId);
-        $creator = $chat->members->first(fn ($value) => $value->id === $this->tokenManager->getAuthUser()->id);
+        $creator = $chat->members->first(fn ($value) => $value->id === $this->tokenManager->getAuthUser()->user->id);
 
         if (!$creator || $chat->creator->id !== $creator->id) {
             throw new UserIsNotCreator();
@@ -61,7 +61,7 @@ class ChatActivityService implements IChatActivityService
         $activity = $this->chatRepository->changeActivity($changeActivityDto);
 
         foreach ($chat->members as $member) {
-            if ($member->id !== $this->tokenManager->getAuthUser()->id) {
+            if ($member->id !== $this->tokenManager->getAuthUser()->user->id) {
                 $this->notifier->sendNotification($member->id, $activity);
             }
         }
