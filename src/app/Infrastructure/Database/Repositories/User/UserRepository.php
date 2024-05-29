@@ -4,7 +4,9 @@ namespace App\Infrastructure\Database\Repositories\User;
 
 use App\Application\Contracts\Out\Repositories\User\IUserRepository;
 use App\Application\DTO\Collection\CursorDto;
+use App\Application\DTO\In\Auth\RegisterDto;
 use App\Application\DTO\In\User\ChangeUserAvatarDto;
+use App\Application\DTO\In\User\ChangeUserDataDto;
 use App\Application\DTO\In\User\GetUsersDto;
 use App\Application\DTO\Out\User\UserDto;
 use App\Application\Enums\Role\RoleType;
@@ -80,30 +82,30 @@ class UserRepository implements IUserRepository
     }
 
     /**
-     * @param UserDto $userDto
+     * @param RegisterDto $userDto
      * @return UserDto
      */
-    public function create(UserDto $userDto): UserDto
+    public function create(RegisterDto $registerDto): UserDto
     {
         /** @var User $user */
         $user = $this->model->query()->create([
-            'name' => $userDto->name,
-            'email' => $userDto->email,
-            'password' => $userDto->password
+            'name' => $registerDto->name,
+            'email' => $registerDto->email,
+            'password' => $registerDto->password
         ]);
         return UserDtoMapper::fromUserModel($user);
     }
 
     /**
-     * @param UserDto $userDto
+     * @param ChangeUserDataDto $userDto
      * @return UserDto
      */
-    public function update(UserDto $userDto): UserDto
+    public function update(ChangeUserDataDto $changeUserDataDto): UserDto
     {
         /** @var User $user */
-        $user = $this->model->query()->find($userDto->id);
+        $user = $this->model->query()->find($changeUserDataDto->userId);
         $user->update([
-            'password' => $userDto->password
+            'name' => $changeUserDataDto->name
         ]);
         return UserDtoMapper::fromUserModel($user->refresh());
     }
@@ -119,6 +121,20 @@ class UserRepository implements IUserRepository
         $user = $this->model->query()->find($userId);
         $user->update([
             'avatar' => $path
+        ]);
+        return UserDtoMapper::fromUserModel($user->refresh());
+    }
+
+    /**
+     * @param int $userId
+     * @param string $password
+     * @return UserDto
+     */
+    public function updatePassword(int $userId, string $password): UserDto
+    {
+        $user = $this->model->query()->find($userId);
+        $user->update([
+            'password' => $password
         ]);
         return UserDtoMapper::fromUserModel($user->refresh());
     }

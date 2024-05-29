@@ -64,10 +64,7 @@ class UserService implements IUserService
             throw new InvalidOldPassword();
         }
 
-        return $this->userRepository->update(new UserDto(
-            id: $changeUserPasswordDto->userId,
-            password: $changeUserPasswordDto->newPassword
-        ));
+        return $this->userRepository->updatePassword($changeUserPasswordDto->userId, $changeUserPasswordDto->newPassword);
     }
 
     /**
@@ -90,9 +87,6 @@ class UserService implements IUserService
      */
     public function changeData(ChangeUserDataDto $changeUserDataDto): UserDto
     {
-        return $this->userRepository->update(new UserDto(
-            id: $changeUserDataDto->userId,
-            name: $changeUserDataDto->name
-        ));
+        return $this->userRepository->update($changeUserDataDto);
     }
 }
