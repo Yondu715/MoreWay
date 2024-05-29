@@ -2,21 +2,21 @@
 
 namespace App\Infrastructure\Http\Controllers\Api\V1;
 
-use App\Application\Exceptions\User\InvalidOldPassword;
-use App\Application\Exceptions\User\UserNotFound;
 use Illuminate\Http\Response;
 use App\Utils\Mappers\In\User\GetUsersDtoMapper;
+use App\Application\Exceptions\User\UserNotFound;
 use App\Infrastructure\Http\Controllers\Controller;
 use App\Utils\Mappers\In\User\ChangeUserDataDtoMapper;
+use App\Application\Exceptions\User\InvalidOldPassword;
 use App\Infrastructure\Http\Resources\User\UserResource;
 use App\Utils\Mappers\In\User\ChangeUserAvatarDtoMapper;
 use App\Infrastructure\Http\Requests\User\GetUsersRequest;
 use App\Utils\Mappers\In\User\ChangeUserPasswordDtoMapper;
 use App\Application\Contracts\In\Services\User\IUserService;
-use App\Infrastructure\Http\Resources\User\UserCursorResource;
 use App\Infrastructure\Http\Requests\User\ChangeUserDataRequest;
 use App\Infrastructure\Http\Requests\User\ChangeUserAvatarRequest;
 use App\Infrastructure\Http\Requests\User\ChangeUserPasswordRequest;
+use App\Infrastructure\Http\Resources\User\ExtendedUserCursorResource;
 
 class UserController extends Controller
 {
@@ -28,12 +28,12 @@ class UserController extends Controller
 
     /**
      * @param GetUsersRequest $getUsersRequest
-     * @return UserCursorResource
+     * @return ExtendedUserCursorResource
      */
-    public function getUsers(GetUsersRequest $getUsersRequest): UserCursorResource
+    public function getUsers(GetUsersRequest $getUsersRequest): ExtendedUserCursorResource
     {
         $getUsersDto = GetUsersDtoMapper::fromRequest($getUsersRequest);
-        return UserCursorResource::make(
+        return ExtendedUserCursorResource::make(
             $this->userService->getUsers($getUsersDto)
         );
     }
