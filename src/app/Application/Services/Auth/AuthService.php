@@ -61,7 +61,7 @@ class AuthService implements IAuthService
     {
         try {
             $this->userRepository->findByEmail($registerDto->email);
-        } catch (\Throwable $th) {
+        } catch (UserNotFound $e) {
             throw new RegistrationConflict();
         }
 
@@ -122,6 +122,8 @@ class AuthService implements IAuthService
      */
     public function verifyPasswordCode(VerifyPasswordCodeDto $verifyPasswordCodeDto): string
     {
+        $user = $this->userRepository->findByEmail($verifyPasswordCodeDto->email);
+
         $resetCode = $this->cacheManager->get('password_reset_' . $verifyPasswordCodeDto->email);
 
         if (!$resetCode) {
@@ -134,7 +136,7 @@ class AuthService implements IAuthService
 
         $resetToken = $this->hashManager->make($verifyPasswordCodeDto->code);
         $this->cacheManager->put(
-            'password_reset_' . $verifyPasswordCodeDto->email,
+            'password_reset_' . $user->email,
             $resetToken,
             300
         );
@@ -152,7 +154,7 @@ class AuthService implements IAuthService
     {
         $user = $this->userRepository->findByEmail($resetPasswordDto->email);
 
-        $resetToken = $this->cacheManager->get('password_reset_' . $resetPasswordDto->email);
+        $resetToken = $this->cacheManager->get('password_reset_' . $user->email);
 
         if (!$resetToken) {
             throw new ExpiredResetPasswordToken();
