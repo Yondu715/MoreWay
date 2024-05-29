@@ -2,12 +2,12 @@
 
 namespace App\Infrastructure\Database\Repositories\Rating;
 
-use App\Application\Contracts\Out\Repositories\Rating\IRatingRepository;
-use App\Application\DTO\Collection\CursorDto;
+use Illuminate\Support\Collection;
+use Illuminate\Database\Eloquent\Model;
 use App\Application\DTO\In\Rating\GetRatingDto;
 use App\Infrastructure\Database\Models\UserScore;
 use App\Utils\Mappers\Out\Rating\RatingDtoMapper;
-use Illuminate\Database\Eloquent\Model;
+use App\Application\Contracts\Out\Repositories\Rating\IRatingRepository;
 
 class RatingRepository implements IRatingRepository
 {
@@ -20,13 +20,16 @@ class RatingRepository implements IRatingRepository
 
     /**
      * @param GetRatingDto $getAchievementsDto
-     * @return CursorDto
+     * @return Collection
      */
-    public function getAll(GetRatingDto $getAchievementsDto): CursorDto
+    public function getAll(GetRatingDto $getAchievementsDto): Collection
     {
-        $paginator = $this->model->query()
+        $rating = $this->model->query()
+            ->with('user')
             ->orderBy('score', 'desc')
-            ->cursorPaginate(perPage: $getAchievementsDto->limit , cursor: $getAchievementsDto->cursor);
-        return RatingDtoMapper::fromPaginator($paginator);
+            ->get();
+        return $rating->map(function (UserScore $userScore) {
+            return RatingDtoMapper::fromUserScoreModel($userScore);
+        });
     }
 }

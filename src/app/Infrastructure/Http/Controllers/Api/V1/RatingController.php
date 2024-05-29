@@ -5,7 +5,7 @@ namespace App\Infrastructure\Http\Controllers\Api\V1;
 use App\Utils\Mappers\In\Rating\GetRatingDtoMapper;
 use App\Infrastructure\Http\Requests\Rating\GetRatingRequest;
 use App\Application\Contracts\In\Services\Rating\IRatingService;
-use App\Infrastructure\Http\Resources\Rating\RatingCursorResource;
+use App\Infrastructure\Http\Resources\Rating\LeaderBoardResource;
 
 class RatingController
 {
@@ -15,12 +15,12 @@ class RatingController
 
     /**
      * @param GetRatingRequest $getRatingRequest
-     * @return RatingCursorResource
+     * @return LeaderBoardResource
      */
-    public function getRating(GetRatingRequest $getRatingRequest): RatingCursorResource
+    public function getRating(GetRatingRequest $getRatingRequest): LeaderBoardResource
     {
         $getAchievementsDto = GetRatingDtoMapper::fromRequest($getRatingRequest);
-        return RatingCursorResource::make(
+        return LeaderBoardResource::make(
             $this->ratingService->getRating($getAchievementsDto)
         );
     }
