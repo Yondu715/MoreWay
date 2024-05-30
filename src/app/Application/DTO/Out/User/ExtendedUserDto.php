@@ -7,17 +7,17 @@ use App\Application\DTO\Out\User\UserDto;
 class ExtendedUserDto
 {
     public readonly UserDto $user;
-    public readonly ?bool $isFriend;
+    public readonly ?string $relationship;
     public readonly ?int $score;
 
     public function __construct(
         UserDto $user,
-        ?bool $isFriend = null,
+        ?string $relationship = null,
         ?int $score = null
     )
     {
         $this->user = $user;
-        $this->isFriend = $isFriend;
+        $this->relationship = $relationship;
         $this->score = $score;
     }
 }

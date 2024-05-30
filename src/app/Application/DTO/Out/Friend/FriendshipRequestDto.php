@@ -2,6 +2,7 @@
 
 namespace App\Application\DTO\Out\Friend;
 
+use App\Application\Dto\Out\Friend\RelationshipTypeDto;
 use App\Application\DTO\Out\User\UserDto;
 
 class FriendshipRequestDto
@@ -11,19 +12,21 @@ class FriendshipRequestDto
     public readonly UserDto $friend;
     public readonly int $userId;
     public readonly int $friendId;
+    public readonly RelationshipTypeDto $type;
 
     public function __construct(
         int $id,
         int $userId,
         int $friendId,
         UserDto $user,
-        UserDto $friend
+        UserDto $friend,
+        RelationshipTypeDto $type
     ) {
         $this->id = $id;
         $this->userId = $userId;
         $this->friendId = $friendId;
         $this->user = $user;
         $this->friend = $friend;
+        $this->type = $type;
     }
-
 }

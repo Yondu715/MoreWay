@@ -126,6 +126,7 @@ class FriendshipRepository implements IFriendshipRepository
             'user_id' => $friendId,
             'friend_id' => $userId
         ])->first();
+        
         $friendship = $friendship1 ?: $friendship2;
         return $friendship ? FriendshipRequestDtoMapper::fromFriendshipModel($friendship) : null;
     }

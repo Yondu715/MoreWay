@@ -16,7 +16,7 @@ class ExtendedUserResource extends JsonResource
     {
         return [
             'user' => ShortUserResource::make($this->user),
-            'isFriend' => $this->isFriend,
+            'relationship' => $this->relationship,
         ];
     } 
 }

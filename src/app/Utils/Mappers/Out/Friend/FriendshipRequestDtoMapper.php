@@ -18,8 +18,9 @@ class FriendshipRequestDtoMapper
             id: $friendship->id,
             userId: $friendship->user_id,
             friendId: $friendship->friend_id,
-            user: UserDtoMapper::fromUserModelToNotify($friendship->user),
-            friend: UserDtoMapper::fromUserModelToNotify($friendship->friend)
+            user: UserDtoMapper::fromUserModel($friendship->user),
+            friend: UserDtoMapper::fromUserModel($friendship->friend),
+            type: RelationshipTypeDtoMapper::fromFriendRelationshipTypeModel($friendship->relationship)
         );
     }
 }
