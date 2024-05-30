@@ -23,7 +23,7 @@ class ChatDtoMapper
             id: $chat->id,
             name: $chat->name,
             isActive: $chat->is_active,
-            creator: UserDtoMapper::fromUserModelToNotify($chat->creator),
+            creator: UserDtoMapper::fromUserModel($chat->creator),
             members: UserDtoMapper::fromChatMemberCollection($chat->members),
             messages: MessageDtoMapper::fromChatMessageCollection($chat->messages),
             activity: RouteDtoMapper::fromRouteModel($chat->activeRoute->route)

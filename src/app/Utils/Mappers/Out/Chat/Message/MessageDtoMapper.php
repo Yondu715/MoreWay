@@ -22,7 +22,7 @@ class MessageDtoMapper
             id: $message->id,
             message: $message->text,
             createdAt: $message->created_at->format('Y-m-d H:i:s'),
-            sender: UserDtoMapper::fromUserModelToNotify($message->sender),
+            sender: UserDtoMapper::fromUserModel($message->sender),
         );
     }
 
