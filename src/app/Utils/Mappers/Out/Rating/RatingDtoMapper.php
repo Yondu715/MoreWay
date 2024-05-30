@@ -2,12 +2,9 @@
 
 namespace App\Utils\Mappers\Out\Rating;
 
-use App\Application\DTO\Collection\CursorDto;
 use App\Application\DTO\Out\Rating\RatingDto;
-use App\Infrastructure\Database\Models\UserScore;
-use App\Utils\Mappers\Collection\CursorDtoMapper;
 use App\Utils\Mappers\Out\User\UserDtoMapper;
-use Illuminate\Pagination\CursorPaginator;
+use App\Infrastructure\Database\Models\UserScore;
 
 class RatingDtoMapper
 {
@@ -20,17 +17,7 @@ class RatingDtoMapper
         return new RatingDto(
             user: UserDtoMapper::fromUserModel($userScore->user),
             score: $userScore->score,
+            position: $userScore->position
         );
-    }
-
-    /**
-     * @param CursorPaginator $paginator
-     * @return CursorDto
-     */
-    public static function fromPaginator(CursorPaginator $paginator): CursorDto
-    {
-        return CursorDtoMapper::fromPaginatorAndMapper($paginator, function (UserScore $userScore) {
-            return self::fromUserScoreModel($userScore);
-        });
     }
 }

@@ -2,13 +2,13 @@
 
 namespace App\Infrastructure\Http\Resources\Rating;
 
-use App\Application\DTO\Out\Rating\ExtendedRatingDto;
+use App\Application\DTO\Out\Rating\RatingDto;
 use App\Infrastructure\Http\Resources\User\ShortUserResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /**
- * @mixin ExtendedRatingDto
+ * @mixin RatingDto
  */
 class RatingResource extends JsonResource
 {
