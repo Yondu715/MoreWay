@@ -4,6 +4,8 @@ namespace App\Application\Services\Auth;
 
 use Exception;
 use App\Application\DTO\In\Auth\LoginDto;
+use App\Application\DTO\Out\User\UserDto;
+use App\Application\Enums\Auth\PasswordKey;
 use App\Application\DTO\In\Auth\RegisterDto;
 use App\Application\DTO\Out\User\ExtendedUserDto;
 use App\Application\Exceptions\User\UserNotFound;
@@ -54,10 +56,10 @@ class AuthService implements IAuthService
 
     /**
      * @param RegisterDto $registerDto
-     * @return void
+     * @return UserDto
      * @throws RegistrationConflict
      */
-    public function register(RegisterDto $registerDto): void
+    public function register(RegisterDto $registerDto): UserDto
     {
         try {
             $this->userRepository->findByEmail($registerDto->email);
@@ -65,7 +67,7 @@ class AuthService implements IAuthService
             throw new RegistrationConflict();
         }
 
-        $this->userRepository->create($registerDto);
+        return $this->userRepository->create($registerDto);
     }
 
     /**
@@ -105,7 +107,7 @@ class AuthService implements IAuthService
         $resetCode = str_pad(mt_rand(0, 9999), 4, 0, STR_PAD_LEFT);
 
         $this->cacheManager->put(
-            'password_reset_' . $user->email,
+            PasswordKey::RESET_PASSWORD->value . '_' . $user->email,
             $resetCode,
             300
         );
@@ -124,7 +126,7 @@ class AuthService implements IAuthService
     {
         $user = $this->userRepository->findByEmail($verifyPasswordCodeDto->email);
 
-        $resetCode = $this->cacheManager->get('password_reset_' . $verifyPasswordCodeDto->email);
+        $resetCode = $this->cacheManager->get(PasswordKey::RESET_PASSWORD->value . '_' . $verifyPasswordCodeDto->email);
 
         if (!$resetCode) {
             throw new ExpiredVerifyPasswordCode();
@@ -136,7 +138,7 @@ class AuthService implements IAuthService
 
         $resetToken = $this->hashManager->make($verifyPasswordCodeDto->code);
         $this->cacheManager->put(
-            'password_reset_' . $user->email,
+            PasswordKey::RESET_PASSWORD->value . '_' . $user->email,
             $resetToken,
             300
         );
@@ -154,7 +156,7 @@ class AuthService implements IAuthService
     {
         $user = $this->userRepository->findByEmail($resetPasswordDto->email);
 
-        $resetToken = $this->cacheManager->get('password_reset_' . $user->email);
+        $resetToken = $this->cacheManager->get(PasswordKey::RESET_PASSWORD->value . '_' . $user->email);
 
         if (!$resetToken) {
             throw new ExpiredResetPasswordToken();

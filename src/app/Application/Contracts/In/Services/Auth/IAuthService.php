@@ -3,6 +3,7 @@
 namespace App\Application\Contracts\In\Services\Auth;
 
 use App\Application\DTO\In\Auth\LoginDto;
+use App\Application\DTO\Out\User\UserDto;
 use App\Application\DTO\In\Auth\RegisterDto;
 use App\Application\Dto\Out\User\ExtendedUserDto;
 use App\Application\Exceptions\User\UserNotFound;
@@ -28,10 +29,10 @@ interface IAuthService
 
     /**
      * @param RegisterDto $registerDto
-     * @return void
+     * @return UserDto
      * @throws RegistrationConflict
      */
-    public function register(RegisterDto $registerDto): void;
+    public function register(RegisterDto $registerDto): UserDto;
 
     /**
      * @return ExtendedUserDto
