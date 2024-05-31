@@ -2,7 +2,10 @@
 
 namespace App\Infrastructure\Database\Repositories\Route;
 
+use App\Application\DTO\Out\Route\Point\PointDto;
+use App\Application\Exceptions\Route\Point\RoutePointNotFound;
 use App\Application\Exceptions\Route\RouteNotFound;
+use App\Utils\Mappers\Out\Route\Point\PointDtoMapper;
 use Exception;
 use Throwable;
 use Illuminate\Database\Eloquent\Model;
@@ -80,7 +83,7 @@ class RouteRepository implements IRouteRepository
 
             $this->transactionManager->commit();
 
-            return RouteDtoMapper::fromRouteModel($route);
+            return RouteDtoMapper::fromRouteModelAndActiveFavorite($route, false, false);
         } catch (Exception $exception) {
             $this->transactionManager->rollback();
             throw $exception;
@@ -111,6 +114,47 @@ class RouteRepository implements IRouteRepository
     }
 
     /**
+     * @param int $routePointId
+     * @param int $userId
+     * @return ActiveRouteDto
+     * @throws RouteNotFound
+     */
+    public function getActiveRouteByRoutePointIdAndUserId(int $routePointId, int $userId): ActiveRouteDto
+    {
+        try {
+            /** @var RoutePoint $routePoint */
+            $routePoint = RoutePoint::query()->findOrFail($routePointId);
+
+            /** @var UserActiveRoute $route */
+            $route = UserActiveRoute::query()->where([
+                'route_id' => $routePoint->route->id,
+                'user_id' => $userId
+            ])->firstOrFail();
+
+            return RouteDtoMapper::fromActiveRouteModel($route);
+        } catch (Throwable) {
+            throw new RouteNotFound();
+        }
+    }
+
+    /**
+     * @param int $routePointId
+     * @return PointDto
+     * @throws RoutePointNotFound
+     */
+    public function getRoutePointById(int $routePointId): PointDto
+    {
+        try {
+            /** @var RoutePoint $routePoint */
+            $routePoint = RoutePoint::query()->findOrFail($routePointId);
+
+            return PointDtoMapper::fromPointModel($routePoint);
+        } catch (Throwable) {
+            throw new RoutePointNotFound();
+        }
+    }
+
+    /**
      * @param GetRoutesDto $getRoutesDto
      * @return CursorDto
      */
@@ -127,7 +171,7 @@ class RouteRepository implements IRouteRepository
      * @return void
      * @throws UserRouteProgressNotFound
      * @throws IncorrectOrderRoutePoints
-     * @throws RouteNotFound
+     * @throws RoutePointNotFound
      */
     public function changeUserRouteProgress(CompletedRoutePointDto $completedRoutePointDto): void
     {
@@ -147,7 +191,7 @@ class RouteRepository implements IRouteRepository
             ->first();
 
         if (!$routePoint) {
-            throw new RouteNotFound();
+            throw new RoutePointNotFound();
         }
 
         $route = $routePoint->route;
@@ -155,11 +199,9 @@ class RouteRepository implements IRouteRepository
         if ($route->routePoints->pluck('id')->min() !== $completedRoutePointDto->routePointId) {
             /** @var UserRouteProgress $prevRoutePoint */
             $prevRoutePoint = UserRouteProgress::query()
-                ->where([
-                    'user_id' => $completedRoutePointDto->userId,
-                    'route_point_id' => $completedRoutePointDto->routePointId - 1,
-                    'is_completed' => true
-                ])
+                ->where('user_id', $completedRoutePointDto->userId)
+                ->where('route_point_id', $completedRoutePointDto->routePointId - 1)
+                ->where('is_completed', true)
                 ->first();
 
             if (!$prevRoutePoint) {
@@ -169,10 +211,8 @@ class RouteRepository implements IRouteRepository
 
         /** @var UserRouteProgress $routePointProgress */
         $routePointProgress = UserRouteProgress::query()
-            ->where([
-                'user_id' => $completedRoutePointDto->userId,
-                'route_point_id' => $completedRoutePointDto->routePointId
-            ])
+            ->where('user_id', $completedRoutePointDto->userId)
+            ->where('route_point_id', $completedRoutePointDto->routePointId)
             ->first();
 
         if (!$routePointProgress) {
@@ -182,11 +222,9 @@ class RouteRepository implements IRouteRepository
         $routePointProgress->update(['is_completed' => true]);
 
         $userProgresses = UserRouteProgress::query()
-            ->where([
-                'user_id' => $completedRoutePointDto->userId,
-                'route_point_id' => $route->routePoints->pluck('id')
-            ])
+            ->where('user_id', $completedRoutePointDto->userId)
             ->whereIn('route_point_id', $route->routePoints->pluck('id'))
+            ->where('is_completed', true)
             ->count();
 
         if ($userProgresses === $route->routePoints->count()) {
@@ -247,50 +285,44 @@ class RouteRepository implements IRouteRepository
     }
 
     /**
-     * @param ChangeUserRouteDto $changeActiveUserRouteDto
-     * @return ActiveRouteDto
      * @throws RouteIsCompleted
      */
-    public function changeActiveUserRoute(ChangeUserRouteDto $changeActiveUserRouteDto): ActiveRouteDto
+    public function changeActiveUserRoute(int $userId, int $routeId, bool $isGroup): ActiveRouteDto
     {
-        /** @var Route $route */
         $route = $this->model->query()
-            ->where('id', $changeActiveUserRouteDto->routeId)
+            ->where('id', $routeId)
+            ->get()
             ->first();
 
         $userActiveRoute = UserRouteProgress::query()
-            ->where('user_id', $changeActiveUserRouteDto->userId)
+            ->where('user_id', $userId)
             ->whereIn('route_point_id', $route->routePoints->pluck('id'))
             ->get();
 
-        if (
-            $userActiveRoute
-            ->where("is_completed", true)
-            ->count() === $route->routePoints->count()
-        ) {
+        if($userActiveRoute->where("is_completed", true)
+                ->count() === $route->routePoints->count()){
             throw new RouteIsCompleted();
         }
 
-        if (UserRouteProgress::query()
-            ->where('user_id', $changeActiveUserRouteDto->userId)
+        if(UserRouteProgress::query()
+            ->where('user_id', $userId)
             ->whereIn('route_point_id', $route->routePoints->pluck('id'))
-            ->get()->isEmpty()
-        ) {
-            $route->routePoints()->each(function ($routePoint) use ($changeActiveUserRouteDto) {
+            ->get()->isEmpty()) {
+            $route->routePoints()->each(function ($routePoint) use ($userId, $isGroup) {
                 UserRouteProgress::query()->create([
-                    'user_id' => $changeActiveUserRouteDto->userId,
-                    'route_point_id' => $routePoint->id,
+                    'user_id' => $userId,
+                    'route_point_id' => $routePoint->id
                 ]);
             });
         }
 
-        /** @var UserActiveRoute $route */
         $route = UserActiveRoute::query()
             ->updateOrCreate([
-                'user_id' => $changeActiveUserRouteDto->userId,
+                'user_id' => $userId,
             ], [
-                'route_id' =>  $changeActiveUserRouteDto->routeId,
-            ])->first();
+                'route_id' =>  $routeId,
+                'is_group' => $isGroup,
+            ])->get()->first();
         return RouteDtoMapper::fromActiveRouteModel($route);
     }
 

@@ -164,7 +164,6 @@ Route::prefix('chats')
                 Route::prefix('/votes')
                     ->group(function () {
                         Route::put('/activity', [ChatController::class, 'changeVoteActivity']);
-                        Route::put('/activity-point', [ChatController::class, 'changeVoteActivityPoint']);
                     });
             });
     });

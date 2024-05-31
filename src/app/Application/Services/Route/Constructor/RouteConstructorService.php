@@ -8,7 +8,9 @@ use App\Application\DTO\In\Route\Constructor\ChangeUserRouteConstructorDto;
 use App\Application\DTO\In\Route\Constructor\GetUserRouteConstructorDto;
 use App\Application\DTO\Out\Route\Constructor\RouteConstructorDto;
 use App\Application\Exceptions\Route\Constructor\InvalidRoutePointIndex;
-use App\Domain\Contracts\In\DomainManagers\IDistanceManager;use App\Domain\Factories\Distance\DistanceManagerFactory;use Throwable;
+use App\Domain\Contracts\In\DomainManagers\IDistanceManager;
+use App\Domain\Factories\Distance\DistanceManagerFactory;
+use Throwable;
 
 class RouteConstructorService implements IRouteConstructorService
 {

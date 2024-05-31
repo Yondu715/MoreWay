@@ -2,12 +2,17 @@
 
 namespace App\Infrastructure\Http\Controllers\Api\V1;
 
+use App\Application\Contracts\In\Services\Chat\Vote\IChatVoteService;
 use App\Application\Exceptions\Chat\Activity\FailedToChangeActivity;
 use App\Application\Exceptions\Chat\Activity\FailedToGetActivity;
+use App\Application\Exceptions\Chat\ChatNotFound;
 use App\Application\Exceptions\Chat\FailedToCreateChat;
 use App\Application\Exceptions\Chat\Members\FailedToAddMembers;
 use App\Application\Exceptions\Chat\Members\FailedToDeleteMember;
 use App\Application\Exceptions\Chat\Message\FailedToGetMessages;
+use App\Application\Exceptions\Chat\SomeMembersHaveActiveChat;
+use App\Application\Exceptions\Chat\SomeMembersHaveProgressActivity;
+use App\Application\Exceptions\Route\RouteIsCompleted;
 use App\Infrastructure\Exceptions\Forbidden;
 use App\Infrastructure\Exceptions\InvalidToken;
 use Illuminate\Http\Response;
@@ -40,7 +45,8 @@ class ChatController
         private readonly IChatService $chatService,
         private readonly IMessageService $messageService,
         private readonly IChatActivityService $activityService,
-        private readonly IChatMemberService $memberService
+        private readonly IChatMemberService $memberService,
+        private readonly IChatVoteService $voteService,
     ) {
     }
 
@@ -80,6 +86,20 @@ class ChatController
         return ChatResource::make(
             $this->chatService->getChat($chatId)
         );
+    }
+
+    /**
+     * @param int $chatId
+     * @return void
+     * @throws InvalidToken
+     * @throws ChatNotFound
+     * @throws SomeMembersHaveActiveChat
+     * @throws SomeMembersHaveProgressActivity
+     * @throws RouteIsCompleted
+     */
+    public function changeVoteActivity(int $chatId): void
+    {
+        $this->voteService->changeVoteActivity($chatId);
     }
 
     /**

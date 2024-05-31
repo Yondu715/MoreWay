@@ -51,8 +51,14 @@ interface IChatRepository
     public function findById(int $chatId): ChatDto;
 
     /**
-     * @param AddMembersDto $addMembersDto
      * @param int $userId
+     * @return ChatDto
+     * @throws ChatNotFound
+     */
+    public function getUserActiveChat(int $userId): ChatDto;
+
+    /**
+     * @param AddMembersDto $addMembersDto
      * @return Collection<int, UserDto>
      * @throws FailedToAddMembers
      */
@@ -68,7 +74,6 @@ interface IChatRepository
 
     /**
      * @param int $chatId
-     * @param int $userId
      * @return RouteDto
      * @throws FailedToGetActivity
      */
@@ -80,4 +85,25 @@ interface IChatRepository
      * @throws FailedToChangeActivity
      */
     public function changeActivity(ChangeActivityDto $changeActivityDto): RouteDto;
+
+    /**
+     * @param int $chatId
+     * @return bool
+     * @throws ChatNotFound
+     */
+    public function checkMembersChatNotHaveActivity(int $chatId): bool;
+
+    /**
+     * @param int $chatId
+     * @return bool
+     * @throws ChatNotFound
+     */
+    public function checkMembersChatHaveProgressActivity(int $chatId): bool;
+
+    /**
+     * @param int $chatId
+     * @return void
+     * @throws ChatNotFound
+     */
+    public function changeChatActive(int $chatId): void;
 }

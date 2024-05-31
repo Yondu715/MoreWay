@@ -8,6 +8,7 @@ use App\Application\Contracts\In\Services\Chat\Activity\IChatActivityService;
 use App\Application\Contracts\In\Services\Chat\IChatService;
 use App\Application\Contracts\In\Services\Chat\Member\IChatMemberService;
 use App\Application\Contracts\In\Services\Chat\Message\IMessageService;
+use App\Application\Contracts\In\Services\Chat\Vote\IChatVoteService;
 use App\Application\Contracts\In\Services\Friend\IFriendshipService;
 use App\Application\Contracts\In\Services\Place\Filter\IPlaceFilterService;
 use App\Application\Contracts\In\Services\Place\IPlaceService;
@@ -45,6 +46,7 @@ use App\Application\Services\Chat\Activity\ChatActivityService;
 use App\Application\Services\Chat\ChatService;
 use App\Application\Services\Chat\Member\ChatMemberService;
 use App\Application\Services\Chat\Message\MessageService;
+use App\Application\Services\Chat\Vote\ChatVoteService;
 use App\Application\Services\Friend\FriendshipService;
 use App\Application\Services\Place\Filter\PlaceFilterService;
 use App\Application\Services\Place\PlaceService;
@@ -55,6 +57,9 @@ use App\Application\Services\Route\Filter\RouteFilterService;
 use App\Application\Services\Route\Review\RouteReviewService;
 use App\Application\Services\Route\RouteService;
 use App\Application\Services\User\UserService;
+use App\Domain\Contracts\In\DomainManagers\IDistanceManager;
+use App\Domain\Managers\Distance\DistanceManager;
+use App\Infrastructure\Database\Models\Route;
 use App\Infrastructure\Database\Repositories\Achievement\AchievementRepository;
 use App\Infrastructure\Database\Repositories\Achievement\Type\AchievementTypeRepository;
 use App\Infrastructure\Database\Repositories\Achievement\UserAchievement\UserAchievementRepository;
@@ -81,6 +86,8 @@ use App\Infrastructure\WebSocket\Notifiers\Notification\Chat\Activity\ChatActivi
 use App\Infrastructure\WebSocket\Notifiers\Notification\Chat\ChatNotifier;
 use App\Infrastructure\WebSocket\Notifiers\Notification\Chat\Member\ChatMemberNotifier;
 use App\Infrastructure\WebSocket\Notifiers\Notification\Chat\Message\MessageNotifier;
+use App\Infrastructure\WebSocket\Notifiers\Notification\Chat\Vote\Activity\ActivityNotifier;
+use App\Infrastructure\WebSocket\Notifiers\Notification\Chat\Vote\Activity\Point\ActivityPointNotifier;
 use App\Infrastructure\WebSocket\Notifiers\Notification\Friend\FriendNotifier;
 use Illuminate\Support\ServiceProvider;
 
@@ -105,6 +112,7 @@ class AppServiceProvider extends ServiceProvider
         IMessageService::class => MessageService::class,
         IChatActivityService::class => ChatActivityService::class,
         IChatMemberService::class => ChatMemberService::class,
+        IChatVoteService::class => ChatVoteService::class,
 
         /** REPOSITORIES */
         IUserRepository::class => UserRepository::class,
@@ -130,7 +138,7 @@ class AppServiceProvider extends ServiceProvider
         IMailManager::class => MailManager::class,
         IHashManager::class => HashManager::class,
         ITransactionManager::class => TransactionManager::class,
-
+        IDistanceManager::class => DistanceManager::class
     ];
 
 
@@ -150,6 +158,12 @@ class AppServiceProvider extends ServiceProvider
         ],
         ChatMemberService::class => [
             INotifierManager::class => ChatMemberNotifier::class,
+        ],
+        RouteService::class => [
+            INotifierManager::class => ActivityPointNotifier::class,
+        ],
+        ChatVoteService::class => [
+            INotifierManager::class => ActivityNotifier::class,
         ],
     ];
 

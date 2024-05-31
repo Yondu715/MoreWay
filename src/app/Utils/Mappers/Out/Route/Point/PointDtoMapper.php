@@ -3,6 +3,7 @@
 namespace App\Utils\Mappers\Out\Route\Point;
 
 use App\Application\DTO\Out\Route\Point\PointDto;
+use App\Application\DTO\Out\Route\RouteDto;
 use App\Infrastructure\Database\Models\RouteConstructorPoint;
 use App\Infrastructure\Database\Models\RoutePoint;
 use App\Utils\Mappers\Out\Place\PlaceDtoMapper;
@@ -30,5 +31,14 @@ class PointDtoMapper
                     ->first()->is_completed : false
             );
         });
+    }
+
+    public static function fromPointModel(RoutePoint $routePoint): PointDto
+    {
+        return new PointDto(
+            id: $routePoint->id,
+            index: $routePoint->index,
+            place: PlaceDtoMapper::fromPlaceModel($routePoint->place),
+        );
     }
 }
