@@ -16,11 +16,9 @@ return new class extends Migration
             $table->string('name');
             $table->text('description');
             $table->integer('target');
-            $table->unsignedBigInteger('type_id');
+            $table->foreignId('type_id')->constrained('achievement_types')->cascadeOnUpdate();
             $table->string('image');
             $table->timestamps();
-
-            $table->foreign('type_id')->references('id')->on('achievement_types')->cascadeOnUpdate();
 
             $table->softDeletes();
         });

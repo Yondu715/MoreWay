@@ -14,16 +14,12 @@ return new class extends Migration
         Schema::create('route_constructor_points', function (Blueprint $table) {
             $table->id();
             $table->integer('index');
-            $table->unsignedBigInteger('place_id');
-            $table->unsignedBigInteger('constructor_id');
+            $table->foreignId('place_id')->constrained('places')->cascadeOnUpdate()->cascadeOnDelete();
+            $table->foreignId('constructor_id')->constrained('route_constructors')->cascadeOnUpdate()->cascadeOnDelete();
             $table->timestamps();
 
             $table->unique(['place_id', 'constructor_id']);
             $table->unique(['index', 'constructor_id']);
-
-            $table->foreign('place_id')->references('id')->on('places')->cascadeOnUpdate();
-            $table->foreign('constructor_id')->references('id')->on('route_constructors')->cascadeOnUpdate()->cascadeOnDelete();
-
             $table->softDeletes();
         });
     }

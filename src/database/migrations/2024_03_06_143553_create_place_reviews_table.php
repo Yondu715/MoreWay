@@ -14,16 +14,12 @@ return new class extends Migration
         Schema::create('place_reviews', function (Blueprint $table) {
             $table->id();
             $table->text('text')->nullable();
-            $table->unsignedBigInteger('author_id');
-            $table->unsignedBigInteger('place_id');
+            $table->foreignId('author_id')->constrained('users')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('place_id')->constrained('places')->cascadeOnDelete()->cascadeOnUpdate();
             $table->unsignedInteger('rating');
             $table->timestamps();
 
             $table->unique(['author_id', 'place_id']);
-
-            $table->foreign('author_id')->references('id')->on('users')->cascadeOnUpdate();
-            $table->foreign('place_id')->references('id')->on('places')->cascadeOnDelete()->cascadeOnUpdate();
-
             $table->softDeletes();
         });
     }

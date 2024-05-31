@@ -14,16 +14,12 @@ return new class extends Migration
         Schema::create('route_reviews', function (Blueprint $table) {
             $table->id();
             $table->text('text')->nullable();
-            $table->unsignedBigInteger('author_id');
-            $table->unsignedBigInteger('route_id');
+            $table->foreignId('author_id')->constrained('users')->cascadeOnUpdate();
+            $table->foreignId('route_id')->constrained('routes')->cascadeOnUpdate()->cascadeOnDelete();
             $table->unsignedInteger('rating');
             $table->timestamps();
 
             $table->unique(['author_id', 'route_id']);
-
-            $table->foreign('author_id')->references('id')->on('users')->cascadeOnUpdate();
-            $table->foreign('route_id')->references('id')->on('routes')->cascadeOnUpdate()->cascadeOnDelete();
-
             $table->softDeletes();
         });
     }

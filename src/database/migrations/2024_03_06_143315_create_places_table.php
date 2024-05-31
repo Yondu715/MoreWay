@@ -17,15 +17,11 @@ return new class extends Migration
             $table->text('description');
             $table->double('lat');
             $table->double('lon');
-            $table->unsignedBigInteger('locality_id');
-            $table->unsignedBigInteger('type_id');
+            $table->foreignId('locality_id')->constrained('localities')->cascadeOnUpdate();
+            $table->foreignId('type_id')->constrained('place_types')->cascadeOnUpdate();
             $table->timestamps();
 
             $table->unique(['lat', 'lon']);
-
-            $table->foreign('locality_id')->references('id')->on('localities')->cascadeOnUpdate();
-            $table->foreign('type_id')->references('id')->on('place_types')->cascadeOnUpdate();
-
             $table->softDeletes();
         });
     }

@@ -14,10 +14,8 @@ return new class extends Migration
         Schema::create('place_images', function (Blueprint $table) {
             $table->id();
             $table->string('image');
-            $table->unsignedBigInteger('place_id');
+            $table->foreignId('place_id')->constrained('places')->cascadeOnDelete()->cascadeOnUpdate();
             $table->timestamps();
-
-            $table->foreign('place_id')->references('id')->on('places')->cascadeOnDelete()->cascadeOnUpdate();
 
             $table->softDeletes();
         });

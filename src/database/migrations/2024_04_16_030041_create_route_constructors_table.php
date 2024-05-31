@@ -13,10 +13,8 @@ return new class extends Migration
     {
         Schema::create('route_constructors', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('creator_id')->unique();
+            $table->foreignId('creator_id')->constrained('users')->cascadeOnUpdate()->cascadeOnDelete();
             $table->timestamps();
-
-            $table->foreign('creator_id')->references('id')->on('users')->cascadeOnUpdate();
 
             $table->softDeletes();
         });

@@ -14,16 +14,11 @@ return new class extends Migration
         Schema::create('user_active_routes', function (Blueprint $table) {
             $table->id();
             $table->boolean('is_group')->default(false);
-            $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('route_id');
+            $table->foreignId('user_id')->constrained('users')->cascadeOnUpdate()->cascadeOnDelete();
+            $table->foreignId('route_id')->constrained('routes')->cascadeOnUpdate()->cascadeOnDelete();
             $table->timestamps();
 
             $table->unique(['user_id', 'route_id']);
-
-            $table->foreign('user_id')->references('id')->on('users')->cascadeOnUpdate()->cascadeOnDelete();
-            $table->foreign('route_id')->references('id')->on('routes')->cascadeOnUpdate()->cascadeOnDelete();
-
-            $table->softDeletes();
         });
     }
 

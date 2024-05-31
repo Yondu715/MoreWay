@@ -14,10 +14,8 @@ return new class extends Migration
         Schema::create('routes', function (Blueprint $table) {
             $table->id();
             $table->string('name')->unique();
-            $table->unsignedBigInteger('creator_id');
+            $table->foreignId('creator_id')->constrained('users')->cascadeOnUpdate();
             $table->timestamps();
-
-            $table->foreign('creator_id')->references('id')->on('users')->cascadeOnUpdate();
 
             $table->softDeletes();
         });

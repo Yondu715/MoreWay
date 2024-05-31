@@ -14,11 +14,8 @@ return new class extends Migration
         Schema::create('user_scores', function (Blueprint $table) {
             $table->id();
             $table->integer('score')->default(0);
-            $table->unsignedBigInteger('user_id');
+            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete()->cascadeOnUpdate();
             $table->timestamps();
-
-            $table->foreign('user_id')->references('id')->on('users')->cascadeOnDelete()->cascadeOnUpdate();
-            $table->softDeletes();
         });
     }
 

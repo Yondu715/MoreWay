@@ -13,16 +13,12 @@ return new class extends Migration
     {
         Schema::create('user_route_progresses', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('route_point_id');
+            $table->foreignId('user_id')->constrained('users')->cascadeOnUpdate()->cascadeOnDelete();
+            $table->foreignId('route_point_id')->constrained('route_points')->cascadeOnUpdate()->cascadeOnDelete();
             $table->boolean('is_completed')->default(false);
             $table->timestamps();
 
             $table->unique(['user_id', 'route_point_id']);
-
-            $table->foreign('user_id')->references('id')->on('users')->cascadeOnUpdate()->cascadeOnDelete();
-            $table->foreign('route_point_id')->references('id')->on('route_points')->cascadeOnUpdate()->cascadeOnDelete();
-
             $table->softDeletes();
         });
     }

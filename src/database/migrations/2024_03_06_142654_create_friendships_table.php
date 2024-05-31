@@ -13,17 +13,12 @@ return new class extends Migration
     {
         Schema::create('friendships', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('friend_id');
-            $table->unsignedBigInteger('relationship_id');
+            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('friend_id')->constrained('users')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('relationship_id')->constrained('users')->cascadeOnDelete()->cascadeOnUpdate();
             $table->timestamps();
 
             $table->unique(['user_id', 'friend_id']);
-
-            $table->foreign('user_id')->references('id')->on('users')->cascadeOnDelete()->cascadeOnUpdate();
-            $table->foreign('friend_id')->references('id')->on('users')->cascadeOnDelete()->cascadeOnUpdate();
-            $table->foreign('relationship_id')->references('id')->on('friend_relationship_types')->cascadeOnDelete()->cascadeOnUpdate();
-
             $table->softDeletes();
         });
     }

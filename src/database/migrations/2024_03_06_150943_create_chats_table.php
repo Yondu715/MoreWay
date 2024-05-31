@@ -14,10 +14,9 @@ return new class extends Migration
         Schema::create('chats', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->unsignedBigInteger('creator_id');
+            $table->boolean('is_active')->default(false);
+            $table->foreignId('creator_id')->constrained('users')->cascadeOnUpdate();
             $table->timestamps();
-
-            $table->foreign('creator_id')->references('id')->on('users')->cascadeOnUpdate();
 
             $table->softDeletes();
         });
