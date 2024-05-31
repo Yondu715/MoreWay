@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('route_reviews', function (Blueprint $table) {
             $table->id();
             $table->text('text')->nullable();
-            $table->foreignId('author_id')->constrained('users')->cascadeOnUpdate();
+            $table->foreignId('author_id')->constrained('users')->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreignId('route_id')->constrained('routes')->cascadeOnUpdate()->cascadeOnDelete();
             $table->unsignedInteger('rating');
             $table->timestamps();
