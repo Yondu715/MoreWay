@@ -54,6 +54,15 @@ class Chat extends Model
         'deleted_at'
     ];
 
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array<string, string>
+     */
+    protected $casts = [
+        'is_active' => 'boolean',
+    ];
+
     public function creator(): BelongsTo
     {
         return $this->belongsTo(User::class, 'creator_id', 'id');

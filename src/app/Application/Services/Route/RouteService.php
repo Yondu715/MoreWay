@@ -3,7 +3,10 @@
 namespace App\Application\Services\Route;
 
 use App\Application\Contracts\In\Services\Route\IRouteService;
+use App\Application\Contracts\Out\Managers\Cache\ICacheManager;
+use App\Application\Contracts\Out\Managers\Notifier\INotifierManager;
 use App\Application\Contracts\Out\Managers\Token\ITokenManager;
+use App\Application\Contracts\Out\Repositories\Chat\IChatRepository;
 use App\Application\Contracts\Out\Repositories\Route\IRouteRepository;
 use App\Application\DTO\Collection\CursorDto;
 use App\Application\DTO\In\Route\ChangeUserRouteDto;
@@ -13,20 +16,31 @@ use App\Application\DTO\In\Route\GetRoutesDto;
 use App\Application\DTO\In\Route\GetUserRoutesDto;
 use App\Application\DTO\Out\Route\ActiveRouteDto;
 use App\Application\DTO\Out\Route\RouteDto;
+use App\Application\Exceptions\Chat\ChatNotFound;
 use App\Application\Exceptions\Route\FailedToCreateRoute;
 use App\Application\Exceptions\Route\IncorrectOrderRoutePoints;
+use App\Application\Exceptions\Route\Point\ExceedingDistance;
+use App\Application\Exceptions\Route\Point\RoutePointNotFound;
 use App\Application\Exceptions\Route\RouteIsCompleted;
 use App\Application\Exceptions\Route\RouteNameIsTaken;
+use App\Application\Exceptions\Route\RouteNotFound;
 use App\Application\Exceptions\Route\UserHaveNotActiveRoute;
 use App\Application\Exceptions\Route\UserRouteProgressNotFound;
+use App\Domain\Contracts\In\DomainManagers\IDistanceManager;
 use App\Infrastructure\Exceptions\InvalidToken;
+use App\Infrastructure\Http\Resources\Chat\Vote\VoteResource;
+use App\Utils\Mappers\Out\Vote\VoteDtoMapper;
 
 
 class RouteService implements IRouteService
 {
     public function __construct(
         private readonly IRouteRepository $routeRepository,
-        private readonly ITokenManager $tokenManager
+        private readonly IChatRepository $chatRepository,
+        private readonly ITokenManager $tokenManager,
+        private readonly IDistanceManager $distanceManager,
+        private readonly ICacheManager $cacheManager,
+        private readonly INotifierManager $notifier
     ) {}
 
     /**
@@ -47,6 +61,7 @@ class RouteService implements IRouteService
      * @param int $routeId
      * @return RouteDto
      * @throws InvalidToken
+     * @throws RouteNotFound
      */
     public function getRouteById(int $routeId): RouteDto
     {
@@ -68,10 +83,53 @@ class RouteService implements IRouteService
      * @throws UserRouteProgressNotFound
      * @throws IncorrectOrderRoutePoints
      * @throws RouteNameIsTaken
+     * @throws RouteNotFound
+     * @throws RoutePointNotFound
+     * @throws ExceedingDistance
+     * @throws ChatNotFound
      */
     public function completedRoutePoint(CompletedRoutePointDto $completedRoutePointDto): void
     {
-        $this->routeRepository->changeUserRouteProgress($completedRoutePointDto);
+        $routePoint = $this->routeRepository->getRoutePointById($completedRoutePointDto->routePointId);
+
+        if ($this->distanceManager->calculate($routePoint->place->lat,
+                $routePoint->place->lon, $completedRoutePointDto->lat, $completedRoutePointDto->lon) * 1000 > 300000) {
+            throw new ExceedingDistance();
+        }
+
+        $activeRoute = $this->routeRepository
+            ->getActiveRouteByRoutePointIdAndUserId($completedRoutePointDto->routePointId,
+            $completedRoutePointDto->userId);
+
+        if (!$activeRoute->isGroup) {
+            $this->routeRepository->changeUserRouteProgress($completedRoutePointDto);
+            return;
+        }
+
+        $activeChat = $this->chatRepository->getUserActiveChat($completedRoutePointDto->userId);
+
+        $cacheKey = "ChangeRoutePointByChatId-{$activeChat->id}";
+
+        $membersIdInHolding = json_decode($this->cacheManager->get($cacheKey)) ?
+            json_decode($this->cacheManager->get($cacheKey)) : [];
+
+        if (!in_array($completedRoutePointDto->userId, $membersIdInHolding)
+            and count($membersIdInHolding) < $activeChat->members->count()) {
+            $membersIdInHolding[] = $completedRoutePointDto->userId;
+            $this->cacheManager->put($cacheKey, json_encode($membersIdInHolding), 10);
+            foreach ($activeChat->members as $member) {
+                $this->notifier->sendNotification($member->id, VoteResource::make(VoteDtoMapper::fromAllAndAccepted(
+                    $activeChat->members, $activeChat->members->whereIn('id', $membersIdInHolding)
+                )));
+            }
+            if (count($membersIdInHolding) === $activeChat->members->count()) {
+                $this->cacheManager->delete($cacheKey);
+                foreach ($membersIdInHolding as $memberId) {
+                    $completedRoutePointDto->userId = $memberId;
+                    $this->routeRepository->changeUserRouteProgress($completedRoutePointDto);
+                }
+            }
+        }
     }
 
     /**
@@ -110,7 +168,9 @@ class RouteService implements IRouteService
      */
     public function changeActiveUserRoute(ChangeUserRouteDto $changeActiveUserRouteDto): ActiveRouteDto
     {
-        return $this->routeRepository->changeActiveUserRoute($changeActiveUserRouteDto);
+        return $this->routeRepository
+            ->changeActiveUserRoute($changeActiveUserRouteDto->userId,
+                $changeActiveUserRouteDto->routeId, false);
     }
 
     /**

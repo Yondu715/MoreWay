@@ -17,4 +17,10 @@ interface ICacheManager
      * @return string|null
      */
     public function get(string $key): ?string;
+
+    /**
+     * @param string $key
+     * @return void
+     */
+    public function delete(string $key): void;
 }

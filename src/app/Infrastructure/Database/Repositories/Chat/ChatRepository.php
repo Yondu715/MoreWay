@@ -2,6 +2,7 @@
 
 namespace App\Infrastructure\Database\Repositories\Chat;
 
+use App\Infrastructure\Database\Models\UserRouteProgress;
 use Throwable;
 use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
@@ -54,6 +55,25 @@ class ChatRepository implements IChatRepository
     }
 
     /**
+     * @param int $userId
+     * @return ChatDto
+     * @throws ChatNotFound
+     */
+    public function getUserActiveChat(int $userId): ChatDto
+    {
+        try {
+            /** @var Chat $chat */
+            $chat = $this->model->query()->where('is_active', true)
+                ->whereHas('members', function ($query) use ($userId) {
+                    $query->where('user_id', $userId);
+                })->firstOrFail();
+            return ChatDtoMapper::fromChatModel($chat);
+        } catch (Throwable) {
+            throw new ChatNotFound();
+        }
+    }
+
+    /**
      * @param CreateChatDto $createChatDto
      * @return ChatDto
      * @throws FailedToCreateChat
@@ -67,6 +87,7 @@ class ChatRepository implements IChatRepository
             $chat = $this->model->query()->create([
                 'name' => $createChatDto->name,
                 'creator_id' => $createChatDto->creatorId,
+                'is_active' => false
             ]);
 
             $chat->activeRoute()->create([
@@ -183,6 +204,70 @@ class ChatRepository implements IChatRepository
             return RouteDtoMapper::fromRouteModel($activity->route);
         } catch (Throwable) {
             throw new FailedToChangeActivity();
+        }
+    }
+
+    /**
+     * @param int $chatId
+     * @return bool
+     * @throws ChatNotFound
+     */
+    public function checkMembersChatNotHaveActivity(int $chatId): bool
+    {
+        try {
+            /** @var Chat $chat */
+            $chat = $this->model->query()->where('id', $chatId)->firstOrFail();
+
+            if($this->model->query()->where('is_active', true)
+                ->whereHas('members', function ($query) use ($chat) {
+                $query->whereIn('user_id', $chat->members->pluck('user_id')->toArray());
+            })->first()) {
+                return false;
+            }
+            return true;
+        } catch (Throwable) {
+            throw new ChatNotFound();
+        }
+    }
+
+    /**
+     * @param int $chatId
+     * @return bool
+     * @throws ChatNotFound
+     */
+    public function checkMembersChatHaveProgressActivity(int $chatId): bool
+    {
+        try {
+            /** @var Chat $chat */
+            $chat = $this->model->query()->where('id', $chatId)->firstOrFail();
+
+            if(UserRouteProgress::query()->whereHas('routePoint', function ($query) use ($chat) {
+                $query->where('route_id', $chat->activeRoute->route->id);
+            })->whereIn('user_id', $chat->members->pluck('user_id')->toArray())->first()) {
+                return false;
+            }
+            return true;
+        } catch (Throwable) {
+            throw new ChatNotFound();
+        }
+    }
+
+    /**
+     * @param int $chatId
+     * @return void
+     * @throws ChatNotFound
+     */
+    public function changeChatActive(int $chatId): void
+    {
+        try {
+            /** @var Chat $chat */
+            $chat = $this->model->query()->where('id', $chatId)->firstOrFail();
+
+            $chat->update([
+               'is_active' => true
+            ]);
+        } catch (Throwable) {
+            throw new ChatNotFound();
         }
     }
 }

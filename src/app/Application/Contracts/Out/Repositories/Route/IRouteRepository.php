@@ -9,11 +9,14 @@ use App\Application\DTO\In\Route\CreateRouteDto;
 use App\Application\DTO\In\Route\GetRoutesDto;
 use App\Application\DTO\In\Route\GetUserRoutesDto;
 use App\Application\DTO\Out\Route\ActiveRouteDto;
+use App\Application\DTO\Out\Route\Point\PointDto;
 use App\Application\DTO\Out\Route\RouteDto;
 use App\Application\Exceptions\Route\FailedToCreateRoute;
 use App\Application\Exceptions\Route\IncorrectOrderRoutePoints;
+use App\Application\Exceptions\Route\Point\RoutePointNotFound;
 use App\Application\Exceptions\Route\RouteIsCompleted;
 use App\Application\Exceptions\Route\RouteNameIsTaken;
+use App\Application\Exceptions\Route\RouteNotFound;
 use App\Application\Exceptions\Route\UserHaveNotActiveRoute;
 use App\Application\Exceptions\Route\UserRouteProgressNotFound;
 
@@ -30,8 +33,24 @@ interface IRouteRepository
      * @param int $routeId
      * @param int $userId
      * @return RouteDto
+     * @throws RouteNotFound
      */
     public function getRouteById(int $routeId, int $userId): RouteDto;
+
+    /**
+     * @param int $routePointId
+     * @param int $userId
+     * @return ActiveRouteDto
+     * @throws RouteNotFound
+     */
+    public function getActiveRouteByRoutePointIdAndUserId(int $routePointId, int $userId): ActiveRouteDto;
+
+    /**
+     * @param int $routePointId
+     * @return PointDto
+     * @throws RoutePointNotFound
+     */
+    public function getRoutePointById(int $routePointId): PointDto;
 
     /**
      * @param GetRoutesDto $getRoutesDto
@@ -69,11 +88,13 @@ interface IRouteRepository
     public function getActiveUserRoute(int $userId): ActiveRouteDto;
 
     /**
-     * @param ChangeUserRouteDto $changeActiveUserRouteDto
+     * @param int $userId
+     * @param int $routeId
+     * @param bool $isGroup
      * @return ActiveRouteDto
      * @throws RouteIsCompleted
      */
-    public function changeActiveUserRoute(ChangeUserRouteDto $changeActiveUserRouteDto): ActiveRouteDto;
+    public function changeActiveUserRoute(int $userId, int $routeId, bool $isGroup): ActiveRouteDto;
 
     /**
      * @param GetUserRoutesDto $getUserRoutesDto

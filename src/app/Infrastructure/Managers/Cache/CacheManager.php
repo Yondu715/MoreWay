@@ -15,7 +15,7 @@ class CacheManager implements ICacheManager
      */
     public function put(string $key, string $value, int $seconds): void
     {
-        Cache::add($key, $value, $seconds);
+        Cache::put($key, $value, $seconds);
     }
 
     /**
@@ -25,5 +25,14 @@ class CacheManager implements ICacheManager
     public function get(string $key): ?string
     {
         return Cache::get($key);
+    }
+
+    /**
+     * @param string $key
+     * @return void
+     */
+    public function delete(string $key): void
+    {
+        Cache::forget($key);
     }
 }

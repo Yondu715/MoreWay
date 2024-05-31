@@ -14,6 +14,7 @@ use App\Application\DTO\In\Route\Constructor\ChangeUserRouteConstructorDto;
 use App\Application\Contracts\In\Services\Route\Constructor\IRouteConstructorService;
 use App\Application\Contracts\Out\Repositories\Route\Constructor\IRouteConstructorRepository;
 
+
 class RouteConstructorService implements IRouteConstructorService
 {
     private readonly IDistanceManager $distanceManager;
