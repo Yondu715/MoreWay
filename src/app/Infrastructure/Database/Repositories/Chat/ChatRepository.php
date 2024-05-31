@@ -46,7 +46,7 @@ class ChatRepository implements IChatRepository
      */
     public function getUserChats(GetUserChatsDto $getUserChatsDto): CursorDto
     {
-        $paginator = $this->model::query()
+        $paginator = $this->model->query()
             ->whereHas('members', function ($query) use ($getUserChatsDto) {
                 $query->where('user_id', $getUserChatsDto->userId);
             })->cursorPaginate(perPage: $getUserChatsDto->limit, cursor: $getUserChatsDto->cursor);
@@ -83,27 +83,6 @@ class ChatRepository implements IChatRepository
         } catch (Throwable) {
             $this->transactionManager->rollback();
             throw new FailedToCreateChat();
-        }
-    }
-
-    /**
-     * @param int $chatId
-     * @param int $userId
-     * @return ChatDto
-     * @throws Forbidden
-     */
-    public function getChat(int $chatId, int $userId): ChatDto
-    {
-        try {
-            /** @var Chat $chat */
-            $chat = $this->model::query()->where('id', $chatId)
-                ->whereHas('members', function ($query) use ($userId) {
-                    $query->where('user_id', $userId);
-                })->firstOrFail();
-
-            return ChatDtoMapper::fromChatModel($chat);
-        } catch (Throwable) {
-            throw new Forbidden();
         }
     }
 

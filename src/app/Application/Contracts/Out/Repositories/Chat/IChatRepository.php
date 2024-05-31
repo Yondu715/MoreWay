@@ -36,15 +36,6 @@ interface IChatRepository
 
     /**
      * @param int $chatId
-     * @param int $userId
-     * @return ChatDto
-     * @throws Forbidden
-     */
-    public function getChat(int $chatId, int $userId): ChatDto;
-
-
-    /**
-     * @param int $chatId
      * @return ChatDto
      * @throws ChatNotFound
      */
