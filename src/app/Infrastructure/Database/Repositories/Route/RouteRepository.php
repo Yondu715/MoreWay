@@ -29,6 +29,7 @@ use App\Application\Exceptions\Route\IncorrectOrderRoutePoints;
 use App\Application\Exceptions\Route\UserRouteProgressNotFound;
 use App\Application\Contracts\Out\Repositories\Route\IRouteRepository;
 use App\Infrastructure\Database\Models\Filters\Route\RouteFilterFactory;
+use App\Infrastructure\Database\Models\User;
 use App\Infrastructure\Database\Transaction\Interface\ITransactionManager;
 
 class RouteRepository implements IRouteRepository
@@ -325,17 +326,11 @@ class RouteRepository implements IRouteRepository
      */
     public function deleteRouteFromUserFavorite(int $userId, int $routeId): void
     {
-        $route = UserFavoriteRoute::query()
+        UserFavoriteRoute::query()
             ->where([
                 'route_id' => $routeId,
                 'user_id' => $userId
-            ]);
-
-        if ($route->get()->isEmpty()) {
-            throw new RouteNotFound();
-        }
-
-        $route->delete();
+            ])->forceDelete();
     }
 
     /**
