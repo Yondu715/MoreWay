@@ -64,10 +64,6 @@ class RouteRepository implements IRouteRepository
                     $query->where('creator_id', $createRouteDto->userId);
                 })->get();
 
-            if ($routePoints->count() < 2 || $routePoints->count() > 15) {
-                throw new FailedToCreateRoute();
-            }
-
             $routePoints->each(function ($routePoint) use ($route) {
                 RoutePoint::query()->create([
                     'index' => $routePoint->index,
