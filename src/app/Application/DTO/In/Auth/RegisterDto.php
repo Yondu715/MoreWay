@@ -2,8 +2,6 @@
 
 namespace App\Application\DTO\In\Auth;
 
-use App\Infrastructure\Http\Requests\Auth\RegisterRequest;
-
 class RegisterDto
 {
     public readonly string $name;

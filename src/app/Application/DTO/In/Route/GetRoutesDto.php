@@ -2,9 +2,6 @@
 
 namespace App\Application\DTO\In\Route;
 
-use App\Application\Exceptions\Filter\FilterOutOfRange;
-use App\Infrastructure\Http\Requests\Route\GetRoutesRequest;
-
 class GetRoutesDto
 {
     public readonly ?string $cursor;
