@@ -187,7 +187,7 @@ class RouteRepository implements IRouteRepository
             ->count();
 
         if ($userProgresses === $route->routePoints->count()) {
-            $activeRoute->forceDelete();
+            $activeRoute->delete();
         }
     }
 
@@ -330,7 +330,7 @@ class RouteRepository implements IRouteRepository
             ->where([
                 'route_id' => $routeId,
                 'user_id' => $userId
-            ])->forceDelete();
+            ])->delete();
     }
 
     /**
