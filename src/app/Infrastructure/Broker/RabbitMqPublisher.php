@@ -5,6 +5,7 @@ namespace App\Infrastructure\Broker;
 use Bunny\Client;
 use Bunny\Channel;
 
+
 class RabbitMqPublisher
 {
     private Client $client;
