@@ -2,6 +2,8 @@
 
 namespace App\Infrastructure\Exceptions;
 
+use Exception;
+use Illuminate\Http\JsonResponse;
 use App\Application\Exceptions\InternalException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 
@@ -24,15 +26,18 @@ class Handler extends ExceptionHandler
     public function register(): void
     {
         $this->renderable(function (ApiException $apiException) {
-            return response()->json([
-                'message' => $apiException->getMessage()
-            ], $apiException->getCode());
+            return $this->buildJsonResponse($apiException);
         });
 
         $this->renderable(function (InternalException $internalException) {
-            return response()->json([
-                'message' => $internalException->getMessage()
-            ], $internalException->getCode());
+            return $this->buildJsonResponse($internalException);
         });
+    }
+
+    private function buildJsonResponse(Exception $exception): JsonResponse
+    {
+        return response()->json([
+            'message' => $exception->getMessage()
+        ], $exception->getCode());
     }
 }
