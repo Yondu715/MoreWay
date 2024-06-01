@@ -3,7 +3,7 @@
 namespace App\Application\Contracts\In\Services\Rating;
 
 use App\Application\DTO\In\Rating\GetRatingDto;
-use App\Application\Dto\Out\Rating\LeaderBoardDto;
+use App\Application\DTO\Out\Rating\LeaderBoardDto;
 
 interface IRatingService
 {

@@ -5,7 +5,7 @@ namespace App\Application\Contracts\Out\Managers\Token;
 use App\Application\DTO\In\Auth\LoginDto;
 use App\Application\DTO\Out\User\UserDto;
 use App\Infrastructure\Exceptions\InvalidToken;
-use App\Application\Dto\Out\User\ExtendedUserDto;
+use App\Application\DTO\Out\User\ExtendedUserDto;
 
 interface ITokenManager
 {

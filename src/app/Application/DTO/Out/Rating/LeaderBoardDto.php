@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Application\Dto\Out\Rating;
+namespace App\Application\DTO\Out\Rating;
 
 use Illuminate\Support\Collection;
 use App\Application\DTO\Out\Rating\RatingDto;

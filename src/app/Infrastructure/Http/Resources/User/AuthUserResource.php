@@ -2,7 +2,7 @@
 
 namespace App\Infrastructure\Http\Resources\User;
 
-use App\Application\Dto\Out\User\ExtendedUserDto;
+use App\Application\DTO\Out\User\ExtendedUserDto;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Application\Dto\Out\Friend;
+namespace App\Application\DTO\Out\Friend;
 
 class RelationshipTypeDto
 {
