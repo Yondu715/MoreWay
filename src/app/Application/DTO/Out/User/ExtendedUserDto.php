@@ -1,8 +1,6 @@
 <?php
 
-namespace App\Application\Dto\Out\User;
-
-use App\Application\DTO\Out\User\UserDto;
+namespace App\Application\DTO\Out\User;
 
 class ExtendedUserDto
 {
