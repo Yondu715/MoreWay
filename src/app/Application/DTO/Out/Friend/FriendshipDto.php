@@ -5,7 +5,7 @@ namespace App\Application\DTO\Out\Friend;
 use App\Application\Dto\Out\Friend\RelationshipTypeDto;
 use App\Application\DTO\Out\User\UserDto;
 
-class FriendshipRequestDto
+class FriendshipDto
 {
     public readonly int $id;
     public readonly UserDto $user;

@@ -2,19 +2,19 @@
 
 namespace App\Utils\Mappers\Out\Friend;
 
-use App\Application\DTO\Out\Friend\FriendshipRequestDto;
+use App\Application\DTO\Out\Friend\FriendshipDto;
 use App\Infrastructure\Database\Models\Friendship;
 use App\Utils\Mappers\Out\User\UserDtoMapper;
 
-class FriendshipRequestDtoMapper
+class FriendshipDtoMapper
 {
     /**
      * @param Friendship $friendship
-     * @return FriendshipRequestDto
+     * @return FriendshipDto
      */
-    public static function fromFriendshipModel(Friendship $friendship): FriendshipRequestDto
+    public static function fromFriendshipModel(Friendship $friendship): FriendshipDto
     {
-        return new FriendshipRequestDto(
+        return new FriendshipDto(
             id: $friendship->id,
             userId: $friendship->user_id,
             friendId: $friendship->friend_id,

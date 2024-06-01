@@ -2,7 +2,7 @@
 
 namespace App\Application\Contracts\Out\Repositories\Friend;
 
-use App\Application\DTO\Out\Friend\FriendshipRequestDto;
+use App\Application\DTO\Out\Friend\FriendshipDto;
 use Illuminate\Support\Collection;
 
 interface IFriendshipRepository
@@ -10,9 +10,9 @@ interface IFriendshipRepository
 
     /**
      * @param int $id
-     * @return FriendshipRequestDto
+     * @return FriendshipDto
      */
-    public function findById(int $id): FriendshipRequestDto;
+    public function findById(int $id): FriendshipDto;
 
     /**
      * @param int $id
@@ -23,16 +23,16 @@ interface IFriendshipRepository
     /**
      * @param int $id
      * @param array $data
-     * @return FriendshipRequestDto
+     * @return FriendshipDto
      */
-    public function create(array $data): FriendshipRequestDto;
+    public function create(array $data): FriendshipDto;
 
     /**
      * @param int $id
      * @param array $data
-     * @return FriendshipRequestDto
+     * @return FriendshipDto
      */
-    public function update(int $id, array $data): FriendshipRequestDto;
+    public function update(int $id, array $data): FriendshipDto;
 
     /**
      * @param int $userId
@@ -50,13 +50,13 @@ interface IFriendshipRepository
     /**
      * @param int $userId
      * @param int $friendId
-     * @return ?FriendshipRequestDto
+     * @return ?FriendshipDto
      */
-    public function findByUserIdAndFriendId(int $userId, int $friendId): ?FriendshipRequestDto;
+    public function findByUserIdAndFriendId(int $userId, int $friendId): ?FriendshipDto;
 
     /**
      * @param int $userId
-     * @return Collection<int, FriendshipRequestDto>
+     * @return Collection<int, FriendshipDto>
      */
     public function getFriendRequests(int $userId): Collection;
 }

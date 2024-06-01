@@ -3,13 +3,13 @@
 namespace App\Infrastructure\Database\Repositories\Friend;
 
 use App\Application\Contracts\Out\Repositories\Friend\IFriendshipRepository;
-use App\Application\DTO\Out\Friend\FriendshipRequestDto;
+use App\Application\DTO\Out\Friend\FriendshipDto;
 use App\Application\Enums\Friend\RelationshipType;
 use App\Application\Exceptions\Friend\FriendRequestNotFound;
 use App\Infrastructure\Database\Models\Friendship;
 use App\Utils\Mappers\Out\User\UserDtoMapper;
 use Illuminate\Database\Eloquent\Model;
-use App\Utils\Mappers\Out\Friend\FriendshipRequestDtoMapper;
+use App\Utils\Mappers\Out\Friend\FriendshipDtoMapper;
 use Illuminate\Support\Collection;
 use Throwable;
 
@@ -25,15 +25,15 @@ class FriendshipRepository implements IFriendshipRepository
 
     /**
      * @param int $id
-     * @return FriendshipRequestDto
+     * @return FriendshipDto
      * @throws FriendRequestNotFound
      */
-    public function findById(int $id): FriendshipRequestDto
+    public function findById(int $id): FriendshipDto
     {
         try {
             /** @var Friendship $friendship */
             $friendship = $this->model->query()->findOrFail($id);
-            return FriendshipRequestDtoMapper::fromFriendshipModel($friendship);
+            return FriendshipDtoMapper::fromFriendshipModel($friendship);
         } catch (Throwable) {
             throw new FriendRequestNotFound();
         }
@@ -52,26 +52,26 @@ class FriendshipRepository implements IFriendshipRepository
 
     /**
      * @param array $data
-     * @return FriendshipRequestDto
+     * @return FriendshipDto
      */
-    public function create(array $data): FriendshipRequestDto
+    public function create(array $data): FriendshipDto
     {
         /** @var Friendship $friendship */
         $friendship = $this->model->query()->create($data);
-        return FriendshipRequestDtoMapper::fromFriendshipModel($friendship);
+        return FriendshipDtoMapper::fromFriendshipModel($friendship);
     }
 
     /**
      * @param int $id
      * @param array $data
-     * @return FriendshipRequestDto
+     * @return FriendshipDto
      */
-    public function update(int $id, array $data): FriendshipRequestDto
+    public function update(int $id, array $data): FriendshipDto
     {
         /** @var Friendship $friendship */
         $friendship = $this->model->query()->findOrFail($id);
         $friendship->update($data);
-        return FriendshipRequestDtoMapper::fromFriendshipModel($friendship->refresh());
+        return FriendshipDtoMapper::fromFriendshipModel($friendship->refresh());
     }
 
     /**
@@ -94,7 +94,7 @@ class FriendshipRepository implements IFriendshipRepository
 
     /**
      * @param int $userId
-     * @return Collection<int, FriendshipRequestDto>
+     * @return Collection<int, FriendshipDto>
      */
     public function getUserFriendships(int $userId): Collection
     {
@@ -111,9 +111,9 @@ class FriendshipRepository implements IFriendshipRepository
     /**
      * @param int $userId
      * @param int $friendId
-     * @return FriendshipRequestDto|null
+     * @return FriendshipDto|null
      */
-    public function findByUserIdAndFriendId(int $userId, int $friendId): ?FriendshipRequestDto
+    public function findByUserIdAndFriendId(int $userId, int $friendId): ?FriendshipDto
     {
         /** @var ?Friendship $friendship1 */
         $friendship1 = $this->model->query()->where([
@@ -128,12 +128,12 @@ class FriendshipRepository implements IFriendshipRepository
         ])->first();
         
         $friendship = $friendship1 ?: $friendship2;
-        return $friendship ? FriendshipRequestDtoMapper::fromFriendshipModel($friendship) : null;
+        return $friendship ? FriendshipDtoMapper::fromFriendshipModel($friendship) : null;
     }
 
     /**
      * @param int $userId
-     * @return Collection<int, FriendshipRequestDto>
+     * @return Collection<int, FriendshipDto>
      */
     public function getFriendRequests(int $userId): Collection
     {
@@ -143,7 +143,7 @@ class FriendshipRepository implements IFriendshipRepository
         ])->with('user')->get();
 
         return $friendRequests->map(function (Friendship $friendship) {
-            return FriendshipRequestDtoMapper::fromFriendshipModel($friendship);
+            return FriendshipDtoMapper::fromFriendshipModel($friendship);
         });
     }
 }

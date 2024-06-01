@@ -4,13 +4,13 @@ namespace App\Infrastructure\Http\Resources\Friend;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-use App\Application\DTO\Out\Friend\FriendshipRequestDto;
+use App\Application\DTO\Out\Friend\FriendshipDto;
 use App\Infrastructure\Http\Resources\User\ShortUserResource;
 
 /**
- * @mixin FriendshipRequestDto
+ * @mixin FriendshipDto
  */
-class FriendshipRequestResource extends JsonResource
+class FriendshipResource extends JsonResource
 {
     /**
      * Transform the resource into an array.

@@ -11,7 +11,7 @@ use App\Infrastructure\Http\Requests\Friend\AddFriendRequest;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use App\Infrastructure\Http\Requests\Friend\AcceptFriendRequest;
 use App\Application\Contracts\In\Services\Friend\IFriendshipService;
-use App\Infrastructure\Http\Resources\Friend\FriendshipRequestResource;
+use App\Infrastructure\Http\Resources\Friend\FriendshipResource;
 
 
 class FriendController extends Controller
@@ -39,7 +39,7 @@ class FriendController extends Controller
      */
     public function getFriendRequests(int $userId): AnonymousResourceCollection
     {
-        return FriendshipRequestResource::collection(
+        return FriendshipResource::collection(
             $this->friendService->getFriendRequests($userId)
         );
     }
@@ -57,12 +57,12 @@ class FriendController extends Controller
 
     /**
      * @param AddFriendRequest $addFriendRequest
-     * @return FriendshipRequestResource
+     * @return FriendshipResource
      */
-    public function addFriendRequest(AddFriendRequest $addFriendRequest): FriendshipRequestResource
+    public function addFriendRequest(AddFriendRequest $addFriendRequest): FriendshipResource
     {
         $addFriendDto = AddFriendDtoMapper::fromRequest($addFriendRequest);
-        return FriendshipRequestResource::make(
+        return FriendshipResource::make(
             $this->friendService->addFriendRequest($addFriendDto)
         );
     }

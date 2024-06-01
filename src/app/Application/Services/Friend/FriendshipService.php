@@ -7,7 +7,7 @@ use App\Application\Contracts\Out\Managers\Notifier\INotifierManager;
 use App\Application\Contracts\Out\Repositories\Friend\IFriendshipRepository;
 use App\Application\DTO\In\Friend\AcceptFriendDto;
 use App\Application\DTO\In\Friend\AddFriendDto;
-use App\Application\DTO\Out\Friend\FriendshipRequestDto;
+use App\Application\DTO\Out\Friend\FriendshipDto;
 use App\Application\DTO\Out\User\UserDto;
 use App\Application\Enums\Friend\RelationshipType;
 use App\Application\Exceptions\Friend\FriendRequestConflict;
@@ -33,7 +33,7 @@ class FriendshipService implements IFriendshipService
 
     /**
      * @param int $userId
-     * @return Collection<int, FriendshipRequestDto>
+     * @return Collection<int, FriendshipDto>
      */
     public function getFriendRequests(int $userId): Collection
     {
@@ -52,10 +52,10 @@ class FriendshipService implements IFriendshipService
 
     /**
      * @param AddFriendDto $addFriendDto
-     * @return FriendshipRequestDto
+     * @return FriendshipDto
      * @throws FriendRequestConflict
      */
-    public function addFriendRequest(AddFriendDto $addFriendDto): FriendshipRequestDto
+    public function addFriendRequest(AddFriendDto $addFriendDto): FriendshipDto
 
     {
         $request = $this->friendRepository->findByUserIdAndFriendId($addFriendDto->userId, $addFriendDto->friendId);
