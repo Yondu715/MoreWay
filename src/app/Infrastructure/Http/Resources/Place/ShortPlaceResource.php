@@ -22,13 +22,13 @@ class ShortPlaceResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'distance' => $this->distance,
+            'distance' => $this->when($this->distance, $this->distance),
             'id' => $this->id,
             'name' => $this->name,
             'lat' => $this->lat,
             'lon' => $this->lon,
             'rating' => $this->rating,
-            'image' => !$this->images->isEmpty() ? ImageResource::make($this->images[0]) : null,
+            'image' => !$this->images->isEmpty() ? ImageResource::make($this->images->first()) : null,
             'locality' => LocalityResource::make($this->locality),
             'type' => TypeResource::make($this->type)
         ];

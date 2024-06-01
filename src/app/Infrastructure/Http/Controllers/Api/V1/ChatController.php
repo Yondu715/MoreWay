@@ -17,13 +17,14 @@ use App\Utils\Mappers\In\Chat\Message\AddMessageDtoMapper;
 use App\Utils\Mappers\In\Chat\Message\GetMessagesDtoMapper;
 use App\Application\Contracts\In\Services\Chat\IChatService;
 use App\Infrastructure\Http\Requests\Chat\CreateChatRequest;
+use App\Infrastructure\Http\Resources\User\ShortUserResource;
 use App\Application\Exceptions\Chat\SomeMembersHaveActiveChat;
 use App\Infrastructure\Http\Requests\Chat\GetUserChatsRequest;
 use App\Application\Exceptions\Chat\Members\FailedToAddMembers;
 use App\Utils\Mappers\In\Chat\Activity\ChangeActivityDtoMapper;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use App\Application\Exceptions\Chat\Activity\FailedToGetActivity;
 use App\Application\Exceptions\Chat\Members\FailedToDeleteMember;
-use App\Infrastructure\Http\Resources\User\UserCollectionResource;
 use App\Infrastructure\Http\Requests\Chat\Member\AddMembersRequest;
 use App\Infrastructure\Http\Resources\Chat\Message\MessageResource;
 use App\Infrastructure\Http\Resources\Chat\ShortChatCursorResource;
@@ -89,28 +90,29 @@ class ChatController
 
     /**
      * @param int $chatId
-     * @return void
+     * @return Response
      * @throws InvalidToken
      * @throws ChatNotFound
      * @throws SomeMembersHaveActiveChat
      * @throws SomeMembersHaveProgressActivity
      * @throws RouteIsCompleted
      */
-    public function changeVoteActivity(int $chatId): void
+    public function changeVoteActivity(int $chatId): Response
     {
         $this->voteService->changeVoteActivity($chatId);
+        return response()->noContent();
     }
 
     /**
      * @param AddMembersRequest $addMemberRequest
-     * @return UserCollectionResource
+     * @return AnonymousResourceCollection
      * @throws InvalidToken
      * @throws FailedToAddMembers
      */
-    public function addMembers(AddMembersRequest $addMemberRequest): UserCollectionResource
+    public function addMembers(AddMembersRequest $addMemberRequest): AnonymousResourceCollection
     {
         $addMembersDto = AddMembersDtoMapper::fromRequest($addMemberRequest);
-        return UserCollectionResource::make(
+        return ShortUserResource::collection(
             $this->memberService->addMembers($addMembersDto)
         );
     }

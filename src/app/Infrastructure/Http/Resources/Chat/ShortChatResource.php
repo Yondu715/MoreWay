@@ -23,7 +23,7 @@ class ShortChatResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'isActive' => $this->isActive,
-            'lastMessage' => !$this->messages->isEmpty() ? MessageResource::make($this->messages->last()) : null,
+            'lastMessage' => $this->when(!$this->messages->isEmpty(), MessageResource::make($this->messages->last()), null)
         ];
     }
 }

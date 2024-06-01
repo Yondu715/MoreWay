@@ -2,12 +2,10 @@
 
 namespace App\Infrastructure\Http\Resources\Route\Point;
 
-use App\Application\DTO\Out\Route\Point\PointDto;
-use App\Infrastructure\Http\Resources\Place\Image\ImageResource;
-use App\Infrastructure\Http\Resources\Place\Locality\LocalityResource;
-use App\Infrastructure\Http\Resources\Place\Type\TypeResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Application\DTO\Out\Route\Point\PointDto;
+use App\Infrastructure\Http\Resources\Place\ShortPlaceResource;
 
 /**
  * @mixin PointDto
@@ -24,16 +22,8 @@ class PointResource extends JsonResource
         return [
             'id' => $this->id,
             'index' => $this->index,
-            'place' => [
-                'id' => $this->place->id,
-                'name' => $this->place->name,
-                'lat' => $this->place->lat,
-                'lon' => $this->place->lon,
-                'rating' => $this->place->rating,
-                'image' => !$this->place->images->isEmpty() ? ImageResource::make($this->place->images[0]) : null,
-                'locality' => LocalityResource::make($this->place->locality),
-                'type' => TypeResource::make($this->place->type)
-            ]
+            'isCompleted' => $this->when($this->isCompleted !== null, $this->isCompleted, null),
+            'place' => ShortPlaceResource::make($this->place)
         ];
     }
 }

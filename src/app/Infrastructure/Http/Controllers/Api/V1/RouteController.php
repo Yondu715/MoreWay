@@ -2,36 +2,36 @@
 
 namespace App\Infrastructure\Http\Controllers\Api\V1;
 
-use App\Application\Exceptions\Filter\FilterOutOfRange;
-use App\Application\Exceptions\Route\Constructor\InvalidRoutePointIndex;
-use App\Application\Exceptions\Route\FailedToCreateRoute;
-use App\Application\Exceptions\Route\IncorrectOrderRoutePoints;
-use App\Application\Exceptions\Route\RouteIsCompleted;
-use App\Application\Exceptions\Route\UserHaveNotActiveRoute;
-use App\Application\Exceptions\Route\UserRouteProgressNotFound;
 use Illuminate\Http\Response;
 use App\Utils\Mappers\In\Route\GetRoutesDtoMapper;
 use App\Infrastructure\Http\Controllers\Controller;
 use App\Utils\Mappers\In\Route\CreateRouteDtoMapper;
+use App\Application\Exceptions\Route\RouteIsCompleted;
 use App\Utils\Mappers\In\Route\GetUserRoutesDtoMapper;
+use App\Application\Exceptions\Filter\FilterOutOfRange;
 use App\Utils\Mappers\In\Route\ChangeUserRouteDtoMapper;
+use App\Application\Exceptions\Route\FailedToCreateRoute;
 use App\Infrastructure\Http\Resources\Route\RouteResource;
+use App\Application\Exceptions\Route\UserHaveNotActiveRoute;
 use App\Infrastructure\Http\Requests\Route\GetRoutesRequest;
 use App\Infrastructure\Http\Resources\Review\ReviewResource;
 use App\Utils\Mappers\In\Route\CompletedRoutePointDtoMapper;
 use App\Application\Contracts\In\Services\Route\IRouteService;
 use App\Infrastructure\Http\Requests\Review\GetReviewsRequest;
 use App\Infrastructure\Http\Requests\Route\CreateRouteRequest;
+use App\Application\Exceptions\Route\IncorrectOrderRoutePoints;
+use App\Application\Exceptions\Route\UserRouteProgressNotFound;
 use App\Utils\Mappers\In\Route\Review\GetRouteReviewsDtoMapper;
 use App\Infrastructure\Http\Requests\Review\CreateReviewRequest;
 use App\Infrastructure\Http\Requests\Route\GetUserRoutesRequest;
+use App\Infrastructure\Http\Resources\Route\ActiveRouteResource;
 use App\Infrastructure\Http\Resources\Route\RouteCursorResource;
 use App\Utils\Mappers\In\Route\Review\CreateRouteReviewDtoMapper;
 use App\Infrastructure\Http\Requests\Route\ChangeUserRouteRequest;
 use App\Infrastructure\Http\Resources\Review\ReviewCursorResource;
-use App\Infrastructure\Http\Resources\Route\UserActiveRouteResource;
 use App\Infrastructure\Http\Requests\Route\CompletedRoutePointRequest;
 use App\Infrastructure\Http\Resources\Route\Filter\RouteFilterResource;
+use App\Application\Exceptions\Route\Constructor\InvalidRoutePointIndex;
 use App\Application\Contracts\In\Services\Route\Filter\IRouteFilterService;
 use App\Application\Contracts\In\Services\Route\Review\IRouteReviewService;
 use App\Infrastructure\Http\Resources\Route\Constructor\ConstructorResource;
@@ -185,25 +185,25 @@ class RouteController extends Controller
 
     /**
      * @param int $userId
-     * @return UserActiveRouteResource
+     * @return ActiveRouteResource
      * @throws UserHaveNotActiveRoute
      */
-    public function getActiveUserRoute(int $userId): UserActiveRouteResource
+    public function getActiveUserRoute(int $userId): ActiveRouteResource
     {
-        return UserActiveRouteResource::make(
+        return ActiveRouteResource::make(
             $this->routeService->getActiveUserRoute($userId)
         );
     }
 
     /**
      * @param ChangeUserRouteRequest $changeActiveUserRouteRequest
-     * @return UserActiveRouteResource
+     * @return ActiveRouteResource
      * @throws RouteIsCompleted
      */
-    public function changeActiveUserRoute(ChangeUserRouteRequest $changeActiveUserRouteRequest): UserActiveRouteResource
+    public function changeActiveUserRoute(ChangeUserRouteRequest $changeActiveUserRouteRequest): ActiveRouteResource
     {
         $changeActiveUserRouteDto = ChangeUserRouteDtoMapper::fromRequest($changeActiveUserRouteRequest);
-        return UserActiveRouteResource::make(
+        return ActiveRouteResource::make(
             $this->routeService->changeActiveUserRoute($changeActiveUserRouteDto)
         );
     }
