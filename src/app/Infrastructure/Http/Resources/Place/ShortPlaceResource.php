@@ -28,7 +28,7 @@ class ShortPlaceResource extends JsonResource
             'lat' => $this->lat,
             'lon' => $this->lon,
             'rating' => $this->rating,
-            'image' => !$this->images->isEmpty() ? ImageResource::make($this->images->first()) : null,
+            'image' => !$this->images->isEmpty() ? ImageResource::make($this->images[0]) : null,
             'locality' => LocalityResource::make($this->locality),
             'type' => TypeResource::make($this->type)
         ];
