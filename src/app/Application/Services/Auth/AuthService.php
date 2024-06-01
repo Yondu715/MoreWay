@@ -24,6 +24,7 @@ use App\Application\Exceptions\Auth\Password\ExpiredResetPasswordToken;
 use App\Application\Exceptions\Auth\Password\ExpiredVerifyPasswordCode;
 use App\Application\Exceptions\Auth\Password\InvalidResetPasswordToken;
 use App\Application\Exceptions\Auth\Password\InvalidVerifyPasswordCode;
+use Throwable;
 
 class AuthService implements IAuthService
 {
@@ -40,7 +41,6 @@ class AuthService implements IAuthService
     /**
      * @param LoginDto $loginDto
      * @return string
-     * @throws UserNotFound
      * @throws InvalidPassword
      */
     public function login(LoginDto $loginDto): string
@@ -63,7 +63,7 @@ class AuthService implements IAuthService
     {
         try {
             $this->userRepository->findByEmail($registerDto->email);
-        } catch (UserNotFound $e) {
+        } catch (Throwable) {
             throw new RegistrationConflict();
         }
 
@@ -98,7 +98,6 @@ class AuthService implements IAuthService
     /**
      * @param ForgotPasswordDto $forgotPasswordDto
      * @return void
-     * @throws UserNotFound
      */
     public function forgotPassword(ForgotPasswordDto $forgotPasswordDto): void
     {
@@ -118,7 +117,6 @@ class AuthService implements IAuthService
     /**
      * @param VerifyPasswordCodeDto $verifyPasswordCodeDto
      * @return string
-     * @throws UserNotFound
      * @throws ExpiredVerifyPasswordCode
      * @throws InvalidVerifyPasswordCode
      */
@@ -148,7 +146,6 @@ class AuthService implements IAuthService
     /**
      * @param ResetPasswordDto $resetPasswordDto
      * @return void
-     * @throws UserNotFound
      * @throws InvalidResetPasswordToken
      * @throws ExpiredResetPasswordToken
      */

@@ -37,10 +37,11 @@ class RouteConstructorService implements IRouteConstructorService
             count($changeUserRouteConstructorDto->routePoints) > RouteRestriction::MAX_ROUTE_ITEMS->value
         ) {
             throw new ExceededCountItems();
-        };
+        }
 
         $distanceCalc = function (float $lat, float $lon) use ($changeUserRouteConstructorDto) {
-            return $this->distanceManager->calculate($lat, $lon, $changeUserRouteConstructorDto->lat, $changeUserRouteConstructorDto->lon);
+            return $this->distanceManager->calculate($lat, $lon, $changeUserRouteConstructorDto->lat,
+                $changeUserRouteConstructorDto->lon);
         };
 
         return $this->routeConstructorRepository->update($changeUserRouteConstructorDto, $distanceCalc);
@@ -53,7 +54,8 @@ class RouteConstructorService implements IRouteConstructorService
     public function get(GetUserRouteConstructorDto $getUserRouteConstructorDto): RouteConstructorDto
     {
         $distanceCalc = function (float $lat, float $lon) use ($getUserRouteConstructorDto) {
-            return $this->distanceManager->calculate($lat, $lon, $getUserRouteConstructorDto->lat, $getUserRouteConstructorDto->lon);
+            return $this->distanceManager->calculate($lat, $lon, $getUserRouteConstructorDto->lat,
+                $getUserRouteConstructorDto->lon);
         };
         return $this->routeConstructorRepository->findByUserId($getUserRouteConstructorDto, $distanceCalc);
     }

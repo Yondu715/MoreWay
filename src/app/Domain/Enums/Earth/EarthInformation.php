@@ -4,5 +4,5 @@ namespace App\Domain\Enums\Earth;
 
 enum EarthInformation: int
 {
-    case Radius = 6371;
+    case RADIUS = 6371;
 }

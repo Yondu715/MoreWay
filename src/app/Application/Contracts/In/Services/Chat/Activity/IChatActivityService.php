@@ -6,7 +6,6 @@ use App\Application\DTO\In\Chat\Activity\ChangeActivityDto;
 use App\Application\DTO\Out\Route\RouteDto;
 use App\Application\Exceptions\Chat\Activity\FailedToChangeActivity;
 use App\Application\Exceptions\Chat\Activity\FailedToGetActivity;
-use App\Application\Exceptions\Chat\ChatNotFound;
 use App\Infrastructure\Exceptions\InvalidToken;
 
 interface IChatActivityService

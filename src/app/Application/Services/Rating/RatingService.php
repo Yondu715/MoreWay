@@ -7,6 +7,7 @@ use App\Application\DTO\Out\Rating\LeaderBoardDto;
 use App\Application\Contracts\Out\Managers\Token\ITokenManager;
 use App\Application\Contracts\In\Services\Rating\IRatingService;
 use App\Application\Contracts\Out\Repositories\Rating\IRatingRepository;
+use App\Infrastructure\Exceptions\InvalidToken;
 
 class RatingService implements IRatingService
 {
@@ -19,6 +20,7 @@ class RatingService implements IRatingService
     /**
      * @param GetRatingDto $getRatingDto
      * @return LeaderBoardDto
+     * @throws InvalidToken
      */
     public function getRating(GetRatingDto $getRatingDto): LeaderBoardDto
     {

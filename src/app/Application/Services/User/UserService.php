@@ -49,7 +49,7 @@ class UserService implements IUserService
         return new CursorDto(
             $extendedUsers,
             $users->cursor
-        );;
+        );
     }
 
     /**
