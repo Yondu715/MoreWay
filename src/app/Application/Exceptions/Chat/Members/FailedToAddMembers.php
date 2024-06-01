@@ -10,5 +10,5 @@ class FailedToAddMembers extends InternalException
     protected $code = 400;
 
     /** @var string */
-    protected $message = "Не удалось добавить пользователей в чат.";
+    protected $message = "Не удалось добавить пользователей в чат";
 }

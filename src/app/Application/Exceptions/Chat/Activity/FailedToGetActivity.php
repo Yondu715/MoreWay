@@ -10,5 +10,5 @@ class FailedToGetActivity extends InternalException
     protected $code = 400;
 
     /** @var string */
-    protected $message = "Не удалось получить выбранный маршрут чата.";
+    protected $message = "Не удалось получить выбранный маршрут чата";
 }

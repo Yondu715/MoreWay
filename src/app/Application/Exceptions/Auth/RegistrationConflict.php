@@ -10,5 +10,5 @@ class RegistrationConflict extends InternalException
     protected $code = 409;
 
     /** @var string */
-    protected $message = "Пользователь с таким email уже зарегистрирован";
+    protected $message = "Пользователь с таким email уже существует";
 }

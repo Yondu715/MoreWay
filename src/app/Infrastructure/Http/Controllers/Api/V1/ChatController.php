@@ -2,22 +2,14 @@
 
 namespace App\Infrastructure\Http\Controllers\Api\V1;
 
-use App\Application\Contracts\In\Services\Chat\Vote\IChatVoteService;
-use App\Application\Exceptions\Chat\Activity\FailedToChangeActivity;
-use App\Application\Exceptions\Chat\Activity\FailedToGetActivity;
-use App\Application\Exceptions\Chat\ChatNotFound;
-use App\Application\Exceptions\Chat\FailedToCreateChat;
-use App\Application\Exceptions\Chat\Members\FailedToAddMembers;
-use App\Application\Exceptions\Chat\Members\FailedToDeleteMember;
-use App\Application\Exceptions\Chat\Message\FailedToGetMessages;
-use App\Application\Exceptions\Chat\SomeMembersHaveActiveChat;
-use App\Application\Exceptions\Chat\SomeMembersHaveProgressActivity;
-use App\Application\Exceptions\Route\RouteIsCompleted;
+use Illuminate\Http\Response;
 use App\Infrastructure\Exceptions\Forbidden;
 use App\Infrastructure\Exceptions\InvalidToken;
-use Illuminate\Http\Response;
+use App\Application\Exceptions\Chat\ChatNotFound;
 use App\Utils\Mappers\In\Chat\CreateChatDtoMapper;
 use App\Utils\Mappers\In\Chat\GetUserChatsDtoMapper;
+use App\Application\Exceptions\Route\RouteIsCompleted;
+use App\Application\Exceptions\Chat\FailedToCreateChat;
 use App\Infrastructure\Http\Resources\Chat\ChatResource;
 use App\Utils\Mappers\In\Chat\Member\AddMembersDtoMapper;
 use App\Infrastructure\Http\Resources\Route\RouteResource;
@@ -25,13 +17,20 @@ use App\Utils\Mappers\In\Chat\Message\AddMessageDtoMapper;
 use App\Utils\Mappers\In\Chat\Message\GetMessagesDtoMapper;
 use App\Application\Contracts\In\Services\Chat\IChatService;
 use App\Infrastructure\Http\Requests\Chat\CreateChatRequest;
+use App\Application\Exceptions\Chat\SomeMembersHaveActiveChat;
 use App\Infrastructure\Http\Requests\Chat\GetUserChatsRequest;
+use App\Application\Exceptions\Chat\Members\FailedToAddMembers;
 use App\Utils\Mappers\In\Chat\Activity\ChangeActivityDtoMapper;
+use App\Application\Exceptions\Chat\Activity\FailedToGetActivity;
+use App\Application\Exceptions\Chat\Members\FailedToDeleteMember;
 use App\Infrastructure\Http\Resources\User\UserCollectionResource;
 use App\Infrastructure\Http\Requests\Chat\Member\AddMembersRequest;
 use App\Infrastructure\Http\Resources\Chat\Message\MessageResource;
 use App\Infrastructure\Http\Resources\Chat\ShortChatCursorResource;
+use App\Application\Exceptions\Chat\Activity\FailedToChangeActivity;
+use App\Application\Exceptions\Chat\SomeMembersHaveProgressActivity;
 use App\Infrastructure\Http\Requests\Chat\Message\AddMessageRequest;
+use App\Application\Contracts\In\Services\Chat\Vote\IChatVoteService;
 use App\Infrastructure\Http\Requests\Chat\Message\GetMessagesRequest;
 use App\Application\Contracts\In\Services\Chat\Message\IMessageService;
 use App\Application\Contracts\In\Services\Chat\Member\IChatMemberService;
@@ -133,7 +132,6 @@ class ChatController
      * @param GetMessagesRequest $getMessagesRequest
      * @return MessageCursorResource
      * @throws InvalidToken
-     * @throws FailedToGetMessages
      */
     public function getMessages(GetMessagesRequest $getMessagesRequest): MessageCursorResource
     {
@@ -146,7 +144,6 @@ class ChatController
     /**
      * @param AddMessageRequest $addMessageRequest
      * @return MessageResource
-     * @throws FailedToGetMessages
      */
     public function addMessage(AddMessageRequest $addMessageRequest): MessageResource
     {

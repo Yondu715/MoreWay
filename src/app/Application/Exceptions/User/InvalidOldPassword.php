@@ -7,7 +7,7 @@ use App\Application\Exceptions\InternalException;
 class InvalidOldPassword extends InternalException
 {
     /** @var int */
-    protected $code = 405;
+    protected $code = 400;
 
     /** @var string */
     protected $message = 'Неверный старый пароль';

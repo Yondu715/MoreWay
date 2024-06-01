@@ -10,7 +10,6 @@ use App\Application\DTO\Out\Chat\Message\MessageDto;
 use App\Application\DTO\In\Chat\Message\AddMessageDto;
 use App\Application\DTO\In\Chat\Message\GetMessagesDto;
 use App\Utils\Mappers\Out\Chat\Message\MessageDtoMapper;
-use App\Application\Exceptions\Chat\Message\FailedToGetMessages;
 use App\Application\Exceptions\Chat\Message\FailedToCreateMessage;
 use App\Application\Contracts\Out\Repositories\Chat\Message\IMessageRepository;
 
@@ -48,16 +47,11 @@ class MessageRepository implements IMessageRepository
     /**
      * @param GetMessagesDto $getMessagesDto
      * @return CursorDto
-     * @throws FailedToGetMessages
      */
     public function getMessages(GetMessagesDto $getMessagesDto): CursorDto
     {
-        try {
-            $messages = $this->model->query()->where('chat_id', $getMessagesDto->chatId)
-                ->cursorPaginate(perPage: $getMessagesDto->limit, cursor: $getMessagesDto->cursor);
-            return MessageDtoMapper::fromPaginator($messages);
-        } catch (Throwable) {
-            throw new FailedToGetMessages();
-        }
+        $messages = $this->model->query()->where('chat_id', $getMessagesDto->chatId)
+            ->cursorPaginate(perPage: $getMessagesDto->limit, cursor: $getMessagesDto->cursor);
+        return MessageDtoMapper::fromPaginator($messages);
     }
 }

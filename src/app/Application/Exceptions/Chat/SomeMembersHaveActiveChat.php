@@ -10,5 +10,5 @@ class SomeMembersHaveActiveChat extends InternalException
     protected $code = 400;
 
     /** @var string */
-    protected $message = "У некоторых пользователей уже есть активный машрут.";
+    protected $message = "У некоторых пользователей уже есть активный маршрут";
 }

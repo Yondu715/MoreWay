@@ -10,6 +10,6 @@ class SomeMembersHaveProgressActivity extends InternalException
     protected $code = 400;
 
     /** @var string */
-    protected $message = "Некоторые пользователи уже проходили этот маршрут.";
+    protected $message = "Некоторые пользователи уже проходили этот маршрут";
 }
 

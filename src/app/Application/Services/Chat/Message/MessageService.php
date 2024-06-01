@@ -13,7 +13,6 @@ use App\Application\DTO\In\Chat\Message\GetMessagesDto;
 use App\Application\DTO\Out\Chat\Message\MessageDto;
 use App\Application\Exceptions\Chat\ChatNotFound;
 use App\Application\Exceptions\Chat\Members\UserIsNotChatMember;
-use App\Application\Exceptions\Chat\Message\FailedToGetMessages;
 
 class MessageService implements IMessageService
 {
@@ -28,7 +27,6 @@ class MessageService implements IMessageService
      * @param AddMessageDto $addMessageDto
      * @return MessageDto
      * @throws ChatNotFound
-     * @throws FailedToGetMessages
      * @throws UserIsNotChatMember
      */
     public function createMessage(AddMessageDto $addMessageDto): MessageDto
@@ -54,7 +52,6 @@ class MessageService implements IMessageService
     /**
      * @param GetMessagesDto $getMessagesDto
      * @return CursorDto
-     * @throws FailedToGetMessages
      * @throws UserIsNotChatMember
      * @throws ChatNotFound
      */

@@ -10,5 +10,5 @@ class ExceedingDistance extends InternalException
     protected $code = 400;
 
     /** @var string */
-    protected $message = "Дистанция привышена";
+    protected $message = "Дистанция превышена";
 }
