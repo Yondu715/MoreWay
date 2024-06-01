@@ -24,7 +24,6 @@ class ShortRouteResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'rating' => $this->rating,
-            'points' => $this->points->count(),
             'routePoints' => ShortPointResource::collection($this->points),
             'creator' => ShortUserResource::make($this->creator)
         ];

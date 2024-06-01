@@ -31,7 +31,7 @@ class ActivePointResource extends JsonResource
                 'lat' => $this->place->lat,
                 'lon' => $this->place->lon,
                 'rating' => $this->place->rating,
-                'image' => count($this->place->images) ? ImageResource::make($this->place->images[0]) : null,
+                'image' => !$this->place->images->isEmpty() ? ImageResource::make($this->place->images[0]) : null,
                 'locality' => LocalityResource::make($this->place->locality),
                 'type' => TypeResource::make($this->place->type)
             ]

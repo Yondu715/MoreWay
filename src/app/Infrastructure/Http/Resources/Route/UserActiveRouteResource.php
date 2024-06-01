@@ -4,7 +4,6 @@ namespace App\Infrastructure\Http\Resources\Route;
 
 use App\Application\DTO\Out\Route\ActiveRouteDto;
 use App\Infrastructure\Http\Resources\Route\Point\ActivePointResource;
-use App\Infrastructure\Http\Resources\Route\Point\PointResource;
 use App\Infrastructure\Http\Resources\User\ShortUserResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -26,7 +25,6 @@ class UserActiveRouteResource  extends JsonResource
             'name' => $this->route->name,
             'isGroup' => $this->isGroup,
             'rating' => $this->route->rating,
-            'points' => $this->route->points->count(),
             'routePoints' => ActivePointResource::collection($this->route->points),
             'creator' => ShortUserResource::make($this->route->creator)
         ];

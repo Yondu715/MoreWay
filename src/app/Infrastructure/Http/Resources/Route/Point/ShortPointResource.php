@@ -3,7 +3,6 @@
 namespace App\Infrastructure\Http\Resources\Route\Point;
 
 use App\Application\DTO\Out\Route\Point\PointDto;
-use App\Infrastructure\Http\Resources\Place\Image\ImageResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -21,7 +20,7 @@ class ShortPointResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'image' => count($this->place->images) ? url("/storage/{$this->place->images[0]->path}") : null,
+            'image' => !$this->place->images->isEmpty() ? url("/storage/{$this->place->first()->path}") : null,
         ];
     }
 }

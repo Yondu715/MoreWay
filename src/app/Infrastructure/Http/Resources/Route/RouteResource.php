@@ -24,7 +24,6 @@ class RouteResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'rating' => $this->rating,
-            'points' => $this->points->count(),
             'isActive' => $this->isActive,
             'isFavorite' => $this->isFavorite,
             'routePoints' => PointResource::collection($this->points),
