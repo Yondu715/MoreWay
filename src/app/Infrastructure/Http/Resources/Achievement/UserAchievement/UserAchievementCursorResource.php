@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Infrastructure\Http\Resources\Achievement;
+namespace App\Infrastructure\Http\Resources\Achievement\UserAchievement;
 
-use App\Application\DTO\Collection\CursorDto;
 use Illuminate\Http\Request;
+use App\Application\DTO\Collection\CursorDto;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /**

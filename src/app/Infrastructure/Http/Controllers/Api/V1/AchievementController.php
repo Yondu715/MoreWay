@@ -10,9 +10,9 @@ use App\Utils\Mappers\In\Achievement\Type\GetAchievementsTypesDtoMapper;
 use App\Application\Contracts\In\Services\Achievement\IAchievementService;
 use App\Infrastructure\Http\Requests\Achievement\GetUserAchievementsRequest;
 use App\Infrastructure\Http\Resources\Achievement\AchievementCursorResource;
-use App\Infrastructure\Http\Resources\Achievement\UserAchievementCursorResource;
 use App\Infrastructure\Http\Requests\Achievement\Type\GetAchievementsTypesRequest;
 use App\Infrastructure\Http\Resources\Achievement\Type\AchievementTypeCursorResource;
+use App\Infrastructure\Http\Resources\Achievement\UserAchievement\UserAchievementCursorResource;
 
 class AchievementController extends Controller
 {
