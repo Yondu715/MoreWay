@@ -2,8 +2,8 @@
 
 namespace App\Infrastructure\WebSocket\Notifiers\Notification;
 
+use Illuminate\Support\Collection;
 use App\Infrastructure\Broker\RabbitMqPublisher;
-use Illuminate\Http\Resources\Json\JsonResource;
 
 abstract class BaseNotifier
 {
@@ -29,13 +29,12 @@ abstract class BaseNotifier
      */
     public function sendNotification(int $userId, mixed $notification): void
     {
-        /** @var JsonResource $resource  */
-        $resource = $this->resource;
+        $json = $notification instanceof Collection ? $this->resource::collection($notification) : $this->resource::make($notification);
 
         $message = [
             'to' => $userId,
             'type' => $this->type,
-            'notification' => $resource::make($notification)
+            'notification' => $json
         ];
         $this->publisher->publish(
             routingKey: $this->queueName,
