@@ -20,7 +20,7 @@ class ShortPointResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'image' => !$this->place->images->isEmpty() ? url("/storage/{$this->place[0]->path}") : null,
+            'image' => !$this->place->images->isEmpty() ? url("/storage/{$this->place->images[0]->path}") : null,
         ];
     }
 }
