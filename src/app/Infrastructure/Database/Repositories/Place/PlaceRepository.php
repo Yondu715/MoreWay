@@ -55,6 +55,6 @@ class PlaceRepository implements IPlaceRepository
         $places = $this->model
             ->filter($this->placeFilterFactory->create($getPlacesDto->filter, $distanceCalculator))
             ->cursorPaginate(perPage: $getPlacesDto->limit, cursor: $getPlacesDto->cursor);
-        return PlaceDtoMapper::fromPaginator($places);
+        return PlaceDtoMapper::fromPaginator($places, $distanceCalculator);
     }
 }

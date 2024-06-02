@@ -10,6 +10,7 @@ use App\Utils\Mappers\Collection\CursorDtoMapper;
 use App\Utils\Mappers\Out\Place\Image\ImageDtoMapper;
 use App\Utils\Mappers\Out\Place\Type\PlaceTypeDtoMapper;
 use App\Utils\Mappers\Out\Place\Locality\LocalityDtoMapper;
+use Closure;
 
 class PlaceDtoMapper
 {
@@ -36,13 +37,13 @@ class PlaceDtoMapper
 
     /**
      * @param CursorPaginator $cursorPaginator
-     * @param callable $mapFunc
+     * @param Closure(float, float): float $distanceCalculator
      * @return CursorDto
      */
-    public static function fromPaginator(CursorPaginator $cursorPaginator): CursorDto
+    public static function fromPaginator(CursorPaginator $cursorPaginator, Closure $distanceCalculator): CursorDto
     {
-        return CursorDtoMapper::fromPaginatorAndMapper($cursorPaginator, function (Place $place) {
-            return static::fromPlaceModel($place);
+        return CursorDtoMapper::fromPaginatorAndMapper($cursorPaginator, function (Place $place) use ($distanceCalculator) {
+            return static::fromPlaceModel($place, $distanceCalculator($place->lat, $place->lon));
         });
     }
 }
