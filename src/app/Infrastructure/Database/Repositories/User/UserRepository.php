@@ -19,7 +19,7 @@ use App\Infrastructure\Database\Models\Filters\User\UserFilterFactory;
 class UserRepository implements IUserRepository
 {
 
-    private Model $model;
+    private readonly Model $model;
 
     public function __construct(
         User $user,
