@@ -5,6 +5,7 @@ namespace App\Infrastructure\Database\Repositories\Route;
 use Exception;
 use Throwable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 use App\Application\DTO\Out\Route\RouteDto;
 use App\Application\DTO\Collection\CursorDto;
 use App\Infrastructure\Database\Models\Route;
@@ -16,7 +17,6 @@ use App\Application\DTO\Out\Route\Point\PointDto;
 use App\Application\DTO\In\Route\GetUserRoutesDto;
 use App\Infrastructure\Database\Models\RoutePoint;
 use App\Application\Exceptions\Route\RouteNotFound;
-use App\Application\DTO\In\Route\ChangeUserRouteDto;
 use App\Utils\Mappers\Out\Route\Point\PointDtoMapper;
 use App\Application\Exceptions\Route\RouteIsCompleted;
 use App\Application\Exceptions\Route\RouteNameIsTaken;
@@ -240,16 +240,16 @@ class RouteRepository implements IRouteRepository
     }
 
     /**
-     * @param int $userId
      * @param int $routeId
+     * @param int $creatorId
      * @return void
      */
-    public function deleteUserRoute(int $userId, int $routeId): void
+    public function deleteRouteByRouteIdAndCreatorId(int $routeId, int $creatorId): void
     {
         $this->model->query()
             ->where([
                 'id' => $routeId,
-                'creator_id' => $userId
+                'creator_id' => $creatorId
             ])->delete();
     }
 
@@ -299,7 +299,7 @@ class RouteRepository implements IRouteRepository
             ->whereIn('route_point_id', $route->routePoints->pluck('id'))
             ->get()->isEmpty()
         ) {
-            $route->routePoints()->each(function ($routePoint) use ($userId, $isGroup) {
+            $route->routePoints()->each(function ($routePoint) use ($userId) {
                 UserRouteProgress::query()->create([
                     'user_id' => $userId,
                     'route_point_id' => $routePoint->id
@@ -323,25 +323,29 @@ class RouteRepository implements IRouteRepository
      */
     public function getFavoriteUserRoutes(GetUserRoutesDto $getUserRoutesDto): CursorDto
     {
-        $routes = $this->model->query()->whereIn('id', UserFavoriteRoute::query()
-            ->where('user_id', $getUserRoutesDto->userId)->get()->pluck('route_id'))
+        $favoriteRoutes = $this->model->query()
+            ->whereHas('favoriteByUsers', function (Builder $builder) use ($getUserRoutesDto) {
+                $builder->where('user_id', $getUserRoutesDto->userId);
+            })
+            ->with('routePoints')
             ->cursorPaginate(perPage: $getUserRoutesDto->limit, cursor: $getUserRoutesDto->cursor);
-        return RouteDtoMapper::fromPaginator($routes);
+
+        return RouteDtoMapper::fromPaginator($favoriteRoutes);
     }
 
+
     /**
-     * @param ChangeUserRouteDto $changeUserRouteDto
+     * @param int $userId
+     * @param int $routeId
      * @return RouteDto
      */
-    public function addRouteToUserFavorite(ChangeUserRouteDto $changeUserRouteDto): RouteDto
+    public function addRouteToUserFavorite(int $userId, int $routeId): RouteDto
     {
-        /** @var UserFavoriteRoute $userFavoriteRoute */
-        $userFavoriteRoute = UserFavoriteRoute::query()->create([
-            'user_id' => $changeUserRouteDto->userId,
-            'route_id' => $changeUserRouteDto->routeId,
-        ]);
+        /** @var Route $route */
+        $route = $this->model->query()->findOrFail($routeId);
+        $route->favoriteByUsers()->attach($userId);
 
-        return RouteDtoMapper::fromRouteModel($userFavoriteRoute->route);
+        return RouteDtoMapper::fromRouteModel($route);
     }
 
     /**
@@ -352,11 +356,9 @@ class RouteRepository implements IRouteRepository
      */
     public function deleteRouteFromUserFavorite(int $userId, int $routeId): void
     {
-        UserFavoriteRoute::query()
-            ->where([
-                'route_id' => $routeId,
-                'user_id' => $userId
-            ])->delete();
+        /** @var Route $route */
+        $route = $this->model->query()->findOrFail($routeId);
+        $route->favoriteByUsers()->detach($userId);
     }
 
     /**

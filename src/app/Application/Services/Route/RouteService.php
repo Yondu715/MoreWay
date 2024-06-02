@@ -148,7 +148,7 @@ class RouteService implements IRouteService
      */
     public function deleteUserRoute(int $userId, int $routeId): void
     {
-        $this->routeRepository->deleteUserRoute($userId, $routeId);
+        $this->routeRepository->deleteRouteByRouteIdAndCreatorId($routeId, $userId);
     }
 
     /**
@@ -188,7 +188,7 @@ class RouteService implements IRouteService
      */
     public function addRouteToUserFavorite(ChangeUserRouteDto $changeUserRouteDto): RouteDto
     {
-        return  $this->routeRepository->addRouteToUserFavorite($changeUserRouteDto);
+        return  $this->routeRepository->addRouteToUserFavorite($changeUserRouteDto->userId, $changeUserRouteDto->routeId);
     }
 
     /**

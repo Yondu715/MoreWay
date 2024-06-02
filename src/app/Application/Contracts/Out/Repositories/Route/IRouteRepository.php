@@ -2,22 +2,21 @@
 
 namespace App\Application\Contracts\Out\Repositories\Route;
 
+use App\Application\DTO\Out\Route\RouteDto;
 use App\Application\DTO\Collection\CursorDto;
-use App\Application\DTO\In\Route\ChangeUserRouteDto;
-use App\Application\DTO\In\Route\CompletedRoutePointDto;
-use App\Application\DTO\In\Route\CreateRouteDto;
 use App\Application\DTO\In\Route\GetRoutesDto;
-use App\Application\DTO\In\Route\GetUserRoutesDto;
+use App\Application\DTO\In\Route\CreateRouteDto;
 use App\Application\DTO\Out\Route\ActiveRouteDto;
 use App\Application\DTO\Out\Route\Point\PointDto;
-use App\Application\DTO\Out\Route\RouteDto;
-use App\Application\Exceptions\Route\FailedToCreateRoute;
-use App\Application\Exceptions\Route\IncorrectOrderRoutePoints;
-use App\Application\Exceptions\Route\Point\RoutePointNotFound;
+use App\Application\DTO\In\Route\GetUserRoutesDto;
+use App\Application\Exceptions\Route\RouteNotFound;
 use App\Application\Exceptions\Route\RouteIsCompleted;
 use App\Application\Exceptions\Route\RouteNameIsTaken;
-use App\Application\Exceptions\Route\RouteNotFound;
+use App\Application\DTO\In\Route\CompletedRoutePointDto;
+use App\Application\Exceptions\Route\FailedToCreateRoute;
 use App\Application\Exceptions\Route\UserHaveNotActiveRoute;
+use App\Application\Exceptions\Route\Point\RoutePointNotFound;
+use App\Application\Exceptions\Route\IncorrectOrderRoutePoints;
 use App\Application\Exceptions\Route\UserRouteProgressNotFound;
 
 interface IRouteRepository
@@ -74,11 +73,11 @@ interface IRouteRepository
     public function getUserRoutes(GetUserRoutesDto $getUserRoutesDto): CursorDto;
 
     /**
-     * @param int $userId
      * @param int $routeId
+     * @param int $creator
      * @return void
      */
-    public function deleteUserRoute(int $userId, int $routeId): void;
+    public function deleteRouteByRouteIdAndCreatorId(int $routeId, int $creatorId): void;
 
     /**
      * @param int $userId
@@ -103,10 +102,11 @@ interface IRouteRepository
     public function getFavoriteUserRoutes(GetUserRoutesDto $getUserRoutesDto): CursorDto;
 
     /**
-     * @param ChangeUserRouteDto $changeUserRouteDto
+     * @param int $userId
+     * @param int $routeId
      * @return RouteDto
      */
-    public function addRouteToUserFavorite(ChangeUserRouteDto $changeUserRouteDto): RouteDto;
+    public function addRouteToUserFavorite(int $userId, int $routeId): RouteDto;
 
     /**
      * @param int $userId
