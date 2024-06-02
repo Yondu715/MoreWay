@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Application\DTO\Out\Rating\RatingDto;
 use App\Infrastructure\Database\Models\UserScore;
 use App\Utils\Mappers\Out\Rating\RatingDtoMapper;
+use App\Application\Exceptions\Rating\RatingNotFound;
 use App\Application\Contracts\Out\Repositories\Rating\IRatingRepository;
 
 class RatingRepository implements IRatingRepository
@@ -37,10 +38,15 @@ class RatingRepository implements IRatingRepository
     /**
      * @param int $userId
      * @return RatingDto
+     * @throws RatingNotFound
      */
     public function getRatingByUserId(int $userId): RatingDto
     {
         $userRating = $this->model->query()->firstWhere('user_id', $userId);
+
+        if (!$userRating) {
+            throw new RatingNotFound();
+        }
 
         $userRatingWithPosition = $this->model->query()
             ->orderByDesc('score')
