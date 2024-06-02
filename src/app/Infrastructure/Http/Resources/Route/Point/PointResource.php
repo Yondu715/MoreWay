@@ -22,7 +22,7 @@ class PointResource extends JsonResource
         return [
             'id' => $this->id,
             'index' => $this->index,
-            'isCompleted' => $this->when($this->isCompleted !== null, $this->isCompleted, null),
+            'isCompleted' => $this->when($this->isCompleted !== null, $this->isCompleted),
             'place' => ShortPlaceResource::make($this->place)
         ];
     }

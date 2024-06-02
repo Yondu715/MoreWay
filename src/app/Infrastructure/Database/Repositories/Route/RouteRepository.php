@@ -23,7 +23,6 @@ use App\Application\Exceptions\Route\RouteNameIsTaken;
 use App\Infrastructure\Database\Models\UserActiveRoute;
 use App\Application\DTO\In\Route\CompletedRoutePointDto;
 use App\Application\Exceptions\Route\FailedToCreateRoute;
-use App\Infrastructure\Database\Models\UserFavoriteRoute;
 use App\Infrastructure\Database\Models\UserRouteProgress;
 use App\Application\Exceptions\Route\UserHaveNotActiveRoute;
 use App\Infrastructure\Database\Models\RouteConstructorPoint;
@@ -95,14 +94,12 @@ class RouteRepository implements IRouteRepository
     {
         try {
             /** @var Route $route */
-            $route = $this->model->query()->findOrFail($routeId);
-            return RouteDtoMapper::fromRouteModelAndActiveFavorite($route, (bool) UserActiveRoute::query()->where([
-                'route_id' => $route->id,
-                'user_id' => $userId
-            ])->first(), (bool) UserFavoriteRoute::query()->where([
-                'route_id' => $route->id,
-                'user_id' => $userId
-            ])->first());
+            $route = $this->model->query()->with(['routePoints.place'])->findOrFail($routeId);
+
+            $isActive = (bool) $route->activeByUsers()->wherePivot('user_id', $userId)->get();
+            $isFavorite = (bool) $route->favoriteByUsers()->wherePivot('user_id', $userId)->get();
+
+            return RouteDtoMapper::fromRouteModelAndActiveFavorite($route, $isActive, $isFavorite);
         } catch (Throwable) {
             throw new RouteNotFound();
         }
@@ -156,6 +153,7 @@ class RouteRepository implements IRouteRepository
     public function getRoutes(GetRoutesDto $getRoutesDto): CursorDto
     {
         $routes = $this->model
+            ->with('routePoints.place')
             ->filter($this->routeFilterFactory->create($getRoutesDto->filter))
             ->cursorPaginate(perPage: $getRoutesDto->limit, cursor: $getRoutesDto->cursor);
         return RouteDtoMapper::fromPaginator($routes);
@@ -327,7 +325,7 @@ class RouteRepository implements IRouteRepository
             ->whereHas('favoriteByUsers', function (Builder $builder) use ($getUserRoutesDto) {
                 $builder->where('user_id', $getUserRoutesDto->userId);
             })
-            ->with('routePoints')
+            ->with('routePoints.place')
             ->cursorPaginate(perPage: $getUserRoutesDto->limit, cursor: $getUserRoutesDto->cursor);
 
         return RouteDtoMapper::fromPaginator($favoriteRoutes);
@@ -342,7 +340,7 @@ class RouteRepository implements IRouteRepository
     public function addRouteToUserFavorite(int $userId, int $routeId): RouteDto
     {
         /** @var Route $route */
-        $route = $this->model->query()->findOrFail($routeId);
+        $route = $this->model->query()->with('routePoints.place')->findOrFail($routeId);
         $route->favoriteByUsers()->attach($userId);
 
         return RouteDtoMapper::fromRouteModel($route);

@@ -2,12 +2,11 @@
 
 namespace App\Utils\Mappers\Out\Route\Point;
 
-use App\Application\DTO\Out\Route\Point\PointDto;
-use App\Application\DTO\Out\Route\RouteDto;
-use App\Infrastructure\Database\Models\RouteConstructorPoint;
-use App\Infrastructure\Database\Models\RoutePoint;
-use App\Utils\Mappers\Out\Place\PlaceDtoMapper;
 use Illuminate\Support\Collection;
+use App\Utils\Mappers\Out\Place\PlaceDtoMapper;
+use App\Application\DTO\Out\Route\Point\PointDto;
+use App\Infrastructure\Database\Models\RoutePoint;
+use App\Infrastructure\Database\Models\RouteConstructorPoint;
 
 class PointDtoMapper
 {
@@ -25,10 +24,7 @@ class PointDtoMapper
                 isCompleted: $routePoint
                     ->progresses
                     ->where('user_id', $userId)
-                    ->first() ? $routePoint
-                    ->progresses
-                    ->where('user_id', $userId)
-                    ->first()->is_completed : false
+                    ->first()?->is_completed
             );
         });
     }
