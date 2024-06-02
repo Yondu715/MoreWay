@@ -24,8 +24,8 @@ class RouteResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'rating' => $this->rating,
-            'isActive' => $this->when($this->isActive !== null, $this->isActive, null),
-            'isFavorite' => $this->when($this->isFavorite !== null, $this->isActive, null),
+            'isActive' => $this->when($this->isActive !== null, $this->isActive),
+            'isFavorite' => $this->when($this->isFavorite !== null, $this->isActive),
             'routePoints' => PointResource::collection($this->points),
             'creator' => ShortUserResource::make($this->creator)
         ];

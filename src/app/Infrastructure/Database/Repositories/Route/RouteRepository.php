@@ -2,10 +2,6 @@
 
 namespace App\Infrastructure\Database\Repositories\Route;
 
-use App\Application\DTO\Out\Route\Point\PointDto;
-use App\Application\Exceptions\Route\Point\RoutePointNotFound;
-use App\Application\Exceptions\Route\RouteNotFound;
-use App\Utils\Mappers\Out\Route\Point\PointDtoMapper;
 use Exception;
 use Throwable;
 use Illuminate\Database\Eloquent\Model;
@@ -16,11 +12,14 @@ use App\Application\DTO\In\Route\GetRoutesDto;
 use App\Utils\Mappers\Out\Route\RouteDtoMapper;
 use App\Application\DTO\In\Route\CreateRouteDto;
 use App\Application\DTO\Out\Route\ActiveRouteDto;
+use App\Application\DTO\Out\Route\Point\PointDto;
 use App\Application\DTO\In\Route\GetUserRoutesDto;
 use App\Infrastructure\Database\Models\RoutePoint;
-use App\Application\Exceptions\Route\RouteNameIsTaken;
+use App\Application\Exceptions\Route\RouteNotFound;
 use App\Application\DTO\In\Route\ChangeUserRouteDto;
+use App\Utils\Mappers\Out\Route\Point\PointDtoMapper;
 use App\Application\Exceptions\Route\RouteIsCompleted;
+use App\Application\Exceptions\Route\RouteNameIsTaken;
 use App\Infrastructure\Database\Models\UserActiveRoute;
 use App\Application\DTO\In\Route\CompletedRoutePointDto;
 use App\Application\Exceptions\Route\FailedToCreateRoute;
@@ -28,11 +27,11 @@ use App\Infrastructure\Database\Models\UserFavoriteRoute;
 use App\Infrastructure\Database\Models\UserRouteProgress;
 use App\Application\Exceptions\Route\UserHaveNotActiveRoute;
 use App\Infrastructure\Database\Models\RouteConstructorPoint;
+use App\Application\Exceptions\Route\Point\RoutePointNotFound;
 use App\Application\Exceptions\Route\IncorrectOrderRoutePoints;
 use App\Application\Exceptions\Route\UserRouteProgressNotFound;
 use App\Application\Contracts\Out\Repositories\Route\IRouteRepository;
 use App\Infrastructure\Database\Models\Filters\Route\RouteFilterFactory;
-use App\Infrastructure\Database\Models\User;
 use App\Infrastructure\Database\Transaction\Interface\ITransactionManager;
 
 class RouteRepository implements IRouteRepository
@@ -69,18 +68,17 @@ class RouteRepository implements IRouteRepository
                 })->get();
 
             $routePoints->each(function ($routePoint) use ($route) {
-                RoutePoint::query()->create([
+                $route->routePoints()->create([
                     'index' => $routePoint->index,
                     'place_id' => $routePoint->place_id,
-                    'route_id' => $route->id,
                 ]);
 
-                $routePoint->delete();
+                $routePoint->forceDelete();
             });
 
             $this->transactionManager->commit();
 
-            return RouteDtoMapper::fromRouteModelAndActiveFavorite($route, false, false);
+            return RouteDtoMapper::fromRouteModel($route->refresh());
         } catch (Exception $exception) {
             $this->transactionManager->rollback();
             throw $exception;
@@ -98,10 +96,10 @@ class RouteRepository implements IRouteRepository
         try {
             /** @var Route $route */
             $route = $this->model->query()->findOrFail($routeId);
-            return RouteDtoMapper::fromRouteModelAndActiveFavorite($route, (boolean) UserActiveRoute::query()->where([
+            return RouteDtoMapper::fromRouteModelAndActiveFavorite($route, (bool) UserActiveRoute::query()->where([
                 'route_id' => $route->id,
                 'user_id' => $userId
-                ])->first(), (boolean) UserFavoriteRoute::query()->where([
+            ])->first(), (bool) UserFavoriteRoute::query()->where([
                 'route_id' => $route->id,
                 'user_id' => $userId
             ])->first());
@@ -233,7 +231,7 @@ class RouteRepository implements IRouteRepository
      * @param GetUserRoutesDto $getUserRoutesDto
      * @return CursorDto
      */
-    public function getUsersRoutes(GetUserRoutesDto $getUserRoutesDto): CursorDto
+    public function getUserRoutes(GetUserRoutesDto $getUserRoutesDto): CursorDto
     {
         $routes = $this->model->query()
             ->where('creator_id', $getUserRoutesDto->userId)
@@ -245,21 +243,14 @@ class RouteRepository implements IRouteRepository
      * @param int $userId
      * @param int $routeId
      * @return void
-     * @throws RouteNotFound
      */
     public function deleteUserRoute(int $userId, int $routeId): void
     {
-        $route = $this->model->query()
+        $this->model->query()
             ->where([
                 'id' => $routeId,
                 'creator_id' => $userId
-            ]);
-
-        if ($route->get()->isEmpty()) {
-            throw new RouteNotFound();
-        }
-
-        $route->delete();
+            ])->delete();
     }
 
     /**
@@ -296,15 +287,18 @@ class RouteRepository implements IRouteRepository
             ->whereIn('route_point_id', $route->routePoints->pluck('id'))
             ->get();
 
-        if($userActiveRoute->where("is_completed", true)
-                ->count() === $route->routePoints->count()){
+        if (
+            $userActiveRoute->where("is_completed", true)
+            ->count() === $route->routePoints->count()
+        ) {
             throw new RouteIsCompleted();
         }
 
-        if(UserRouteProgress::query()
+        if (UserRouteProgress::query()
             ->where('user_id', $userId)
             ->whereIn('route_point_id', $route->routePoints->pluck('id'))
-            ->get()->isEmpty()) {
+            ->get()->isEmpty()
+        ) {
             $route->routePoints()->each(function ($routePoint) use ($userId, $isGroup) {
                 UserRouteProgress::query()->create([
                     'user_id' => $userId,
@@ -371,6 +365,6 @@ class RouteRepository implements IRouteRepository
      */
     public function isExistByName(string $routeName): bool
     {
-        return (boolean) $this->model->query()->where('name', $routeName)->first();
+        return (bool) $this->model->query()->where('name', $routeName)->first();
     }
 }

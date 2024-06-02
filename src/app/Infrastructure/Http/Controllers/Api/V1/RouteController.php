@@ -164,11 +164,11 @@ class RouteController extends Controller
      * @param GetUserRoutesRequest $getUserRoutesRequest
      * @return RouteCursorResource
      */
-    public function getUsersRoutes(GetUserRoutesRequest $getUserRoutesRequest): RouteCursorResource
+    public function getUserRoutes(GetUserRoutesRequest $getUserRoutesRequest): RouteCursorResource
     {
         $getUserRoutesDto = GetUserRoutesDtoMapper::fromRequest($getUserRoutesRequest);
         return RouteCursorResource::make(
-            $this->routeService->getUsersRoutes($getUserRoutesDto)
+            $this->routeService->getUserRoutes($getUserRoutesDto)
         );
     }
 

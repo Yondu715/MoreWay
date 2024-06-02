@@ -136,9 +136,9 @@ class RouteService implements IRouteService
      * @param GetUserRoutesDto $getUserRoutesDto
      * @return CursorDto
      */
-    public function getUsersRoutes(GetUserRoutesDto $getUserRoutesDto): CursorDto
+    public function getUserRoutes(GetUserRoutesDto $getUserRoutesDto): CursorDto
     {
-        return $this->routeRepository->getUsersRoutes($getUserRoutesDto);
+        return $this->routeRepository->getUserRoutes($getUserRoutesDto);
     }
 
     /**

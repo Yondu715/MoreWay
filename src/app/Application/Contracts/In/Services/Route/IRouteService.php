@@ -50,7 +50,7 @@ interface IRouteService
      * @param GetUserRoutesDto $getUserRoutesDto
      * @return CursorDto
      */
-    public function getUsersRoutes(GetUserRoutesDto $getUserRoutesDto): CursorDto;
+    public function getUserRoutes(GetUserRoutesDto $getUserRoutesDto): CursorDto;
 
     /**
      * @param int $userId

@@ -73,7 +73,7 @@ Route::prefix('users')
                         Route::delete('/routes/{routeId}', [RouteController::class, 'deleteUserRoute']);
                         Route::get('/chats', [ChatController::class, 'getUserChats']);
                     });
-                Route::get('/routes', [RouteController::class, 'getUsersRoutes']);
+                Route::get('/routes', [RouteController::class, 'getUserRoutes']);
                 Route::get('/favorite-routes', [RouteController::class, 'getFavoriteUserRoutes']);
 
                 Route::get('/achievements', [AchievementController::class, 'getUserAchievements']);
