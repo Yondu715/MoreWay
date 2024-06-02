@@ -2,14 +2,14 @@
 
 namespace App\Application\Services\Place;
 
-use App\Application\Contracts\In\Services\Place\IPlaceService;
-use App\Application\Contracts\Out\Repositories\Place\IPlaceRepository;
+use App\Application\DTO\Out\Place\PlaceDto;
 use App\Application\DTO\Collection\CursorDto;
 use App\Application\DTO\In\Place\GetPlaceDto;
 use App\Application\DTO\In\Place\GetPlacesDto;
-use App\Application\DTO\Out\Place\PlaceDto;
-use App\Domain\Contracts\In\DomainManagers\IDistanceManager;
 use App\Domain\Factories\Distance\DistanceManagerFactory;
+use App\Domain\Contracts\In\DomainManagers\IDistanceManager;
+use App\Application\Contracts\In\Services\Place\IPlaceService;
+use App\Application\Contracts\Out\Repositories\Place\IPlaceRepository;
 
 class PlaceService implements IPlaceService
 {
@@ -30,7 +30,7 @@ class PlaceService implements IPlaceService
         $distanceCalc = function (float $lat, float $lon) use ($getPlaceDto) {
             return $this->distanceManager->calculate($lat, $lon, $getPlaceDto->lat, $getPlaceDto->lon);
         };
-        return $this->placeRepository->getById($getPlaceDto, $distanceCalc);
+        return $this->placeRepository->findById($getPlaceDto->placeId, $distanceCalc);
     }
 
     /**

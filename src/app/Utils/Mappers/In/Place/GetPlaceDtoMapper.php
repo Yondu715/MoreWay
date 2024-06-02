@@ -14,7 +14,7 @@ class GetPlaceDtoMapper
     public static function fromRequest(GetPlaceRequest $getPlaceRequest): GetPlaceDto
     {
         return new GetPlaceDto(
-            id: $getPlaceRequest->route('placeId'),
+            placeId: $getPlaceRequest->route('placeId'),
             lat: $getPlaceRequest->lat,
             lon: $getPlaceRequest->lon
         );
