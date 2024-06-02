@@ -13,7 +13,7 @@ interface IPlaceReviewRepository
      * @param GetPlaceReviewsDto $getReviewsDto
      * @return CursorDto
      */
-    public function getAll(GetPlaceReviewsDto $getReviewsDto): CursorDto;
+    public function findByPlaceId(GetPlaceReviewsDto $getReviewsDto): CursorDto;
 
     /**
      * @param array $attributes

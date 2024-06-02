@@ -42,6 +42,6 @@ class PlaceReviewService implements IPlaceReviewService
      */
     public function getReviews(GetPlaceReviewsDto $getReviewsDto): CursorDto
     {
-        return $this->reviewRepository->getAll($getReviewsDto);
+        return $this->reviewRepository->findByPlaceId($getReviewsDto);
     }
 }

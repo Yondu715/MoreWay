@@ -2,15 +2,15 @@
 
 namespace App\Infrastructure\Database\Repositories\Place\Review;
 
-use App\Application\Contracts\Out\Repositories\Place\Review\IPlaceReviewRepository;
-use App\Application\DTO\Collection\CursorDto;
-use App\Application\DTO\In\Place\Review\GetPlaceReviewsDto;
-use App\Application\DTO\Out\Review\ReviewDto;
-use App\Application\Exceptions\Review\FailedToCreateReview;
-use App\Infrastructure\Database\Models\PlaceReview;
-use App\Utils\Mappers\Out\Review\ReviewDtoMapper;
-use Illuminate\Database\Eloquent\Model;
 use Throwable;
+use Illuminate\Database\Eloquent\Model;
+use App\Application\DTO\Collection\CursorDto;
+use App\Application\DTO\Out\Review\ReviewDto;
+use App\Utils\Mappers\Out\Review\ReviewDtoMapper;
+use App\Infrastructure\Database\Models\PlaceReview;
+use App\Application\DTO\In\Place\Review\GetPlaceReviewsDto;
+use App\Application\Exceptions\Review\FailedToCreateReview;
+use App\Application\Contracts\Out\Repositories\Place\Review\IPlaceReviewRepository;
 
 class PlaceReviewRepository implements IPlaceReviewRepository
 {
@@ -26,10 +26,11 @@ class PlaceReviewRepository implements IPlaceReviewRepository
      * @param GetPlaceReviewsDto $getReviewsDto
      * @return CursorDto
      */
-    public function getAll(GetPlaceReviewsDto $getReviewsDto): CursorDto
+    public function findByPlaceId(GetPlaceReviewsDto $getReviewsDto): CursorDto
     {
         $reviews = $this->model->query()
             ->where('place_id', $getReviewsDto->placeId)
+            ->with('author')
             ->orderBy('created_at', 'desc')
             ->cursorPaginate(perPage: $getReviewsDto->limit, cursor: $getReviewsDto->cursor);
         return ReviewDtoMapper::fromPaginator($reviews);
