@@ -82,7 +82,9 @@ class UserService implements IUserService
             throw new InvalidOldPassword();
         }
 
-        return $this->userRepository->updatePassword($changeUserPasswordDto->userId, $changeUserPasswordDto->newPassword);
+        return $this->userRepository->update($changeUserPasswordDto->userId, [
+            'password' => $changeUserPasswordDto->newPassword
+        ]);
     }
 
     /**
@@ -96,7 +98,9 @@ class UserService implements IUserService
 
         $this->storageManager->store($path, $changeUserAvatarDto->avatar);
 
-        return $this->userRepository->updateAvatar($user->id, $path);
+        return $this->userRepository->update($user->id, [
+            'avatar' => $path
+        ]);
     }
 
     /**
@@ -105,6 +109,8 @@ class UserService implements IUserService
      */
     public function changeData(ChangeUserDataDto $changeUserDataDto): UserDto
     {
-        return $this->userRepository->update($changeUserDataDto);
+        return $this->userRepository->update($changeUserDataDto->userId, [
+            'name' => $changeUserDataDto->name
+        ]);
     }
 }

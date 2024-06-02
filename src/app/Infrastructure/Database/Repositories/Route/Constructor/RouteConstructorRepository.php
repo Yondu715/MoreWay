@@ -10,7 +10,6 @@ use App\Infrastructure\Database\Models\RouteConstructorPoint;
 use App\Utils\Mappers\Out\Route\Constructor\ConstructorDtoMapper;
 use App\Application\DTO\Out\Route\Constructor\RouteConstructorDto;
 use App\Application\Exceptions\Route\Constructor\ConstructorNotFound;
-use App\Application\DTO\In\Route\Constructor\GetUserRouteConstructorDto;
 use App\Application\Exceptions\Route\Constructor\InvalidRoutePointIndex;
 use App\Infrastructure\Database\Transaction\Interface\ITransactionManager;
 use App\Application\DTO\In\Route\Constructor\ChangeUserRouteConstructorDto;

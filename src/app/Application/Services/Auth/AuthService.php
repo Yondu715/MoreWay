@@ -162,6 +162,8 @@ class AuthService implements IAuthService
             throw new InvalidResetPasswordToken();
         }
 
-        $this->userRepository->updatePassword($user->id, $resetPasswordDto->password);
+        $this->userRepository->update($user->id, [
+            'password' => $resetPasswordDto->password
+        ]);
     }
 }

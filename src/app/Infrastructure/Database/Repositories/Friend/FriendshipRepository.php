@@ -2,16 +2,17 @@
 
 namespace App\Infrastructure\Database\Repositories\Friend;
 
-use App\Application\Contracts\Out\Repositories\Friend\IFriendshipRepository;
+use Throwable;
+use Illuminate\Support\Collection;
+use Illuminate\Database\Eloquent\Model;
+use App\Utils\Mappers\Out\User\UserDtoMapper;
 use App\Application\DTO\Out\Friend\FriendshipDto;
 use App\Application\Enums\Friend\RelationshipType;
-use App\Application\Exceptions\Friend\FriendRequestNotFound;
 use App\Infrastructure\Database\Models\Friendship;
-use App\Utils\Mappers\Out\User\UserDtoMapper;
-use Illuminate\Database\Eloquent\Model;
 use App\Utils\Mappers\Out\Friend\FriendshipDtoMapper;
-use Illuminate\Support\Collection;
-use Throwable;
+use App\Application\Exceptions\Friend\FriendshipNotFound;
+use App\Application\Contracts\Out\Repositories\Friend\IFriendshipRepository;
+use App\Application\DTO\Out\User\UserDto;
 
 class FriendshipRepository implements IFriendshipRepository
 {
@@ -26,7 +27,7 @@ class FriendshipRepository implements IFriendshipRepository
     /**
      * @param int $id
      * @return FriendshipDto
-     * @throws FriendRequestNotFound
+     * @throws FriendshipNotFound
      */
     public function findById(int $id): FriendshipDto
     {
@@ -35,7 +36,7 @@ class FriendshipRepository implements IFriendshipRepository
             $friendship = $this->model->query()->findOrFail($id);
             return FriendshipDtoMapper::fromFriendshipModel($friendship);
         } catch (Throwable) {
-            throw new FriendRequestNotFound();
+            throw new FriendshipNotFound();
         }
     }
 
@@ -45,9 +46,7 @@ class FriendshipRepository implements IFriendshipRepository
      */
     public function deleteById(int $id): bool
     {
-        return $this->model->query()->where([
-            'id' => $id
-        ])->delete();
+        return $this->model->query()->where('id', $id)->delete();
     }
 
     /**
@@ -94,14 +93,14 @@ class FriendshipRepository implements IFriendshipRepository
 
     /**
      * @param int $userId
-     * @return Collection<int, FriendshipDto>
+     * @return Collection<int, UserDto>
      */
-    public function getUserFriendships(int $userId): Collection
+    public function getUserFriends(int $userId): Collection
     {
         $friendships = $this->model->query()->where([
             'user_id' => $userId,
             'relationship_id' => RelationshipType::FRIEND
-        ])->with('friend')->get();
+        ])->with(['friend'])->get();
 
         return $friendships->map(function (Friendship $friendship) {
             return UserDtoMapper::fromUserModel($friendship->friend);
@@ -135,12 +134,12 @@ class FriendshipRepository implements IFriendshipRepository
      * @param int $userId
      * @return Collection<int, FriendshipDto>
      */
-    public function getFriendRequests(int $userId): Collection
+    public function getFriendRequestsByUserId(int $userId): Collection
     {
         $friendRequests = $this->model->query()->where([
             'friend_id' => $userId,
             'relationship_id' => RelationshipType::REQUEST
-        ])->with('user')->get();
+        ])->with(['user', 'friend'])->get();
 
         return $friendRequests->map(function (Friendship $friendship) {
             return FriendshipDtoMapper::fromFriendshipModel($friendship);

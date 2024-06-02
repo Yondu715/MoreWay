@@ -25,7 +25,7 @@ class RouteReviewRepository implements IRouteReviewRepository
      * @param GetRouteReviewsDto $getReviewsDto
      * @return CursorDto
      */
-    public function getAll(GetRouteReviewsDto $getReviewsDto): CursorDto
+    public function findByRouteId(GetRouteReviewsDto $getReviewsDto): CursorDto
     {
         $paginator = $this->model->query()
             ->where('route_id', $getReviewsDto->routeId)
@@ -44,9 +44,7 @@ class RouteReviewRepository implements IRouteReviewRepository
         try {
             /** @var RouteReview $review */
             $review = $this->model->query()->create($attributes);
-            return ReviewDtoMapper::fromReviewModel(
-                $review
-            );
+            return ReviewDtoMapper::fromReviewModel($review);
         } catch (Throwable) {
             throw new FailedToCreateReview();
         }

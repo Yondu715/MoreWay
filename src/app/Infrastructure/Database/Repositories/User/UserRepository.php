@@ -100,49 +100,18 @@ class UserRepository implements IUserRepository
         $user->score()->create([
             'score' => 0
         ]);
-        return UserDtoMapper::fromUserModel($user);
+        return UserDtoMapper::fromUserModel($user->refresh());
     }
 
     /**
      * @param ChangeUserDataDto $userDto
      * @return UserDto
      */
-    public function update(ChangeUserDataDto $changeUserDataDto): UserDto
+    public function update(int $id, array $attributes): UserDto
     {
         /** @var User $user */
-        $user = $this->model->query()->find($changeUserDataDto->userId);
-        $user->update([
-            'name' => $changeUserDataDto->name
-        ]);
-        return UserDtoMapper::fromUserModel($user->refresh());
-    }
-
-    /**
-     * @param int $userId
-     * @param string $path
-     * @return UserDto
-     */
-    public function updateAvatar(int $userId, string $path): UserDto
-    {
-        /** @var User $user */
-        $user = $this->model->query()->find($userId);
-        $user->update([
-            'avatar' => $path
-        ]);
-        return UserDtoMapper::fromUserModel($user->refresh());
-    }
-
-    /**
-     * @param int $userId
-     * @param string $password
-     * @return UserDto
-     */
-    public function updatePassword(int $userId, string $password): UserDto
-    {
-        $user = $this->model->query()->find($userId);
-        $user->update([
-            'password' => $password
-        ]);
+        $user = $this->model->query()->find($id);
+        $user->update($attributes);
         return UserDtoMapper::fromUserModel($user->refresh());
     }
 }

@@ -45,7 +45,7 @@ interface IFriendshipRepository
      * @param int $userId
      * @return Collection<int, UserDto>
      */
-    public function getUserFriendships(int $userId): Collection;
+    public function getUserFriends(int $userId): Collection;
 
     /**
      * @param int $userId
@@ -58,5 +58,5 @@ interface IFriendshipRepository
      * @param int $userId
      * @return Collection<int, FriendshipDto>
      */
-    public function getFriendRequests(int $userId): Collection;
+    public function getFriendRequestsByUserId(int $userId): Collection;
 }

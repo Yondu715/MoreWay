@@ -38,6 +38,6 @@ class RouteReviewService implements IRouteReviewService
      */
     public function getReviews(GetRouteReviewsDto $getReviewsDto): CursorDto
     {
-        return $this->reviewRepository->getAll($getReviewsDto);
+        return $this->reviewRepository->findByRouteId($getReviewsDto);
     }
 }

@@ -4,7 +4,6 @@ namespace App\Application\Contracts\Out\Repositories\User;
 
 use App\Application\DTO\Collection\CursorDto;
 use App\Application\DTO\In\Auth\RegisterDto;
-use App\Application\DTO\In\User\ChangeUserDataDto;
 use App\Application\DTO\In\User\GetUsersDto;
 use App\Application\DTO\Out\User\UserDto;
 
@@ -36,24 +35,11 @@ interface IUserRepository
     public function create(RegisterDto $userDto): UserDto;
 
     /**
-     * @param ChangeUserDataDto $userDto
+     * @param int $id
+     * @param array $attributes
      * @return UserDto
      */
-    public function update(ChangeUserDataDto $changeUserDataDto): UserDto;
-
-    /**
-     * @param int $userId
-     * @param string $path
-     * @return UserDto
-     */
-    public function updateAvatar(int $userId, string $path): UserDto;
-
-    /**
-     * @param int $userId
-     * @param string $password
-     * @return UserDto
-     */
-    public function updatePassword(int $userId, string $password): UserDto;
+    public function update(int $id, array $attributes): UserDto;
 
     /**
      * @param int $id

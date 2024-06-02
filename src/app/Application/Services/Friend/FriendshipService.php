@@ -28,7 +28,7 @@ class FriendshipService implements IFriendshipService
      */
     public function getUserFriends(int $userId): Collection
     {
-        return $this->friendRepository->getUserFriendships($userId);
+        return $this->friendRepository->getUserFriends($userId);
     }
 
     /**
@@ -37,7 +37,7 @@ class FriendshipService implements IFriendshipService
      */
     public function getFriendRequests(int $userId): Collection
     {
-        return $this->friendRepository->getFriendRequests($userId);
+        return $this->friendRepository->getFriendRequestsByUserId($userId);
     }
 
     /**

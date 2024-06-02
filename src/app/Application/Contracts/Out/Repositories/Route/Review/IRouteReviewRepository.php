@@ -13,7 +13,7 @@ interface IRouteReviewRepository
      * @param GetRouteReviewsDto $getReviewsDto
      * @return CursorDto
      */
-    public function getAll(GetRouteReviewsDto $getReviewsDto): CursorDto;
+    public function findByRouteId(GetRouteReviewsDto $getReviewsDto): CursorDto;
 
     /**
      * @param array $attributes
