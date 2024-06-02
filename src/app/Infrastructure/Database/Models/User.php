@@ -3,7 +3,7 @@
 namespace App\Infrastructure\Database\Models;
 
 use App\Infrastructure\Database\Models\Filters\AbstractFilter;
-use App\Infrastructure\Database\Models\Traits\Filterable;
+use App\Infrastructure\Database\Models\Traits\HasFilter;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -57,7 +57,7 @@ class User extends \TCG\Voyager\Models\User implements JWTSubject
 {
     use HasApiTokens, HasFactory, Notifiable;
     use SoftDeletes;
-    use Filterable;
+    use HasFilter;
 
     /**
      * Get the identifier that will be stored in the subject claim of the JWT.

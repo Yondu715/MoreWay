@@ -3,7 +3,7 @@
 namespace App\Infrastructure\Database\Models;
 
 use App\Infrastructure\Database\Models\Filters\AbstractFilter;
-use App\Infrastructure\Database\Models\Traits\Filterable;
+use App\Infrastructure\Database\Models\Traits\HasFilter;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -30,7 +30,7 @@ class Route extends Model
 {
     use HasFactory;
     use SoftDeletes;
-    use Filterable;
+    use HasFilter;
 
     /**
      * The attributes that are mass assignable.
