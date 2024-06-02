@@ -16,7 +16,7 @@ class GetMessagesDtoMapper
         return new GetMessagesDto(
             chatId: $getMessagesRequest->route('chatId'),
             cursor: $getMessagesRequest->cursor,
-            limit: $getMessagesRequest->limit ?? 2
+            limit: $getMessagesRequest->limit
         );
     }
 }

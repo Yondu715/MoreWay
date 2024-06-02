@@ -15,7 +15,7 @@ class GetAchievementsTypesDtoMapper
     {
         return new GetAchievementsTypesDto(
             cursor: $getAchievementsTypesRequest->cursor,
-            limit: $getAchievementsTypesRequest->limit ?? 2
+            limit: $getAchievementsTypesRequest->limit
         );
     }
 }

@@ -16,7 +16,7 @@ class GetUserRoutesDtoMapper
         return new GetUserRoutesDto(
             cursor: $getUserRoutesRequest->cursor,
             userId: $getUserRoutesRequest->route('userId'),
-            limit: $getUserRoutesRequest->limit ?? 2
+            limit: $getUserRoutesRequest->limit
         );
     }
 }

@@ -16,7 +16,7 @@ class GetUserChatsDtoMapper
         return new GetUserChatsDto(
             userId: $getUserChatsRequest->route('userId'),
             cursor: $getUserChatsRequest->cursor,
-            limit: $getUserChatsRequest->limit ?? 2
+            limit: $getUserChatsRequest->limit
         );
     }
 }

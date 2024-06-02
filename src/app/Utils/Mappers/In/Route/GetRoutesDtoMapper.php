@@ -61,7 +61,7 @@ class GetRoutesDtoMapper
                     ] : null,
                 'search' => $getRoutesRequest->search,
             ],
-            limit: $getRoutesRequest->limit ?? 2
+            limit: $getRoutesRequest->limit
         );
     }
 }

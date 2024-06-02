@@ -15,7 +15,7 @@ class GetRatingDtoMapper
     {
         return new GetRatingDto(
             cursor: $getRatingRequest->cursor,
-            limit: $getRatingRequest->limit ?? 2
+            limit: $getRatingRequest->limit
         );
     }
 }

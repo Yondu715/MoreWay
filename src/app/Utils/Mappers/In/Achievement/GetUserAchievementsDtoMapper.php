@@ -16,7 +16,7 @@ class GetUserAchievementsDtoMapper
         return new GetUserAchievementsDto(
             userId: (int)$getUserAchievementsRequest->route('userId'),
             cursor: $getUserAchievementsRequest->cursor,
-            limit: $getUserAchievementsRequest->limit ?? 2
+            limit: $getUserAchievementsRequest->limit
         );
     }
 }

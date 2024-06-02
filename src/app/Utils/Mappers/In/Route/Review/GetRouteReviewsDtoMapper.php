@@ -16,7 +16,7 @@ class GetRouteReviewsDtoMapper
         return new GetRouteReviewsDto(
             routeId: (int)$getReviewsRequest->route('routeId'),
             cursor: $getReviewsRequest->cursor,
-            limit: $getReviewsRequest->limit ?? 2
+            limit: $getReviewsRequest->limit
         );
     }
 }

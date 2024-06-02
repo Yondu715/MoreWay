@@ -15,7 +15,7 @@ class GetAchievementsDtoMapper
     {
         return new GetAchievementsDto(
             cursor: $getAchievementsRequest->cursor,
-            limit: $getAchievementsRequest->limit ?? 2
+            limit: $getAchievementsRequest->limit
         );
     }
 }
