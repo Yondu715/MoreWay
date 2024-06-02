@@ -35,7 +35,7 @@ class PlaceRepository implements IPlaceRepository
     {
         try {
             /** @var Place $place */
-            $place = $this->model->query()->find($placeId);
+            $place = $this->model->query()->with(['images', 'type', 'locality'])->find($placeId);
             return PlaceDtoMapper::fromPlaceModel(
                 $place,
                 $distanceCalculator($place->lat, $place->lon)

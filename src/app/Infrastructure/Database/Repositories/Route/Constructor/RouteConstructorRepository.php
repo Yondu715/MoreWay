@@ -77,15 +77,15 @@ class RouteConstructorRepository implements IRouteConstructorRepository
     }
 
     /**
-     * @param GetUserRouteConstructorDto $getUserRouteConstructorDto , Closure $distanceCalculator
+     * @param int $userId
      * @param Closure $distanceCalculator
      * @return RouteConstructorDto
      */
-    public function findByUserId(GetUserRouteConstructorDto $getUserRouteConstructorDto, Closure $distanceCalculator): RouteConstructorDto
+    public function findByUserId(int $userId, Closure $distanceCalculator): RouteConstructorDto
     {
         /** @var RouteConstructor $constructor */
-        $constructor = $this->model->query()->firstOrCreate([
-            'creator_id' => $getUserRouteConstructorDto->userId
+        $constructor = $this->model->query()->with('routePoints')->firstOrCreate([
+            'creator_id' => $userId
         ]);
         return ConstructorDtoMapper::fromRouteConstructorModel(
             $constructor, $distanceCalculator

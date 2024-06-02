@@ -57,6 +57,6 @@ class RouteConstructorService implements IRouteConstructorService
             return $this->distanceManager->calculate($lat, $lon, $getUserRouteConstructorDto->lat,
                 $getUserRouteConstructorDto->lon);
         };
-        return $this->routeConstructorRepository->findByUserId($getUserRouteConstructorDto, $distanceCalc);
+        return $this->routeConstructorRepository->findByUserId($getUserRouteConstructorDto->userId, $distanceCalc);
     }
 }

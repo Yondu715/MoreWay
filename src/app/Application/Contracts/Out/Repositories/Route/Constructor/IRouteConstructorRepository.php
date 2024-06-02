@@ -3,7 +3,6 @@
 namespace App\Application\Contracts\Out\Repositories\Route\Constructor;
 
 use App\Application\DTO\In\Route\Constructor\ChangeUserRouteConstructorDto;
-use App\Application\DTO\In\Route\Constructor\GetUserRouteConstructorDto;
 use App\Application\DTO\Out\Route\Constructor\RouteConstructorDto;
 use App\Application\Exceptions\Route\Constructor\InvalidRoutePointIndex;
 use Closure;
@@ -19,9 +18,9 @@ interface IRouteConstructorRepository
     public function update(ChangeUserRouteConstructorDto $changeUserRouteConstructorDto, Closure $distanceCalculator): RouteConstructorDto;
 
     /**
-     * @param GetUserRouteConstructorDto $getUserRouteConstructorDto
+     * @param int $userId
      * @param Closure $distanceCalculator
      * @return RouteConstructorDto
      */
-    public function findByUserId(GetUserRouteConstructorDto $getUserRouteConstructorDto, Closure $distanceCalculator): RouteConstructorDto;
+    public function findByUserId(int $userId, Closure $distanceCalculator): RouteConstructorDto;
 }

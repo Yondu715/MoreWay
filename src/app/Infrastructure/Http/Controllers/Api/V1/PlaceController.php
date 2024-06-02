@@ -6,7 +6,6 @@ use App\Utils\Mappers\In\Place\GetPlaceDtoMapper;
 use App\Utils\Mappers\In\Place\GetPlacesDtoMapper;
 use App\Infrastructure\Http\Controllers\Controller;
 use App\Application\Exceptions\Filter\FilterOutOfRange;
-use App\Infrastructure\Http\Resources\Place\PlaceResource;
 use App\Infrastructure\Http\Requests\Place\GetPlaceRequest;
 use App\Infrastructure\Http\Requests\Place\GetPlacesRequest;
 use App\Infrastructure\Http\Resources\Review\ReviewResource;
@@ -16,6 +15,7 @@ use App\Utils\Mappers\In\Place\Review\GetPlaceReviewsDtoMapper;
 use App\Infrastructure\Http\Requests\Review\CreateReviewRequest;
 use App\Infrastructure\Http\Resources\Place\PlaceCursorResource;
 use App\Utils\Mappers\In\Place\Review\CreatePlaceReviewDtoMapper;
+use App\Infrastructure\Http\Resources\Place\ExtendedPlaceResource;
 use App\Infrastructure\Http\Resources\Review\ReviewCursorResource;
 use App\Infrastructure\Http\Resources\Place\Filter\PlaceFilterResource;
 use App\Application\Contracts\In\Services\Place\Filter\IPlaceFilterService;
@@ -45,12 +45,12 @@ class PlaceController extends Controller
 
     /**
      * @param GetPlaceRequest $getPlaceRequest
-     * @return PlaceResource
+     * @return ExtendedPlaceResource
      */
-    public function getPlace(GetPlaceRequest $getPlaceRequest): PlaceResource
+    public function getPlace(GetPlaceRequest $getPlaceRequest): ExtendedPlaceResource
     {
         $getPlaceDto = GetPlaceDtoMapper::fromRequest($getPlaceRequest);
-        return PlaceResource::make(
+        return ExtendedPlaceResource::make(
             $this->placeService->getPlaceById($getPlaceDto)
         );
     }

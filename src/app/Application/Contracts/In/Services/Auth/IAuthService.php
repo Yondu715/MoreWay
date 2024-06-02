@@ -5,7 +5,7 @@ namespace App\Application\Contracts\In\Services\Auth;
 use App\Application\DTO\In\Auth\LoginDto;
 use App\Application\DTO\Out\User\UserDto;
 use App\Application\DTO\In\Auth\RegisterDto;
-use App\Application\Dto\Out\User\ExtendedUserDto;
+use App\Application\DTO\Out\User\ExtendedUserDto;
 use App\Application\Exceptions\User\UserNotFound;
 use App\Application\Exceptions\Auth\InvalidPassword;
 use App\Application\Exceptions\Auth\RegistrationConflict;
