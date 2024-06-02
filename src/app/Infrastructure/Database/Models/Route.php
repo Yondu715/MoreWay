@@ -78,4 +78,9 @@ class Route extends Model
     {
         return $this->belongsToMany(User::class, 'user_favorite_routes');
     }
+
+    public function activeByUsers(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'user_active_routes');
+    }
 }
