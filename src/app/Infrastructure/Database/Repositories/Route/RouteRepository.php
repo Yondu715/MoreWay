@@ -2,6 +2,7 @@
 
 namespace App\Infrastructure\Database\Repositories\Route;
 
+
 use Exception;
 use Throwable;
 use Illuminate\Database\Eloquent\Model;
