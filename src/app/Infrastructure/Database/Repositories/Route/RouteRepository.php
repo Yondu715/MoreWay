@@ -98,8 +98,8 @@ class RouteRepository implements IRouteRepository
             $route = $this->model->query()->with(['routePoints.place'])->findOrFail($routeId);
 
             $isActive = (bool) $route->activeByUsers()->wherePivot('user_id', $userId)->first();
-            $isFavorite = (bool) $route->favoriteByUsers()->wherePivot('user_id', $userId)->first();
-            
+            $isFavorite = $route->favoriteByUsers()->wherePivot('user_id', $userId)->first();
+            dd($isFavorite);
             return RouteDtoMapper::fromRouteModelAndActiveFavorite($route, $isActive, $isFavorite);
         } catch (Throwable) {
             throw new RouteNotFound();
