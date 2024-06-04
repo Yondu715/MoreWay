@@ -3,8 +3,6 @@
 namespace App\Application\Services\Route\Constructor;
 
 use Throwable;
-use App\Application\Enums\Route\RouteRestriction;
-use App\Application\Exceptions\Route\ExceededCountItems;
 use App\Domain\Factories\Distance\DistanceManagerFactory;
 use App\Domain\Contracts\In\DomainManagers\IDistanceManager;
 use App\Application\DTO\Out\Route\Constructor\RouteConstructorDto;
@@ -32,13 +30,6 @@ class RouteConstructorService implements IRouteConstructorService
      */
     public function change(ChangeUserRouteConstructorDto $changeUserRouteConstructorDto): RouteConstructorDto
     {
-        if (
-            count($changeUserRouteConstructorDto->routePoints) < RouteRestriction::MIN_ROUTE_ITEMS->value ||
-            count($changeUserRouteConstructorDto->routePoints) > RouteRestriction::MAX_ROUTE_ITEMS->value
-        ) {
-            throw new ExceededCountItems();
-        }
-
         $distanceCalc = function (float $lat, float $lon) use ($changeUserRouteConstructorDto) {
             return $this->distanceManager->calculate($lat, $lon, $changeUserRouteConstructorDto->lat,
                 $changeUserRouteConstructorDto->lon);

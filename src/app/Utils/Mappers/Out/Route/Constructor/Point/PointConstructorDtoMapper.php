@@ -15,13 +15,13 @@ class PointConstructorDtoMapper
      * @param Collection<int, RoutePoint|RouteConstructorPoint> $routePoints
      * @return Collection<int, PointDto>
      */
-    public static function fromPointCollection(Collection $routePoints, Closure $distanceCalculator): Collection
+    public static function fromPointCollection(Collection $routePoints, ?Closure $distanceCalculator = null): Collection
     {
         return $routePoints->map(function (RoutePoint|RouteConstructorPoint $routePoint) use ($distanceCalculator) {
             return new PointDto(
                 id: $routePoint->id,
                 index: $routePoint->index,
-                place: PlaceDtoMapper::fromPlaceModel($routePoint->place, $distanceCalculator($routePoint->place->lat, $routePoint->place->lon)),
+                place: PlaceDtoMapper::fromPlaceModel($routePoint->place, $distanceCalculator && $distanceCalculator($routePoint->place->lat, $routePoint->place->lon)),
             );
         });
     }
