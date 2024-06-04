@@ -2,7 +2,6 @@
 
 namespace App\Infrastructure\Database\Repositories\Chat;
 
-use App\Infrastructure\Database\Models\UserRouteProgress;
 use Throwable;
 use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
@@ -10,7 +9,6 @@ use App\Application\DTO\Out\Chat\ChatDto;
 use App\Application\DTO\Out\User\UserDto;
 use App\Application\DTO\Out\Route\RouteDto;
 use App\Infrastructure\Database\Models\Chat;
-use App\Infrastructure\Exceptions\Forbidden;
 use App\Application\DTO\Collection\CursorDto;
 use App\Utils\Mappers\Out\Chat\ChatDtoMapper;
 use App\Utils\Mappers\Out\User\UserDtoMapper;
@@ -22,6 +20,7 @@ use App\Infrastructure\Database\Models\ChatMember;
 use App\Application\DTO\In\Chat\Member\AddMembersDto;
 use App\Application\Exceptions\Chat\FailedToCreateChat;
 use App\Infrastructure\Database\Models\ChatActiveRoute;
+use App\Infrastructure\Database\Models\UserRouteProgress;
 use App\Application\DTO\In\Chat\Activity\ChangeActivityDto;
 use App\Application\Exceptions\Chat\Members\FailedToAddMembers;
 use App\Application\Exceptions\Chat\Activity\FailedToGetActivity;
@@ -179,7 +178,7 @@ class ChatRepository implements IChatRepository
     {
         try {
             /** @var Chat $chat */
-            $chat = $this->model->query()->with(['activeRoute, activeRoute.route'])->findOrFail($chatId);
+            $chat = $this->model->query()->with(['activeRoute.route'])->findOrFail($chatId);
             return RouteDtoMapper::fromRouteModel($chat->activeRoute->route);
         } catch (Throwable) {
             throw new FailedToGetActivity();
@@ -216,7 +215,7 @@ class ChatRepository implements IChatRepository
     {
         try {
             /** @var Chat $chat */
-            $chat = $this->model->query()->where('id', $chatId)->firstOrFail();
+            $chat = $this->model->query()->findOrFail($chatId);
 
             if($this->model->query()->where('is_active', true)
                 ->whereHas('members', function ($query) use ($chat) {
@@ -239,7 +238,7 @@ class ChatRepository implements IChatRepository
     {
         try {
             /** @var Chat $chat */
-            $chat = $this->model->query()->where('id', $chatId)->firstOrFail();
+            $chat = $this->model->query()->findOrFail($chatId);
 
             if(UserRouteProgress::query()->whereHas('routePoint', function ($query) use ($chat) {
                 $query->where('route_id', $chat->activeRoute->route->id);
