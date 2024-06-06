@@ -29,7 +29,7 @@ interface IUserRepository
     public function findByEmail(string $email): UserDto;
 
     /**
-     * @param RegisterDto $registerDto
+     * @param RegisterDto $userDto
      * @return UserDto
      */
     public function create(RegisterDto $userDto): UserDto;

@@ -64,10 +64,9 @@ class AuthService implements IAuthService
         try {
             $this->userRepository->findByEmail($registerDto->email);
         } catch (Throwable) {
-            throw new RegistrationConflict();
+            return $this->userRepository->create($registerDto);
         }
-
-        return $this->userRepository->create($registerDto);
+        throw new RegistrationConflict();
     }
 
     /**

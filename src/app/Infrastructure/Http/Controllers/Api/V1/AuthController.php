@@ -64,7 +64,7 @@ class AuthController extends Controller
     }
 
     /**
-     * @return UserResource
+     * @return AuthUserResource
      */
     public function me(): AuthUserResource
     {

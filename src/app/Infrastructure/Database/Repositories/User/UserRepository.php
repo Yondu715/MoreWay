@@ -59,6 +59,7 @@ class UserRepository implements IUserRepository
     /**
      * @param string $email
      * @return UserDto
+     * @throws UserNotFound
      */
     public function findByEmail(string $email): UserDto
     {
