@@ -68,7 +68,7 @@ class RouteConstructorRepository implements IRouteConstructorRepository
 
             $this->transactionManager->commit();
 
-            return ConstructorDtoMapper::fromRouteConstructorModel($routeConstructor, $distanceCalculator);
+            return ConstructorDtoMapper::fromRouteConstructorModel($routeConstructor->refresh(), $distanceCalculator);
         } catch (Throwable $th) {
             $this->transactionManager->rollback();
             throw $th;
