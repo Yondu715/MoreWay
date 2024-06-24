@@ -2,25 +2,28 @@
 
 namespace App\Application\Contracts\In\Services\Friend;
 
+use App\Application\DTO\Collection\CursorDto;
 use App\Application\DTO\In\Friend\AcceptFriendDto;
 use App\Application\DTO\In\Friend\AddFriendDto;
-use App\Application\DTO\Out\User\UserDto;
+use App\Application\DTO\In\Friend\GetFriendRequestsDto;
+use App\Application\DTO\In\Friend\GetUserFriendsDto;
 use App\Application\DTO\Out\Friend\FriendshipDto;
-use Illuminate\Support\Collection;
 
 interface IFriendshipService
 {
-    /**
-     * @param int $userId
-     * @return Collection<int, UserDto>
-     */
-    public function getUserFriends(int $userId): Collection;
 
     /**
-     * @param int $userId
-     * @return Collection<int, FriendshipDto>
+     * @param GetUserFriendsDto $getUserFriendsDto
+     * @return CursorDto
      */
-    public function getFriendRequests(int $userId): Collection;
+    public function getUserFriends(GetUserFriendsDto $getUserFriendsDto): CursorDto;
+
+
+    /**
+     * @param GetFriendRequestsDto $getFriendRequestsDto
+     * @return CursorDto
+     */
+    public function getFriendRequests(GetFriendRequestsDto $getFriendRequestsDto): CursorDto;
 
     /**
      * @param int $userId

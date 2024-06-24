@@ -2,6 +2,9 @@
 
 namespace App\Application\Contracts\Out\Repositories\Friend;
 
+use App\Application\DTO\Collection\CursorDto;
+use App\Application\DTO\In\Friend\GetFriendRequestsDto;
+use App\Application\DTO\In\Friend\GetUserFriendsDto;
 use App\Application\DTO\Out\Friend\FriendshipDto;
 use Illuminate\Support\Collection;
 
@@ -41,11 +44,12 @@ interface IFriendshipRepository
      */
     public function deleteFriendship(int $userId, int $friendId): bool;
 
+
     /**
-     * @param int $userId
-     * @return Collection<int, UserDto>
+     * @param GetUserFriendsDto $getUserFriendsDto
+     * @return CursorDto
      */
-    public function getUserFriends(int $userId): Collection;
+    public function getUserFriends(GetUserFriendsDto $getUserFriendsDto): CursorDto;
 
     /**
      * @param int $userId
@@ -54,9 +58,10 @@ interface IFriendshipRepository
      */
     public function findByUserIdAndFriendId(int $userId, int $friendId): ?FriendshipDto;
 
+
     /**
-     * @param int $userId
-     * @return Collection<int, FriendshipDto>
+     * @param GetFriendRequestsDto $getFriendRequestsDto
+     * @return CursorDto
      */
-    public function getFriendRequestsByUserId(int $userId): Collection;
+    public function getFriendRequestsByUserId(GetFriendRequestsDto $getFriendRequestsDto): CursorDto;
 }

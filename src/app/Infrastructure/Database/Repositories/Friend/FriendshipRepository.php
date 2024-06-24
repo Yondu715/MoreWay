@@ -12,7 +12,11 @@ use App\Infrastructure\Database\Models\Friendship;
 use App\Utils\Mappers\Out\Friend\FriendshipDtoMapper;
 use App\Application\Exceptions\Friend\FriendshipNotFound;
 use App\Application\Contracts\Out\Repositories\Friend\IFriendshipRepository;
+use App\Application\DTO\Collection\CursorDto;
+use App\Application\DTO\In\Friend\GetFriendRequestsDto;
+use App\Application\DTO\In\Friend\GetUserFriendsDto;
 use App\Application\DTO\Out\User\UserDto;
+use App\Utils\Mappers\Collection\CursorDtoMapper;
 
 class FriendshipRepository implements IFriendshipRepository
 {
@@ -91,20 +95,19 @@ class FriendshipRepository implements IFriendshipRepository
         })->delete();
     }
 
+
     /**
-     * @param int $userId
-     * @return Collection<int, UserDto>
+     * @param GetUserFriendsDto $getUserFriendsDto
+     * @return CursorDto
      */
-    public function getUserFriends(int $userId): Collection
+    public function getUserFriends(GetUserFriendsDto $getUserFriendsDto): CursorDto
     {
         $friendships = $this->model->query()->where([
-            'user_id' => $userId,
+            'user_id' => $getUserFriendsDto->userId,
             'relationship_id' => RelationshipType::FRIEND
-        ])->with(['friend'])->get();
-
-        return $friendships->map(function (Friendship $friendship) {
-            return UserDtoMapper::fromUserModel($friendship->friend);
-        });
+        ])->with(['friend'])->cursorPaginate(perPage: $getUserFriendsDto->limit, cursor: $getUserFriendsDto->cursor);
+        
+        return FriendshipDtoMapper::fromPaginator($friendships);
     }
 
     /**
@@ -130,19 +133,18 @@ class FriendshipRepository implements IFriendshipRepository
         return $friendship ? FriendshipDtoMapper::fromFriendshipModel($friendship) : null;
     }
 
+
     /**
-     * @param int $userId
-     * @return Collection<int, FriendshipDto>
+     * @param GetFriendRequestsDto $getFriendRequestsDto
+     * @return CursorDto
      */
-    public function getFriendRequestsByUserId(int $userId): Collection
+    public function getFriendRequestsByUserId(GetFriendRequestsDto $getFriendRequestsDto): CursorDto
     {
         $friendRequests = $this->model->query()->where([
-            'friend_id' => $userId,
+            'friend_id' => $getFriendRequestsDto->userId,
             'relationship_id' => RelationshipType::REQUEST
-        ])->with(['user', 'friend'])->get();
+        ])->with(['user', 'friend'])->cursorPaginate(perPage: $getFriendRequestsDto->limit, cursor: $getFriendRequestsDto->cursor);
 
-        return $friendRequests->map(function (Friendship $friendship) {
-            return FriendshipDtoMapper::fromFriendshipModel($friendship);
-        });
+        return FriendshipDtoMapper::fromPaginator($friendRequests);
     }
 }

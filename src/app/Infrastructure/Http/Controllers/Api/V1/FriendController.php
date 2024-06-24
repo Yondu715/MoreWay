@@ -7,12 +7,15 @@ use App\Infrastructure\Http\Controllers\Controller;
 use App\Utils\Mappers\In\Friend\AddFriendDtoMapper;
 use App\Utils\Mappers\In\Friend\AcceptFriendDtoMapper;
 use App\Infrastructure\Http\Resources\User\UserResource;
+use App\Utils\Mappers\In\Friend\GetUserFriendsDtoMapper;
 use App\Infrastructure\Http\Requests\Friend\AddFriendRequest;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use App\Infrastructure\Http\Requests\Friend\AcceptFriendRequest;
-use App\Application\Contracts\In\Services\Friend\IFriendshipService;
 use App\Infrastructure\Http\Resources\Friend\FriendshipResource;
-
+use App\Infrastructure\Http\Requests\Friend\GetUserFriendsRequest;
+use App\Application\Contracts\In\Services\Friend\IFriendshipService;
+use App\Infrastructure\Http\Requests\Friend\GetFriendRequestsRequest;
+use App\Utils\Mappers\In\Friend\GetFriendRequestsDtoMapper;
 
 class FriendController extends Controller
 {
@@ -22,25 +25,29 @@ class FriendController extends Controller
     ) {
     }
 
+
     /**
-     * @param int $userId
+     * @param GetUserFriendsRequest $getUserFriendsRequest
      * @return AnonymousResourceCollection
      */
-    public function getFriends(int $userId): AnonymousResourceCollection
+    public function getFriends(GetUserFriendsRequest $getUserFriendsRequest): AnonymousResourceCollection
     {
+        $getUserFriendsDto = GetUserFriendsDtoMapper::fromRequest($getUserFriendsRequest);
         return UserResource::collection(
-            $this->friendService->getUserFriends($userId)
+            $this->friendService->getUserFriends($getUserFriendsDto)
         );
     }
 
+
     /**
-     * @param int $userId
+     * @param GetFriendRequestsRequest $getFriendRequestsRequest
      * @return AnonymousResourceCollection
      */
-    public function getFriendRequests(int $userId): AnonymousResourceCollection
+    public function getFriendRequests(GetFriendRequestsRequest $getFriendRequestsRequest): AnonymousResourceCollection
     {
+        $getFriendRequestsDto = GetFriendRequestsDtoMapper::fromRequest($getFriendRequestsRequest);
         return FriendshipResource::collection(
-            $this->friendService->getFriendRequests($userId)
+            $this->friendService->getFriendRequests($getFriendRequestsDto)
         );
     }
 

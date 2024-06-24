@@ -2,17 +2,17 @@
 
 namespace App\Application\Services\Friend;
 
+use App\Application\DTO\Collection\CursorDto;
+use App\Application\DTO\In\Friend\AddFriendDto;
+use App\Application\DTO\Out\Friend\FriendshipDto;
+use App\Application\DTO\In\Friend\AcceptFriendDto;
+use App\Application\Enums\Friend\RelationshipType;
+use App\Application\DTO\In\Friend\GetUserFriendsDto;
+use App\Application\DTO\In\Friend\GetFriendRequestsDto;
+use App\Application\Exceptions\Friend\FriendRequestConflict;
 use App\Application\Contracts\In\Services\Friend\IFriendshipService;
 use App\Application\Contracts\Out\Managers\Notifier\INotifierManager;
 use App\Application\Contracts\Out\Repositories\Friend\IFriendshipRepository;
-use App\Application\DTO\In\Friend\AcceptFriendDto;
-use App\Application\DTO\In\Friend\AddFriendDto;
-use App\Application\DTO\Out\Friend\FriendshipDto;
-use App\Application\DTO\Out\User\UserDto;
-use App\Application\Enums\Friend\RelationshipType;
-use App\Application\Exceptions\Friend\FriendRequestConflict;
-use Illuminate\Support\Collection;
-
 
 class FriendshipService implements IFriendshipService
 {
@@ -23,21 +23,31 @@ class FriendshipService implements IFriendshipService
     ) {
     }
 
-    /**
-     * @return Collection<int, UserDto>
-     */
-    public function getUserFriends(int $userId): Collection
-    {
-        return $this->friendRepository->getUserFriends($userId);
-    }
 
     /**
-     * @param int $userId
-     * @return Collection<int, FriendshipDto>
+     * @param GetUserFriendsDto $getUserFriendsDto
+     * @return CursorDto
      */
-    public function getFriendRequests(int $userId): Collection
+    public function getUserFriends(GetUserFriendsDto $getUserFriendsDto): CursorDto
     {
-        return $this->friendRepository->getFriendRequestsByUserId($userId);
+        $userFriendships = $this->friendRepository->getUserFriends($getUserFriendsDto);
+        $friends = $userFriendships->data->map(function (FriendshipDto $friendshipDto) {
+            return $friendshipDto->friend;
+        });
+        return new CursorDto(
+            data: $friends,
+            cursor: $userFriendships->cursor
+        );
+    }
+
+
+    /**
+     * @param GetFriendRequestsDto $getFriendRequestsDto
+     * @return CursorDto
+     */
+    public function getFriendRequests(GetFriendRequestsDto $getFriendRequestsDto): CursorDto
+    {
+        return $this->friendRepository->getFriendRequestsByUserId($getFriendRequestsDto);
     }
 
     /**
