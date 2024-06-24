@@ -15,6 +15,8 @@ use App\Infrastructure\Http\Resources\Friend\FriendshipResource;
 use App\Infrastructure\Http\Requests\Friend\GetUserFriendsRequest;
 use App\Application\Contracts\In\Services\Friend\IFriendshipService;
 use App\Infrastructure\Http\Requests\Friend\GetFriendRequestsRequest;
+use App\Infrastructure\Http\Resources\Friend\FriendshipCursorResource;
+use App\Infrastructure\Http\Resources\User\UserCursorResource;
 use App\Utils\Mappers\In\Friend\GetFriendRequestsDtoMapper;
 
 class FriendController extends Controller
@@ -28,12 +30,12 @@ class FriendController extends Controller
 
     /**
      * @param GetUserFriendsRequest $getUserFriendsRequest
-     * @return AnonymousResourceCollection
+     * @return UserCursorResource
      */
-    public function getFriends(GetUserFriendsRequest $getUserFriendsRequest): AnonymousResourceCollection
+    public function getFriends(GetUserFriendsRequest $getUserFriendsRequest): UserCursorResource
     {
         $getUserFriendsDto = GetUserFriendsDtoMapper::fromRequest($getUserFriendsRequest);
-        return UserResource::collection(
+        return UserCursorResource::make(
             $this->friendService->getUserFriends($getUserFriendsDto)
         );
     }
@@ -41,12 +43,12 @@ class FriendController extends Controller
 
     /**
      * @param GetFriendRequestsRequest $getFriendRequestsRequest
-     * @return AnonymousResourceCollection
+     * @return FriendshipCursorResource
      */
-    public function getFriendRequests(GetFriendRequestsRequest $getFriendRequestsRequest): AnonymousResourceCollection
+    public function getFriendRequests(GetFriendRequestsRequest $getFriendRequestsRequest): FriendshipCursorResource
     {
         $getFriendRequestsDto = GetFriendRequestsDtoMapper::fromRequest($getFriendRequestsRequest);
-        return FriendshipResource::collection(
+        return FriendshipCursorResource::make(
             $this->friendService->getFriendRequests($getFriendRequestsDto)
         );
     }
