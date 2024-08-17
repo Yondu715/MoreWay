@@ -43,10 +43,6 @@ docker-compose up --build -d
 ```sh
 docker-compose exec app bash
 ```
-Сгенерировать ключ
-```sh
-php artisan key:generate
-```
 
 И установить зависимости
 ```sh
@@ -84,6 +80,11 @@ RABBITMQ_PORT=5672
 RABBITMQ_USERNAME=web
 RABBITMQ_PASSWORD=123
 RABBITMQ_VHOST=rabbitmq
+```
+
+Генерируем ключ
+```sh
+php artisan key:generate
 ```
 
 Поднимаем миграции
